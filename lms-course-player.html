@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Course Player | screenings4u Learning Center</title>
 <link rel="icon" type="image/png" href="images/fav.png">
+
 <style>
 :root{--s4u-blue:#325aa3;--s4u-blue-dark:#24467f;--s4u-orange:#ff6b00;--s4u-bg:#f5f7fa;--s4u-surface:#fff;--s4u-border:#dfe5ec;--s4u-text:#172033;--s4u-muted:#687386;--s4u-soft:#f0f3f7;--sidebar:300px;--topbar:64px}
 *{box-sizing:border-box}body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--s4u-bg);color:var(--s4u-text)}
@@ -74,17 +75,92 @@ button{font-family:inherit}.player{min-height:100vh;padding-left:var(--sidebar)}
 </div></main>
 </div>
 <div class="toast" id="toast"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="assets/js/supabase-config.js"></script>
+<script src="assets/js/config.js"></script>
+<script src="assets/js/lms.js"></script>
 <script>
-const nav=document.getElementById('courseNav'), lessons=[...document.querySelectorAll('.lesson')], title=document.getElementById('lessonTitle'), desc=document.getElementById('lessonDesc'), type=document.getElementById('lessonType'), toast=document.getElementById('toast');
-let current=lessons.findIndex(x=>x.classList.contains('active'));
-function showToast(t){toast.textContent=t;toast.style.display='block';setTimeout(()=>toast.style.display='none',2600)}
-document.getElementById('navToggle').onclick=()=>nav.classList.toggle('open');
-document.querySelectorAll('.section-head').forEach(x=>x.onclick=()=>x.parentElement.classList.toggle('collapsed'));
-function loadLesson(i){if(i<0||i>=lessons.length)return;lessons.forEach(x=>x.classList.remove('active'));current=i;let l=lessons[i];l.classList.add('active');title.textContent=l.dataset.title;desc.textContent=l.dataset.desc;type.textContent='COURSE · '+l.dataset.type;document.getElementById('completeState').textContent=l.classList.contains('done')?'Lesson completed':'Lesson in progress';document.getElementById('completeBtn').textContent=l.classList.contains('done')?'Completed ✓':'Mark Lesson Complete';if(innerWidth<850)nav.classList.remove('open')}
-lessons.forEach((l,i)=>l.onclick=()=>loadLesson(i));
-document.getElementById('completeBtn').onclick=()=>{let l=lessons[current];if(l.classList.contains('done')){showToast('This lesson is already complete.');return}l.classList.add('done');l.querySelector('.status').textContent='✓';document.getElementById('completeState').textContent='Lesson completed';document.getElementById('completeBtn').textContent='Completed ✓';let done=lessons.filter(x=>x.classList.contains('done')).length,p=Math.round(done/lessons.length*100);document.getElementById('progressText').textContent=p+'%';document.getElementById('progressFill').style.width=p+'%';showToast('Lesson marked complete. Progress saved when connected to Supabase.')}
-document.getElementById('prevBtn').onclick=()=>loadLesson(current-1);document.getElementById('nextBtn').onclick=()=>loadLesson(current+1);
-document.getElementById('playBtn').onclick=()=>{document.getElementById('mediaStatus').textContent='Media playback placeholder — actual media will load from lms_media';showToast('Media player ready for LMS integration.')}
-document.getElementById('checkAnswer').onclick=()=>{let v=document.querySelector('input[name=q]:checked')?.value,r=document.getElementById('quizResult');r.style.display='block';if(!v){r.textContent='Please select an answer.';r.style.background='#fff8f2';r.style.color='#8a5a2b'}else if(v==='b'){r.textContent='Correct. This learning step helps reinforce the material.';r.style.background='#edf2fb';r.style.color='#325aa3'}else{r.textContent='Not quite. Review the lesson material and try again.';r.style.background='#fff8f2';r.style.color='#8a5a2b'}};
+(function(){
+"use strict";
+const qs=new URLSearchParams(location.search), courseId=qs.get("course"), enrollmentId=qs.get("enrollment");
+let db,state={course:null,enrollment:null,sections:[],lessons:[],current:0,completed:new Set()};
+
+function getDb(){if(window.supabaseClient?.from)return window.supabaseClient;if(window.supabase?.from)return window.supabase;let u=window.SCREENINGS4U_SUPABASE_URL||window.SUPABASE_URL,k=window.SCREENINGS4U_SUPABASE_ANON_KEY||window.SUPABASE_ANON_KEY;return u&&k&&window.supabase?.createClient?window.supabase.createClient(u,k):null}
+function esc(v){return String(v??"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")}
+function progress(){return state.lessons.length?Math.round(state.completed.size/state.lessons.length*100):0}
+function updateProgress(){let p=progress();let el=document.getElementById("courseProgress");if(el)el.textContent=p+"% complete"}
+function playerBack(){location.href="lms-my-courses.html"}
+function current(){return state.lessons[state.current]}
+function sectionFor(id){return state.sections.find(x=>x.id===id)}
+function renderOutline(){
+ const nav=document.getElementById("courseNav")||document.getElementById("courseSidebar")||document.getElementById("courseOutline");
+ if(!nav)return;
+ let groups=state.sections.map((sec,si)=>{let ls=state.lessons.filter(l=>l.section_id===sec.id), done=ls.filter(l=>state.completed.has(l.id)).length;
+ return `<div class="section"><button class="section-head" type="button">${esc(sec.title||("Section "+(si+1)))} <small>${done}/${ls.length}</small></button><div class="section-lessons">`+
+ ls.map(l=>{let idx=state.lessons.findIndex(x=>x.id===l.id),active=idx===state.current,done=state.completed.has(l.id);return `<button class="lesson ${active?"active":""}" data-index="${idx}" type="button"><span class="status">${done?"✓":""}</span><span>${esc(l.title||"Untitled Lesson")}</span><span class="lesson-type">${esc(l.lesson_type||"Lesson")}</span></button>`}).join("")+"</div></div>"}).join("");
+ nav.innerHTML=groups||'<div class="empty">No lessons are available for this course.</div>';
+ nav.querySelectorAll(".lesson[data-index]").forEach(b=>b.onclick=()=>{state.current=Number(b.dataset.index);renderLesson()});
+ nav.querySelectorAll(".section-head").forEach(b=>b.onclick=()=>b.parentElement.classList.toggle("collapsed"));
+}
+function renderLesson(){
+ let l=current();if(!l)return;
+ let sec=sectionFor(l.section_id)||{};
+ document.getElementById("lessonTitle").textContent=l.title||"Lesson";
+ document.getElementById("lessonDesc").textContent=l.description||l.short_description||"";
+ let type=document.getElementById("lessonType");if(type)type.textContent=(sec.title||"COURSE")+" · "+String(l.lesson_type||"LESSON").toUpperCase();
+ let content=document.querySelector(".content-area")||document.getElementById("lessonContent");
+ if(content){
+   let media=l.video_url?`<div class="media"><video controls playsinline src="${esc(l.video_url)}"></video></div>`:"";
+   let body=l.content||l.lesson_content||"<p>Course content for this lesson is being loaded from the LMS.</p>";
+   content.innerHTML=media+`<div class="block">${body}</div>`;
+ }
+ let complete=document.getElementById("completeState");if(complete)complete.textContent=state.completed.has(l.id)?"Lesson completed":"Lesson in progress";
+ let btn=document.getElementById("completeBtn");if(btn)btn.textContent=state.completed.has(l.id)?"Completed":"Mark Lesson Complete";
+ updateProgress();renderOutline();
+}
+async function saveCompletion(){
+ let l=current();if(!l||state.completed.has(l.id))return;
+ // Supports the established learner progress table; fallback updates enrollment progress.
+ let r=await db.from("lms_lesson_progress").upsert({user_id:state.enrollment.user_id,enrollment_id:state.enrollment.id,course_id:state.course.id,lesson_id:l.id,status:"completed",completed_at:new Date().toISOString()},{onConflict:"enrollment_id,lesson_id"});
+ if(r.error) console.warn("Lesson progress table unavailable:",r.error);
+ state.completed.add(l.id);
+ let pct=progress(), status=pct>=100?"completed":"active";
+ let er=await db.from("lms_enrollments").update({progress_percent:pct,status:status,last_activity_at:new Date().toISOString()}).eq("id",state.enrollment.id);
+ if(er.error)console.error(er.error);
+ if(state.current<state.lessons.length-1){state.current++;renderLesson()}else renderLesson();
+}
+async function load(){
+ db=getDb();if(!db)throw Error("Missing public Supabase configuration.");
+ let sr=await db.auth.getSession(),session=sr.data?.session;if(!session){location.href="lms.html";return}
+ if(!courseId){location.href="lms-my-courses.html";return}
+ let cr=await db.from("lms_courses").select("*").eq("id",courseId).single();if(cr.error)throw cr.error;state.course=cr.data;
+ let er;
+ if(enrollmentId)er=await db.from("lms_enrollments").select("*").eq("id",enrollmentId).eq("user_id",session.user.id).single();
+ else er=await db.from("lms_enrollments").select("*").eq("course_id",courseId).eq("user_id",session.user.id).maybeSingle();
+ if(er.error||!er.data){location.href="lms-course-details.html?course="+encodeURIComponent(courseId);return}state.enrollment=er.data;
+ document.title=(state.course.title||"Course")+" | Course Player";
+ ["courseTitle","sidebarCourseTitle"].forEach(id=>{let e=document.getElementById(id);if(e)e.textContent=state.course.title||"Course"});
+ let sec=await db.from("lms_course_sections").select("*").eq("course_id",courseId).order("position",{ascending:true});
+ if(sec.error)sec=await db.from("lms_sections").select("*").eq("course_id",courseId).order("position",{ascending:true});
+ state.sections=sec.data||[];
+ let ids=state.sections.map(x=>x.id);
+ if(ids.length){let lr=await db.from("lms_lessons").select("*").in("section_id",ids).order("position",{ascending:true});state.lessons=lr.data||[]}
+ let pr=await db.from("lms_lesson_progress").select("lesson_id,status").eq("enrollment_id",state.enrollment.id);
+ if(!pr.error)(pr.data||[]).filter(x=>x.status==="completed").forEach(x=>state.completed.add(x.lesson_id));
+ let pct=Number(state.enrollment.progress_percent||0);
+ if(!state.completed.size&&pct>=100)state.lessons.forEach(x=>state.completed.add(x.id));
+ let loading=document.getElementById("playerLoading");if(loading)loading.style.display="none";
+ let view=document.getElementById("lessonView");if(view)view.hidden=false;
+ renderLesson();
+}
+document.getElementById("completeBtn")?.addEventListener("click",saveCompletion);
+document.getElementById("prevBtn")?.addEventListener("click",()=>{if(state.current>0){state.current--;renderLesson()}});
+document.getElementById("nextBtn")?.addEventListener("click",()=>{if(state.current<state.lessons.length-1){state.current++;renderLesson()}});
+document.getElementById("exitCourseButton")?.addEventListener("click",playerBack);
+document.getElementById("navToggle")?.addEventListener("click",()=>document.getElementById("courseNav")?.classList.toggle("open"));
+document.addEventListener("DOMContentLoaded",()=>load().catch(e=>{console.error("Course player failed:",e);let t=document.getElementById("lessonTitle");if(t)t.textContent="Unable to load this course";let d=document.getElementById("lessonDesc");if(d)d.textContent="Please return to My Courses and try again."}));
+})();
 </script>
+
 </body></html>

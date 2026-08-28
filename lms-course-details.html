@@ -15,13 +15,13 @@
 @media(max-width:950px){.hero{grid-template-columns:1fr}.course-image{min-height:180px}.layout{grid-template-columns:1fr}}@media(max-width:700px){.sidebar{transform:translateX(-100%);transition:.2s}.mobile .sidebar{transform:none}.main,.collapsed .main{margin-left:0}.content{padding:16px}.topbar{padding:0 16px}.hero-body{padding:23px}.hero-body h2{font-size:23px}.purchase{flex-wrap:wrap}}
 </style></head>
 <body><div id="shell">
-<aside class="sidebar"><div class="brand"><img src="images/logo.png" alt="Screenings4u"></div><nav class="nav"><div class="label">LEARNING</div><a class="link" href="lms-dashboard.html"><b class="ico">D</b><span>Dashboard</span></a><a class="link" href="lms-my-courses.html"><b class="ico">M</b><span>My Courses</span></a><a class="link active" href="lms-courses.html"><b class="ico">B</b><span>Browse Courses</span></a><div class="label">MY RECORDS</div><a class="link" href="lms-progress.html"><b class="ico">P</b><span>Learning Progress</span></a><a class="link" href="lms-certificates.html"><b class="ico">C</b><span>Certificates</span></a></nav><div class="profile">JL &nbsp; Learner Account</div></aside>
+<aside class="sidebar"><div class="brand"><img src="images/logo.png" alt="Screenings4u"></div><nav class="nav"><div class="label">LEARNING</div><a class="link" href="lms-dashboard.html"><b class="ico">D</b><span>Dashboard</span></a><a class="link" href="lms-my-courses.html"><b class="ico">M</b><span>My Courses</span></a><a class="link active" href="lms-courses.html"><b class="ico">B</b><span>Browse Courses</span></a><div class="label">MY RECORDS</div><a class="link" href="lms-progress.html"><b class="ico">P</b><span>Learning Progress</span></a><a class="link" href="lms-certificates.html"><b class="ico">C</b><span>Certificates</span></a></nav><div class="profile">JL &nbsp; <span id="learnerName">Learner Account</span></div></aside>
 <main class="main"><header class="topbar"><div class="top-left"><button class="menu" id="menu">☰</button><div><h1>Course Details</h1><p>Screenings4u Learning Center</p></div></div></header>
-<div class="content"><div class="crumbs"><a href="lms-courses.html">Browse Courses</a> › DOT Drug & Alcohol Training</div>
-<section class="hero"><div class="course-image"><span class="badge">DOT & COMPLIANCE</span><div class="course-mark">S4U</div></div><div class="hero-body"><div class="eyebrow">ONLINE TRAINING COURSE</div><h2>DOT Drug & Alcohol Training</h2><p>Build foundational knowledge around DOT drug and alcohol testing requirements through structured, self-paced online learning.</p><div class="quick-meta"><span class="meta">Self-Paced</span><span class="meta">4 Sections</span><span class="meta">12 Lessons</span><span class="meta">Quiz Included</span><span class="meta">Certificate Eligible</span></div><div class="purchase"><span class="price">$59</span><button class="btn primary" id="purchaseBtn">Purchase Course</button><button class="btn" onclick="location.href='lms-courses.html'">← Back to Catalog</button></div></div></section>
+<div class="content"><div class="crumbs"><a href="lms-courses.html">Browse Courses</a> › <span id="breadcrumbCourse">Loading course...</span></div>
+<section class="hero"><div class="course-image"><span class="badge" id="courseBadge">COURSE</span><div class="course-mark">S4U</div></div><div class="hero-body"><div class="eyebrow">ONLINE TRAINING COURSE</div><h2 id="courseTitle">Loading course...</h2><p id="courseDescription">Loading course information...</p><div class="quick-meta"><span class="meta">Self-Paced</span><span class="meta">4 Sections</span><span class="meta">12 Lessons</span><span class="meta">Quiz Included</span><span class="meta">Certificate Eligible</span></div><div class="purchase"><span class="price" id="coursePrice">—</span><button class="btn primary" id="purchaseBtn" type="button" disabled>Loading...</button><button class="btn" onclick="location.href='lms-courses.html'">← Back to Catalog</button></div></div></section>
 <div class="layout"><div class="card">
-<section class="section"><h3>About This Course</h3><p>This course page is the learner-facing sales and information view. The actual course content, curriculum, pricing, and availability should eventually be loaded from the LMS course records and related sections and lessons.</p></section>
-<section class="section"><h3>What You'll Learn</h3><ul><li>Understand the purpose and structure of the training program.</li><li>Review key concepts presented throughout the course.</li><li>Complete lessons, knowledge checks, and applicable assessments.</li><li>Meet course completion requirements for certificate eligibility where supported.</li></ul></section>
+<section class="section"><h3>About This Course</h3><p id="aboutCourse">Loading course information...</p></section>
+<section class="section"><h3>What You'll Learn</h3><ul id="learningObjectives"><li>Loading learning objectives...</li></ul></section>
 <section class="section"><div class="curriculum-head"><h3>Course Curriculum</h3><span>4 Sections · 12 Lessons</span></div>
 <div class="module"><div class="module-title">Section 1: Course Introduction <span>3 Lessons ▾</span></div><div class="lessons"><div class="lesson"><span>1. Welcome to the Course</span><span>Preview</span></div><div class="lesson"><span>2. Learning Objectives</span><span>Preview</span></div><div class="lesson"><span>3. Knowledge Check</span><span>Quiz</span></div></div></div>
 <div class="module"><div class="module-title">Section 2: Core Training Concepts <span>3 Lessons ▾</span></div><div class="lessons"><div class="lesson"><span>4. Training Fundamentals</span><span>Locked</span></div><div class="lesson"><span>5. Workplace Responsibilities</span><span>Locked</span></div><div class="lesson"><span>6. Section Knowledge Check</span><span>Quiz</span></div></div></div>
@@ -31,14 +31,107 @@
 <aside><div class="card side-card"><h3>Course Details</h3><div class="side-row"><span>Format</span><b>Online / Self-Paced</b></div><div class="side-row"><span>Sections</span><b>4</b></div><div class="side-row"><span>Lessons</span><b>12</b></div><div class="side-row"><span>Completion</span><b>Course Requirements</b></div><div class="side-row"><span>Certificate</span><b>When Eligible</b></div></div><div class="notice"><b>Purchase access:</b> The purchase action should connect to your existing Screenings4u website checkout system. After successful payment, the system should create or activate the learner's enrollment.</div></aside></div>
 </div></main></div>
 <div class="modal-bg" id="modal"><div class="modal"><h3>Purchase Course</h3><p>This course will connect to your existing Screenings4u checkout flow. Once payment is confirmed, the LMS should grant access by creating or activating an enrollment record.</p><div class="modal-actions"><button class="btn" id="cancel">Cancel</button><button class="btn primary" id="checkout">Continue to Checkout</button></div></div></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="assets/js/supabase-config.js"></script>
+<script src="assets/js/config.js"></script>
+<script src="assets/js/lms.js"></script>
 <script>
-const shell=document.getElementById('shell'),modal=document.getElementById('modal');
-document.getElementById('menu').onclick=()=>{if(innerWidth<700)shell.classList.toggle('mobile');else shell.classList.toggle('collapsed')};
-document.querySelectorAll('.module-title').forEach(x=>x.onclick=()=>x.parentElement.classList.toggle('open'));
-document.getElementById('purchaseBtn').onclick=()=>modal.style.display='flex';document.getElementById('cancel').onclick=()=>modal.style.display='none';modal.onclick=e=>{if(e.target===modal)modal.style.display='none'};
-document.getElementById('checkout').onclick=()=>alert('Checkout integration will connect this course to the existing Screenings4u purchase system.');
-</script></body></html>
+(function(){
+"use strict";
+var params=new URLSearchParams(location.search);
+var courseId=params.get("course");
 
+function client(){
+ if(window.supabaseClient&&typeof window.supabaseClient.from==="function")return window.supabaseClient;
+ if(window.supabase&&typeof window.supabase.from==="function")return window.supabase;
+ var u=window.SCREENINGS4U_SUPABASE_URL||window.SUPABASE_URL;
+ var k=window.SCREENINGS4U_SUPABASE_ANON_KEY||window.SUPABASE_ANON_KEY;
+ return u&&k&&window.supabase&&typeof window.supabase.createClient==="function"?window.supabase.createClient(u,k):null;
+}
+function esc(v){return String(v==null?"":v).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}
+function set(id,v){var e=document.getElementById(id);if(e)e.textContent=v}
+function category(c){return c.category||c.course_category||c.category_name||"ONLINE TRAINING"}
+function playerUrl(course,enrollment){var q=new URLSearchParams({course:course.id});if(enrollment&&enrollment.id)q.set("enrollment",enrollment.id);return"lms-course-player.html?"+q}
+function objectives(c){
+ var raw=c.learning_objectives||c.objectives||c.outcomes;
+ if(Array.isArray(raw))return raw;
+ if(typeof raw==="string"&&raw.trim())return raw.split(/\n|•/).map(x=>x.trim()).filter(Boolean);
+ return ["Understand the core concepts covered in this course.","Complete the required lessons and learning activities.","Demonstrate knowledge through applicable quizzes or assessments."];
+}
+async function load(){
+ var db=client();if(!db)throw Error("Missing public Supabase configuration.");
+ if(!courseId){location.href="lms-courses.html";return}
+ var sr=await db.auth.getSession(),session=sr.data&&sr.data.session;
+ if(!session){location.href="lms.html";return}
+ var meta=session.user.user_metadata||{};
+ set("learnerName",meta.full_name||meta.name||session.user.email||"Learner Account");
 
+ var cr=await db.from("lms_courses").select("*").eq("id",courseId).single();
+ if(cr.error)throw cr.error;
+ var c=cr.data;
+ var title=c.title||c.name||"Course";
+ var desc=c.short_description||c.description||"No course description is currently available.";
+ document.title=title+" | Screenings4u Learning Center";
+ set("breadcrumbCourse",title);set("courseTitle",title);set("courseDescription",desc);
+ set("courseBadge",String(category(c)).toUpperCase());
+ set("aboutCourse",c.description||desc);
 
-Add related courses here
+ var price=document.getElementById("coursePrice");
+ if(price)price.textContent=c.price!==null&&c.price!==undefined&&c.price!==""?"$"+Number(c.price).toFixed(2):(c.price_text||"Included");
+
+ var obj=objectives(c);
+ document.getElementById("learningObjectives").innerHTML=obj.map(x=>"<li>"+esc(x)+"</li>").join("");
+
+ var er=await db.from("lms_enrollments").select("id,status,progress_percent").eq("user_id",session.user.id).eq("course_id",courseId).maybeSingle();
+ if(er.error)console.warn(er.error);
+ var enrollment=er.data;
+
+ var sectionsResult=await db.from("lms_course_sections").select("id,title,position,sort_order,description").eq("course_id",courseId).order("position",{ascending:true});
+ if(sectionsResult.error){
+   sectionsResult=await db.from("lms_sections").select("id,title,position,sort_order,description").eq("course_id",courseId).order("position",{ascending:true});
+ }
+ var sections=sectionsResult.data||[], lessonCount=0, html="";
+ for(var i=0;i<sections.length;i++){
+   var sec=sections[i];
+   var lr=await db.from("lms_lessons").select("id,title,lesson_type,position,sort_order").eq("section_id",sec.id).order("position",{ascending:true});
+   var lessons=lr.data||[];lessonCount+=lessons.length;
+   html+='<div class="module"><div class="module-title">'+esc("Section "+(i+1)+": "+(sec.title||"Untitled Section"))+' <span>'+lessons.length+' Lessons ▾</span></div><div class="lessons">';
+   html+=lessons.map(function(l,j){
+      var locked=!enrollment&&j>0;
+      return '<div class="lesson"><span>'+esc((j+1)+". "+(l.title||"Untitled Lesson"))+'</span><span>'+(locked?"Locked":(l.lesson_type||"Lesson"))+'</span></div>';
+   }).join("");
+   html+="</div></div>";
+ }
+ if(!sections.length)html="<p>Course curriculum is being prepared.</p>";
+ document.getElementById("curriculumContainer").innerHTML=html;
+ set("curriculumSummary",sections.length+" Sections · "+lessonCount+" Lessons");
+
+ var quick=document.querySelector(".quick-meta");
+ if(quick)quick.innerHTML=
+   '<span class="meta">'+esc(c.delivery_type||c.duration||"Self-Paced")+'</span>'+
+   '<span class="meta">'+sections.length+' Sections</span>'+
+   '<span class="meta">'+lessonCount+' Lessons</span>'+
+   (c.quiz_included?'<span class="meta">Quiz Included</span>':'')+
+   (c.certificate_eligible?'<span class="meta">Certificate Eligible</span>':'');
+
+ var btn=document.getElementById("purchaseBtn");
+ btn.disabled=false;
+ if(enrollment){
+   var complete=enrollment.status==="completed"||Number(enrollment.progress_percent||0)>=100;
+   btn.textContent=complete?"Review Course":Number(enrollment.progress_percent||0)>0?"Continue Course":"Start Course";
+   btn.onclick=function(){location.href=playerUrl(c,enrollment)};
+ }else{
+   btn.textContent=c.price&&Number(c.price)>0?"Purchase Course":"Enroll Now";
+   btn.onclick=function(){
+     // Enrollment/purchase is intentionally routed to the existing site checkout flow.
+     location.href="lms-courses.html";
+   };
+ }
+}
+document.getElementById("menu").onclick=function(){document.getElementById("shell").classList.toggle("mobile")};
+document.addEventListener("DOMContentLoaded",function(){load().catch(function(e){console.error("course details failed",e);set("courseTitle","Unable to load course");set("courseDescription","Please return to the course catalog and try again.");var b=document.getElementById("purchaseBtn");if(b){b.textContent="Back to Catalog";b.disabled=false;b.onclick=function(){location.href="lms-courses.html"}}})});
+})();
+</script>
+
+</body></html>

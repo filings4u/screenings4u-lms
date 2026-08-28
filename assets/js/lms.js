@@ -6,106 +6,537 @@
 (function () {
   "use strict";
 
-  document.addEventListener("DOMContentLoaded", function () {
-    initializeLmsShell();
-  });
-
-  function initializeLmsShell() {
-    initializeMobileNavigation();
-    initializeNavigationState();
-    initializeUserMenu();
-  }
 
   /* ==========================================================
-     MOBILE NAVIGATION
+     INITIALIZATION
      ========================================================== */
 
-  function initializeMobileNavigation() {
-    const menuButton = document.querySelector(
-      "[data-lms-menu-toggle]"
+  function initializeLms() {
+
+    initializeNavigation();
+    initializeActiveNavigation();
+    initializeUserMenu();
+    initializeSearchShortcut();
+    initializeSignOut();
+
+  }
+
+
+  if (document.readyState === "loading") {
+
+    document.addEventListener(
+      "DOMContentLoaded",
+      initializeLms
     );
 
-    const overlay = document.querySelector(
-      "[data-lms-sidebar-overlay]"
-    );
+  } else {
+
+    initializeLms();
+
+  }
+
+
+  /* ==========================================================
+     NAVIGATION
+     ========================================================== */
+
+  function initializeNavigation() {
+
+    var menuButton =
+      document.querySelector(
+        "[data-lms-menu-toggle]"
+      );
+
+    var overlay =
+      document.querySelector(
+        "[data-lms-sidebar-overlay]"
+      );
+
 
     if (menuButton) {
-      menuButton.addEventListener("click", function () {
-        document.body.classList.toggle("lms-sidebar-open");
-      });
+
+      menuButton.addEventListener(
+        "click",
+        function () {
+
+          /*
+           * Mobile navigation
+           */
+
+          if (window.innerWidth <= 860) {
+
+            document.body.classList.toggle(
+              "lms-navigation-open"
+            );
+
+            return;
+
+          }
+
+
+          /*
+           * Desktop navigation
+           */
+
+          document.body.classList.toggle(
+            "lms-nav-collapsed"
+          );
+
+        }
+      );
+
     }
+
 
     if (overlay) {
-      overlay.addEventListener("click", function () {
-        document.body.classList.remove("lms-sidebar-open");
-      });
+
+      overlay.addEventListener(
+        "click",
+        closeMobileNavigation
+      );
+
     }
 
-    window.addEventListener("resize", function () {
-      if (window.innerWidth > 980) {
-        document.body.classList.remove("lms-sidebar-open");
+
+    document.addEventListener(
+      "keydown",
+      function (event) {
+
+        if (event.key === "Escape") {
+
+          closeMobileNavigation();
+
+        }
+
       }
-    });
+    );
+
+
+    window.addEventListener(
+      "resize",
+      function () {
+
+        if (window.innerWidth > 860) {
+
+          closeMobileNavigation();
+
+        }
+
+      }
+    );
+
   }
+
+
+  function closeMobileNavigation() {
+
+    document.body.classList.remove(
+      "lms-navigation-open"
+    );
+
+  }
+
 
   /* ==========================================================
      ACTIVE NAVIGATION
      ========================================================== */
 
-  function initializeNavigationState() {
-    const currentPage =
-      window.location.pathname.split("/").pop() ||
-      "admin-lms-courses.html";
+  function initializeActiveNavigation() {
 
-    const navigationLinks =
-      document.querySelectorAll(".lms-nav-link");
+    var currentPage =
+      window.location.pathname
+        .split("/")
+        .pop();
 
-    navigationLinks.forEach(function (link) {
-      const href = link.getAttribute("href");
 
-      if (!href) return;
+    if (!currentPage) {
 
-      if (href === currentPage) {
-        link.classList.add("active");
+      currentPage =
+        "lms-dashboard.html";
+
+    }
+
+
+    var links =
+      document.querySelectorAll(
+        ".lms-nav-link"
+      );
+
+
+    links.forEach(
+      function (link) {
+
+        var href =
+          link.getAttribute("href");
+
+
+        if (!href) {
+
+          return;
+
+        }
+
+
+        var cleanHref =
+          href
+            .split("?")[0]
+            .split("#")[0];
+
+
+        if (cleanHref === currentPage) {
+
+          link.classList.add(
+            "active"
+          );
+
+        } else {
+
+          link.classList.remove(
+            "active"
+          );
+
+        }
+
+
+        link.addEventListener(
+          "click",
+          function () {
+
+            if (window.innerWidth <= 860) {
+
+              closeMobileNavigation();
+
+            }
+
+          }
+        );
+
       }
-    });
+    );
+
   }
 
+
   /* ==========================================================
-     USER MENU PLACEHOLDER
+     USER MENU
      ========================================================== */
 
   function initializeUserMenu() {
-    const userButton = document.querySelector(
-      "[data-lms-user-button]"
+
+    var userButton =
+      document.querySelector(
+        "[data-lms-user-button]"
+      );
+
+
+    var userMenu =
+      document.querySelector(
+        "[data-lms-user-menu]"
+      );
+
+
+    if (
+      !userButton ||
+      !userMenu
+    ) {
+
+      return;
+
+    }
+
+
+    userButton.addEventListener(
+      "click",
+      function (event) {
+
+        event.stopPropagation();
+
+
+        var isOpen =
+          userMenu.classList.toggle(
+            "is-open"
+          );
+
+
+        userButton.setAttribute(
+          "aria-expanded",
+          isOpen
+            ? "true"
+            : "false"
+        );
+
+      }
     );
 
-    if (!userButton) return;
 
-    userButton.addEventListener("click", function () {
-      /*
-       * User menu will be connected later to:
-       *
-       * - Supabase authentication
-       * - Current user profile
-       * - Sign out
-       * - Account settings
-       */
-    });
+    document.addEventListener(
+      "click",
+      function (event) {
+
+        if (
+          !userButton.contains(
+            event.target
+          ) &&
+          !userMenu.contains(
+            event.target
+          )
+        ) {
+
+          userMenu.classList.remove(
+            "is-open"
+          );
+
+
+          userButton.setAttribute(
+            "aria-expanded",
+            "false"
+          );
+
+        }
+
+      }
+    );
+
   }
 
+
   /* ==========================================================
-     GLOBAL LMS UTILITIES
+     SEARCH SHORTCUT
      ========================================================== */
 
-  window.LMS = window.LMS || {};
+  function initializeSearchShortcut() {
 
-  window.LMS.openSidebar = function () {
-    document.body.classList.add("lms-sidebar-open");
-  };
+    document.addEventListener(
+      "keydown",
+      function (event) {
 
-  window.LMS.closeSidebar = function () {
-    document.body.classList.remove("lms-sidebar-open");
-  };
+        var isModifier =
+          event.ctrlKey ||
+          event.metaKey;
+
+
+        if (
+          isModifier &&
+          event.key.toLowerCase() === "k"
+        ) {
+
+          event.preventDefault();
+
+
+          var searchInput =
+            document.querySelector(
+              "[data-lms-search]"
+            );
+
+
+          if (searchInput) {
+
+            searchInput.focus();
+
+          }
+
+        }
+
+      }
+    );
+
+  }
+
+
+  /* ==========================================================
+     LEARNER PROFILE
+     ========================================================== */
+
+  function setLearnerProfile(profile) {
+
+    profile =
+      profile || {};
+
+
+    var name =
+      profile.name ||
+      "John Doe";
+
+
+    var email =
+      profile.email ||
+      "";
+
+
+    var initials =
+      profile.initials ||
+      getInitials(name);
+
+
+    updateElements(
+      "[data-lms-learner-name]",
+      name
+    );
+
+
+    updateElements(
+      "[data-lms-learner-initials]",
+      initials
+    );
+
+
+    updateElements(
+      "[data-lms-user-menu-name]",
+      name
+    );
+
+
+    updateElements(
+      "[data-lms-user-menu-email]",
+      email
+    );
+
+  }
+
+
+  function updateElements(
+    selector,
+    value
+  ) {
+
+    document
+      .querySelectorAll(selector)
+      .forEach(
+        function (element) {
+
+          element.textContent =
+            value;
+
+        }
+      );
+
+  }
+
+
+  function getInitials(name) {
+
+    if (!name) {
+
+      return "JD";
+
+    }
+
+
+    return name
+      .split(/\s+/)
+      .filter(Boolean)
+      .slice(0, 2)
+      .map(
+        function (part) {
+
+          return part
+            .charAt(0)
+            .toUpperCase();
+
+        }
+      )
+      .join("");
+
+  }
+
+
+  /* ==========================================================
+     SIGN OUT
+     ========================================================== */
+
+  function initializeSignOut() {
+
+    var buttons =
+      document.querySelectorAll(
+        "[data-lms-sign-out]"
+      );
+
+
+    buttons.forEach(
+      function (button) {
+
+        button.addEventListener(
+          "click",
+          async function () {
+
+            try {
+
+              var client =
+                getSupabaseClient();
+
+
+              if (
+                client &&
+                client.auth &&
+                typeof client.auth.signOut ===
+                  "function"
+              ) {
+
+                await client.auth.signOut();
+
+              }
+
+            } catch (error) {
+
+              console.error(
+                "LMS sign out error:",
+                error
+              );
+
+            }
+
+
+            window.location.href =
+              "lms.html";
+
+          }
+        );
+
+      }
+    );
+
+  }
+
+
+  /* ==========================================================
+     SUPABASE
+     ========================================================== */
+
+  function getSupabaseClient() {
+
+    if (
+      window.supabaseClient &&
+      window.supabaseClient.auth
+    ) {
+
+      return window.supabaseClient;
+
+    }
+
+
+    return null;
+
+  }
+
+
+  /* ==========================================================
+     GLOBAL API
+     ========================================================== */
+
+  window.LMS =
+    window.LMS || {};
+
+
+  window.LMS.setLearnerProfile =
+    setLearnerProfile;
+
+
+  window.LMS.getInitials =
+    getInitials;
+
+
+  window.LMS.closeNavigation =
+    closeMobileNavigation;
+
 
 })();

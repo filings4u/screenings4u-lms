@@ -2,8 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Learning Progress | screenings4u Learning Center</title>
-<link rel="icon" type="image/png" href="images/fav.png">
+<title>Learning Progress | Screenings4u Learning Center</title>
 <style>
 :root{--s4u-blue:#325aa3;--s4u-blue-dark:#24467f;--s4u-orange:#ff6b00;--s4u-bg:#f5f7fa;--s4u-surface:#fff;--s4u-border:#dfe5ec;--s4u-text:#172033;--s4u-muted:#687386;--s4u-soft:#f0f3f7;--s4u-sidebar:252px;--s4u-topbar:70px;--shadow:0 4px 18px rgba(24,36,60,.06)}
 *{box-sizing:border-box}body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--s4u-bg);color:var(--s4u-text)}a{text-decoration:none}
@@ -27,30 +26,21 @@
 <div class="label">MY RECORDS</div>
 <a class="link active" href="lms-progress.html"><b class="ico">P</b><span>Learning Progress</span></a>
 <a class="link" href="lms-certificates.html"><b class="ico">C</b><span>Certificates</span></a></nav>
-<div class="profile">JL &nbsp; Learner Account</div></aside>
+<div class="profile" id="learnerProfile">Learner Account</div></aside>
 <main class="main"><header class="topbar"><div class="top-left"><button class="menu" id="menu">☰</button><div><h1>Learning Progress</h1><p>Screenings4u Learning Center</p></div></div></header>
 <div class="content">
 <section class="hero"><div><h2>Your Learning Progress</h2><p>Track your course completion, learning activity, quizzes, and assessments in one place.</p></div><div class="period">All Learning Activity</div></section>
 <section class="metrics">
-<div class="metric"><div class="name">ACTIVE COURSES</div><div class="num">3</div><div class="sub">Courses currently in progress</div></div>
-<div class="metric"><div class="name">COMPLETED COURSES</div><div class="num">2</div><div class="sub">All completion requirements met</div></div>
-<div class="metric"><div class="name">OVERALL PROGRESS</div><div class="num">68%</div><div class="sub">Across active enrollments</div></div>
-<div class="metric"><div class="name">CERTIFICATES</div><div class="num">2</div><div class="sub">Available learning records</div></div>
+<div class="metric"><div class="name">ACTIVE COURSES</div><div class="num" id="statActiveCourses">0</div><div class="sub">Courses currently in progress</div></div>
+<div class="metric"><div class="name">COMPLETED COURSES</div><div class="num" id="statCompletedCourses">0</div><div class="sub">All completion requirements met</div></div>
+<div class="metric"><div class="name">OVERALL PROGRESS</div><div class="num" id="statOverallProgress">0%</div><div class="sub">Across active enrollments</div></div>
+<div class="metric"><div class="name">CERTIFICATES</div><div class="num" id="statCertificates">0</div><div class="sub">Available learning records</div></div>
 </section>
 <section class="grid"><div>
-<div class="card"><div class="card-head"><h3>Course Progress</h3><span>Active Enrollments</span></div>
-<div class="course-row"><div class="course-title"><h4>DOT Drug & Alcohol Training</h4><b>45%</b></div><div class="course-meta">Section 2 of 4 · 4 lessons remaining</div><div class="bar"><div class="fill" style="width:45%"></div></div><div class="course-actions"><span class="status">In Progress</span><a class="continue" href="lms-course.html">Continue Course →</a></div></div>
-<div class="course-row"><div class="course-title"><h4>Reasonable Suspicion Training</h4><b>82%</b></div><div class="course-meta">Final assessment available</div><div class="bar"><div class="fill" style="width:82%"></div></div><div class="course-actions"><span class="status">Almost Complete</span><a class="continue" href="lms-course.html">Continue Course →</a></div></div>
-<div class="course-row"><div class="course-title"><h4>Workplace Drug-Free Awareness</h4><b>18%</b></div><div class="course-meta">Started · 7 lessons remaining</div><div class="bar"><div class="fill orange" style="width:18%"></div></div><div class="course-actions"><span class="status">Needs Attention</span><a class="continue" href="lms-course.html">Resume Course →</a></div></div>
+<div class="card"><div class="card-head"><h3>Course Progress</h3><span id="courseProgressCount">Loading...</span></div><div id="courseProgressRows"><div class="empty">Loading your learning progress...</div></div></div>
+<div class="card attention"><h3>Courses Needing Attention</h3><div id="attentionRows"><div class="empty">Loading...</div></div></div>
 </div>
-<div class="card attention"><h3>Courses Needing Attention</h3><div class="attention-row"><b>Workplace Drug-Free Awareness</b><br>Continue your course to maintain learning momentum. You have not completed a lesson recently.</div></div>
-</div>
-<aside><div class="card"><div class="card-head"><h3>Recent Activity</h3><span>Latest</span></div>
-<div class="activity"><div class="activity-icon">✓</div><div><b>Lesson completed</b><p>Learning Objectives · DOT Drug & Alcohol Training</p></div></div>
-<div class="activity"><div class="activity-icon">Q</div><div><b>Quiz completed</b><p>Drug Testing Fundamentals Knowledge Check</p></div></div>
-<div class="activity"><div class="activity-icon">▶</div><div><b>Course resumed</b><p>Reasonable Suspicion Training</p></div></div>
-<div class="activity"><div class="activity-icon">C</div><div><b>Certificate issued</b><p>Workplace Safety Fundamentals</p></div></div>
-</div></aside></section>
+<aside><div class="card"><div class="card-head"><h3>Recent Activity</h3><span>Latest</span></div><div id="recentActivity"><div class="empty">Loading activity...</div></div></div></aside></section>
 <div class="card" style="margin-top:20px"><div class="card-head"><h3>How Progress Is Recorded</h3></div><div class="empty">When the LMS data layer is connected, this page will combine enrollment status, lesson completion, content block completion, quiz attempts, and assessment attempts to show actual learner progress.</div></div>
 </div></main></div>
 <script>const shell=document.getElementById("shell");document.getElementById("menu").onclick=()=>{if(innerWidth<700)shell.classList.toggle("mobile");else shell.classList.toggle("collapsed")};</script>
