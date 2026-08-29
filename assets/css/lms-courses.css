@@ -1,0 +1,1166 @@
+/* ============================================================
+   SCREENINGS4U LEARNING CENTER
+   COURSE LIBRARY PAGE
+   ============================================================ */
+
+
+/* ============================================================
+   PAGE
+   ============================================================ */
+
+.lms-courses-page {
+  width: 100%;
+  min-width: 0;
+}
+
+
+/* ============================================================
+   PAGE HEADER
+   The master LMS shell controls the base page heading.
+   Only page-specific additions belong here.
+   ============================================================ */
+
+.lms-courses-page .lms-page-heading {
+  margin-bottom: 32px;
+}
+
+
+.lms-page-heading-copy {
+  min-width: 0;
+}
+
+
+/* ============================================================
+   AVAILABLE COURSE SUMMARY
+   ============================================================ */
+
+.lms-course-page-summary {
+  flex: 0 0 auto;
+
+  min-width: 154px;
+  min-height: 94px;
+
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  padding: 16px 20px;
+
+  background: var(--lms-surface);
+
+  border:
+    1px solid var(--lms-border);
+
+  border-radius: var(--lms-radius-md);
+
+  text-align: center;
+}
+
+
+.lms-course-summary-number {
+  display: block;
+
+  color: var(--lms-navy);
+
+  font-size: 26px;
+  font-weight: 800;
+
+  line-height: 1;
+}
+
+
+.lms-course-summary-label {
+  display: block;
+
+  color: var(--lms-text-soft);
+
+  font-size: 12px;
+  font-weight: 700;
+
+  line-height: 1.35;
+}
+
+
+.lms-course-summary-number:not(:empty) +
+.lms-course-summary-label {
+  margin-top: 7px;
+}
+
+
+/* ============================================================
+   SHARED PAGE SECTION HEADINGS
+   ============================================================ */
+
+.lms-section-heading {
+  margin-bottom: 18px;
+}
+
+
+.lms-section-title {
+  margin: 0;
+
+  color: var(--lms-text);
+
+  font-size: 24px;
+  font-weight: 750;
+
+  letter-spacing: -0.025em;
+
+  line-height: 1.25;
+}
+
+
+/* ============================================================
+   FEATURED TRAINING
+   ============================================================ */
+
+.lms-featured-course-section {
+  margin-top: 0;
+}
+
+
+.lms-featured-course {
+  position: relative;
+
+  min-height: 338px;
+
+  overflow: hidden;
+
+  display: grid;
+
+  grid-template-columns:
+    minmax(0, 1fr)
+    280px;
+
+  gap: 34px;
+
+  padding: 40px;
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--lms-navy-deep),
+      var(--lms-navy)
+    );
+
+  border-radius: var(--lms-radius-lg);
+}
+
+
+/* ============================================================
+   FEATURED BACKGROUND DETAILS
+   ============================================================ */
+
+.lms-featured-course::before {
+  content: "";
+
+  position: absolute;
+
+  width: 330px;
+  height: 330px;
+
+  top: -160px;
+  right: -75px;
+
+  border-radius: 50%;
+
+  background:
+    rgba(255, 255, 255, 0.08);
+
+  pointer-events: none;
+}
+
+
+.lms-featured-course::after {
+  content: "";
+
+  position: absolute;
+
+  width: 240px;
+  height: 240px;
+
+  right: 92px;
+  bottom: -154px;
+
+  border:
+    40px solid rgba(255, 107, 0, 0.16);
+
+  border-radius: 50%;
+
+  pointer-events: none;
+}
+
+
+/* ============================================================
+   FEATURED CONTENT
+   ============================================================ */
+
+.lms-featured-course-content,
+.lms-featured-course-visual {
+  position: relative;
+
+  z-index: 1;
+}
+
+
+.lms-featured-course-content {
+  display: flex;
+  flex-direction: column;
+
+  align-items: flex-start;
+  justify-content: center;
+}
+
+
+.lms-featured-course-category {
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  min-height: 32px;
+
+  padding:
+    0
+    14px;
+
+  margin-bottom: 16px;
+
+  border-radius: 999px;
+
+  background: var(--lms-orange);
+
+  color: var(--lms-surface);
+
+  font-size: 11px;
+  font-weight: 800;
+
+  letter-spacing: 0.03em;
+
+  text-transform: uppercase;
+}
+
+
+.lms-featured-course h3 {
+  max-width: 720px;
+
+  margin: 0;
+
+  color: var(--lms-surface);
+
+  font-size: clamp(34px, 3vw, 46px);
+  font-weight: 800;
+
+  letter-spacing: -0.035em;
+
+  line-height: 1.1;
+}
+
+
+.lms-featured-course p {
+  max-width: 620px;
+
+  margin:
+    14px
+    0
+    0;
+
+  color: var(--lms-surface);
+
+  font-size: 15px;
+  font-weight: 500;
+
+  line-height: 1.65;
+
+  opacity: 0.76;
+}
+
+
+/* ============================================================
+   FEATURED COURSE META
+   ============================================================ */
+
+.lms-featured-course-meta {
+  display: flex;
+  flex-wrap: wrap;
+
+  align-items: center;
+
+  gap: 22px;
+
+  margin-top: 24px;
+}
+
+
+.lms-course-meta-item {
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 9px;
+
+  color: var(--lms-surface);
+
+  font-size: 13px;
+  font-weight: 650;
+
+  opacity: 0.84;
+}
+
+
+.lms-course-meta-icon {
+  width: 18px;
+  height: 18px;
+
+  flex: 0 0 18px;
+
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+}
+
+
+.lms-course-meta-icon svg {
+  width: 18px;
+  height: 18px;
+
+  fill: none;
+
+  stroke: currentColor;
+
+  stroke-width: 1.8;
+
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+
+/* ============================================================
+   FEATURED ACTION
+   Uses the master LMS button system.
+   ============================================================ */
+
+.lms-featured-course .lms-button {
+  margin-top: 28px;
+
+  min-width: 144px;
+}
+
+
+.lms-featured-course .lms-button:hover {
+  background: var(--lms-orange-dark);
+}
+
+
+/* ============================================================
+   FEATURED VISUAL
+   ============================================================ */
+
+.lms-featured-course-visual {
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+}
+
+
+.lms-featured-course-visual-inner {
+  width: 190px;
+  height: 190px;
+
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 16px;
+
+  background:
+    rgba(255, 255, 255, 0.10);
+
+  border:
+    1px solid rgba(255, 255, 255, 0.20);
+
+  border-radius: var(--lms-radius-lg);
+}
+
+
+.lms-featured-course-icon {
+  width: 62px;
+  height: 62px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  color: var(--lms-surface);
+}
+
+
+.lms-featured-course-icon svg {
+  width: 58px;
+  height: 58px;
+
+  fill: none;
+
+  stroke: currentColor;
+
+  stroke-width: 1.5;
+
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+
+.lms-featured-course-label {
+  color: var(--lms-surface);
+
+  font-size: 11px;
+  font-weight: 800;
+
+  letter-spacing: 0.10em;
+
+  text-transform: uppercase;
+
+  opacity: 0.72;
+}
+
+
+/* ============================================================
+   COURSE LIBRARY SECTION
+   ============================================================ */
+
+.lms-course-library-section {
+  margin-top: 44px;
+
+  padding-bottom: 40px;
+}
+
+
+.lms-course-library-header {
+  display: flex;
+
+  align-items: flex-end;
+  justify-content: space-between;
+
+  gap: 24px;
+
+  margin-bottom: 20px;
+}
+
+
+.lms-course-results-count {
+  flex: 0 0 auto;
+
+  color: var(--lms-text-soft);
+
+  font-size: 13px;
+  font-weight: 700;
+}
+
+
+/* ============================================================
+   FILTER BAR
+   ============================================================ */
+
+.lms-course-filters {
+  display: grid;
+
+  grid-template-columns:
+    minmax(260px, 1fr)
+    minmax(180px, 220px)
+    minmax(150px, 170px);
+
+  gap: 12px;
+
+  margin-bottom: 26px;
+}
+
+
+/* ============================================================
+   COURSE SEARCH
+   ============================================================ */
+
+.lms-course-search {
+  min-height: 46px;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+
+  padding:
+    0
+    15px;
+
+  background: var(--lms-surface);
+
+  border:
+    1px solid var(--lms-border);
+
+  border-radius: 12px;
+
+  transition:
+    border-color 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+
+.lms-course-search:focus-within {
+  border-color: var(--lms-orange);
+
+  box-shadow:
+    0
+    0
+    0
+    4px
+    rgba(255, 107, 0, 0.08);
+}
+
+
+.lms-course-search svg {
+  width: 18px;
+  height: 18px;
+
+  flex: 0 0 18px;
+
+  fill: none;
+
+  stroke: var(--lms-text-soft);
+
+  stroke-width: 1.8;
+
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+
+.lms-course-search input {
+  width: 100%;
+
+  border: 0;
+  outline: 0;
+
+  background: transparent;
+
+  color: var(--lms-text);
+
+  font-size: 13px;
+}
+
+
+.lms-course-search input::placeholder {
+  color: var(--lms-text-light);
+}
+
+
+/* ============================================================
+   COURSE FILTER SELECTS
+   ============================================================ */
+
+.lms-course-select {
+  min-height: 46px;
+
+  width: 100%;
+
+  padding:
+    0
+    38px
+    0
+    14px;
+
+  background: var(--lms-surface);
+
+  border:
+    1px solid var(--lms-border);
+
+  border-radius: 12px;
+
+  color: var(--lms-text);
+
+  font-size: 13px;
+  font-weight: 600;
+
+  outline: none;
+
+  cursor: pointer;
+
+  transition:
+    border-color 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+
+.lms-course-select:focus {
+  border-color: var(--lms-orange);
+
+  box-shadow:
+    0
+    0
+    0
+    4px
+    rgba(255, 107, 0, 0.08);
+}
+
+
+/* ============================================================
+   COURSE GRID
+   ============================================================ */
+
+.lms-course-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(3, minmax(0, 1fr));
+
+  gap: 20px;
+}
+
+
+/* ============================================================
+   COURSE CARD
+   ============================================================ */
+
+.lms-course-card {
+  min-width: 0;
+
+  overflow: hidden;
+
+  display: flex;
+  flex-direction: column;
+
+  background: var(--lms-surface);
+
+  border:
+    1px solid var(--lms-border);
+
+  border-radius: var(--lms-radius-md);
+
+  transition:
+    transform 0.18s ease,
+    border-color 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+
+.lms-course-card:hover {
+  transform:
+    translateY(-3px);
+
+  border-color:
+    var(--lms-navy);
+
+  box-shadow:
+    var(--lms-shadow-soft);
+}
+
+
+/* ============================================================
+   COURSE CARD VISUAL
+   ============================================================ */
+
+.lms-course-card-visual {
+  position: relative;
+
+  height: 148px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  overflow: hidden;
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--lms-navy-deep),
+      var(--lms-navy)
+    );
+}
+
+
+.lms-course-card-visual::before {
+  content: "";
+
+  position: absolute;
+
+  width: 165px;
+  height: 165px;
+
+  top: -74px;
+  right: -58px;
+
+  border-radius: 50%;
+
+  background:
+    rgba(255, 255, 255, 0.10);
+}
+
+
+.lms-course-card-icon {
+  position: relative;
+
+  z-index: 1;
+
+  width: 52px;
+  height: 52px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  color: var(--lms-surface);
+
+  background:
+    rgba(255, 255, 255, 0.12);
+
+  border:
+    1px solid rgba(255, 255, 255, 0.20);
+
+  border-radius: 14px;
+}
+
+
+.lms-course-card-icon svg {
+  width: 27px;
+  height: 27px;
+
+  fill: none;
+
+  stroke: currentColor;
+
+  stroke-width: 1.7;
+
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+
+/* ============================================================
+   COURSE CARD BODY
+   ============================================================ */
+
+.lms-course-card-body {
+  flex: 1;
+
+  padding: 21px;
+
+  display: flex;
+  flex-direction: column;
+}
+
+
+.lms-course-card-category {
+  display: block;
+
+  margin-bottom: 9px;
+
+  color: var(--lms-orange);
+
+  font-size: 10px;
+  font-weight: 800;
+
+  letter-spacing: 0.10em;
+
+  text-transform: uppercase;
+}
+
+
+.lms-course-card h3 {
+  margin: 0;
+
+  color: var(--lms-text);
+
+  font-size: 18px;
+  font-weight: 750;
+
+  letter-spacing: -0.015em;
+
+  line-height: 1.35;
+}
+
+
+.lms-course-card-description {
+  margin:
+    10px
+    0
+    0;
+
+  color: var(--lms-text-soft);
+
+  font-size: 13px;
+
+  line-height: 1.65;
+}
+
+
+/* ============================================================
+   COURSE CARD FOOTER
+   ============================================================ */
+
+.lms-course-card-footer {
+  display: flex;
+
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 14px;
+
+  margin-top: auto;
+
+  padding-top: 20px;
+}
+
+
+.lms-course-card-meta {
+  color: var(--lms-text-soft);
+
+  font-size: 12px;
+  font-weight: 650;
+}
+
+
+.lms-course-card-action {
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 7px;
+
+  color: var(--lms-navy);
+
+  font-size: 13px;
+  font-weight: 750;
+
+  text-decoration: none;
+
+  transition:
+    color 0.18s ease;
+}
+
+
+.lms-course-card-action:hover {
+  color: var(--lms-orange);
+}
+
+
+.lms-course-card-action svg {
+  width: 16px;
+  height: 16px;
+
+  fill: none;
+
+  stroke: currentColor;
+
+  stroke-width: 2;
+
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+
+/* ============================================================
+   LOADING STATE
+   ============================================================ */
+
+.lms-course-loading {
+  min-height: 260px;
+
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 14px;
+
+  color: var(--lms-text-soft);
+}
+
+
+.lms-course-loading p {
+  margin: 0;
+
+  color: var(--lms-text-soft);
+
+  font-size: 14px;
+}
+
+
+.lms-course-spinner {
+  width: 34px;
+  height: 34px;
+
+  border:
+    3px solid var(--lms-border);
+
+  border-top-color:
+    var(--lms-orange);
+
+  border-radius: 50%;
+
+  animation:
+    lms-course-spin
+    0.75s
+    linear
+    infinite;
+}
+
+
+@keyframes lms-course-spin {
+
+  to {
+    transform:
+      rotate(360deg);
+  }
+
+}
+
+
+/* ============================================================
+   EMPTY STATE
+   ============================================================ */
+
+.lms-course-empty {
+  min-height: 300px;
+
+  padding:
+    42px
+    24px;
+
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  text-align: center;
+
+  background: var(--lms-surface);
+
+  border:
+    1px dashed var(--lms-border);
+
+  border-radius: var(--lms-radius-md);
+}
+
+
+.lms-course-empty-icon {
+  width: 58px;
+  height: 58px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  margin-bottom: 18px;
+
+  color: var(--lms-navy);
+
+  background: var(--lms-bg);
+
+  border:
+    1px solid var(--lms-border);
+
+  border-radius: 16px;
+}
+
+
+.lms-course-empty-icon svg {
+  width: 29px;
+  height: 29px;
+
+  fill: none;
+
+  stroke: currentColor;
+
+  stroke-width: 1.7;
+
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+
+.lms-course-empty h3 {
+  margin: 0;
+
+  color: var(--lms-text);
+
+  font-size: 19px;
+  font-weight: 750;
+}
+
+
+.lms-course-empty p {
+  max-width: 420px;
+
+  margin:
+    10px
+    0
+    22px;
+
+  color: var(--lms-text-soft);
+
+  font-size: 14px;
+
+  line-height: 1.65;
+}
+
+
+/* ============================================================
+   TABLET
+   ============================================================ */
+
+@media (max-width: 1180px) {
+
+  .lms-course-grid {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+
+
+  .lms-featured-course {
+    grid-template-columns:
+      minmax(0, 1fr)
+      230px;
+  }
+
+}
+
+
+/* ============================================================
+   SMALL DESKTOP / TABLET
+   ============================================================ */
+
+@media (max-width: 960px) {
+
+  .lms-featured-course {
+    grid-template-columns: 1fr;
+
+    min-height: auto;
+  }
+
+
+  .lms-featured-course-visual {
+    display: none;
+  }
+
+
+  .lms-course-filters {
+    grid-template-columns:
+      1fr
+      1fr;
+  }
+
+
+  .lms-course-search {
+    grid-column:
+      1 / -1;
+  }
+
+}
+
+
+/* ============================================================
+   MOBILE
+   The master shell controls main page spacing.
+   ============================================================ */
+
+@media (max-width: 680px) {
+
+  .lms-course-page-summary {
+    width: 100%;
+
+    min-height: 74px;
+  }
+
+
+  .lms-course-summary-number,
+  .lms-course-summary-label {
+    display: inline;
+  }
+
+
+  .lms-course-summary-label {
+    margin-left: 6px;
+  }
+
+
+  .lms-featured-course {
+    padding:
+      30px
+      26px;
+  }
+
+
+  .lms-featured-course h3 {
+    font-size: 32px;
+  }
+
+
+  .lms-course-library-section {
+    margin-top: 36px;
+  }
+
+
+  .lms-course-library-header {
+    align-items: flex-start;
+
+    flex-direction: column;
+  }
+
+
+  .lms-course-filters {
+    grid-template-columns: 1fr;
+  }
+
+
+  .lms-course-search {
+    grid-column: auto;
+  }
+
+
+  .lms-course-grid {
+    grid-template-columns: 1fr;
+  }
+
+}
+
+
+/* ============================================================
+   SMALL MOBILE
+   ============================================================ */
+
+@media (max-width: 420px) {
+
+  .lms-featured-course {
+    padding:
+      26px
+      20px;
+  }
+
+
+  .lms-featured-course h3 {
+    font-size: 28px;
+  }
+
+
+  .lms-featured-course-meta {
+    gap: 14px;
+  }
+
+
+  .lms-course-card-body {
+    padding: 19px;
+  }
+
+}

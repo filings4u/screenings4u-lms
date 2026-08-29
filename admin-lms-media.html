@@ -1,796 +1,181 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  >
-
-  <title>Media Management | Screenings4u Learning Center</title>
-
-  <link
-    rel="stylesheet"
-    href="assets/css/lms.css"
-  >
-
-  <style>
-    /* ============================================================
-       MEDIA MANAGEMENT PAGE
-       ============================================================ */
-
-    .lms-brand.lms-brand-logo-only {
-      min-height: 88px;
-      justify-content: center;
-      padding: 14px 20px;
-    }
-
-    .lms-brand.lms-brand-logo-only .lms-brand-logo-wrap {
-      width: 148px;
-      height: 54px;
-      flex: 0 0 148px;
-      background: transparent;
-      border-radius: 0;
-    }
-
-    .lms-brand.lms-brand-logo-only .lms-brand-logo {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-    }
-
-    .lms-breadcrumbs {
-      display: flex;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-bottom: 18px;
-      color: var(--s4u-muted);
-      font-size: .82rem;
-      font-weight: 650;
-    }
-
-    .lms-breadcrumbs a {
-      color: var(--s4u-blue);
-      text-decoration: none;
-    }
-
-    .lms-breadcrumbs a:hover { color: var(--s4u-orange); }
-
-    .page-heading {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: 24px;
-      margin-bottom: 22px;
-    }
-
-    .page-eyebrow {
-      margin-bottom: 8px;
-      color: var(--s4u-orange);
-      font-size: .72rem;
-      font-weight: 850;
-      letter-spacing: .08em;
-      text-transform: uppercase;
-    }
-
-    .page-heading h1 {
-      margin: 0;
-      color: var(--s4u-blue);
-      font-size: clamp(1.7rem, 3vw, 2.35rem);
-      font-weight: 850;
-      letter-spacing: -.04em;
-    }
-
-    .page-heading p {
-      max-width: 790px;
-      margin: 9px 0 0;
-      color: var(--s4u-text);
-      font-size: .92rem;
-      line-height: 1.6;
-    }
-
-    .media-stats {
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 16px;
-      margin-bottom: 20px;
-    }
-
-    .media-stat {
-      min-height: 126px;
-      padding: 19px 20px;
-      background: var(--s4u-surface);
-      border: 1px solid var(--s4u-border);
-      border-radius: var(--s4u-radius);
-      box-shadow: var(--s4u-shadow);
-      box-sizing: border-box;
-    }
-
-    .media-stat-label {
-      color: var(--s4u-muted);
-      font-size: .72rem;
-      font-weight: 800;
-      letter-spacing: .04em;
-      text-transform: uppercase;
-    }
-
-    .media-stat-value {
-      margin-top: 14px;
-      color: var(--s4u-blue);
-      font-size: 1.65rem;
-      font-weight: 850;
-      letter-spacing: -.03em;
-    }
-
-    .media-stat-note {
-      margin-top: 7px;
-      color: var(--s4u-text);
-      font-size: .75rem;
-    }
-
-    .management-card { overflow: hidden; }
-
-    .management-card .lms-card-header {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: 18px;
-    }
-
-    .media-filters {
-      padding: 18px 20px;
-      display: grid;
-      grid-template-columns: minmax(250px, 1.7fr) minmax(180px, 1fr) minmax(180px, 1fr) minmax(150px, .8fr) auto;
-      gap: 12px;
-      border-bottom: 1px solid var(--s4u-border);
-      background: #fbfcfe;
-    }
-
-    .filter-field { min-width: 0; }
-
-    .filter-field label {
-      display: block;
-      margin-bottom: 6px;
-      color: var(--s4u-muted);
-      font-size: .68rem;
-      font-weight: 800;
-      letter-spacing: .05em;
-      text-transform: uppercase;
-    }
-
-    .media-filters input,
-    .media-filters select {
-      width: 100%;
-      min-height: 42px;
-      padding: 0 12px;
-      color: var(--s4u-text);
-      background: var(--s4u-surface);
-      border: 1px solid var(--s4u-border);
-      border-radius: 7px;
-      outline: none;
-      font: inherit;
-      font-size: .82rem;
-      box-sizing: border-box;
-    }
-
-    .media-filters input:focus,
-    .media-filters select:focus {
-      border-color: var(--s4u-blue);
-      box-shadow: 0 0 0 3px rgba(50, 90, 163, .10);
-    }
-
-    .filter-action {
-      display: flex;
-      align-items: end;
-    }
-
-    .filter-action .lms-btn { min-height: 42px; }
-
-    .media-table-wrap {
-      width: 100%;
-      overflow-x: auto;
-    }
-
-    .media-table {
-      width: 100%;
-      min-width: 1120px;
-      border-collapse: collapse;
-    }
-
-    .media-table thead th {
-      padding: 13px 18px;
-      color: var(--s4u-blue);
-      background: var(--s4u-soft);
-      border-bottom: 1px solid var(--s4u-border);
-      font-size: .68rem;
-      font-weight: 850;
-      letter-spacing: .05em;
-      text-align: left;
-      text-transform: uppercase;
-    }
-
-    .media-table tbody td {
-      padding: 15px 18px;
-      color: var(--s4u-text);
-      border-bottom: 1px solid var(--s4u-border);
-      font-size: .81rem;
-      vertical-align: middle;
-    }
-
-    .media-table tbody tr:last-child td { border-bottom: 0; }
-    .media-table tbody tr:hover { background: #fbfcfe; }
-
-    .media-name {
-      color: var(--s4u-blue);
-      font-weight: 800;
-      text-decoration: none;
-    }
-
-    .media-name:hover { color: var(--s4u-orange); }
-
-    .media-meta {
-      margin-top: 4px;
-      color: var(--s4u-muted);
-      font-size: .72rem;
-    }
-
-    .usage-tag {
-      display: inline-flex;
-      align-items: center;
-      min-height: 26px;
-      padding: 0 9px;
-      color: var(--s4u-blue);
-      background: #eef3fb;
-      border-radius: 20px;
-      font-size: .7rem;
-      font-weight: 800;
-      white-space: nowrap;
-    }
-
-    .usage-unused {
-      color: var(--s4u-muted);
-      background: var(--s4u-soft);
-    }
-
-    .type-badge {
-      display: inline-flex;
-      align-items: center;
-      min-height: 26px;
-      padding: 0 9px;
-      color: #9a5b00;
-      background: #fff4df;
-      border-radius: 20px;
-      font-size: .7rem;
-      font-weight: 800;
-      white-space: nowrap;
-    }
-
-    .table-actions {
-      display: flex;
-      align-items: center;
-      gap: 7px;
-    }
-
-    .table-action {
-      min-height: 32px;
-      padding: 0 10px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--s4u-blue);
-      background: var(--s4u-surface);
-      border: 1px solid var(--s4u-border);
-      border-radius: 6px;
-      font: inherit;
-      font-size: .73rem;
-      font-weight: 750;
-      text-decoration: none;
-      white-space: nowrap;
-    }
-
-    .table-action:hover {
-      color: var(--s4u-orange);
-      border-color: var(--s4u-orange);
-      text-decoration: none;
-    }
-
-    .empty-media {
-      padding: 34px 24px;
-      color: var(--s4u-muted);
-      text-align: center;
-      font-size: .82rem;
-      line-height: 1.55;
-    }
-
-    .media-data-note {
-      margin-top: 20px;
-      padding: 16px 18px;
-      color: var(--s4u-muted);
-      background: var(--s4u-soft);
-      border: 1px solid var(--s4u-border);
-      border-radius: var(--s4u-radius);
-      font-size: .77rem;
-      line-height: 1.6;
-    }
-
-    .media-data-note strong { color: var(--s4u-blue); }
-
-    @media (max-width: 1180px) {
-      .media-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-      .media-filters { grid-template-columns: 1fr 1fr; }
-    }
-
-    @media (max-width: 760px) {
-      .page-heading { flex-direction: column; }
-      .page-heading .lms-btn { width: 100%; }
-      .management-card .lms-card-header { flex-direction: column; }
-      .management-card .lms-card-header .lms-btn { width: 100%; }
-      .media-stats { grid-template-columns: 1fr; }
-      .media-filters { grid-template-columns: 1fr; }
-      .filter-action .lms-btn { width: 100%; }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Media Library | Screenings4u Learning Center</title>
+<link rel="stylesheet" href="assets/css/admin-lms.css">
+<style>
+.media-summary{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px;margin-bottom:24px}
+.media-stat{background:#fff;border:1px solid var(--admin-border);border-radius:var(--r-md);padding:20px;box-shadow:var(--shadow-soft)}
+.media-stat label{display:block;color:var(--admin-muted);font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.07em}
+.media-stat strong{display:block;margin-top:9px;font-size:29px;letter-spacing:-.04em}
+.media-stat span{display:block;margin-top:6px;color:var(--admin-muted);font-size:11px}
+.media-toolbar{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:18px 20px;border-bottom:1px solid var(--admin-border)}
+.media-toolbar-left{display:flex;align-items:center;gap:11px;flex:1}
+.media-search{position:relative;flex:1;min-width:220px}
+.media-search svg{position:absolute;left:13px;top:50%;transform:translateY(-50%);width:18px;height:18px;fill:none;stroke:var(--admin-muted);stroke-width:1.8}
+.media-search input,.media-filter{height:44px;width:100%;border:1px solid var(--admin-border);border-radius:11px;background:#fff;color:var(--admin-text);font:inherit;font-size:13px;outline:none}
+.media-search input{padding:0 13px 0 42px}.media-filter{padding:0 12px}
+.media-search input:focus,.media-filter:focus{border-color:var(--admin-blue);box-shadow:0 0 0 3px rgba(50,90,163,.09)}
+.media-upload-card{margin-bottom:24px;padding:20px;background:#fff;border:1px solid var(--admin-border);border-radius:var(--r-md);box-shadow:var(--shadow-soft);display:flex;align-items:center;justify-content:space-between;gap:20px}
+.media-upload-copy{display:flex;gap:14px;align-items:center}.media-upload-icon{width:48px;height:48px;border-radius:13px;background:#edf2fb;color:var(--admin-blue);display:grid;place-items:center}.media-upload-icon svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.8}
+.media-upload-copy h2{margin:0;font-size:15px}.media-upload-copy p{margin:5px 0 0;color:var(--admin-muted);font-size:12px;line-height:1.55}
+.media-grid{padding:20px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.media-item{border:1px solid var(--admin-border);border-radius:13px;overflow:hidden;background:#fff;transition:.2s}
+.media-item:hover{transform:translateY(-2px);box-shadow:var(--shadow-soft)}
+.media-thumb{height:145px;background:#172033;position:relative;display:flex;align-items:center;justify-content:center}
+.media-thumb svg{width:38px;height:38px;fill:none;stroke:#fff;stroke-width:1.7}
+.media-duration{position:absolute;right:10px;bottom:10px;background:rgba(0,0,0,.72);color:#fff;border-radius:6px;padding:4px 7px;font-size:10px;font-weight:800}
+.media-status{position:absolute;left:10px;top:10px;border-radius:999px;padding:5px 8px;font-size:9px;font-weight:900;background:#eef8f1;color:#2f7d4b}
+.media-status.processing{background:#fff0e5;color:var(--admin-orange)}
+.media-item-body{padding:15px}.media-item-title{font-size:13px;font-weight:800;line-height:1.4}.media-item-meta{margin-top:5px;color:var(--admin-muted);font-size:10px;line-height:1.5}
+.media-usage{margin-top:11px;padding-top:11px;border-top:1px solid var(--admin-border);font-size:10px;color:var(--admin-muted)}.media-usage strong{color:var(--admin-blue)}
+.media-item-actions{display:flex;gap:8px;margin-top:13px}.media-action{flex:1;height:36px;border:1px solid var(--admin-border);border-radius:9px;background:#fff;color:var(--admin-blue);font-size:11px;font-weight:800}.media-action:hover{border-color:var(--admin-blue);background:#f7f9fd}
+.media-action.danger{color:#b34b4b}.media-empty{display:none;padding:55px 20px;text-align:center;color:var(--admin-muted);font-size:13px}
+.media-footer{padding:16px 20px;border-top:1px solid var(--admin-border);display:flex;justify-content:space-between;align-items:center;color:var(--admin-muted);font-size:12px}
+.media-pagination{display:flex;gap:7px}.media-page{width:34px;height:34px;border:1px solid var(--admin-border);border-radius:9px;background:#fff;font-weight:700}.media-page.active{background:var(--admin-blue);color:#fff;border-color:var(--admin-blue)}
+.media-modal{position:fixed;inset:0;background:rgba(23,32,51,.48);display:none;align-items:center;justify-content:center;padding:20px;z-index:9999}.media-modal.open{display:flex}
+.media-modal-card{width:min(560px,100%);background:#fff;border-radius:16px;border:1px solid var(--admin-border);box-shadow:0 20px 60px rgba(23,32,51,.25);padding:24px}.media-modal-card h2{margin:0;font-size:18px}.media-modal-card p{color:var(--admin-muted);font-size:12px;line-height:1.6}.media-modal-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:20px}
+.media-file-input{width:100%;padding:12px;border:1px dashed #b9c6da;border-radius:11px;margin-top:12px}
+@media(max-width:1100px){.media-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.media-summary{grid-template-columns:repeat(2,1fr)}}@media(max-width:720px){.media-summary,.media-grid{grid-template-columns:1fr}.media-toolbar,.media-upload-card{align-items:stretch;flex-direction:column}.media-toolbar-left{flex-direction:column;align-items:stretch}.media-search{min-width:0}.media-footer{align-items:flex-start;flex-direction:column;gap:12px}}
+</style>
 </head>
-
 <body>
-
-  <div class="lms-app">
-
-    <div
-      class="lms-sidebar-overlay"
-      data-lms-sidebar-overlay
-    ></div>
-
-
-    <!-- ======================================================
-         LMS SIDEBAR
-         ====================================================== -->
-
-    <aside class="lms-sidebar">
-
-      <a
-        href="admin-lms-courses.html"
-        class="lms-brand lms-brand-logo-only"
-        aria-label="Screenings4u Learning Center"
-      >
-        <div class="lms-brand-logo-wrap">
-          <img
-            src="images/logo.png"
-            alt="Screenings4u"
-            class="lms-brand-logo"
-          >
-        </div>
-      </a>
-
-
-      <div class="lms-sidebar-scroll">
-
-        <div class="lms-nav-group">
-
-          <div class="lms-nav-label">HOME</div>
-
-          <ul class="lms-nav-list">
-            <li class="lms-nav-item">
-              <a
-                href="admin-lms-courses.html"
-                class="lms-nav-link"
-              >
-                <span class="lms-nav-icon">
-                  <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
-                    <path d="M3 12l9-9 9 9"></path>
-                    <path d="M5 10v10h14V10"></path>
-                  </svg>
-                </span>
-                Courses
-              </a>
-            </li>
-          </ul>
-
-        </div>
-
-
-        <div class="lms-nav-group">
-
-          <div class="lms-nav-label">MANAGE</div>
-
-          <ul class="lms-nav-list">
-
-            <li class="lms-nav-item">
-              <a href="admin-lms-enrollments.html" class="lms-nav-link">
-                <span class="lms-nav-icon">
-                  <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
-                    <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
-                    <circle cx="9" cy="7" r="4"></circle>
-                    <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
-                    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-                  </svg>
-                </span>
-                Enrollments
-              </a>
-            </li>
-
-            <li class="lms-nav-item">
-              <a href="admin-lms-students.html" class="lms-nav-link">
-                <span class="lms-nav-icon">
-                  <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
-                    <circle cx="12" cy="7" r="4"></circle>
-                    <path d="M5.5 21a6.5 6.5 0 0 1 13 0"></path>
-                  </svg>
-                </span>
-                Students
-              </a>
-            </li>
-
-            <li class="lms-nav-item">
-              <a href="admin-lms-progress.html" class="lms-nav-link">
-                <span class="lms-nav-icon">
-                  <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
-                    <path d="M3 3v18h18"></path>
-                    <path d="M7 16l4-5 3 3 5-7"></path>
-                  </svg>
-                </span>
-                Progress
-              </a>
-            </li>
-
-          </ul>
-
-        </div>
-
-
-        <div class="lms-nav-group">
-
-          <div class="lms-nav-label">CONTENT</div>
-
-          <ul class="lms-nav-list">
-
-            <li class="lms-nav-item">
-              <a href="admin-lms-lessons.html" class="lms-nav-link">
-                <span class="lms-nav-icon">
-                  <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
-                    <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
-                    <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
-                  </svg>
-                </span>
-                Lessons
-              </a>
-            </li>
-
-            <li class="lms-nav-item">
-              <a href="admin-lms-quizzes.html" class="lms-nav-link">
-                <span class="lms-nav-icon">
-                  <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
-                    <circle cx="12" cy="12" r="9"></circle>
-                    <path d="M9.5 9a2.5 2.5 0 1 1 4.3 1.7c-.8.8-1.8 1.3-1.8 2.8"></path>
-                    <path d="M12 17h.01"></path>
-                  </svg>
-                </span>
-                Quizzes
-              </a>
-            </li>
-
-            <li class="lms-nav-item">
-              <a href="admin-lms-assessments.html" class="lms-nav-link">
-                <span class="lms-nav-icon">
-                  <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
-                    <path d="M9 11l3 3L22 4"></path>
-                    <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
-                  </svg>
-                </span>
-                Assessments
-              </a>
-            </li>
-
-            <li class="lms-nav-item">
-              <a href="admin-lms-media.html" class="lms-nav-link active">
-                <span class="lms-nav-icon">
-                  <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
-                    <rect x="3" y="3" width="18" height="18" rx="2"></rect>
-                    <circle cx="8.5" cy="8.5" r="1.5"></circle>
-                    <path d="M21 15l-5-5L5 21"></path>
-                  </svg>
-                </span>
-                Media
-              </a>
-            </li>
-
-          </ul>
-
-        </div>
-
-
-        <div class="lms-nav-group">
-
-          <div class="lms-nav-label">RECORDS</div>
-
-          <ul class="lms-nav-list">
-            <li class="lms-nav-item">
-              <a href="admin-lms-certificates.html" class="lms-nav-link">
-                <span class="lms-nav-icon">
-                  <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
-                    <circle cx="12" cy="8" r="5"></circle>
-                    <path d="M8.5 12.5L7 22l5-3 5 3-1.5-9.5"></path>
-                  </svg>
-                </span>
-                Certificates
-              </a>
-            </li>
-          </ul>
-
-        </div>
-
-      </div>
-
-
-      <div class="lms-sidebar-footer">
-        <a
-          href="admin-dashboard.html"
-          class="lms-back-admin"
-        >
-          <span class="lms-nav-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
-              <path d="M19 12H5"></path>
-              <path d="M12 19l-7-7 7-7"></path>
-            </svg>
-          </span>
-          Back to Main Administration
-        </a>
-      </div>
-
-    </aside>
-
-
-    <!-- ======================================================
-         MAIN APPLICATION
-         ====================================================== -->
-
-    <main class="lms-main">
-
-      <header class="lms-topbar">
-
-        <div class="lms-topbar-left">
-
-          <button
-            type="button"
-            class="lms-icon-button lms-mobile-menu-button"
-            data-lms-menu-toggle
-            aria-label="Open navigation"
-          >
-            <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
-              <path d="M4 6h16"></path>
-              <path d="M4 12h16"></path>
-              <path d="M4 18h16"></path>
-            </svg>
-          </button>
-
-          <div class="lms-page-context">
-            <span class="lms-page-context-label">
-              Screenings4u Learning Center
-            </span>
-            <span class="lms-page-context-title">
-              Media Management
-            </span>
-          </div>
-
-        </div>
-
-
-        <div class="lms-topbar-right">
-
-          <button
-            type="button"
-            class="lms-icon-button"
-            aria-label="Notifications"
-          >
-            <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
-              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 7-3 9h18c0-2-3-2-3-9"></path>
-              <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
-            </svg>
-          </button>
-
-          <button
-            type="button"
-            class="lms-user-button"
-            data-lms-user-button
-          >
-            <span class="lms-user-avatar">AD</span>
-
-            <span class="lms-user-copy">
-              <span class="lms-user-name">Administrator</span>
-              <span class="lms-user-role">LMS Administration</span>
-            </span>
-          </button>
-
-        </div>
-
-      </header>
-
-
-      <!-- ====================================================
-           MEDIA MANAGEMENT
-           ==================================================== -->
-
-      <section class="lms-page">
-        <div class="lms-page-inner">
-
-          <nav class="lms-breadcrumbs" aria-label="Breadcrumb">
-            <a href="admin-lms-courses.html">Courses</a>
-            <span>/</span>
-            <span>Media Management</span>
-          </nav>
-
-          <div class="page-heading">
-            <div>
-              <div class="page-eyebrow">Learning Assets</div>
-              <h1>Media Management</h1>
-              <p>
-                Organize learning media used across courses, lesson content,
-                and certificates. Review where files are connected and
-                identify media that may no longer be in use.
-              </p>
-            </div>
-
-            <button type="button" class="lms-btn lms-btn-primary" id="uploadMediaButton">
-              + Upload Media
-            </button>
-          </div>
-
-          <section class="media-stats" aria-label="Media summary">
-            <article class="media-stat">
-              <div class="media-stat-label">Total Media</div>
-              <div class="media-stat-value" id="statTotalMedia">—</div>
-              <div class="media-stat-note">All LMS media records</div>
-            </article>
-
-            <article class="media-stat">
-              <div class="media-stat-label">Course Media</div>
-              <div class="media-stat-value" id="statCourseMedia">—</div>
-              <div class="media-stat-note">Used by course records</div>
-            </article>
-
-            <article class="media-stat">
-              <div class="media-stat-label">Lesson Media</div>
-              <div class="media-stat-value" id="statLessonMedia">—</div>
-              <div class="media-stat-note">Connected to content blocks</div>
-            </article>
-
-            <article class="media-stat">
-              <div class="media-stat-label">Unused Media</div>
-              <div class="media-stat-value" id="statUnusedMedia">—</div>
-              <div class="media-stat-note">Assets with no detected LMS use</div>
-            </article>
-          </section>
-
-          <section class="lms-card management-card">
-
-            <div class="lms-card-header">
-              <div>
-                <h2 class="lms-card-title">Media Library</h2>
-                <p class="lms-card-description">
-                  Search uploaded LMS assets and review how they are used
-                  across courses, lesson content blocks, and certificates.
-                </p>
-              </div>
-
-              <a href="admin-lms-courses.html" class="lms-btn lms-btn-secondary">
-                Manage Courses
-              </a>
-            </div>
-
-            <div class="media-filters">
-
-              <div class="filter-field">
-                <label for="mediaSearch">Search Media</label>
-                <input type="search" id="mediaSearch"
-                  placeholder="Search file name or media record...">
-              </div>
-
-              <div class="filter-field">
-                <label for="mediaTypeFilter">Media Type</label>
-                <select id="mediaTypeFilter">
-                  <option value="">All Media Types</option>
-                  <option value="image">Images</option>
-                  <option value="video">Videos</option>
-                  <option value="document">Documents</option>
-                  <option value="other">Other</option>
-                </select>
-              </div>
-
-              <div class="filter-field">
-                <label for="mediaUsageFilter">Used By</label>
-                <select id="mediaUsageFilter">
-                  <option value="">All Usage</option>
-                  <option value="course">Courses</option>
-                  <option value="content_block">Content Blocks</option>
-                  <option value="certificate">Certificates</option>
-                  <option value="unused">Unused</option>
-                </select>
-              </div>
-
-              <div class="filter-field">
-                <label for="mediaSortFilter">Sort</label>
-                <select id="mediaSortFilter">
-                  <option value="newest">Newest First</option>
-                  <option value="oldest">Oldest First</option>
-                  <option value="name">File Name</option>
-                </select>
-              </div>
-
-              <div class="filter-action">
-                <button type="button" class="lms-btn lms-btn-secondary"
-                  id="clearMediaFilters">Clear</button>
-              </div>
-
-            </div>
-
-            <div class="media-table-wrap">
-              <table class="media-table">
-                <thead>
-                  <tr>
-                    <th>Media</th>
-                    <th>Type</th>
-                    <th>Uploaded</th>
-                    <th>Used By</th>
-                    <th>Usage</th>
-                    <th>Media ID</th>
-                    <th>Actions</th>
-                  </tr>
-                </thead>
-
-                <tbody id="mediaTableBody">
-                  <!-- Dynamic data:
-                       lms_media
-                       lms_courses.thumbnail_media_id
-                       lms_content_blocks.media_id
-                       lms_certificates.certificate_media_id
-                  -->
-                  <tr>
-                    <td colspan="7">
-                      <div class="empty-media">
-                        Media records will appear here when the LMS database
-                        is connected. Usage detection can compare media IDs
-                        against courses, content blocks, and certificates.
-                      </div>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-
-          </section>
-
-          <div class="media-data-note">
-            <strong>Media relationships:</strong>
-            <strong>lms_courses</strong> can use
-            <strong>thumbnail_media_id</strong>,
-            <strong>lms_content_blocks</strong> can use
-            <strong>media_id</strong>, and
-            <strong>lms_content_blocks</strong> uses <strong>media_id</strong>. Cloudflare videos are represented in <strong>lms_media</strong> through <strong>provider</strong> and <strong>provider_video_id</strong>.
-          </div>
-
-        </div>
-      </section>
-    </main>
-
-  </div>
-
-
-  <!-- ==========================================================
-       SHARED LMS JAVASCRIPT
-       ========================================================== -->
-
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="assets/js/supabase-config.js"></script>
-<script src="assets/js/config.js"></script>
-<script src="assets/js/auth.js"></script>
-<script src="assets/js/permissions.js"></script>
-<script src="assets/js/ui.js"></script>
-<script src="assets/js/lms.js"></script>
-
-
-  <script src="assets/js/lms-phase3.js"></script>
-
+<div class="admin-lms-app">
+<div id="admin-lms-sidebar-target"></div>
+<main class="admin-lms-main">
+<header class="admin-lms-topbar">
+<div class="admin-lms-topbar-left">
+<button type="button" class="admin-lms-menu-button" data-admin-menu-toggle aria-label="Toggle administration navigation"><svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+<div class="admin-lms-page-context"><small>Screenings4u Learning Center</small><strong>Media Library</strong></div>
+</div>
+<div class="admin-lms-topbar-right">
+<a href="admin-lms-notifications.html" class="admin-lms-icon-button" aria-label="Notifications"><svg viewBox="0 0 24 24"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/><path d="M10 21h4"/></svg></a>
+<div class="admin-lms-user"><span class="admin-lms-avatar">AD</span><span class="admin-lms-user-copy"><span class="admin-lms-user-name">Administrator</span><span class="admin-lms-user-role">Learning Center Admin</span></span></div>
+</div>
+</header>
+
+<section class="admin-lms-content">
+<div class="admin-page-heading">
+<div><span class="admin-page-eyebrow">Course Content</span><h1>Media Library</h1><p>Manage the videos and media assets used throughout your learning courses.</p></div>
+<button type="button" class="admin-primary-btn" id="openUpload">Add Media</button>
+</div>
+
+<section class="media-summary">
+<article class="media-stat"><label>Total Media</label><strong id="totalMedia">8</strong><span>Assets in your LMS library</span></article>
+<article class="media-stat"><label>Videos</label><strong id="videoCount">6</strong><span>Connected to Cloudflare Stream</span></article>
+<article class="media-stat"><label>Ready</label><strong id="readyCount">7</strong><span>Available for lessons</span></article>
+<article class="media-stat"><label>Processing</label><strong id="processingCount">1</strong><span>Awaiting media processing</span></article>
+</section>
+
+<section class="media-upload-card">
+<div class="media-upload-copy">
+<div class="media-upload-icon"><svg viewBox="0 0 24 24"><path d="M12 16V3"/><path d="m7 8 5-5 5 5"/><path d="M5 13v6h14v-6"/></svg></div>
+<div><h2>Cloudflare Stream Media</h2><p>Video delivery is managed through Cloudflare Stream. The upload connection and video UID mapping will be wired during integration.</p></div>
+</div>
+<button type="button" class="admin-secondary-btn" id="openCloudflareInfo">Cloudflare Setup</button>
+</section>
+
+<section class="admin-card">
+<div class="media-toolbar">
+<div class="media-toolbar-left">
+<div class="media-search"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6"/><path d="m16 16 4 4"/></svg><input type="search" id="mediaSearch" placeholder="Search media..."></div>
+<select class="media-filter" id="mediaType"><option value="all">All Media</option><option value="video">Videos</option><option value="document">Documents</option></select>
+<select class="media-filter" id="mediaStatus"><option value="all">All Statuses</option><option value="ready">Ready</option><option value="processing">Processing</option></select>
+</div>
+<button type="button" class="admin-secondary-btn" id="clearMediaFilters">Clear Filters</button>
+</div>
+
+<div class="media-grid" id="mediaGrid">
+<article class="media-item" data-title="Welcome and Course Overview" data-type="video" data-status="ready">
+<div class="media-thumb"><span class="media-status">READY</span><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m10 8 6 4-6 4z"/></svg><span class="media-duration">08:12</span></div>
+<div class="media-item-body"><div class="media-item-title">Welcome and Course Overview</div><div class="media-item-meta">Video · Cloudflare Stream</div><div class="media-usage">Used in <strong>1 lesson</strong></div><div class="media-item-actions"><button class="media-action preview">Preview</button><button class="media-action">Manage</button></div></div>
+</article>
+<article class="media-item" data-title="DOT Collection Regulations" data-type="video" data-status="ready">
+<div class="media-thumb"><span class="media-status">READY</span><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m10 8 6 4-6 4z"/></svg><span class="media-duration">24:36</span></div>
+<div class="media-item-body"><div class="media-item-title">DOT Collection Regulations</div><div class="media-item-meta">Video · Cloudflare Stream</div><div class="media-usage">Used in <strong>1 lesson</strong></div><div class="media-item-actions"><button class="media-action preview">Preview</button><button class="media-action">Manage</button></div></div>
+</article>
+<article class="media-item" data-title="Collection Process Demonstration" data-type="video" data-status="ready">
+<div class="media-thumb"><span class="media-status">READY</span><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m10 8 6 4-6 4z"/></svg><span class="media-duration">18:04</span></div>
+<div class="media-item-body"><div class="media-item-title">Collection Process Demonstration</div><div class="media-item-meta">Video · Cloudflare Stream</div><div class="media-usage">Used in <strong>2 lessons</strong></div><div class="media-item-actions"><button class="media-action preview">Preview</button><button class="media-action">Manage</button></div></div>
+</article>
+<article class="media-item" data-title="Hair Collection Procedures" data-type="video" data-status="processing">
+<div class="media-thumb"><span class="media-status processing">PROCESSING</span><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m10 8 6 4-6 4z"/></svg><span class="media-duration">16:00</span></div>
+<div class="media-item-body"><div class="media-item-title">Hair Collection Procedures</div><div class="media-item-meta">Video · Cloudflare Stream</div><div class="media-usage">Not yet assigned to a lesson</div><div class="media-item-actions"><button class="media-action preview">Preview</button><button class="media-action">Manage</button></div></div>
+</article>
+<article class="media-item" data-title="Collection Procedure Reference Guide" data-type="document" data-status="ready">
+<div class="media-thumb"><span class="media-status">READY</span><div style="font-size:28px;font-weight:900;color:#fff">PDF</div></div>
+<div class="media-item-body"><div class="media-item-title">Collection Procedure Reference Guide</div><div class="media-item-meta">Document · Supporting Resource</div><div class="media-usage">Used in <strong>3 lessons</strong></div><div class="media-item-actions"><button class="media-action preview">Preview</button><button class="media-action">Manage</button></div></div>
+</article>
+<article class="media-item" data-title="Chain of Custody Checklist" data-type="document" data-status="ready">
+<div class="media-thumb"><span class="media-status">READY</span><div style="font-size:28px;font-weight:900;color:#fff">DOC</div></div>
+<div class="media-item-body"><div class="media-item-title">Chain of Custody Checklist</div><div class="media-item-meta">Document · Supporting Resource</div><div class="media-usage">Used in <strong>1 lesson</strong></div><div class="media-item-actions"><button class="media-action preview">Preview</button><button class="media-action">Manage</button></div></div>
+</article>
+</div>
+<div class="media-empty" id="mediaEmpty">No media matches your current search or filters.</div>
+<div class="media-footer"><span id="mediaResultCount">Showing 6 media items</span><div class="media-pagination"><button class="media-page">‹</button><button class="media-page active">1</button><button class="media-page">›</button></div></div>
+</section>
+</section>
+</main>
+</div>
+
+<div class="media-modal" id="uploadModal">
+<div class="media-modal-card">
+<h2>Add Media</h2>
+<p>Choose a media file or enter the Cloudflare Stream video information. The live upload workflow will be connected when we wire the Cloudflare functions.</p>
+<input type="file" class="media-file-input" id="mediaFile">
+<div class="media-modal-actions"><button type="button" class="admin-secondary-btn close-modal">Cancel</button><button type="button" class="admin-primary-btn" id="saveMedia">Add Media</button></div>
+</div>
+</div>
+
+<div class="media-modal" id="previewModal">
+<div class="media-modal-card">
+<h2 id="previewTitle">Media Preview</h2>
+<div class="media-thumb" style="height:260px;margin-top:16px;border-radius:12px"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m10 8 6 4-6 4z"/></svg></div>
+<p>Live Cloudflare Stream playback will appear here when the media library is wired to your production video data.</p>
+<div class="media-modal-actions"><button type="button" class="admin-primary-btn close-modal">Close</button></div>
+</div>
+</div>
+
+<div class="media-modal" id="cloudflareModal">
+<div class="media-modal-card">
+<h2>Cloudflare Stream Integration</h2>
+<p>This page is structured around Cloudflare Stream as the video source. During wiring, uploaded media will receive and store the Cloudflare video UID, status, duration, thumbnail, and playback information.</p>
+<div class="media-modal-actions"><button type="button" class="admin-primary-btn close-modal">Understood</button></div>
+</div>
+</div>
+
+<script src="assets/js/admin-lms-sidebar.js"></script>
+<script>
+(function(){
+"use strict";
+var items=[].slice.call(document.querySelectorAll(".media-item"));
+var search=document.getElementById("mediaSearch"),type=document.getElementById("mediaType"),status=document.getElementById("mediaStatus");
+var empty=document.getElementById("mediaEmpty"),count=document.getElementById("mediaResultCount");
+
+function filter(){
+var term=search.value.toLowerCase().trim(),visible=0;
+items.forEach(function(item){
+var show=(!term||item.dataset.title.toLowerCase().indexOf(term)>-1)&&(type.value==="all"||item.dataset.type===type.value)&&(status.value==="all"||item.dataset.status===status.value);
+item.style.display=show?"":"none";if(show)visible++;
+});
+empty.style.display=visible?"none":"block";
+count.textContent="Showing "+visible+" of "+items.length+" media items";
+}
+[search,type,status].forEach(function(el){el.addEventListener("input",filter);el.addEventListener("change",filter);});
+document.getElementById("clearMediaFilters").onclick=function(){search.value="";type.value="all";status.value="all";filter();};
+
+function openModal(id){document.getElementById(id).classList.add("open");}
+function closeAll(){document.querySelectorAll(".media-modal").forEach(function(m){m.classList.remove("open");});}
+document.getElementById("openUpload").onclick=function(){openModal("uploadModal");};
+document.getElementById("openCloudflareInfo").onclick=function(){openModal("cloudflareModal");};
+document.querySelectorAll(".close-modal").forEach(function(btn){btn.onclick=closeAll;});
+document.querySelectorAll(".media-modal").forEach(function(m){m.addEventListener("click",function(e){if(e.target===m)closeAll();});});
+document.querySelectorAll(".preview").forEach(function(btn){btn.onclick=function(){var title=btn.closest(".media-item").dataset.title;document.getElementById("previewTitle").textContent=title;openModal("previewModal");};});
+document.getElementById("saveMedia").onclick=function(){var file=document.getElementById("mediaFile").files[0];if(!file)return;closeAll();alert(file.name+" has been added to the media upload queue. Cloudflare processing will be connected during integration.");};
+filter();
+})();
+</script>
 </body>
 </html>

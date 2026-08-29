@@ -353,7 +353,7 @@
           const { data } = await client.auth.getSession();
           if (!data?.session?.user) return;
           const access = await verifyPortalAccess(client, data.session.user.id);
-          if (access.allowed) window.location.replace("customer-dashboard.html");
+          if (access.allowed) window.location.replace("lms-dashboard.html");
           else await client.auth.signOut();
         } catch (error) {
           console.error("Portal session check failed:", error);

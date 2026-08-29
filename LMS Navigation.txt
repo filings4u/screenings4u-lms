@@ -1,0 +1,391 @@
+The Screenings4u Portal Ecosystem
+1. Customer Portal
+
+For individual customers who purchase services directly.
+
+Core navigation
+
+Dashboard
+
+Overview of account activity
+
+Orders
+
+Active orders
+Order history
+Order status
+Order details
+
+Results
+
+Available test results
+Result status
+Download authorized documents
+
+Donor Pass
+
+View and download donor passes
+
+Documents
+
+Customer documents
+Forms
+Downloadable files
+
+Billing
+
+Receipts
+Invoices
+Payment history
+
+Catalog
+
+Purchase more services
+Drug tests
+Alcohol testing
+Background checks
+Training courses
+Other Screenings4u services
+
+Account
+
+Personal information
+Contact information
+Password/security
+2. Employer Portal
+
+The employer is essentially a limited administrator for their own organization.
+
+They should only control their company and employees—not the overall Screenings4u platform.
+
+Core navigation
+Dashboard
+
+Company overview:
+
+Active employees
+Pending orders
+Active programs
+Training activity
+Outstanding invoices
+Recent activity
+Employees
+
+This becomes the employer's internal employee CRM.
+
+They can:
+
+Add employees
+Edit employees
+Remove/deactivate employees
+View employee history
+Assign services
+Assign training
+View training status
+Manage employee information
+
+This will use your existing employer-related database architecture where possible.
+
+Programs
+
+For example:
+
+DOT Random Programs
+Drug-free workplace programs
+Other employer programs
+
+The employer can view program status and related activity.
+
+Orders
+
+They can:
+
+View orders
+Track order status
+View order details
+Reorder services where appropriate
+Training Management
+
+This will be a major section.
+
+The employer can:
+
+View purchased training
+View available course seats
+View training credits
+Purchase additional courses
+Purchase training credits
+Assign courses to employees
+Monitor progress
+View completion status
+View certificates where authorized
+
+This portal manages the business side of training.
+
+The actual learning remains inside:
+
+training.screenings4u.com
+
+Proposals
+
+They can:
+
+View proposals
+Review proposal details
+Accept proposals
+Track proposal status
+
+You already have proposal tables in the database, so we should connect this to the existing system rather than create something new.
+
+Invoices
+
+They can:
+
+View invoices
+Download invoices
+View payment status
+Pay outstanding invoices
+Service Catalog
+
+Employers can purchase:
+
+Drug testing
+Background checks
+Training
+Other employer services
+Request Testing
+
+I recommend making this a dedicated action area rather than burying it in the catalog.
+
+Request Post-Accident Testing
+Employer
+    ↓
+Request Post-Accident Test
+    ↓
+Enter employee information
+    ↓
+Enter incident/testing details
+    ↓
+Submit request
+    ↓
+Screenings4u processes request
+Request Onsite Workplace Testing
+Employer
+    ↓
+Request Onsite Testing
+    ↓
+Select location
+    ↓
+Enter employee count
+    ↓
+Select requested services
+    ↓
+Preferred date
+    ↓
+Submit request
+Company Profile
+
+They can manage:
+
+Business information
+Contact information
+Authorized contacts
+Billing information
+Company preferences
+3. Employee Portal
+
+This needs to remain intentionally simple.
+
+You made an important distinction:
+
+Screenings4u is not the employee's administrator. Their employer controls their access.
+
+Exactly.
+
+So the Employee Portal should not become a full customer portal.
+
+Navigation
+My Training
+
+The employee sees:
+
+Assigned courses
+Courses in progress
+Completed courses
+
+Clicking a course sends them into the training platform.
+
+Available Courses
+
+This should only show courses their employer has made available to them.
+
+Not necessarily the entire public course catalog.
+
+For example:
+
+Assigned Courses
+───────────────
+✓ DOT Collector Training
+  In Progress
+
+Available From Employer
+───────────────────────
+DOT Collector + Hair
+
+Whether employees can independently purchase additional courses is a business decision for later, but based on your current structure, I would not put purchasing authority here by default.
+
+Contact Employer
+
+Simple area containing:
+
+Employer name
+Primary contact
+Email
+Phone number
+
+Potentially:
+
+Need help with your training?
+
+Contact your employer administrator.
+
+This reinforces that access is controlled by the employer.
+
+4. Admin Portal
+
+I agree completely.
+
+We do not build another admin platform.
+
+We already have:
+
+Admin shell
+Admin dashboard
+LMS administration
+
+We expand the existing admin platform.
+
+The central admin controls:
+
+CUSTOMERS
+EMPLOYERS
+EMPLOYEES
+ORDERS
+PAYMENTS
+RESULTS
+DOCUMENTS
+DONOR PASSES
+PROGRAMS
+PROPOSALS
+INVOICES
+SERVICES
+TRAINING
+NOTIFICATIONS
+SYSTEM SETTINGS
+
+And the LMS administration remains part of that central system.
+
+The portal hierarchy
+portal.screenings4u.com
+│
+├── CUSTOMER PORTAL
+│   ├── Dashboard
+│   ├── Orders
+│   ├── Results
+│   ├── Donor Pass
+│   ├── Documents
+│   ├── Billing
+│   ├── Catalog
+│   └── Account
+│
+├── EMPLOYER PORTAL
+│   ├── Dashboard
+│   ├── Employees
+│   ├── Programs
+│   ├── Orders
+│   ├── Training Management
+│   ├── Proposals
+│   ├── Invoices
+│   ├── Catalog
+│   ├── Testing Requests
+│   └── Company Profile
+│
+├── EMPLOYEE PORTAL
+│   ├── Dashboard
+│   ├── My Training
+│   ├── Available Courses
+│   └── Contact Employer
+│
+└── ADMIN PORTAL
+    └── Existing Central Administration
+
+
+
+The build order
+
+I recommend we proceed exactly as you said.
+
+Phase 1 — Customer Portal
+Step 1: Customer Portal Shell
+
+We build:
+
+Branded sidebar
+Top header
+Notification bell
+User/account menu
+Mobile navigation
+Active navigation
+Collapsible sidebar
+Shared authentication placeholder
+Shared page layout
+
+The shell will become the foundation for every customer page.
+
+Step 2: Customer Dashboard
+
+customer-dashboard.html
+
+The dashboard becomes the customer's landing page after login.
+
+Step 3: Customer Orders
+
+customer-orders.html
+
+Then:
+
+customer-order-details.html
+
+Step 4: Customer Results
+
+customer-results.html
+
+Step 5: Donor Pass
+
+customer-donor-pass.html
+
+Step 6: Documents
+
+customer-documents.html
+
+Step 7: Billing
+
+customer-billing.html
+
+Receipts, invoices, and payment history.
+
+Step 8: Service Catalog
+
+customer-catalog.html
+
+This is where the customer can purchase additional:
+
+Tests
+Services
+Training
+
+This should ultimately connect back into the same checkout architecture used by the main website.
+
+Step 9: Account
+
+customer-account.html

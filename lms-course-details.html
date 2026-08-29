@@ -1,137 +1,2097 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-<head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Course Details | Screenings4u Learning Center</title>
-<style>
-:root{--s4u-blue:#325aa3;--s4u-blue-dark:#24467f;--s4u-orange:#ff6b00;--s4u-bg:#f5f7fa;--s4u-surface:#fff;--s4u-border:#dfe5ec;--s4u-text:#172033;--s4u-muted:#687386;--s4u-soft:#f0f3f7;--s4u-sidebar:252px;--s4u-topbar:70px;--shadow:0 4px 18px rgba(24,36,60,.06)}
-*{box-sizing:border-box}body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--s4u-bg);color:var(--s4u-text)}a{text-decoration:none}
-.sidebar{position:fixed;inset:0 auto 0 0;width:var(--s4u-sidebar);height:100vh;background:#fff;border-right:1px solid var(--s4u-border);display:flex;flex-direction:column;z-index:20}.brand{height:var(--s4u-topbar);display:grid;place-items:center;border-bottom:1px solid var(--s4u-border)}.brand img{max-width:180px;max-height:44px}.nav{padding:18px 14px;flex:1}.label{font-size:10px;letter-spacing:1px;color:var(--s4u-muted);font-weight:800;margin:10px}.link{display:flex;align-items:center;gap:12px;padding:12px 11px;margin:3px 0;border-radius:7px;color:var(--s4u-text);font-size:13px;font-weight:bold}.link:hover,.link.active{background:#edf2fb;color:var(--s4u-blue)}.ico{width:20px;text-align:center}.profile{margin:14px;padding:12px;background:var(--s4u-soft);border-radius:8px;color:var(--s4u-blue);font-size:12px;font-weight:bold}
-.main{margin-left:var(--s4u-sidebar);min-height:100vh}.topbar{height:var(--s4u-topbar);background:#fff;border-bottom:1px solid var(--s4u-border);display:flex;align-items:center;padding:0 28px}.top-left{display:flex;align-items:center}.menu{width:38px;height:38px;border:1px solid var(--s4u-border);border-radius:7px;background:#fff;color:var(--s4u-blue);margin-right:13px;cursor:pointer}.topbar h1{margin:0;color:var(--s4u-blue);font-size:16px}.topbar p{margin:4px 0 0;color:var(--s4u-muted);font-size:11px}.content{max-width:1400px;margin:auto;padding:28px}
-.crumbs{font-size:11px;color:var(--s4u-muted);margin-bottom:17px}.crumbs a{color:var(--s4u-blue);font-weight:bold}
-.hero{background:#fff;border:1px solid var(--s4u-border);border-radius:10px;overflow:hidden;box-shadow:var(--shadow);display:grid;grid-template-columns:38% 62%}.course-image{min-height:310px;background:linear-gradient(135deg,#e3ebf8,#c5d5ec);padding:25px;display:flex;flex-direction:column;justify-content:space-between}.badge{align-self:flex-start;background:#fff;color:var(--s4u-blue);font-size:10px;font-weight:800;padding:7px 10px;border-radius:99px}.course-mark{width:72px;height:72px;border-radius:50%;background:rgba(255,255,255,.8);border:2px solid var(--s4u-orange);color:var(--s4u-orange);display:grid;place-items:center;font-size:28px;font-weight:bold}.hero-body{padding:32px}.eyebrow{font-size:10px;letter-spacing:1px;font-weight:800;color:var(--s4u-orange)}.hero-body h2{margin:9px 0;color:var(--s4u-blue);font-size:29px;line-height:1.25}.hero-body p{color:var(--s4u-muted);font-size:13px;line-height:1.65;max-width:700px}.quick-meta{display:flex;flex-wrap:wrap;gap:9px;margin:18px 0}.meta{padding:7px 10px;border:1px solid var(--s4u-border);background:var(--s4u-soft);border-radius:99px;font-size:10px;color:var(--s4u-muted);font-weight:bold}.purchase{display:flex;align-items:center;gap:15px;margin-top:22px}.price{font-size:25px;font-weight:800;color:var(--s4u-blue)}.btn{border:1px solid var(--s4u-border);background:#fff;color:var(--s4u-blue);border-radius:7px;padding:12px 17px;font-size:12px;font-weight:bold;cursor:pointer}.btn.primary{background:var(--s4u-orange);border-color:var(--s4u-orange);color:#fff}
-.layout{display:grid;grid-template-columns:minmax(0,1fr) 310px;gap:20px;margin-top:20px}.card{background:#fff;border:1px solid var(--s4u-border);border-radius:8px;box-shadow:var(--shadow)}.section{padding:23px;border-bottom:1px solid var(--s4u-border)}.section:last-child{border-bottom:0}.section h3,.side-card h3{margin:0 0 12px;color:var(--s4u-blue);font-size:16px}.section p,.section li{font-size:12px;color:var(--s4u-muted);line-height:1.7}.section ul{padding-left:18px;margin-bottom:0}.curriculum-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}.curriculum-head span{font-size:11px;color:var(--s4u-muted)}.module{border:1px solid var(--s4u-border);border-radius:7px;margin-top:9px;overflow:hidden}.module-title{padding:13px 15px;background:#f8fafc;display:flex;justify-content:space-between;align-items:center;font-size:12px;font-weight:bold;color:var(--s4u-text);cursor:pointer}.module-title span{color:var(--s4u-blue);font-size:10px}.lessons{display:none;padding:4px 15px 10px}.module.open .lessons{display:block}.lesson{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--s4u-border);font-size:11px;color:var(--s4u-muted)}.lesson:last-child{border:0}.side-card{padding:20px;margin-bottom:16px}.side-row{padding:10px 0;border-bottom:1px solid var(--s4u-border);display:flex;justify-content:space-between;font-size:11px}.side-row:last-child{border:0}.side-row span{color:var(--s4u-muted)}.side-row b{color:var(--s4u-text);text-align:right}.notice{background:#fff8f2;border-left:4px solid var(--s4u-orange);padding:14px;font-size:11px;line-height:1.6;color:#6d513d}
-.modal-bg{display:none;position:fixed;inset:0;background:rgba(23,32,51,.52);z-index:100;align-items:center;justify-content:center;padding:20px}.modal{width:min(520px,100%);background:#fff;border-radius:10px;box-shadow:0 20px 60px rgba(0,0,0,.2);padding:25px}.modal h3{color:var(--s4u-blue);margin:0 0 10px}.modal p{font-size:12px;color:var(--s4u-muted);line-height:1.6}.modal-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:20px}.collapsed .sidebar{width:72px}.collapsed .main{margin-left:72px}.collapsed .link span,.collapsed .label,.collapsed .profile{display:none}.collapsed .link{justify-content:center}
-@media(max-width:950px){.hero{grid-template-columns:1fr}.course-image{min-height:180px}.layout{grid-template-columns:1fr}}@media(max-width:700px){.sidebar{transform:translateX(-100%);transition:.2s}.mobile .sidebar{transform:none}.main,.collapsed .main{margin-left:0}.content{padding:16px}.topbar{padding:0 16px}.hero-body{padding:23px}.hero-body h2{font-size:23px}.purchase{flex-wrap:wrap}}
-</style></head>
-<body><div id="shell">
-<aside class="sidebar"><div class="brand"><img src="images/logo.png" alt="Screenings4u"></div><nav class="nav"><div class="label">LEARNING</div><a class="link" href="lms-dashboard.html"><b class="ico">D</b><span>Dashboard</span></a><a class="link" href="lms-my-courses.html"><b class="ico">M</b><span>My Courses</span></a><a class="link active" href="lms-courses.html"><b class="ico">B</b><span>Browse Courses</span></a><div class="label">MY RECORDS</div><a class="link" href="lms-progress.html"><b class="ico">P</b><span>Learning Progress</span></a><a class="link" href="lms-certificates.html"><b class="ico">C</b><span>Certificates</span></a></nav><div class="profile">JL &nbsp; <span id="learnerName">Learner Account</span></div></aside>
-<main class="main"><header class="topbar"><div class="top-left"><button class="menu" id="menu">☰</button><div><h1>Course Details</h1><p>Screenings4u Learning Center</p></div></div></header>
-<div class="content"><div class="crumbs"><a href="lms-courses.html">Browse Courses</a> › <span id="breadcrumbCourse">Loading course...</span></div>
-<section class="hero"><div class="course-image"><span class="badge" id="courseBadge">COURSE</span><div class="course-mark">S4U</div></div><div class="hero-body"><div class="eyebrow">ONLINE TRAINING COURSE</div><h2 id="courseTitle">Loading course...</h2><p id="courseDescription">Loading course information...</p><div class="quick-meta"><span class="meta">Self-Paced</span><span class="meta">4 Sections</span><span class="meta">12 Lessons</span><span class="meta">Quiz Included</span><span class="meta">Certificate Eligible</span></div><div class="purchase"><span class="price" id="coursePrice">—</span><button class="btn primary" id="purchaseBtn" type="button" disabled>Loading...</button><button class="btn" onclick="location.href='lms-courses.html'">← Back to Catalog</button></div></div></section>
-<div class="layout"><div class="card">
-<section class="section"><h3>About This Course</h3><p id="aboutCourse">Loading course information...</p></section>
-<section class="section"><h3>What You'll Learn</h3><ul id="learningObjectives"><li>Loading learning objectives...</li></ul></section>
-<section class="section"><div class="curriculum-head"><h3>Course Curriculum</h3><span>4 Sections · 12 Lessons</span></div>
-<div class="module"><div class="module-title">Section 1: Course Introduction <span>3 Lessons ▾</span></div><div class="lessons"><div class="lesson"><span>1. Welcome to the Course</span><span>Preview</span></div><div class="lesson"><span>2. Learning Objectives</span><span>Preview</span></div><div class="lesson"><span>3. Knowledge Check</span><span>Quiz</span></div></div></div>
-<div class="module"><div class="module-title">Section 2: Core Training Concepts <span>3 Lessons ▾</span></div><div class="lessons"><div class="lesson"><span>4. Training Fundamentals</span><span>Locked</span></div><div class="lesson"><span>5. Workplace Responsibilities</span><span>Locked</span></div><div class="lesson"><span>6. Section Knowledge Check</span><span>Quiz</span></div></div></div>
-<div class="module"><div class="module-title">Section 3: Compliance Awareness <span>3 Lessons ▾</span></div><div class="lessons"><div class="lesson"><span>7. Compliance Framework</span><span>Locked</span></div><div class="lesson"><span>8. Program Responsibilities</span><span>Locked</span></div><div class="lesson"><span>9. Course Review</span><span>Locked</span></div></div></div>
-<div class="module"><div class="module-title">Section 4: Completion <span>3 Lessons ▾</span></div><div class="lessons"><div class="lesson"><span>10. Final Review</span><span>Locked</span></div><div class="lesson"><span>11. Final Assessment</span><span>Assessment</span></div><div class="lesson"><span>12. Completion</span><span>Certificate</span></div></div></div>
-</section></div>
-<aside><div class="card side-card"><h3>Course Details</h3><div class="side-row"><span>Format</span><b>Online / Self-Paced</b></div><div class="side-row"><span>Sections</span><b>4</b></div><div class="side-row"><span>Lessons</span><b>12</b></div><div class="side-row"><span>Completion</span><b>Course Requirements</b></div><div class="side-row"><span>Certificate</span><b>When Eligible</b></div></div><div class="notice"><b>Purchase access:</b> The purchase action should connect to your existing Screenings4u website checkout system. After successful payment, the system should create or activate the learner's enrollment.</div></aside></div>
-</div></main></div>
-<div class="modal-bg" id="modal"><div class="modal"><h3>Purchase Course</h3><p>This course will connect to your existing Screenings4u checkout flow. Once payment is confirmed, the LMS should grant access by creating or activating an enrollment record.</p><div class="modal-actions"><button class="btn" id="cancel">Cancel</button><button class="btn primary" id="checkout">Continue to Checkout</button></div></div></div>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="assets/js/supabase-config.js"></script>
-<script src="assets/js/config.js"></script>
-<script src="assets/js/lms.js"></script>
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>
+    Course Details | Screenings4u Learning Center
+  </title>
+
+  <!-- ========================================================
+       SHARED LMS MASTER FILE
+       ======================================================== -->
+
+  <link
+    rel="stylesheet"
+    href="assets/css/lms.css"
+  >
+
+
+  <style>
+
+    /* ==========================================================
+       COURSE DETAILS PAGE ONLY
+       The shared LMS shell remains controlled by assets/css/lms.css
+       ========================================================== */
+
+    .lms-course-details-page {
+      width: 100%;
+    }
+
+    /* ==========================================================
+       BREADCRUMB
+       ========================================================== */
+
+    .course-details-breadcrumb {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 22px;
+      color: #687386;
+      font-size: 13px;
+      font-weight: 650;
+    }
+
+    .course-details-breadcrumb a {
+      color: #325aa3;
+      text-decoration: none;
+    }
+
+    .course-details-breadcrumb a:hover {
+      color: #24467f;
+    }
+
+    .course-details-breadcrumb svg {
+      width: 15px;
+      height: 15px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    /* ==========================================================
+       COURSE HERO
+       ========================================================== */
+
+    .course-details-hero {
+      position: relative;
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: minmax(0, 1.45fr) minmax(260px, .55fr);
+      min-height: 355px;
+      border-radius: 16px;
+      background: #24467f;
+    }
+
+    .course-details-hero::before {
+      content: "";
+      position: absolute;
+      width: 400px;
+      height: 400px;
+      top: -250px;
+      right: -110px;
+      border-radius: 50%;
+      background: #325aa3;
+    }
+
+    .course-details-hero::after {
+      content: "";
+      position: absolute;
+      width: 255px;
+      height: 255px;
+      right: 105px;
+      bottom: -190px;
+      border: 34px solid #ff6b00;
+      border-radius: 50%;
+      opacity: .18;
+    }
+
+    .course-details-hero-content,
+    .course-details-hero-art {
+      position: relative;
+      z-index: 1;
+    }
+
+    .course-details-hero-content {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 46px 48px;
+    }
+
+    .course-details-category {
+      margin-bottom: 14px;
+      color: #ff6b00;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+
+    .course-details-title {
+      max-width: 760px;
+      margin: 0;
+      color: #ffffff;
+      font-size: clamp(32px, 3.6vw, 48px);
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -.03em;
+    }
+
+    .course-details-description {
+      max-width: 720px;
+      margin: 17px 0 0;
+      color: rgba(255,255,255,.82);
+      font-size: 15px;
+      line-height: 1.7;
+    }
+
+    .course-details-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 13px 22px;
+      margin-top: 24px;
+    }
+
+    .course-details-meta-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: rgba(255,255,255,.9);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .course-details-meta-item svg {
+      width: 17px;
+      height: 17px;
+      flex: 0 0 auto;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .course-details-hero-art {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 35px;
+    }
+
+    .course-details-icon-card {
+      width: 195px;
+      height: 195px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      border: 1px solid rgba(255,255,255,.28);
+      border-radius: 26px;
+      background: rgba(255,255,255,.10);
+      color: #ffffff;
+    }
+
+    .course-details-icon-card svg {
+      width: 60px;
+      height: 60px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .course-details-icon-card span {
+      color: rgba(255,255,255,.72);
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+    }
+
+    /* ==========================================================
+       PAGE BODY
+       ========================================================== */
+
+    .course-details-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 330px;
+      gap: 28px;
+      margin-top: 30px;
+      align-items: start;
+    }
+
+    .course-details-main {
+      min-width: 0;
+    }
+
+    .course-details-side {
+      min-width: 0;
+      position: sticky;
+      top: 22px;
+    }
+
+    .course-details-section {
+      margin-bottom: 30px;
+    }
+
+    .course-details-kicker {
+      margin: 0 0 7px;
+      color: #ff6b00;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+
+    .course-details-section-title {
+      margin: 0;
+      color: #172033;
+      font-size: 23px;
+      font-weight: 800;
+      line-height: 1.25;
+    }
+
+    .course-details-section-text {
+      margin: 13px 0 0;
+      color: #687386;
+      font-size: 14px;
+      line-height: 1.75;
+    }
+
+    /* ==========================================================
+       LEARNING OUTCOMES
+       ========================================================== */
+
+    .course-details-outcomes {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .course-details-outcome {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      min-height: 76px;
+      padding: 17px;
+      border: 1px solid #dfe5ec;
+      border-radius: 11px;
+      background: #ffffff;
+    }
+
+    .course-details-outcome-icon {
+      width: 30px;
+      height: 30px;
+      flex: 0 0 auto;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 8px;
+      background: #f5f7fa;
+      color: #325aa3;
+    }
+
+    .course-details-outcome-icon svg {
+      width: 17px;
+      height: 17px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .course-details-outcome span:last-child {
+      color: #172033;
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 1.55;
+    }
+
+    /* ==========================================================
+       CURRICULUM
+       ========================================================== */
+
+    .course-curriculum {
+      margin-top: 18px;
+      border: 1px solid #dfe5ec;
+      border-radius: 13px;
+      overflow: hidden;
+      background: #ffffff;
+    }
+
+    .course-curriculum-module {
+      border-bottom: 1px solid #dfe5ec;
+    }
+
+    .course-curriculum-module:last-child {
+      border-bottom: 0;
+    }
+
+    .course-curriculum-module-button {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 18px 20px;
+      border: 0;
+      background: #ffffff;
+      color: #172033;
+      text-align: left;
+      cursor: pointer;
+      font: inherit;
+    }
+
+    .course-curriculum-module-button:hover {
+      background: #f5f7fa;
+    }
+
+    .course-curriculum-module-left {
+      min-width: 0;
+      display: flex;
+      align-items: center;
+      gap: 13px;
+    }
+
+    .course-curriculum-module-number {
+      width: 31px;
+      height: 31px;
+      flex: 0 0 auto;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      background: #325aa3;
+      color: #ffffff;
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    .course-curriculum-module-name {
+      color: #172033;
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    .course-curriculum-module-meta {
+      margin-top: 3px;
+      color: #687386;
+      font-size: 11px;
+      font-weight: 650;
+    }
+
+    .course-curriculum-chevron {
+      width: 18px;
+      height: 18px;
+      flex: 0 0 auto;
+      fill: none;
+      stroke: #687386;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      transition: transform .2s ease;
+    }
+
+    .course-curriculum-module.is-open
+    .course-curriculum-chevron {
+      transform: rotate(180deg);
+    }
+
+    .course-curriculum-lessons {
+      display: none;
+      padding: 0 20px 18px 64px;
+    }
+
+    .course-curriculum-module.is-open
+    .course-curriculum-lessons {
+      display: block;
+    }
+
+    .course-curriculum-lesson {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 11px 0;
+      border-top: 1px solid #dfe5ec;
+    }
+
+    .course-curriculum-lesson:first-child {
+      border-top: 0;
+    }
+
+    .course-curriculum-lesson-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+    }
+
+    .course-curriculum-lesson-icon {
+      width: 24px;
+      height: 24px;
+      flex: 0 0 auto;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 6px;
+      background: #f5f7fa;
+      color: #687386;
+    }
+
+    .course-curriculum-lesson-icon svg {
+      width: 14px;
+      height: 14px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .course-curriculum-lesson-name {
+      min-width: 0;
+      color: #172033;
+      font-size: 12px;
+      font-weight: 700;
+      line-height: 1.45;
+    }
+
+    .course-curriculum-lesson-time {
+      flex: 0 0 auto;
+      color: #687386;
+      font-size: 11px;
+      font-weight: 650;
+    }
+
+    /* ==========================================================
+       COURSE INFORMATION
+       ========================================================== */
+
+    .course-details-info-card {
+      padding: 22px;
+      border: 1px solid #dfe5ec;
+      border-radius: 13px;
+      background: #ffffff;
+    }
+
+    .course-details-info-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0;
+      margin-top: 17px;
+      border-top: 1px solid #dfe5ec;
+      border-left: 1px solid #dfe5ec;
+    }
+
+    .course-details-info-item {
+      padding: 15px;
+      border-right: 1px solid #dfe5ec;
+      border-bottom: 1px solid #dfe5ec;
+      background: #ffffff;
+    }
+
+    .course-details-info-label {
+      display: block;
+      margin-bottom: 5px;
+      color: #687386;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .course-details-info-value {
+      color: #172033;
+      font-size: 13px;
+      font-weight: 750;
+    }
+
+    /* ==========================================================
+       ENROLLMENT CARD
+       ========================================================== */
+
+    .course-enrollment-card {
+      overflow: hidden;
+      border: 1px solid #dfe5ec;
+      border-radius: 14px;
+      background: #ffffff;
+    }
+
+    .course-enrollment-card-top {
+      padding: 23px;
+      border-bottom: 1px solid #dfe5ec;
+    }
+
+    .course-enrollment-label {
+      margin: 0 0 7px;
+      color: #ff6b00;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+
+    .course-enrollment-title {
+      margin: 0;
+      color: #172033;
+      font-size: 20px;
+      font-weight: 800;
+      line-height: 1.3;
+    }
+
+    .course-enrollment-text {
+      margin: 10px 0 0;
+      color: #687386;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .course-enrollment-details {
+      padding: 4px 23px;
+    }
+
+    .course-enrollment-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 15px 0;
+      border-bottom: 1px solid #dfe5ec;
+    }
+
+    .course-enrollment-row:last-child {
+      border-bottom: 0;
+    }
+
+    .course-enrollment-row-label {
+      color: #687386;
+      font-size: 12px;
+      font-weight: 650;
+    }
+
+    .course-enrollment-row-value {
+      color: #172033;
+      font-size: 12px;
+      font-weight: 800;
+      text-align: right;
+    }
+
+    .course-enrollment-actions {
+      padding: 20px 23px 23px;
+    }
+
+    .course-primary-action {
+      width: 100%;
+      min-height: 48px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      border: 0;
+      border-radius: 9px;
+      background: #ff6b00;
+      color: #ffffff;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .course-primary-action:hover {
+      background: #e66000;
+    }
+
+    .course-primary-action svg {
+      width: 18px;
+      height: 18px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .course-enrollment-note {
+      margin: 12px 0 0;
+      color: #687386;
+      font-size: 11px;
+      line-height: 1.55;
+      text-align: center;
+    }
+
+    /* ==========================================================
+       SIDEBAR SUPPORT CARD
+       ========================================================== */
+
+    .course-support-card {
+      margin-top: 18px;
+      padding: 20px;
+      border: 1px solid #dfe5ec;
+      border-radius: 13px;
+      background: #ffffff;
+    }
+
+    .course-support-title {
+      margin: 0;
+      color: #172033;
+      font-size: 15px;
+      font-weight: 800;
+    }
+
+    .course-support-text {
+      margin: 8px 0 14px;
+      color: #687386;
+      font-size: 12px;
+      line-height: 1.6;
+    }
+
+    .course-support-link {
+      color: #325aa3;
+      font-size: 12px;
+      font-weight: 800;
+      text-decoration: none;
+    }
+
+    .course-support-link:hover {
+      color: #24467f;
+    }
+
+
+    /* ==========================================================
+       PURCHASE / PREVIEW STATE
+       ========================================================== */
+
+    .course-preview-notice {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 16px;
+      padding: 13px 15px;
+      border: 1px solid #dfe5ec;
+      border-left: 4px solid #ff6b00;
+      border-radius: 10px;
+      background: #ffffff;
+      color: #687386;
+      font-size: 12px;
+      line-height: 1.6;
+    }
+
+    .course-preview-notice-icon {
+      flex: 0 0 auto;
+      padding: 4px 7px;
+      border-radius: 999px;
+      background: #f5f7fa;
+      color: #325aa3;
+      font-size: 9px;
+      font-weight: 800;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    /* ==========================================================
+       RESPONSIVE
+       ========================================================== */
+
+    @media (max-width: 1080px) {
+
+      .course-details-layout {
+        grid-template-columns: minmax(0, 1fr) 300px;
+      }
+
+    }
+
+    @media (max-width: 920px) {
+
+      .course-details-hero {
+        grid-template-columns: 1fr;
+      }
+
+      .course-details-hero-art {
+        display: none;
+      }
+
+      .course-details-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .course-details-side {
+        position: static;
+      }
+
+    }
+
+    @media (max-width: 640px) {
+
+      .course-details-hero-content {
+        padding: 32px 24px;
+      }
+
+      .course-details-outcomes {
+        grid-template-columns: 1fr;
+      }
+
+      .course-details-info-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .course-curriculum-lessons {
+        padding-left: 20px;
+      }
+
+      .course-curriculum-lesson {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+    }
+
+  </style>
+
+</head>
+
+
+<body>
+
+
+  <!-- ========================================================
+       APPLICATION
+       SAME LMS SHELL AS THE OTHER LMS PAGES
+       ======================================================== -->
+
+  <div class="lms-app">
+
+
+    <!-- Dynamic LMS Sidebar -->
+
+    <div id="lms-sidebar-target"></div>
+
+
+    <!-- ======================================================
+         MAIN
+         ====================================================== -->
+
+    <main class="lms-main">
+
+
+      <!-- ====================================================
+           TOP BAR
+           ==================================================== -->
+
+      <header class="lms-topbar">
+
+
+        <div class="lms-topbar-left">
+
+          <button
+            type="button"
+            class="lms-menu-button"
+            data-lms-menu-toggle
+            aria-label="Toggle navigation"
+          >
+
+            <svg viewBox="0 0 24 24">
+              <path d="M4 7h16"></path>
+              <path d="M4 12h16"></path>
+              <path d="M4 17h16"></path>
+            </svg>
+
+          </button>
+
+        </div>
+
+
+        <div class="lms-search-wrap">
+
+          <label class="lms-search">
+
+            <span class="lms-search-icon">
+
+              <svg viewBox="0 0 24 24">
+                <circle cx="11" cy="11" r="6"></circle>
+                <path d="m20 20-4-4"></path>
+              </svg>
+
+            </span>
+
+
+            <input
+              type="search"
+              placeholder="Search courses, lessons, and resources..."
+              data-lms-search
+            >
+
+
+            <span class="lms-search-shortcut">
+              Ctrl K
+            </span>
+
+          </label>
+
+        </div>
+
+
+        <div class="lms-topbar-right">
+
+
+          <a
+            href="lms-notifications.html"
+            class="lms-icon-button"
+            aria-label="Notifications"
+          >
+
+            <svg viewBox="0 0 24 24">
+              <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"></path>
+              <path d="M10 21h4"></path>
+            </svg>
+
+            <span class="lms-notification-dot"></span>
+
+          </a>
+
+
+          <div class="lms-user-wrap">
+
+
+            <button
+              type="button"
+              class="lms-user-button"
+              data-lms-user-button
+              aria-expanded="false"
+            >
+
+              <span
+                class="lms-user-avatar"
+                data-lms-learner-initials
+              >
+                JD
+              </span>
+
+
+              <span
+                class="lms-user-name"
+                data-lms-learner-name
+              >
+                John Doe
+              </span>
+
+
+              <span class="lms-user-chevron">
+
+                <svg viewBox="0 0 24 24">
+                  <path d="m7 10 5 5 5-5"></path>
+                </svg>
+
+              </span>
+
+            </button>
+
+
+            <div
+              class="lms-user-menu"
+              data-lms-user-menu
+            >
+
+              <div class="lms-user-menu-header">
+
+                <span
+                  class="lms-user-menu-name"
+                  data-lms-user-menu-name
+                >
+                  John Doe
+                </span>
+
+                <span
+                  class="lms-user-menu-email"
+                  data-lms-user-menu-email
+                >
+                  learner@screenings4u.com
+                </span>
+
+              </div>
+
+
+              <a
+                href="lms-account.html"
+                class="lms-user-menu-link"
+              >
+                My Account
+              </a>
+
+
+              <a
+                href="lms-certificates.html"
+                class="lms-user-menu-link"
+              >
+                My Certificates
+              </a>
+
+
+              <button
+                type="button"
+                class="lms-user-menu-link"
+                data-lms-sign-out
+              >
+                Sign Out
+              </button>
+
+            </div>
+
+
+          </div>
+
+        </div>
+
+
+      </header>
+
+
+      <!-- ====================================================
+           COURSE DETAILS CONTENT
+           ==================================================== -->
+
+      <div class="lms-content lms-course-details-page">
+
+
+        <!-- BREADCRUMB -->
+
+        <nav
+          class="course-details-breadcrumb"
+          aria-label="Breadcrumb"
+        >
+
+          <a href="lms-dashboard.html">
+            Learning Center
+          </a>
+
+          <svg viewBox="0 0 24 24">
+            <path d="m9 18 6-6-6-6"></path>
+          </svg>
+
+          <a href="lms-courses.html">
+            Course Library
+          </a>
+
+          <svg viewBox="0 0 24 24">
+            <path d="m9 18 6-6-6-6"></path>
+          </svg>
+
+          <span>
+            DOT Supervisor Training
+          </span>
+
+        </nav>
+
+
+        <!-- COURSE HERO -->
+
+        <section class="course-details-hero">
+
+
+          <div class="course-details-hero-content">
+
+
+            <div class="course-details-category">
+              DOT Compliance
+            </div>
+
+
+            <h1 class="course-details-title">
+              DOT Supervisor Training:
+              Reasonable Suspicion
+            </h1>
+
+
+            <p class="course-details-description">
+              Learn how to recognize the signs and symptoms of drug
+              and alcohol misuse and understand your responsibilities
+              when reasonable suspicion testing may be required.
+            </p>
+
+
+            <div class="course-details-meta">
+
+
+              <span class="course-details-meta-item">
+
+                <svg viewBox="0 0 24 24">
+                  <circle cx="12" cy="12" r="8"></circle>
+                  <path d="M12 8v4l3 2"></path>
+                </svg>
+
+                Self-paced
+
+              </span>
+
+
+              <span class="course-details-meta-item">
+
+                <svg viewBox="0 0 24 24">
+                  <path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v16H6.5A2.5 2.5 0 0 0 4 21.5z"></path>
+                  <path d="M4 5.5v16"></path>
+                </svg>
+
+                12 lessons
+
+              </span>
+
+
+              <span class="course-details-meta-item">
+
+                <svg viewBox="0 0 24 24">
+                  <path d="M4 19V9"></path>
+                  <path d="M10 19V5"></path>
+                  <path d="M16 19v-7"></path>
+                  <path d="M22 19V3"></path>
+                </svg>
+
+                Beginner friendly
+
+              </span>
+
+
+            </div>
+
+
+          </div>
+
+
+          <div class="course-details-hero-art">
+
+
+            <div class="course-details-icon-card">
+
+              <svg viewBox="0 0 24 24">
+                <path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v16H6.5A2.5 2.5 0 0 0 4 21.5z"></path>
+                <path d="M4 5.5v16"></path>
+                <path d="M8 8h8"></path>
+                <path d="M8 12h6"></path>
+              </svg>
+
+              <span>
+                Screenings4u
+              </span>
+
+            </div>
+
+
+          </div>
+
+
+        </section>
+
+
+        <!-- PAGE BODY -->
+
+        <div class="course-details-layout">
+
+
+          <!-- ==================================================
+               MAIN CONTENT
+               ================================================== -->
+
+          <div class="course-details-main">
+
+
+            <!-- ABOUT -->
+
+            <section class="course-details-section">
+
+
+              <div class="course-details-kicker">
+                About This Course
+              </div>
+
+
+              <h2 class="course-details-section-title">
+                Build Confidence in Your Responsibilities
+              </h2>
+
+
+              <p class="course-details-section-text">
+                This training is designed to help supervisors understand
+                the responsibilities associated with reasonable suspicion
+                testing. The course focuses on recognizing observable
+                indicators, documenting concerns, and following appropriate
+                workplace procedures.
+              </p>
+
+
+              <p class="course-details-section-text">
+                Complete the course at your own pace and return whenever
+                you need to continue your training.
+              </p>
+
+
+            </section>
+
+
+            <!-- WHAT YOU WILL LEARN -->
+
+            <section class="course-details-section">
+
+
+              <div class="course-details-kicker">
+                Learning Outcomes
+              </div>
+
+
+              <h2 class="course-details-section-title">
+                What You Will Learn
+              </h2>
+
+
+              <div class="course-details-outcomes">
+
+
+                <div class="course-details-outcome">
+
+                  <span class="course-details-outcome-icon">
+
+                    <svg viewBox="0 0 24 24">
+                      <path d="m5 12 4 4L19 6"></path>
+                    </svg>
+
+                  </span>
+
+                  <span>
+                    Recognize observable signs and indicators that
+                    may require further action.
+                  </span>
+
+                </div>
+
+
+                <div class="course-details-outcome">
+
+                  <span class="course-details-outcome-icon">
+
+                    <svg viewBox="0 0 24 24">
+                      <path d="m5 12 4 4L19 6"></path>
+                    </svg>
+
+                  </span>
+
+                  <span>
+                    Understand the supervisor's role in the reasonable
+                    suspicion process.
+                  </span>
+
+                </div>
+
+
+                <div class="course-details-outcome">
+
+                  <span class="course-details-outcome-icon">
+
+                    <svg viewBox="0 0 24 24">
+                      <path d="m5 12 4 4L19 6"></path>
+                    </svg>
+
+                  </span>
+
+                  <span>
+                    Identify appropriate documentation and communication
+                    practices.
+                  </span>
+
+                </div>
+
+
+                <div class="course-details-outcome">
+
+                  <span class="course-details-outcome-icon">
+
+                    <svg viewBox="0 0 24 24">
+                      <path d="m5 12 4 4L19 6"></path>
+                    </svg>
+
+                  </span>
+
+                  <span>
+                    Apply course concepts to common workplace
+                    situations.
+                  </span>
+
+                </div>
+
+
+              </div>
+
+
+            </section>
+
+
+            <!-- CURRICULUM -->
+
+            <section class="course-details-section">
+
+
+              <div class="course-details-kicker">
+                Course Content
+              </div>
+
+
+              <h2 class="course-details-section-title">
+                Course Curriculum
+              </h2>
+
+
+              <p class="course-details-section-text">
+                The course includes 12 lessons organized into focused
+                learning modules.
+              </p>
+
+
+              <div class="course-preview-notice">
+                <span class="course-preview-notice-icon">Preview</span>
+                <span>Review the full course outline below. Lesson content, quizzes, and the final assessment unlock after purchase.</span>
+              </div>
+
+              <div class="course-curriculum">
+
+
+                <!-- MODULE 1 -->
+
+                <div class="course-curriculum-module is-open">
+
+                  <button
+                    type="button"
+                    class="course-curriculum-module-button"
+                    aria-expanded="true"
+                  >
+
+                    <span class="course-curriculum-module-left">
+
+                      <span class="course-curriculum-module-number">
+                        01
+                      </span>
+
+                      <span>
+
+                        <span class="course-curriculum-module-name">
+                          Introduction to Reasonable Suspicion
+                        </span>
+
+                        <span class="course-curriculum-module-meta">
+                          3 lessons · Approximately 25 minutes
+                        </span>
+
+                      </span>
+
+                    </span>
+
+
+                    <svg
+                      class="course-curriculum-chevron"
+                      viewBox="0 0 24 24"
+                    >
+                      <path d="m6 9 6 6 6-6"></path>
+                    </svg>
+
+                  </button>
+
+
+                  <div class="course-curriculum-lessons">
+
+
+                    <div class="course-curriculum-lesson">
+
+                      <div class="course-curriculum-lesson-left">
+
+                        <span class="course-curriculum-lesson-icon">
+
+                          <svg viewBox="0 0 24 24">
+                            <path d="M8 5v14l11-7z"></path>
+                          </svg>
+
+                        </span>
+
+                        <span class="course-curriculum-lesson-name">
+                          Welcome and Course Overview
+                        </span>
+
+                      </div>
+
+                      <span class="course-curriculum-lesson-time">
+                        5 min
+                      </span>
+
+                    </div>
+
+
+                    <div class="course-curriculum-lesson">
+
+                      <div class="course-curriculum-lesson-left">
+
+                        <span class="course-curriculum-lesson-icon">
+
+                          <svg viewBox="0 0 24 24">
+                            <path d="M8 5v14l11-7z"></path>
+                          </svg>
+
+                        </span>
+
+                        <span class="course-curriculum-lesson-name">
+                          Understanding Reasonable Suspicion
+                        </span>
+
+                      </div>
+
+                      <span class="course-curriculum-lesson-time">
+                        10 min
+                      </span>
+
+                    </div>
+
+
+                    <div class="course-curriculum-lesson">
+
+                      <div class="course-curriculum-lesson-left">
+
+                        <span class="course-curriculum-lesson-icon">
+
+                          <svg viewBox="0 0 24 24">
+                            <path d="M8 5v14l11-7z"></path>
+                          </svg>
+
+                        </span>
+
+                        <span class="course-curriculum-lesson-name">
+                          Your Role as a Supervisor
+                        </span>
+
+                      </div>
+
+                      <span class="course-curriculum-lesson-time">
+                        10 min
+                      </span>
+
+                    </div>
+
+
+                  </div>
+
+                </div>
+
+
+                <!-- MODULE 2 -->
+
+                <div class="course-curriculum-module">
+
+                  <button
+                    type="button"
+                    class="course-curriculum-module-button"
+                    aria-expanded="false"
+                  >
+
+                    <span class="course-curriculum-module-left">
+
+                      <span class="course-curriculum-module-number">
+                        02
+                      </span>
+
+                      <span>
+
+                        <span class="course-curriculum-module-name">
+                          Recognizing Observable Indicators
+                        </span>
+
+                        <span class="course-curriculum-module-meta">
+                          4 lessons · Approximately 35 minutes
+                        </span>
+
+                      </span>
+
+                    </span>
+
+
+                    <svg
+                      class="course-curriculum-chevron"
+                      viewBox="0 0 24 24"
+                    >
+                      <path d="m6 9 6 6 6-6"></path>
+                    </svg>
+
+                  </button>
+
+
+                  <div class="course-curriculum-lessons">
+
+
+                    <div class="course-curriculum-lesson">
+                      <div class="course-curriculum-lesson-left">
+                        <span class="course-curriculum-lesson-icon">
+                          <svg viewBox="0 0 24 24">
+                            <path d="M8 5v14l11-7z"></path>
+                          </svg>
+                        </span>
+                        <span class="course-curriculum-lesson-name">
+                          Physical Indicators
+                        </span>
+                      </div>
+                      <span class="course-curriculum-lesson-time">
+                        9 min
+                      </span>
+                    </div>
+
+
+                    <div class="course-curriculum-lesson">
+                      <div class="course-curriculum-lesson-left">
+                        <span class="course-curriculum-lesson-icon">
+                          <svg viewBox="0 0 24 24">
+                            <path d="M8 5v14l11-7z"></path>
+                          </svg>
+                        </span>
+                        <span class="course-curriculum-lesson-name">
+                          Behavioral Indicators
+                        </span>
+                      </div>
+                      <span class="course-curriculum-lesson-time">
+                        9 min
+                      </span>
+                    </div>
+
+
+                    <div class="course-curriculum-lesson">
+                      <div class="course-curriculum-lesson-left">
+                        <span class="course-curriculum-lesson-icon">
+                          <svg viewBox="0 0 24 24">
+                            <path d="M8 5v14l11-7z"></path>
+                          </svg>
+                        </span>
+                        <span class="course-curriculum-lesson-name">
+                          Speech and Performance Indicators
+                        </span>
+                      </div>
+                      <span class="course-curriculum-lesson-time">
+                        9 min
+                      </span>
+                    </div>
+
+
+                    <div class="course-curriculum-lesson">
+                      <div class="course-curriculum-lesson-left">
+                        <span class="course-curriculum-lesson-icon">
+                          <svg viewBox="0 0 24 24">
+                            <path d="M8 5v14l11-7z"></path>
+                          </svg>
+                        </span>
+                        <span class="course-curriculum-lesson-name">
+                          Reviewing Observable Facts
+                        </span>
+                      </div>
+                      <span class="course-curriculum-lesson-time">
+                        8 min
+                      </span>
+                    </div>
+
+
+                  </div>
+
+                </div>
+
+
+                <!-- MODULE 3 -->
+
+                <div class="course-curriculum-module">
+
+                  <button
+                    type="button"
+                    class="course-curriculum-module-button"
+                    aria-expanded="false"
+                  >
+
+                    <span class="course-curriculum-module-left">
+
+                      <span class="course-curriculum-module-number">
+                        03
+                      </span>
+
+                      <span>
+
+                        <span class="course-curriculum-module-name">
+                          Documentation and Next Steps
+                        </span>
+
+                        <span class="course-curriculum-module-meta">
+                          3 lessons · Approximately 30 minutes
+                        </span>
+
+                      </span>
+
+                    </span>
+
+
+                    <svg
+                      class="course-curriculum-chevron"
+                      viewBox="0 0 24 24"
+                    >
+                      <path d="m6 9 6 6 6-6"></path>
+                    </svg>
+
+                  </button>
+
+
+                  <div class="course-curriculum-lessons">
+
+
+                    <div class="course-curriculum-lesson">
+                      <div class="course-curriculum-lesson-left">
+                        <span class="course-curriculum-lesson-icon">
+                          <svg viewBox="0 0 24 24">
+                            <path d="M8 5v14l11-7z"></path>
+                          </svg>
+                        </span>
+                        <span class="course-curriculum-lesson-name">
+                          Documenting Observations
+                        </span>
+                      </div>
+                      <span class="course-curriculum-lesson-time">
+                        10 min
+                      </span>
+                    </div>
+
+
+                    <div class="course-curriculum-lesson">
+                      <div class="course-curriculum-lesson-left">
+                        <span class="course-curriculum-lesson-icon">
+                          <svg viewBox="0 0 24 24">
+                            <path d="M8 5v14l11-7z"></path>
+                          </svg>
+                        </span>
+                        <span class="course-curriculum-lesson-name">
+                          Communicating Concerns
+                        </span>
+                      </div>
+                      <span class="course-curriculum-lesson-time">
+                        10 min
+                      </span>
+                    </div>
+
+
+                    <div class="course-curriculum-lesson">
+                      <div class="course-curriculum-lesson-left">
+                        <span class="course-curriculum-lesson-icon">
+                          <svg viewBox="0 0 24 24">
+                            <path d="M8 5v14l11-7z"></path>
+                          </svg>
+                        </span>
+                        <span class="course-curriculum-lesson-name">
+                          Applying the Process
+                        </span>
+                      </div>
+                      <span class="course-curriculum-lesson-time">
+                        10 min
+                      </span>
+                    </div>
+
+
+                  </div>
+
+                </div>
+
+
+                <!-- MODULE 4 -->
+
+                <div class="course-curriculum-module">
+
+                  <button
+                    type="button"
+                    class="course-curriculum-module-button"
+                    aria-expanded="false"
+                  >
+
+                    <span class="course-curriculum-module-left">
+
+                      <span class="course-curriculum-module-number">
+                        04
+                      </span>
+
+                      <span>
+
+                        <span class="course-curriculum-module-name">
+                          Knowledge Review
+                        </span>
+
+                        <span class="course-curriculum-module-meta">
+                          2 lessons · Approximately 20 minutes
+                        </span>
+
+                      </span>
+
+                    </span>
+
+
+                    <svg
+                      class="course-curriculum-chevron"
+                      viewBox="0 0 24 24"
+                    >
+                      <path d="m6 9 6 6 6-6"></path>
+                    </svg>
+
+                  </button>
+
+
+                  <div class="course-curriculum-lessons">
+
+
+                    <div class="course-curriculum-lesson">
+                      <div class="course-curriculum-lesson-left">
+                        <span class="course-curriculum-lesson-icon">
+                          <svg viewBox="0 0 24 24">
+                            <path d="M8 5v14l11-7z"></path>
+                          </svg>
+                        </span>
+                        <span class="course-curriculum-lesson-name">
+                          Scenario Review
+                        </span>
+                      </div>
+                      <span class="course-curriculum-lesson-time">
+                        10 min
+                      </span>
+                    </div>
+
+
+                    <div class="course-curriculum-lesson">
+                      <div class="course-curriculum-lesson-left">
+                        <span class="course-curriculum-lesson-icon">
+                          <svg viewBox="0 0 24 24">
+                            <path d="M8 5v14l11-7z"></path>
+                          </svg>
+                        </span>
+                        <span class="course-curriculum-lesson-name">
+                          Final Knowledge Check
+                        </span>
+                      </div>
+                      <span class="course-curriculum-lesson-time">
+                        10 min
+                      </span>
+                    </div>
+
+
+                  </div>
+
+                </div>
+
+
+              </div>
+
+
+            </section>
+
+
+            <!-- COURSE INFORMATION -->
+
+            <section class="course-details-section">
+
+
+              <div class="course-details-info-card">
+
+
+                <div class="course-details-kicker">
+                  Course Information
+                </div>
+
+
+                <h2 class="course-details-section-title">
+                  Before You Begin
+                </h2>
+
+
+                <div class="course-details-info-grid">
+
+
+                  <div class="course-details-info-item">
+
+                    <span class="course-details-info-label">
+                      Duration
+                    </span>
+
+                    <span class="course-details-info-value">
+                      Approximately 2 hours
+                    </span>
+
+                  </div>
+
+
+                  <div class="course-details-info-item">
+
+                    <span class="course-details-info-label">
+                      Lessons
+                    </span>
+
+                    <span class="course-details-info-value">
+                      12 lessons
+                    </span>
+
+                  </div>
+
+
+                  <div class="course-details-info-item">
+
+                    <span class="course-details-info-label">
+                      Format
+                    </span>
+
+                    <span class="course-details-info-value">
+                      Self-paced online training
+                    </span>
+
+                  </div>
+
+
+                  <div class="course-details-info-item">
+
+                    <span class="course-details-info-label">
+                      Completion
+                    </span>
+
+                    <span class="course-details-info-value">
+                      Final assessment + certificate
+                    </span>
+
+                  </div>
+
+
+                </div>
+
+
+              </div>
+
+
+            </section>
+
+
+          </div>
+
+
+          <!-- ==================================================
+               RIGHT SIDEBAR
+               ================================================== -->
+
+          <aside class="course-details-side">
+
+
+            <div class="course-enrollment-card">
+
+
+              <div class="course-enrollment-card-top">
+
+                <div class="course-enrollment-label">
+                  Review & Purchase
+                </div>
+
+                <h2 class="course-enrollment-title">
+                  Get Full Course Access
+                </h2>
+
+                <p class="course-enrollment-text">
+                  Review the course content above, then purchase to unlock every lesson, quiz, assessment, and certificate.
+                </p>
+
+              </div>
+
+
+              <div class="course-enrollment-details">
+
+
+                <div class="course-enrollment-row">
+
+                  <span class="course-enrollment-row-label">
+                    Course Access
+                  </span>
+
+                  <span class="course-enrollment-row-value">
+                    Purchase required
+                  </span>
+
+                </div>
+
+
+                <div class="course-enrollment-row">
+
+                  <span class="course-enrollment-row-label">
+                    Progress
+                  </span>
+
+                  <span class="course-enrollment-row-value">
+                    Preview only
+                  </span>
+
+                </div>
+
+
+                <div class="course-enrollment-row">
+
+                  <span class="course-enrollment-row-label">
+                    Estimated Time
+                  </span>
+
+                  <span class="course-enrollment-row-value">
+                    2 hours
+                  </span>
+
+                </div>
+
+
+              </div>
+
+
+              <div class="course-enrollment-actions">
+
+
+                <a
+                  href="checkout.html?course=dot-supervisor-training&course_name=DOT%20Supervisor%20Training%3A%20Reasonable%20Suspicion&return_url=lms-my-courses.html"
+                  class="course-primary-action"
+                >
+
+                  Purchase Full Access
+
+                  <svg viewBox="0 0 24 24">
+                    <path d="M5 12h14"></path>
+                    <path d="m13 6 6 6-6 6"></path>
+                  </svg>
+
+                </a>
+
+
+                <p class="course-enrollment-note">
+                  Secure checkout will complete your purchase. After enrollment, this course will appear in My Learning.
+                </p>
+
+
+              </div>
+
+
+            </div>
+
+
+            <div class="course-support-card">
+
+              <h3 class="course-support-title">
+                Need Help?
+              </h3>
+
+              <p class="course-support-text">
+                Have a question about this training or need assistance
+                accessing your course?
+              </p>
+
+              <a
+                href="lms-account.html"
+                class="course-support-link"
+              >
+                Contact Support
+              </a>
+
+            </div>
+
+
+          </aside>
+
+
+        </div>
+
+
+      </div>
+
+
+    </main>
+
+
+  </div>
+
+
+  <!-- ========================================================
+       SHARED LMS JAVASCRIPT
+       ======================================================== -->
+
+  <script src="assets/js/lms.js"></script>
+
+
+  <!-- DYNAMIC LMS SIDEBAR -->
+
+  <script src="assets/js/lms-sidebar.js"></script>
+
+
+  <!-- ========================================================
+       COURSE DETAILS INTERACTIONS
+       ======================================================== -->
+
+  <script>
+
+    (function () {
+
+      "use strict";
+
+
+      function initializeCurriculum() {
+
+        var modules =
+          document.querySelectorAll(
+            ".course-curriculum-module"
+          );
+
+
+        modules.forEach(
+          function (module) {
+
+            var button =
+              module.querySelector(
+                ".course-curriculum-module-button"
+              );
+
+
+            if (!button) {
+              return;
+            }
+
+
+            button.addEventListener(
+              "click",
+              function () {
+
+                var isOpen =
+                  module.classList.contains(
+                    "is-open"
+                  );
+
+
+                modules.forEach(
+                  function (otherModule) {
+
+                    otherModule.classList.remove(
+                      "is-open"
+                    );
+
+
+                    var otherButton =
+                      otherModule.querySelector(
+                        ".course-curriculum-module-button"
+                      );
+
+
+                    if (otherButton) {
+
+                      otherButton.setAttribute(
+                        "aria-expanded",
+                        "false"
+                      );
+
+                    }
+
+                  }
+                );
+
+
+                if (!isOpen) {
+
+                  module.classList.add(
+                    "is-open"
+                  );
+
+                  button.setAttribute(
+                    "aria-expanded",
+                    "true"
+                  );
+
+                }
+
+              }
+            );
+
+          }
+        );
+
+      }
+
+
+      function initializeLearnerProfile() {
+
+        if (
+          window.LMS &&
+          typeof window.LMS.setLearnerProfile ===
+            "function"
+        ) {
+
+          window.LMS.setLearnerProfile({
+
+            name:
+              "John Doe",
+
+            email:
+              "learner@screenings4u.com"
+
+          });
+
+        }
+
+      }
+
+
+      function initializePage() {
+
+        initializeCurriculum();
+
+        initializeLearnerProfile();
+
+      }
+
+
+      if (
+        document.readyState ===
+        "loading"
+      ) {
+
+        document.addEventListener(
+          "DOMContentLoaded",
+          initializePage
+        );
+
+      } else {
+
+        initializePage();
+
+      }
+
+    })();
+
+  </script>
+
+
+
 <script>
 (function(){
 "use strict";
-var params=new URLSearchParams(location.search);
-var courseId=params.get("course");
-
-function client(){
- if(window.supabaseClient&&typeof window.supabaseClient.from==="function")return window.supabaseClient;
- if(window.supabase&&typeof window.supabase.from==="function")return window.supabase;
- var u=window.SCREENINGS4U_SUPABASE_URL||window.SUPABASE_URL;
- var k=window.SCREENINGS4U_SUPABASE_ANON_KEY||window.SUPABASE_ANON_KEY;
- return u&&k&&window.supabase&&typeof window.supabase.createClient==="function"?window.supabase.createClient(u,k):null;
+const COURSE_DATA={
+ dot_specimen_collector_training:{title:"DOT Specimen Collector Training",category:"DOT Collection Training",duration:"Self-paced",level:"Professional Training",format:"Online",description:"Professional training designed to help learners understand DOT specimen collection procedures, responsibilities, and the collection process.",outcomes:["Understand specimen collection responsibilities","Review the collection process and required documentation","Recognize professional collection procedures","Prepare to apply course knowledge in practice"],modules:["Course Introduction","Collection Procedures","Documentation and Responsibilities","Knowledge Review"],checkout:"checkout.html?service=dot_specimen_collector_training"},
+ dot_specimen_collector_training_hair:{title:"DOT Specimen Collector Training – Hair",category:"Hair Collection Training",duration:"Self-paced",level:"Professional Training",format:"Online",description:"Training focused on professional hair specimen collection procedures, responsibilities, and the collection workflow.",outcomes:["Understand hair collection responsibilities","Review professional collection procedures","Learn documentation and workflow requirements","Prepare to apply course knowledge"],modules:["Course Introduction","Hair Collection Procedures","Documentation and Workflow","Knowledge Review"],checkout:"checkout.html?service=dot_specimen_collector_training_hair"},
+ dot_specimen_collector_train_the_trainer:{title:"DOT Specimen Collector Train the Trainer",category:"Instructor Training",duration:"Self-paced",level:"Advanced Training",format:"Online",description:"Advanced coursework for professionals preparing to train others in specimen collection practices and procedures.",outcomes:["Prepare to instruct collection procedures","Organize training content effectively","Review professional responsibilities","Evaluate learner understanding"],modules:["Trainer Introduction","Instructional Foundations","Collection Training Methods","Final Knowledge Review"],checkout:"checkout.html?service=dot_specimen_collector_train_the_trainer"},
+ dot_collector_train_the_trainer_hair:{title:"DOT Collector Train the Trainer – Hair",category:"Instructor Training",duration:"Self-paced",level:"Advanced Training",format:"Online",description:"Train-the-trainer coursework focused on teaching professional hair specimen collection practices and procedures.",outcomes:["Prepare to teach hair collection procedures","Organize effective training sessions","Review collection responsibilities","Evaluate learner understanding"],modules:["Trainer Introduction","Hair Collection Instruction","Teaching Collection Procedures","Final Knowledge Review"],checkout:"checkout.html?service=dot_collector_train_the_trainer_hair"}
+};
+const params=new URLSearchParams(location.search); const id=params.get('service')||'dot_specimen_collector_training'; const c=COURSE_DATA[id]||COURSE_DATA.dot_specimen_collector_training;
+function set(sel,val){document.querySelectorAll(sel).forEach(el=>el.textContent=val)}
+function fill(){
+ document.title=c.title+' | Screenings4u Learning Center';
+ set('.course-details-title',c.title); set('.course-details-category',c.category); set('.course-details-description',c.description);
+ const crumbs=document.querySelectorAll('.course-details-breadcrumb span'); if(crumbs.length) crumbs[crumbs.length-1].textContent=c.title;
+ const meta=document.querySelectorAll('.course-details-meta-item'); if(meta[0]) meta[0].lastChild.textContent=' '+c.duration; if(meta[1]) meta[1].lastChild.textContent=' '+c.level;
+ const outcomeBox=document.querySelector('.course-details-outcomes'); if(outcomeBox) outcomeBox.innerHTML=c.outcomes.map(x=>`<div class="course-details-outcome"><span class="course-details-outcome-icon">✓</span><span>${x}</span></div>`).join('');
+ const curriculum=document.querySelector('.course-curriculum'); if(curriculum) curriculum.innerHTML=c.modules.map((m,i)=>`<div class="course-curriculum-module"><button type="button" class="course-curriculum-module-button"><span class="course-curriculum-module-left"><span class="course-curriculum-module-number">${i+1}</span><span><span class="course-curriculum-module-name">${m}</span><span class="course-curriculum-module-meta">Preview course module</span></span></span><svg class="course-curriculum-chevron" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"></path></svg></button><div class="course-curriculum-lessons"><div class="course-curriculum-lesson"><span class="course-curriculum-lesson-name">Course content available with full access</span></div></div></div>`).join('');
+ const values=document.querySelectorAll('.course-enrollment-row-value'); if(values[0]) values[0].textContent=c.duration; if(values[1]) values[1].textContent=c.format; if(values[2]) values[2].textContent='Full course access';
+ const buy=document.querySelector('.course-primary-action'); if(buy){buy.href=c.checkout; buy.textContent='Purchase Full Access';}
+ document.querySelectorAll('.course-curriculum-module-button').forEach(b=>b.addEventListener('click',()=>b.parentElement.classList.toggle('is-open')));
 }
-function esc(v){return String(v==null?"":v).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}
-function set(id,v){var e=document.getElementById(id);if(e)e.textContent=v}
-function category(c){return c.category||c.course_category||c.category_name||"ONLINE TRAINING"}
-function playerUrl(course,enrollment){var q=new URLSearchParams({course:course.id});if(enrollment&&enrollment.id)q.set("enrollment",enrollment.id);return"lms-course-player.html?"+q}
-function objectives(c){
- var raw=c.learning_objectives||c.objectives||c.outcomes;
- if(Array.isArray(raw))return raw;
- if(typeof raw==="string"&&raw.trim())return raw.split(/\n|•/).map(x=>x.trim()).filter(Boolean);
- return ["Understand the core concepts covered in this course.","Complete the required lessons and learning activities.","Demonstrate knowledge through applicable quizzes or assessments."];
-}
-async function load(){
- var db=client();if(!db)throw Error("Missing public Supabase configuration.");
- if(!courseId){location.href="lms-courses.html";return}
- var sr=await db.auth.getSession(),session=sr.data&&sr.data.session;
- if(!session){location.href="lms.html";return}
- var meta=session.user.user_metadata||{};
- set("learnerName",meta.full_name||meta.name||session.user.email||"Learner Account");
-
- var cr=await db.from("lms_courses").select("*").eq("id",courseId).single();
- if(cr.error)throw cr.error;
- var c=cr.data;
- var title=c.title||c.name||"Course";
- var desc=c.short_description||c.description||"No course description is currently available.";
- document.title=title+" | Screenings4u Learning Center";
- set("breadcrumbCourse",title);set("courseTitle",title);set("courseDescription",desc);
- set("courseBadge",String(category(c)).toUpperCase());
- set("aboutCourse",c.description||desc);
-
- var price=document.getElementById("coursePrice");
- if(price)price.textContent=c.price!==null&&c.price!==undefined&&c.price!==""?"$"+Number(c.price).toFixed(2):(c.price_text||"Included");
-
- var obj=objectives(c);
- document.getElementById("learningObjectives").innerHTML=obj.map(x=>"<li>"+esc(x)+"</li>").join("");
-
- var er=await db.from("lms_enrollments").select("id,status,progress_percent").eq("user_id",session.user.id).eq("course_id",courseId).maybeSingle();
- if(er.error)console.warn(er.error);
- var enrollment=er.data;
-
- var sectionsResult=await db.from("lms_course_sections").select("id,title,position,sort_order,description").eq("course_id",courseId).order("position",{ascending:true});
- if(sectionsResult.error){
-   sectionsResult=await db.from("lms_sections").select("id,title,position,sort_order,description").eq("course_id",courseId).order("position",{ascending:true});
- }
- var sections=sectionsResult.data||[], lessonCount=0, html="";
- for(var i=0;i<sections.length;i++){
-   var sec=sections[i];
-   var lr=await db.from("lms_lessons").select("id,title,lesson_type,position,sort_order").eq("section_id",sec.id).order("position",{ascending:true});
-   var lessons=lr.data||[];lessonCount+=lessons.length;
-   html+='<div class="module"><div class="module-title">'+esc("Section "+(i+1)+": "+(sec.title||"Untitled Section"))+' <span>'+lessons.length+' Lessons ▾</span></div><div class="lessons">';
-   html+=lessons.map(function(l,j){
-      var locked=!enrollment&&j>0;
-      return '<div class="lesson"><span>'+esc((j+1)+". "+(l.title||"Untitled Lesson"))+'</span><span>'+(locked?"Locked":(l.lesson_type||"Lesson"))+'</span></div>';
-   }).join("");
-   html+="</div></div>";
- }
- if(!sections.length)html="<p>Course curriculum is being prepared.</p>";
- document.getElementById("curriculumContainer").innerHTML=html;
- set("curriculumSummary",sections.length+" Sections · "+lessonCount+" Lessons");
-
- var quick=document.querySelector(".quick-meta");
- if(quick)quick.innerHTML=
-   '<span class="meta">'+esc(c.delivery_type||c.duration||"Self-Paced")+'</span>'+
-   '<span class="meta">'+sections.length+' Sections</span>'+
-   '<span class="meta">'+lessonCount+' Lessons</span>'+
-   (c.quiz_included?'<span class="meta">Quiz Included</span>':'')+
-   (c.certificate_eligible?'<span class="meta">Certificate Eligible</span>':'');
-
- var btn=document.getElementById("purchaseBtn");
- btn.disabled=false;
- if(enrollment){
-   var complete=enrollment.status==="completed"||Number(enrollment.progress_percent||0)>=100;
-   btn.textContent=complete?"Review Course":Number(enrollment.progress_percent||0)>0?"Continue Course":"Start Course";
-   btn.onclick=function(){location.href=playerUrl(c,enrollment)};
- }else{
-   btn.textContent=c.price&&Number(c.price)>0?"Purchase Course":"Enroll Now";
-   btn.onclick=function(){
-     // Enrollment/purchase is intentionally routed to the existing site checkout flow.
-     location.href="lms-courses.html";
-   };
- }
-}
-document.getElementById("menu").onclick=function(){document.getElementById("shell").classList.toggle("mobile")};
-document.addEventListener("DOMContentLoaded",function(){load().catch(function(e){console.error("course details failed",e);set("courseTitle","Unable to load course");set("courseDescription","Please return to the course catalog and try again.");var b=document.getElementById("purchaseBtn");if(b){b.textContent="Back to Catalog";b.disabled=false;b.onclick=function(){location.href="lms-courses.html"}}})});
+document.addEventListener('DOMContentLoaded',fill);
 })();
 </script>
 
-</body></html>
+</body>
+
+</html>

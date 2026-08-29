@@ -1,548 +1,119 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
 
   <meta
     name="viewport"
     content="width=device-width, initial-scale=1.0"
-  >
+  />
 
   <title>
-    Courses | screenings4u Learning Center
+    Courses | LMS Administration | Screenings4u
   </title>
 
-    <link rel="icon" type="image/png" href="images/fav.png">
-
-    
-  <!-- LMS Shared Styles -->
   <link
     rel="stylesheet"
-    href="assets/css/lms.css"
-  >
-
-  <!-- LMS Brand Layout -->
-  <style>
-    /* Sidebar: centered Screenings4u logo only */
-    .lms-brand.lms-brand-logo-only {
-      min-height: 88px;
-      justify-content: center;
-      padding: 14px 20px;
-    }
-
-    .lms-brand.lms-brand-logo-only .lms-brand-logo-wrap {
-      width: 148px;
-      height: 54px;
-      flex: 0 0 148px;
-      background: transparent;
-      border-radius: 0;
-    }
-
-    .lms-brand.lms-brand-logo-only .lms-brand-logo {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-    }
-
-    /* Top application identity */
-    .lms-page-context-label {
-      color: var(--s4u-blue);
-      font-weight: 800;
-      letter-spacing: .01em;
-    }
-
-    .lms-page-context-title {
-      color: var(--s4u-orange);
-      font-weight: 800;
-    }
-
-    .lms-page-context {
-      line-height: 1.2;
-    }
-  </style>
-
+    href="assets/css/admin-lms.css"
+  />
 </head>
 
-<body data-s4u-portal="admin">
+<body>
 
-  <div class="lms-app">
+  <div class="admin-lms-app">
 
     <!-- ======================================================
-         MOBILE OVERLAY
+         DYNAMIC SIDEBAR
          ====================================================== -->
 
-    <div
-      class="lms-sidebar-overlay"
-      data-lms-sidebar-overlay
-    ></div>
+    <div id="admin-lms-sidebar-target"></div>
 
 
     <!-- ======================================================
-         LMS SIDEBAR
+         MAIN
          ====================================================== -->
 
-    <aside class="lms-sidebar">
+    <main class="admin-lms-main">
 
-      <!-- BRAND -->
 
-      <a
-        href="admin-lms-courses.html"
-        class="lms-brand lms-brand-logo-only"
-        aria-label="Screenings4u Learning Center"
-      >
+      <!-- ====================================================
+           TOPBAR
+           ==================================================== -->
 
-        <div class="lms-brand-logo-wrap">
+      <header class="admin-lms-topbar">
 
-          <img
-            src="images/logo.png"
-            alt="Screenings4u"
-            class="lms-brand-logo"
-          >
-
-        </div>
-
-      </a>
-
-
-      <!-- NAVIGATION -->
-
-      <div class="lms-sidebar-scroll">
-
-
-        <!-- HOME -->
-
-        <div class="lms-nav-group">
-
-          <div class="lms-nav-label">
-            HOME
-          </div>
-
-          <ul class="lms-nav-list">
-
-            <li class="lms-nav-item">
-
-              <a
-                href="admin-lms-courses.html"
-                class="lms-nav-link"
-              >
-
-                <span class="lms-nav-icon">
-
-                  <svg
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke-width="2"
-                  >
-                    <path d="M3 12l9-9 9 9"></path>
-                    <path d="M5 10v10h14V10"></path>
-                  </svg>
-
-                </span>
-
-                Courses
-
-              </a>
-
-            </li>
-
-          </ul>
-
-        </div>
-
-
-        <!-- MANAGE -->
-
-        <div class="lms-nav-group">
-
-          <div class="lms-nav-label">
-            MANAGE
-          </div>
-
-          <ul class="lms-nav-list">
-
-
-            <li class="lms-nav-item">
-
-              <a
-                href="admin-lms-enrollments.html"
-                class="lms-nav-link"
-              >
-
-                <span class="lms-nav-icon">
-
-                  <svg
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke-width="2"
-                  >
-                    <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
-                    <circle cx="9" cy="7" r="4"></circle>
-                    <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
-                    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-                  </svg>
-
-                </span>
-
-                Enrollments
-
-              </a>
-
-            </li>
-
-
-            <li class="lms-nav-item">
-
-              <a
-                href="admin-lms-students.html"
-                class="lms-nav-link"
-              >
-
-                <span class="lms-nav-icon">
-
-                  <svg
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke-width="2"
-                  >
-                    <circle cx="12" cy="7" r="4"></circle>
-                    <path d="M5.5 21a6.5 6.5 0 0 1 13 0"></path>
-                  </svg>
-
-                </span>
-
-                Students
-
-              </a>
-
-            </li>
-
-
-            <li class="lms-nav-item">
-
-              <a
-                href="admin-lms-progress.html"
-                class="lms-nav-link"
-              >
-
-                <span class="lms-nav-icon">
-
-                  <svg
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke-width="2"
-                  >
-                    <path d="M3 3v18h18"></path>
-                    <path d="M7 16l4-5 3 3 5-7"></path>
-                  </svg>
-
-                </span>
-
-                Progress
-
-              </a>
-
-            </li>
-
-
-          </ul>
-
-        </div>
-
-
-        <!-- CREATE -->
-
-        <div class="lms-nav-group">
-
-          <div class="lms-nav-label">
-            CONTENT
-          </div>
-
-          <ul class="lms-nav-list">
-
-
-            <li class="lms-nav-item">
-
-              <a
-                href="admin-lms-lessons.html"
-                class="lms-nav-link"
-              >
-
-                <span class="lms-nav-icon">
-
-                  <svg
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke-width="2"
-                  >
-                    <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
-                    <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
-                  </svg>
-
-                </span>
-
-                Lessons
-
-              </a>
-
-            </li>
-
-
-            <li class="lms-nav-item">
-
-              <a
-                href="admin-lms-quizzes.html"
-                class="lms-nav-link"
-              >
-
-                <span class="lms-nav-icon">
-
-                  <svg
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke-width="2"
-                  >
-                    <circle cx="12" cy="12" r="9"></circle>
-                    <path d="M9.5 9a2.5 2.5 0 1 1 4.3 1.7c-.8.8-1.8 1.3-1.8 2.8"></path>
-                    <path d="M12 17h.01"></path>
-                  </svg>
-
-                </span>
-
-                Quizzes
-
-              </a>
-
-            </li>
-
-
-            <li class="lms-nav-item">
-
-              <a
-                href="admin-lms-assessments.html"
-                class="lms-nav-link"
-              >
-
-                <span class="lms-nav-icon">
-
-                  <svg
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke-width="2"
-                  >
-                    <path d="M9 11l3 3L22 4"></path>
-                    <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
-                  </svg>
-
-                </span>
-
-                Assessments
-
-              </a>
-
-            </li>
-
-
-            <li class="lms-nav-item">
-
-              <a
-                href="admin-lms-media.html"
-                class="lms-nav-link"
-              >
-
-                <span class="lms-nav-icon">
-
-                  <svg
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke-width="2"
-                  >
-                    <rect x="3" y="3" width="18" height="18" rx="2"></rect>
-                    <circle cx="8.5" cy="8.5" r="1.5"></circle>
-                    <path d="M21 15l-5-5L5 21"></path>
-                  </svg>
-
-                </span>
-
-                Media
-
-              </a>
-
-            </li>
-
-
-          </ul>
-
-        </div>
-
-
-        <!-- RECORDS -->
-
-        <div class="lms-nav-group">
-
-          <div class="lms-nav-label">
-            RECORDS
-          </div>
-
-          <ul class="lms-nav-list">
-
-            <li class="lms-nav-item">
-
-              <a
-                href="admin-lms-certificates.html"
-                class="lms-nav-link"
-              >
-
-                <span class="lms-nav-icon">
-
-                  <svg
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke-width="2"
-                  >
-                    <circle cx="12" cy="8" r="5"></circle>
-                    <path d="M8.5 12.5L7 22l5-3 5 3-1.5-9.5"></path>
-                  </svg>
-
-                </span>
-
-                Certificates
-
-              </a>
-
-            </li>
-
-          </ul>
-
-        </div>
-
-
-      </div>
-
-
-      <!-- SIDEBAR FOOTER -->
-
-      <div class="lms-sidebar-footer">
-
-        <a
-          href="admin-dashboard.html"
-          class="lms-back-admin"
-        >
-
-          <span class="lms-nav-icon">
-
-            <svg
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke-width="2"
-            >
-              <path d="M19 12H5"></path>
-              <path d="M12 19l-7-7 7-7"></path>
-            </svg>
-
-          </span>
-
-          Back to Main Administration
-
-        </a>
-
-      </div>
-
-    </aside>
-
-
-    <!-- ======================================================
-         MAIN APPLICATION
-         ====================================================== -->
-
-    <main class="lms-main">
-
-
-      <!-- TOP BAR -->
-
-      <header class="lms-topbar">
-
-        <div class="lms-topbar-left">
+        <div class="admin-lms-topbar-left">
 
           <button
             type="button"
-            class="lms-icon-button lms-mobile-menu-button"
-            data-lms-menu-toggle
-            aria-label="Open navigation"
+            class="admin-lms-menu-button"
+            data-admin-menu-toggle
+            aria-label="Toggle administration navigation"
           >
 
-            <svg
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke-width="2"
-            >
-              <path d="M4 6h16"></path>
-              <path d="M4 12h16"></path>
-              <path d="M4 18h16"></path>
+            <svg viewBox="0 0 24 24">
+              <path d="M4 7h16M4 12h16M4 17h16"></path>
             </svg>
 
           </button>
 
 
-          <div class="lms-page-context">
+          <div class="admin-lms-page-context">
 
-            <span class="lms-page-context-label">
+            <small>
               Screenings4u Learning Center
-            </span>
+            </small>
 
-            <span class="lms-page-context-title">
+            <strong>
               Course Management
-            </span>
+            </strong>
 
           </div>
 
         </div>
 
 
-        <div class="lms-topbar-right">
+        <div class="admin-lms-topbar-right">
 
-
-          <button
-            type="button"
-            class="lms-icon-button"
+          <a
+            href="lms-notifications.html"
+            class="admin-lms-icon-button"
             aria-label="Notifications"
           >
 
-            <svg
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke-width="2"
-            >
-              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 7-3 9h18c0-2-3-2-3-9"></path>
-              <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+            <svg viewBox="0 0 24 24">
+
+              <path
+                d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"
+              ></path>
+
+              <path d="M10 21h4"></path>
+
             </svg>
 
-          </button>
+          </a>
 
 
-          <button
-            type="button"
-            class="lms-user-button"
-            data-lms-user-button
-          >
+          <div class="admin-lms-user">
 
-            <span class="lms-user-avatar">
+            <span class="admin-lms-avatar">
               AD
             </span>
 
-            <span class="lms-user-copy">
 
-              <span class="lms-user-name">
+            <span class="admin-lms-user-copy">
+
+              <span class="admin-lms-user-name">
                 Administrator
               </span>
 
-              <span class="lms-user-role">
-                LMS Administration
+              <span class="admin-lms-user-role">
+                Learning Center Admin
               </span>
 
             </span>
 
-          </button>
-
+          </div>
 
         </div>
 
@@ -553,282 +124,761 @@
            PAGE CONTENT
            ==================================================== -->
 
-      <section class="lms-page">
-
-        <div class="lms-page-inner">
+      <section class="admin-lms-content">
 
 
-          <!-- PAGE HEADING -->
+        <!-- ==================================================
+             PAGE HEADING
+             ================================================== -->
 
-          <div class="lms-page-heading">
+        <div class="admin-page-heading">
 
-            <div>
+          <div>
 
-              <h1 class="lms-page-title">
-                Course Management
-              </h1>
-
-              <p class="lms-page-description">
-
-                Create, organize, publish, and manage
-                your Screenings4u Learning Center
-                training programs.
-
-              </p>
-
-            </div>
+            <span class="admin-page-eyebrow">
+              Learning Content
+            </span>
 
 
-            <button
-              type="button"
-              class="lms-btn lms-btn-primary"
-            >
+            <h1>
+              Courses
+            </h1>
 
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke-width="2"
-              >
-                <path d="M12 5v14"></path>
-                <path d="M5 12h14"></path>
-              </svg>
 
-              Create Course
-
-            </button>
+            <p>
+              Create, manage, and organize the training courses
+              available through the Screenings4u Learning Center.
+            </p>
 
           </div>
 
 
-          <!-- METRICS -->
-
-          <div class="lms-metrics-grid">
-
-
-            <div class="lms-metric-card">
-
-              <div class="lms-metric-label">
-                Total Courses
-              </div>
-
-              <div
-                class="lms-metric-value"
-                id="lmsTotalCourses"
-              >
-                —
-              </div>
-
-              <div class="lms-metric-meta">
-                All courses in your catalog
-              </div>
-
-            </div>
-
-
-            <div class="lms-metric-card">
-
-              <div class="lms-metric-label">
-                Published Courses
-              </div>
-
-              <div
-                class="lms-metric-value"
-                id="lmsPublishedCourses"
-              >
-                —
-              </div>
-
-              <div class="lms-metric-meta">
-                Currently available to learners
-              </div>
-
-            </div>
-
-
-            <div class="lms-metric-card">
-
-              <div class="lms-metric-label">
-                Active Enrollments
-              </div>
-
-              <div
-                class="lms-metric-value"
-                id="lmsActiveEnrollments"
-              >
-                —
-              </div>
-
-              <div class="lms-metric-meta">
-                Learners currently in training
-              </div>
-
-            </div>
-
-
-            <div class="lms-metric-card">
-
-              <div class="lms-metric-label">
-                Certificates Issued
-              </div>
-
-              <div
-                class="lms-metric-value"
-                id="lmsCertificatesIssued"
-              >
-                —
-              </div>
-
-              <div class="lms-metric-meta">
-                Learning completion records
-              </div>
-
-            </div>
-
-
-          </div>
-
-
-          <!-- COURSE MANAGEMENT CARD -->
-
-          <div class="lms-card">
-
-
-            <!-- CARD HEADER -->
-
-            <div class="lms-card-header">
-
-              <h2 class="lms-card-title">
-                Your Courses
-              </h2>
-
-              <p class="lms-card-description">
-
-                Manage course content, publication status,
-                enrollments, and learning activity.
-
-              </p>
-
-            </div>
-
-
-            <!-- TOOLBAR -->
-
-            <div class="lms-toolbar">
-
-              <div class="lms-toolbar-left">
-
-                <input
-                  type="search"
-                  class="lms-search"
-                  id="courseSearch"
-                  placeholder="Search courses..."
-                >
-
-              </div>
-
-
-              <div class="lms-toolbar-right">
-
-                <button
-                  type="button"
-                  class="lms-btn lms-btn-secondary"
-                >
-                  Filter
-                </button>
-
-              </div>
-
-            </div>
-
-
-            <!-- TABLE -->
-
-            <div class="lms-table-wrap">
-
-              <table class="lms-table">
-
-                <thead>
-
-                  <tr>
-
-                    <th>
-                      Course
-                    </th>
-
-                    <th>
-                      Status
-                    </th>
-
-                    <th>
-                      Sections
-                    </th>
-
-                    <th>
-                      Enrollments
-                    </th>
-
-                    <th>
-                      Updated
-                    </th>
-
-                    <th>
-                      Actions
-                    </th>
-
-                  </tr>
-
-                </thead>
-
-
-                <tbody id="lmsCoursesTableBody">
-
-                  <!--
-                    Supabase course records
-                    will be rendered here.
-                  -->
-
-                  <tr>
-
-                    <td colspan="6">
-
-                      Your courses will appear here
-                      when the LMS database is connected.
-
-                    </td>
-
-                  </tr>
-
-                </tbody>
-
-              </table>
-
-            </div>
-
-
-          </div>
-
+          <a
+            href="admin-lms-course-builder.html"
+            class="admin-primary-btn"
+          >
+            + Create Course
+          </a>
 
         </div>
 
-      </section>
 
+        <!-- ==================================================
+             COURSE SUMMARY
+             ================================================== -->
+
+        <section class="admin-course-summary-grid">
+
+
+          <article class="admin-course-summary-card">
+
+            <div class="admin-course-summary-label">
+              Total Courses
+            </div>
+
+            <div
+              class="admin-course-summary-value"
+              id="admin-total-courses"
+            >
+              0
+            </div>
+
+            <div class="admin-course-summary-note">
+              All training records
+            </div>
+
+          </article>
+
+
+          <article class="admin-course-summary-card">
+
+            <div class="admin-course-summary-label">
+              Published
+            </div>
+
+            <div
+              class="admin-course-summary-value"
+              id="admin-published-courses"
+            >
+              0
+            </div>
+
+            <div class="admin-course-summary-note">
+              Available to learners
+            </div>
+
+          </article>
+
+
+          <article class="admin-course-summary-card">
+
+            <div class="admin-course-summary-label">
+              Draft Courses
+            </div>
+
+            <div
+              class="admin-course-summary-value"
+              id="admin-draft-courses"
+            >
+              0
+            </div>
+
+            <div class="admin-course-summary-note">
+              Not yet published
+            </div>
+
+          </article>
+
+
+          <article class="admin-course-summary-card">
+
+            <div class="admin-course-summary-label">
+              Archived
+            </div>
+
+            <div
+              class="admin-course-summary-value"
+              id="admin-archived-courses"
+            >
+              0
+            </div>
+
+            <div class="admin-course-summary-note">
+              Inactive training
+            </div>
+
+          </article>
+
+
+        </section>
+
+
+        <!-- ==================================================
+             COURSE MANAGEMENT CARD
+             ================================================== -->
+
+        <section class="admin-card admin-courses-card">
+
+
+          <!-- ================================================
+               CARD HEADER
+               ================================================ -->
+
+          <header class="admin-card-header admin-courses-header">
+
+            <div>
+
+              <h2 class="admin-card-title">
+                Course Library
+              </h2>
+
+              <p class="admin-card-subtitle">
+                Manage all courses and their learner availability.
+              </p>
+
+            </div>
+
+
+            <div
+              class="admin-course-count"
+              id="admin-course-count"
+            >
+              0 Courses
+            </div>
+
+          </header>
+
+
+          <!-- ================================================
+               FILTERS
+               ================================================ -->
+
+          <div class="admin-course-toolbar">
+
+
+            <!-- SEARCH -->
+
+            <div class="admin-course-search">
+
+              <svg viewBox="0 0 24 24">
+
+                <circle
+                  cx="11"
+                  cy="11"
+                  r="6"
+                ></circle>
+
+                <path d="m16 16 4 4"></path>
+
+              </svg>
+
+
+              <input
+                type="search"
+                id="admin-course-search"
+                placeholder="Search courses..."
+                autocomplete="off"
+              />
+
+            </div>
+
+
+            <!-- STATUS FILTER -->
+
+            <select
+              id="admin-course-status-filter"
+              class="admin-course-filter"
+            >
+
+              <option value="all">
+                All Statuses
+              </option>
+
+              <option value="published">
+                Published
+              </option>
+
+              <option value="draft">
+                Draft
+              </option>
+
+              <option value="archived">
+                Archived
+              </option>
+
+            </select>
+
+
+            <!-- SORT -->
+
+            <select
+              id="admin-course-sort"
+              class="admin-course-filter"
+            >
+
+              <option value="newest">
+                Newest First
+              </option>
+
+              <option value="oldest">
+                Oldest First
+              </option>
+
+              <option value="name">
+                Course Name
+              </option>
+
+            </select>
+
+
+          </div>
+
+
+          <!-- ================================================
+               COURSE TABLE
+               ================================================ -->
+
+          <div class="admin-course-table-wrap">
+
+
+            <table class="admin-course-table">
+
+
+              <thead>
+
+                <tr>
+
+                  <th>
+                    Course
+                  </th>
+
+                  <th>
+                    Status
+                  </th>
+
+                  <th>
+                    Lessons
+                  </th>
+
+                  <th>
+                    Enrollments
+                  </th>
+
+                  <th>
+                    Last Updated
+                  </th>
+
+                  <th class="admin-table-actions-heading">
+                    Actions
+                  </th>
+
+                </tr>
+
+              </thead>
+
+
+              <tbody id="admin-course-list">
+
+
+                <!--
+                  Courses load here from the LMS data layer.
+
+                  Temporary empty state shown until wiring.
+                -->
+
+
+                <tr class="admin-course-empty-row">
+
+                  <td colspan="6">
+
+
+                    <div class="admin-course-empty">
+
+
+                      <div class="admin-course-empty-icon">
+
+                        <svg viewBox="0 0 24 24">
+
+                          <path
+                            d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v16H6.5A2.5 2.5 0 0 0 4 21.5z"
+                          ></path>
+
+                          <path d="M4 5.5v16"></path>
+
+                          <path d="M8 7h8"></path>
+
+                        </svg>
+
+                      </div>
+
+
+                      <h3>
+                        No courses yet
+                      </h3>
+
+
+                      <p>
+                        Create your first training course to begin
+                        building the Learning Center.
+                      </p>
+
+
+                      <a
+                        href="admin-lms-course-builder.html"
+                        class="admin-primary-btn admin-empty-action"
+                      >
+                        Create Your First Course
+                      </a>
+
+
+                    </div>
+
+                  </td>
+
+                </tr>
+
+
+              </tbody>
+
+
+            </table>
+
+          </div>
+
+
+        </section>
+
+
+        <!-- ==================================================
+             QUICK COURSE ACTIONS
+             ================================================== -->
+
+        <section class="admin-course-bottom-grid">
+
+
+          <!-- CREATE -->
+
+          <article class="admin-card admin-course-action-card">
+
+            <div class="admin-card-body">
+
+
+              <div class="admin-course-action-icon">
+
+                <svg viewBox="0 0 24 24">
+
+                  <path d="M12 5v14"></path>
+
+                  <path d="M5 12h14"></path>
+
+                </svg>
+
+              </div>
+
+
+              <div>
+
+                <h3>
+                  Create a Course
+                </h3>
+
+                <p>
+                  Build a new training course and organize its
+                  lessons and learning content.
+                </p>
+
+              </div>
+
+
+              <a
+                href="admin-lms-course-builder.html"
+                class="admin-course-action-link"
+              >
+                Create Course
+                <span>›</span>
+              </a>
+
+
+            </div>
+
+          </article>
+
+
+          <!-- MANAGE CONTENT -->
+
+          <article class="admin-card admin-course-action-card">
+
+            <div class="admin-card-body">
+
+
+              <div class="admin-course-action-icon">
+
+                <svg viewBox="0 0 24 24">
+
+                  <rect
+                    x="3"
+                    y="4"
+                    width="18"
+                    height="16"
+                    rx="2"
+                  ></rect>
+
+                  <path d="M7 8h10"></path>
+
+                  <path d="M7 12h7"></path>
+
+                  <path d="M7 16h5"></path>
+
+                </svg>
+
+              </div>
+
+
+              <div>
+
+                <h3>
+                  Manage Lessons
+                </h3>
+
+                <p>
+                  Review and organize lessons across your
+                  Learning Center courses.
+                </p>
+
+              </div>
+
+
+              <a
+                href="admin-lms-lessons.html"
+                class="admin-course-action-link"
+              >
+                Manage Lessons
+                <span>›</span>
+              </a>
+
+
+            </div>
+
+          </article>
+
+
+        </section>
+
+
+      </section>
 
     </main>
 
   </div>
 
 
-  <!-- LMS Shared JavaScript -->
+  <!-- ======================================================
+       SHARED SIDEBAR
+       ====================================================== -->
 
-  
-  <!-- Phase 1: shared admin authentication foundation -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="assets/js/supabase-config.js"></script>
-  <script src="assets/js/config.js"></script>
-  <script src="assets/js/auth.js"></script>
-  <script src="assets/js/permissions.js"></script>
-  <script src="assets/js/lms.js"></script>
-  <script src="assets/js/lms-phase2.js"></script>
+  <script src="assets/js/admin-lms-sidebar.js"></script>
+
+
+  <!-- ======================================================
+       PAGE SCRIPT
+       ====================================================== -->
+
+  <script>
+
+    (function () {
+
+      "use strict";
+
+
+      const courseList =
+        document.getElementById(
+          "admin-course-list"
+        );
+
+
+      const courseSearch =
+        document.getElementById(
+          "admin-course-search"
+        );
+
+
+      const statusFilter =
+        document.getElementById(
+          "admin-course-status-filter"
+        );
+
+
+      const sortSelect =
+        document.getElementById(
+          "admin-course-sort"
+        );
+
+
+      /*
+       * These event listeners are ready for the
+       * Supabase/data layer.
+       */
+
+      if (courseSearch) {
+
+        courseSearch.addEventListener(
+          "input",
+          function () {
+
+            filterCourses();
+
+          }
+        );
+
+      }
+
+
+      if (statusFilter) {
+
+        statusFilter.addEventListener(
+          "change",
+          function () {
+
+            filterCourses();
+
+          }
+        );
+
+      }
+
+
+      if (sortSelect) {
+
+        sortSelect.addEventListener(
+          "change",
+          function () {
+
+            sortCourses();
+
+          }
+        );
+
+      }
+
+
+      function filterCourses() {
+
+        /*
+         * Course filtering will connect to the
+         * LMS course data layer.
+         */
+
+      }
+
+
+      function sortCourses() {
+
+        /*
+         * Course sorting will connect to the
+         * LMS course data layer.
+         */
+
+      }
+
+
+      /*
+       * Public hook for the LMS data layer.
+       */
+
+      window.renderAdminCourses =
+        function (courses) {
+
+          if (!courseList) {
+
+            return;
+
+          }
+
+
+          updateCourseSummary(courses);
+
+
+          if (
+            !Array.isArray(courses) ||
+            courses.length === 0
+          ) {
+
+            return;
+
+          }
+
+
+          /*
+           * Full Supabase rendering will be added
+           * when we wire the admin LMS pages.
+           */
+
+        };
+
+
+      function updateCourseSummary(courses) {
+
+        if (!Array.isArray(courses)) {
+
+          courses = [];
+
+        }
+
+
+        const published =
+          courses.filter(
+            function (course) {
+
+              return course.status ===
+                "published";
+
+            }
+          ).length;
+
+
+        const drafts =
+          courses.filter(
+            function (course) {
+
+              return course.status ===
+                "draft";
+
+            }
+          ).length;
+
+
+        const archived =
+          courses.filter(
+            function (course) {
+
+              return course.status ===
+                "archived";
+
+            }
+          ).length;
+
+
+        const totalTarget =
+          document.getElementById(
+            "admin-total-courses"
+          );
+
+
+        const publishedTarget =
+          document.getElementById(
+            "admin-published-courses"
+          );
+
+
+        const draftTarget =
+          document.getElementById(
+            "admin-draft-courses"
+          );
+
+
+        const archivedTarget =
+          document.getElementById(
+            "admin-archived-courses"
+          );
+
+
+        const countTarget =
+          document.getElementById(
+            "admin-course-count"
+          );
+
+
+        if (totalTarget) {
+
+          totalTarget.textContent =
+            courses.length;
+
+        }
+
+
+        if (publishedTarget) {
+
+          publishedTarget.textContent =
+            published;
+
+        }
+
+
+        if (draftTarget) {
+
+          draftTarget.textContent =
+            drafts;
+
+        }
+
+
+        if (archivedTarget) {
+
+          archivedTarget.textContent =
+            archived;
+
+        }
+
+
+        if (countTarget) {
+
+          countTarget.textContent =
+            courses.length +
+            (
+              courses.length === 1
+                ? " Course"
+                : " Courses"
+            );
+
+        }
+
+      }
+
+
+    })();
+
+  </script>
+
 
 </body>
 </html>

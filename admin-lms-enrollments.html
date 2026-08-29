@@ -1,883 +1,180 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  >
-
-  <title>Enrollment Management | Screenings4u Learning Center</title>
-  <link rel="icon" type="image/png" href="images/fav.png">
-
-  <link
-    rel="stylesheet"
-    href="assets/css/lms.css"
-  >
-
-  <style>
-    /* ============================================================
-       ENROLLMENT MANAGEMENT PAGE
-       ============================================================ */
-
-    .lms-brand.lms-brand-logo-only {
-      min-height: 88px;
-      justify-content: center;
-      padding: 14px 20px;
-    }
-
-    .lms-brand.lms-brand-logo-only .lms-brand-logo-wrap {
-      width: 148px;
-      height: 54px;
-      flex: 0 0 148px;
-      background: transparent;
-      border-radius: 0;
-    }
-
-    .lms-brand.lms-brand-logo-only .lms-brand-logo {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-    }
-
-    .lms-page-context-label {
-      color: var(--s4u-blue);
-      font-weight: 800;
-      letter-spacing: .01em;
-    }
-
-    .lms-page-context-title {
-      color: var(--s4u-orange);
-      font-weight: 800;
-    }
-
-    .lms-breadcrumbs {
-      display: flex;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-bottom: 18px;
-      color: var(--s4u-muted);
-      font-size: .82rem;
-      font-weight: 650;
-    }
-
-    .lms-breadcrumbs a {
-      color: var(--s4u-blue);
-      text-decoration: none;
-    }
-
-    .lms-breadcrumbs a:hover {
-      color: var(--s4u-orange);
-    }
-
-    .page-heading {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: 24px;
-      margin-bottom: 22px;
-    }
-
-    .page-heading-copy { min-width: 0; }
-
-    .page-eyebrow {
-      margin-bottom: 8px;
-      color: var(--s4u-orange);
-      font-size: .72rem;
-      font-weight: 850;
-      letter-spacing: .08em;
-      text-transform: uppercase;
-    }
-
-    .page-heading h1 {
-      margin: 0;
-      color: var(--s4u-blue);
-      font-size: clamp(1.7rem, 3vw, 2.35rem);
-      font-weight: 850;
-      letter-spacing: -.04em;
-    }
-
-    .page-heading p {
-      max-width: 760px;
-      margin: 9px 0 0;
-      color: var(--s4u-text);
-      font-size: .92rem;
-      line-height: 1.6;
-    }
-
-    .enrollment-stats {
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 16px;
-      margin-bottom: 20px;
-    }
-
-    .enrollment-stat {
-      min-height: 126px;
-      padding: 19px 20px;
-      background: var(--s4u-surface);
-      border: 1px solid var(--s4u-border);
-      border-radius: var(--s4u-radius);
-      box-shadow: var(--s4u-shadow);
-      box-sizing: border-box;
-    }
-
-    .enrollment-stat-label {
-      color: var(--s4u-muted);
-      font-size: .72rem;
-      font-weight: 800;
-      letter-spacing: .04em;
-      text-transform: uppercase;
-    }
-
-    .enrollment-stat-value {
-      margin-top: 14px;
-      color: var(--s4u-blue);
-      font-size: 1.65rem;
-      font-weight: 850;
-      letter-spacing: -.03em;
-    }
-
-    .enrollment-stat-note {
-      margin-top: 7px;
-      color: var(--s4u-text);
-      font-size: .75rem;
-    }
-
-    .management-card {
-      overflow: hidden;
-    }
-
-    .management-card .lms-card-header {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: 18px;
-    }
-
-    .enrollment-filters {
-      padding: 18px 20px;
-      display: grid;
-      grid-template-columns: minmax(220px, 1.55fr) minmax(170px, 1fr) minmax(160px, .9fr) minmax(160px, .9fr) auto;
-      gap: 12px;
-      border-bottom: 1px solid var(--s4u-border);
-      background: #fbfcfe;
-    }
-
-    .filter-field { min-width: 0; }
-
-    .filter-field label {
-      display: block;
-      margin-bottom: 6px;
-      color: var(--s4u-muted);
-      font-size: .68rem;
-      font-weight: 800;
-      letter-spacing: .05em;
-      text-transform: uppercase;
-    }
-
-    .enrollment-filters input,
-    .enrollment-filters select {
-      width: 100%;
-      min-height: 42px;
-      padding: 0 12px;
-      color: var(--s4u-text);
-      background: var(--s4u-surface);
-      border: 1px solid var(--s4u-border);
-      border-radius: 7px;
-      outline: none;
-      font: inherit;
-      font-size: .82rem;
-      box-sizing: border-box;
-    }
-
-    .enrollment-filters input:focus,
-    .enrollment-filters select:focus {
-      border-color: var(--s4u-blue);
-      box-shadow: 0 0 0 3px rgba(50, 90, 163, .10);
-    }
-
-    .filter-action {
-      display: flex;
-      align-items: end;
-    }
-
-    .filter-action .lms-btn { min-height: 42px; }
-
-    .enrollment-table-wrap {
-      width: 100%;
-      overflow-x: auto;
-    }
-
-    .enrollment-table {
-      width: 100%;
-      min-width: 1120px;
-      border-collapse: collapse;
-    }
-
-    .enrollment-table thead th {
-      padding: 13px 18px;
-      color: var(--s4u-blue);
-      background: var(--s4u-soft);
-      border-bottom: 1px solid var(--s4u-border);
-      font-size: .68rem;
-      font-weight: 850;
-      letter-spacing: .05em;
-      text-align: left;
-      text-transform: uppercase;
-    }
-
-    .enrollment-table tbody td {
-      padding: 15px 18px;
-      color: var(--s4u-text);
-      border-bottom: 1px solid var(--s4u-border);
-      font-size: .81rem;
-      vertical-align: middle;
-    }
-
-    .enrollment-table tbody tr:last-child td { border-bottom: 0; }
-    .enrollment-table tbody tr:hover { background: #fbfcfe; }
-
-    .student-cell {
-      min-width: 180px;
-    }
-
-    .student-name {
-      color: var(--s4u-blue);
-      font-weight: 800;
-      text-decoration: none;
-    }
-
-    .student-name:hover { color: var(--s4u-orange); }
-
-    .student-email {
-      margin-top: 4px;
-      color: var(--s4u-muted);
-      font-size: .72rem;
-    }
-
-    .course-link {
-      color: var(--s4u-blue);
-      font-weight: 750;
-      text-decoration: none;
-    }
-
-    .course-link:hover { color: var(--s4u-orange); }
-
-    .status-badge {
-      display: inline-flex;
-      align-items: center;
-      min-height: 26px;
-      padding: 0 9px;
-      border-radius: 20px;
-      font-size: .7rem;
-      font-weight: 800;
-      white-space: nowrap;
-    }
-
-    .status-active {
-      color: var(--s4u-blue);
-      background: var(--s4u-blue-soft);
-    }
-
-    .status-completed {
-      color: #267044;
-      background: #eaf6ee;
-    }
-
-    .status-expired {
-      color: #9a5b00;
-      background: #fff4df;
-    }
-
-    .progress-cell {
-      min-width: 135px;
-    }
-
-    .progress-label {
-      display: flex;
-      justify-content: space-between;
-      gap: 10px;
-      margin-bottom: 6px;
-      color: var(--s4u-muted);
-      font-size: .72rem;
-      font-weight: 700;
-    }
-
-    .progress-track {
-      height: 7px;
-      overflow: hidden;
-      background: var(--s4u-soft);
-      border-radius: 20px;
-    }
-
-    .progress-bar {
-      height: 100%;
-      width: 0;
-      background: var(--s4u-blue);
-      border-radius: inherit;
-    }
-
-    .table-muted {
-      color: var(--s4u-muted);
-      font-size: .76rem;
-    }
-
-    .table-actions {
-      display: flex;
-      align-items: center;
-      gap: 7px;
-    }
-
-    .table-action {
-      min-height: 32px;
-      padding: 0 10px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--s4u-blue);
-      background: var(--s4u-surface);
-      border: 1px solid var(--s4u-border);
-      border-radius: 6px;
-      font: inherit;
-      font-size: .73rem;
-      font-weight: 750;
-      text-decoration: none;
-      white-space: nowrap;
-    }
-
-    .table-action:hover {
-      color: var(--s4u-orange);
-      border-color: var(--s4u-orange);
-      text-decoration: none;
-    }
-
-    .empty-enrollments {
-      padding: 34px 24px;
-      color: var(--s4u-muted);
-      text-align: center;
-      font-size: .82rem;
-      line-height: 1.55;
-    }
-
-    .enrollment-management-note {
-      margin-top: 20px;
-      padding: 15px 17px;
-      color: var(--s4u-muted);
-      background: var(--s4u-soft);
-      border: 1px solid var(--s4u-border);
-      border-radius: var(--s4u-radius);
-      font-size: .77rem;
-      line-height: 1.55;
-    }
-
-    @media (max-width: 1180px) {
-      .enrollment-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-      .enrollment-filters { grid-template-columns: 1fr 1fr; }
-    }
-
-    @media (max-width: 760px) {
-      .page-heading { flex-direction: column; }
-      .page-heading .lms-btn { width: 100%; }
-      .management-card .lms-card-header { flex-direction: column; }
-      .management-card .lms-card-header .lms-btn { width: 100%; }
-      .enrollment-stats { grid-template-columns: 1fr; }
-      .enrollment-filters { grid-template-columns: 1fr; }
-      .filter-action .lms-btn { width: 100%; }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Enrollment Management | Screenings4u Learning Center</title>
+<link rel="stylesheet" href="assets/css/admin-lms.css">
+<style>
+.enrollment-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px;margin-bottom:24px}
+.stat-card{background:#fff;border:1px solid var(--admin-border);border-radius:var(--r-md);padding:20px;box-shadow:var(--shadow-soft)}
+.stat-card label{display:block;color:var(--admin-muted);font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.07em}
+.stat-card strong{display:block;margin-top:8px;font-size:29px;letter-spacing:-.04em}.stat-card span{display:block;margin-top:6px;color:var(--admin-muted);font-size:11px}
+.enrollment-card{background:#fff;border:1px solid var(--admin-border);border-radius:var(--r-md);box-shadow:var(--shadow-soft);overflow:hidden}
+.toolbar{padding:18px 20px;border-bottom:1px solid var(--admin-border);display:flex;gap:12px;align-items:center}
+.search{position:relative;flex:1}.search svg{position:absolute;left:13px;top:50%;transform:translateY(-50%);width:17px;height:17px;fill:none;stroke:var(--admin-muted);stroke-width:2}
+.search input,.filter{height:44px;border:1px solid var(--admin-border);border-radius:10px;background:#fff;font:inherit;font-size:12px;outline:none}
+.search input{width:100%;padding:0 12px 0 40px}.filter{min-width:160px;padding:0 10px}
+.search input:focus,.filter:focus{border-color:var(--admin-blue);box-shadow:0 0 0 3px rgba(50,90,163,.09)}
+.enrollment-row{display:grid;grid-template-columns:minmax(210px,1.15fr) minmax(230px,1.3fr) 125px 120px 145px;gap:18px;align-items:center;padding:18px 20px;border-bottom:1px solid var(--admin-border)}
+.enrollment-row:last-child{border-bottom:0}
+.person{display:flex;align-items:center;gap:12px}.avatar{width:42px;height:42px;border-radius:50%;background:#eef2f9;color:var(--admin-blue);display:grid;place-items:center;font-size:12px;font-weight:900}
+.person strong,.course strong{display:block;font-size:12px}.person span,.course span{display:block;margin-top:4px;color:var(--admin-muted);font-size:10px}
+.date-cell{font-size:12px;font-weight:800}.date-cell small{display:block;margin-top:4px;color:var(--admin-muted);font-size:10px;font-weight:500}
+.status{display:inline-flex;padding:6px 9px;border-radius:999px;font-size:10px;font-weight:900}
+.active{background:#eef8f1;color:#287348}.completed{background:#edf3ff;color:var(--admin-blue)}.pending{background:#fff0e5;color:var(--admin-orange)}
+.actions{display:flex;justify-content:flex-end;gap:7px}.action{height:35px;padding:0 10px;border:1px solid var(--admin-border);border-radius:8px;background:#fff;color:var(--admin-blue);font-size:11px;font-weight:800}
+.empty{display:none;padding:50px 20px;text-align:center;color:var(--admin-muted);font-size:12px}.table-footer{padding:15px 20px;border-top:1px solid var(--admin-border);display:flex;justify-content:space-between;color:var(--admin-muted);font-size:11px}
+.modal-overlay{position:fixed;inset:0;background:rgba(19,31,52,.45);display:none;align-items:center;justify-content:center;padding:20px;z-index:9999}.modal-overlay.show{display:flex}
+.modal{width:min(560px,100%);background:#fff;border-radius:16px;box-shadow:0 24px 70px rgba(0,0,0,.2);overflow:hidden}.modal-head{padding:20px 22px;border-bottom:1px solid var(--admin-border);display:flex;align-items:center;justify-content:space-between}.modal-head h2{margin:0;font-size:16px}.modal-close{border:0;background:transparent;font-size:22px;color:var(--admin-muted)}
+.modal-body{padding:22px}.field{display:flex;flex-direction:column;gap:7px;margin-bottom:15px}.field label{font-size:12px;font-weight:800}.field input,.field select{height:44px;border:1px solid var(--admin-border);border-radius:9px;padding:0 11px;font:inherit;font-size:12px;outline:none}.field input:focus,.field select:focus{border-color:var(--admin-blue);box-shadow:0 0 0 3px rgba(50,90,163,.09)}
+.modal-actions{padding:16px 22px;border-top:1px solid var(--admin-border);display:flex;justify-content:flex-end;gap:10px}
+.info-panel{margin-top:24px;background:#fff;border:1px solid var(--admin-border);border-radius:var(--r-md);box-shadow:var(--shadow-soft);padding:21px;display:grid;grid-template-columns:46px 1fr;gap:16px}.info-icon{width:46px;height:46px;border-radius:12px;background:#fff0e5;color:var(--admin-orange);display:grid;place-items:center;font-size:21px;font-weight:900}.info-panel h2{margin:0;font-size:14px}.info-panel p{margin:6px 0 0;color:var(--admin-muted);font-size:11px;line-height:1.6}
+@media(max-width:1080px){.enrollment-stats{grid-template-columns:repeat(2,1fr)}.enrollment-row{grid-template-columns:1fr 1fr 120px}.actions{grid-column:1/-1;justify-content:flex-start}}@media(max-width:680px){.enrollment-stats{grid-template-columns:1fr}.toolbar{flex-direction:column;align-items:stretch}.filter{min-width:0}.enrollment-row{grid-template-columns:1fr;padding:17px}.actions{justify-content:flex-start}.table-footer{flex-direction:column;gap:7px}}
+</style>
 </head>
-
-<body data-s4u-portal="admin">
-
-  <div class="lms-app">
-
-    <div
-      class="lms-sidebar-overlay"
-      data-lms-sidebar-overlay
-    ></div>
-
-
-    <!-- ======================================================
-         LMS SIDEBAR
-         ====================================================== -->
-
-    <aside class="lms-sidebar">
-
-      <a
-        href="admin-lms-courses.html"
-        class="lms-brand lms-brand-logo-only"
-        aria-label="Screenings4u Learning Center"
-      >
-        <div class="lms-brand-logo-wrap">
-          <img
-            src="images/logo.png"
-            alt="Screenings4u"
-            class="lms-brand-logo"
-          >
-        </div>
-      </a>
-
-
-      <div class="lms-sidebar-scroll">
-
-        <div class="lms-nav-group">
-
-          <div class="lms-nav-label">HOME</div>
-
-          <ul class="lms-nav-list">
-            <li class="lms-nav-item">
-              <a
-                href="admin-lms-courses.html"
-                class="lms-nav-link"
-              >
-                <span class="lms-nav-icon">
-                  <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
-                    <path d="M3 12l9-9 9 9"></path>
-                    <path d="M5 10v10h14V10"></path>
-                  </svg>
-                </span>
-                Courses
-              </a>
-            </li>
-          </ul>
-
-        </div>
-
-
-        <div class="lms-nav-group">
-
-          <div class="lms-nav-label">MANAGE</div>
-
-          <ul class="lms-nav-list">
-
-            <li class="lms-nav-item">
-              <a href="admin-lms-enrollments.html" class="lms-nav-link">
-                <span class="lms-nav-icon">
-                  <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
-                    <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
-                    <circle cx="9" cy="7" r="4"></circle>
-                    <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
-                    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-                  </svg>
-                </span>
-                Enrollments
-              </a>
-            </li>
-
-            <li class="lms-nav-item">
-              <a href="admin-lms-students.html" class="lms-nav-link">
-                <span class="lms-nav-icon">
-                  <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
-                    <circle cx="12" cy="7" r="4"></circle>
-                    <path d="M5.5 21a6.5 6.5 0 0 1 13 0"></path>
-                  </svg>
-                </span>
-                Students
-              </a>
-            </li>
-
-            <li class="lms-nav-item">
-              <a href="admin-lms-progress.html" class="lms-nav-link">
-                <span class="lms-nav-icon">
-                  <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
-                    <path d="M3 3v18h18"></path>
-                    <path d="M7 16l4-5 3 3 5-7"></path>
-                  </svg>
-                </span>
-                Progress
-              </a>
-            </li>
-
-          </ul>
-
-        </div>
-
-
-        <div class="lms-nav-group">
-
-          <div class="lms-nav-label">CONTENT</div>
-
-          <ul class="lms-nav-list">
-
-            <li class="lms-nav-item">
-              <a href="admin-lms-lessons.html" class="lms-nav-link">
-                <span class="lms-nav-icon">
-                  <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
-                    <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
-                    <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
-                  </svg>
-                </span>
-                Lessons
-              </a>
-            </li>
-
-            <li class="lms-nav-item">
-              <a href="admin-lms-quizzes.html" class="lms-nav-link">
-                <span class="lms-nav-icon">
-                  <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
-                    <circle cx="12" cy="12" r="9"></circle>
-                    <path d="M9.5 9a2.5 2.5 0 1 1 4.3 1.7c-.8.8-1.8 1.3-1.8 2.8"></path>
-                    <path d="M12 17h.01"></path>
-                  </svg>
-                </span>
-                Quizzes
-              </a>
-            </li>
-
-            <li class="lms-nav-item">
-              <a href="admin-lms-assessments.html" class="lms-nav-link">
-                <span class="lms-nav-icon">
-                  <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
-                    <path d="M9 11l3 3L22 4"></path>
-                    <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
-                  </svg>
-                </span>
-                Assessments
-              </a>
-            </li>
-
-            <li class="lms-nav-item">
-              <a href="admin-lms-media.html" class="lms-nav-link">
-                <span class="lms-nav-icon">
-                  <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
-                    <rect x="3" y="3" width="18" height="18" rx="2"></rect>
-                    <circle cx="8.5" cy="8.5" r="1.5"></circle>
-                    <path d="M21 15l-5-5L5 21"></path>
-                  </svg>
-                </span>
-                Media
-              </a>
-            </li>
-
-          </ul>
-
-        </div>
-
-
-        <div class="lms-nav-group">
-
-          <div class="lms-nav-label">RECORDS</div>
-
-          <ul class="lms-nav-list">
-            <li class="lms-nav-item">
-              <a href="admin-lms-certificates.html" class="lms-nav-link">
-                <span class="lms-nav-icon">
-                  <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
-                    <circle cx="12" cy="8" r="5"></circle>
-                    <path d="M8.5 12.5L7 22l5-3 5 3-1.5-9.5"></path>
-                  </svg>
-                </span>
-                Certificates
-              </a>
-            </li>
-          </ul>
-
-        </div>
-
-      </div>
-
-
-      <div class="lms-sidebar-footer">
-        <a
-          href="admin-dashboard.html"
-          class="lms-back-admin"
-        >
-          <span class="lms-nav-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
-              <path d="M19 12H5"></path>
-              <path d="M12 19l-7-7 7-7"></path>
-            </svg>
-          </span>
-          Back to Main Administration
-        </a>
-      </div>
-
-    </aside>
-
-
-    <!-- ======================================================
-         MAIN APPLICATION
-         ====================================================== -->
-
-    <main class="lms-main">
-
-      <header class="lms-topbar">
-
-        <div class="lms-topbar-left">
-
-          <button
-            type="button"
-            class="lms-icon-button lms-mobile-menu-button"
-            data-lms-menu-toggle
-            aria-label="Open navigation"
-          >
-            <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
-              <path d="M4 6h16"></path>
-              <path d="M4 12h16"></path>
-              <path d="M4 18h16"></path>
-            </svg>
-          </button>
-
-          <div class="lms-page-context">
-            <span class="lms-page-context-label">
-              Screenings4u Learning Center
-            </span>
-            <span class="lms-page-context-title">
-              Enrollment Management
-            </span>
-          </div>
-
-        </div>
-
-
-        <div class="lms-topbar-right">
-
-          <button
-            type="button"
-            class="lms-icon-button"
-            aria-label="Notifications"
-          >
-            <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
-              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 7-3 9h18c0-2-3-2-3-9"></path>
-              <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
-            </svg>
-          </button>
-
-          <button
-            type="button"
-            class="lms-user-button"
-            data-lms-user-button
-          >
-            <span class="lms-user-avatar">AD</span>
-
-            <span class="lms-user-copy">
-              <span class="lms-user-name">Administrator</span>
-              <span class="lms-user-role">LMS Administration</span>
-            </span>
-          </button>
-
-        </div>
-
-      </header>
-
-
-      <!-- ====================================================
-           ENROLLMENT MANAGEMENT
-           ==================================================== -->
-
-      <section class="lms-page">
-        <div class="lms-page-inner">
-
-          <nav class="lms-breadcrumbs" aria-label="Breadcrumb">
-            <a href="admin-lms-courses.html">Courses</a>
-            <span>/</span>
-            <span>Enrollment Management</span>
-          </nav>
-
-          <div class="page-heading">
-            <div class="page-heading-copy">
-              <div class="page-eyebrow">Learner Access</div>
-              <h1>Enrollment Management</h1>
-              <p>
-                Manage learner access to purchased courses, review progress and
-                completion status, and maintain enrollment records across the
-                Screenings4u Learning Center.
-              </p>
-            </div>
-
-            <button type="button" class="lms-btn lms-btn-primary" id="createEnrollmentButton">
-              + Add Enrollment
-            </button>
-          </div>
-
-          <section class="enrollment-stats" aria-label="Enrollment summary">
-            <article class="enrollment-stat">
-              <div class="enrollment-stat-label">Total Enrollments</div>
-              <div class="enrollment-stat-value" id="statTotalEnrollments">—</div>
-              <div class="enrollment-stat-note">All learner course records</div>
-            </article>
-
-            <article class="enrollment-stat">
-              <div class="enrollment-stat-label">Active</div>
-              <div class="enrollment-stat-value" id="statActiveEnrollments">—</div>
-              <div class="enrollment-stat-note">Learners with active access</div>
-            </article>
-
-            <article class="enrollment-stat">
-              <div class="enrollment-stat-label">Completed</div>
-              <div class="enrollment-stat-value" id="statCompletedEnrollments">—</div>
-              <div class="enrollment-stat-note">Completed learning records</div>
-            </article>
-
-            <article class="enrollment-stat">
-              <div class="enrollment-stat-label">Certificates</div>
-              <div class="enrollment-stat-value" id="statCertificates">—</div>
-              <div class="enrollment-stat-note">Issued certificate records</div>
-            </article>
-          </section>
-
-          <section class="lms-card management-card">
-
-            <div class="lms-card-header">
-              <div>
-                <h2 class="lms-card-title">All Enrollments</h2>
-                <p class="lms-card-description">
-                  Search learners, filter course access, and open individual
-                  enrollment records for detailed progress management.
-                </p>
-              </div>
-
-              <a href="admin-lms-students.html" class="lms-btn lms-btn-secondary">
-                View Students
-              </a>
-            </div>
-
-            <div class="enrollment-filters">
-
-              <div class="filter-field">
-                <label for="enrollmentSearch">Search Student</label>
-                <input type="search" id="enrollmentSearch"
-                  placeholder="Search name or email...">
-              </div>
-
-              <div class="filter-field">
-                <label for="enrollmentCourseFilter">Course</label>
-                <select id="enrollmentCourseFilter">
-                  <option value="">All Courses</option>
-                </select>
-              </div>
-
-              <div class="filter-field">
-                <label for="enrollmentStatusFilter">Status</label>
-                <select id="enrollmentStatusFilter">
-                  <option value="">All Statuses</option>
-                  <option value="active">Active</option>
-                  <option value="completed">Completed</option>
-                  <option value="expired">Expired</option>
-                </select>
-              </div>
-
-              <div class="filter-field">
-                <label for="enrollmentProgressFilter">Progress</label>
-                <select id="enrollmentProgressFilter">
-                  <option value="">All Progress</option>
-                  <option value="not-started">Not Started</option>
-                  <option value="in-progress">In Progress</option>
-                  <option value="complete">100% Complete</option>
-                </select>
-              </div>
-
-              <div class="filter-action">
-                <button type="button" class="lms-btn lms-btn-secondary"
-                  id="clearEnrollmentFilters">Clear</button>
-              </div>
-
-            </div>
-
-            <div class="enrollment-table-wrap">
-              <table class="enrollment-table">
-                <thead>
-                  <tr>
-                    <th>Student</th>
-                    <th>Course</th>
-                    <th>Status</th>
-                    <th>Progress</th>
-                    <th>Enrollment</th>
-                    <th>Completion</th>
-                    <th>Certificate</th>
-                    <th>Actions</th>
-                  </tr>
-                </thead>
-
-                <tbody id="enrollmentsTableBody">
-                  <!-- Dynamic data:
-                       lms_enrollments
-                       lms_courses
-                       lms_lesson_progress
-                       lms_quiz_attempts
-                       lms_assessment_attempts
-                       lms_certificates
-                       order_items
-                  -->
-                  <tr>
-                    <td colspan="8">
-                      <div class="empty-enrollments">
-                        Enrollment records will appear here when the LMS
-                        database is connected. This page will manage learner
-                        course access, progress, completion, and related
-                        certificate records.
-                      </div>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-
-          </section>
-
-          <div class="enrollment-management-note">
-            <strong style="color: var(--s4u-blue);">System relationship:</strong>
-            Each <strong>lms_enrollments</strong> record belongs to an
-            <strong>lms_courses</strong> record and is connected to
-            <strong>order_items</strong> when the enrollment originated from a
-            course purchase. Learning activity is derived from lesson, quiz,
-            and assessment progress records. Certificate information is linked
-            through <strong>lms_certificates</strong>.
-          </div>
-
-        </div>
-      </section>
-    </main>
-
-  </div>
-
-
-  <!-- ==========================================================
-       SHARED LMS JAVASCRIPT
-       ========================================================== -->
-
-  
-  <!-- Phase 1: shared admin authentication foundation -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="assets/js/supabase-config.js"></script>
-  <script src="assets/js/config.js"></script>
-  <script src="assets/js/auth.js"></script>
-  <script src="assets/js/permissions.js"></script>
-  <script src="assets/js/lms.js"></script>
-  <script src="assets/js/lms-phase6.js"></script>
-
-
-  <!-- ==========================================================
-       ENROLLMENT MANAGEMENT UI
-       Database wiring will use the actual lms_enrollments columns.
-       ========================================================== -->
-  <script>
-    (function () {
-      "use strict";
-
-      document.addEventListener("DOMContentLoaded", function () {
-        var clearButton = document.getElementById("clearEnrollmentFilters");
-        var ids = [
-          "enrollmentSearch",
-          "enrollmentCourseFilter",
-          "enrollmentStatusFilter",
-          "enrollmentProgressFilter"
-        ];
-
-        if (clearButton) {
-          clearButton.addEventListener("click", function () {
-            ids.forEach(function (id) {
-              var element = document.getElementById(id);
-              if (element) element.value = "";
-            });
-          });
-        }
-      });
-    })();
-  </script>
-
+<body>
+<div class="admin-lms-app">
+<div id="admin-lms-sidebar-target"></div>
+<main class="admin-lms-main">
+
+<header class="admin-lms-topbar">
+<div class="admin-lms-topbar-left">
+<button type="button" class="admin-lms-menu-button" data-admin-menu-toggle aria-label="Toggle navigation"><svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+<div class="admin-lms-page-context"><small>Screenings4u Learning Center</small><strong>Enrollment Management</strong></div>
+</div>
+<div class="admin-lms-topbar-right">
+<a href="admin-lms-notifications.html" class="admin-lms-icon-button" aria-label="Notifications"><svg viewBox="0 0 24 24"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/><path d="M10 21h4"/></svg></a>
+<div class="admin-lms-user"><span class="admin-lms-avatar">AD</span><span class="admin-lms-user-copy"><span class="admin-lms-user-name">Administrator</span><span class="admin-lms-user-role">Learning Center Admin</span></span></div>
+</div>
+</header>
+
+<section class="admin-lms-content">
+<div class="admin-page-heading">
+<div><span class="admin-page-eyebrow">Course Access</span><h1>Enrollment Management</h1><p>Manage learner access to purchased and assigned training courses.</p></div>
+<button type="button" class="admin-primary-btn" id="openEnrollmentModal">Enroll Student</button>
+</div>
+
+<section class="enrollment-stats">
+<article class="stat-card"><label>Total Enrollments</label><strong>312</strong><span>Across all training courses</span></article>
+<article class="stat-card"><label>Active Enrollments</label><strong>96</strong><span>Learners currently in training</span></article>
+<article class="stat-card"><label>Completed</label><strong>127</strong><span>Training requirements completed</span></article>
+<article class="stat-card"><label>Not Started</label><strong>89</strong><span>Access granted, training pending</span></article>
+</section>
+
+<section class="enrollment-card">
+<div class="toolbar">
+<div class="search"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6"/><path d="m16 16 4 4"/></svg><input id="enrollmentSearch" type="search" placeholder="Search learner or course..."></div>
+<select id="courseFilter" class="filter"><option value="all">All Courses</option><option value="dot">DOT Specimen Collector</option><option value="hair">DOT + Hair Collection</option><option value="trainer">Train the Trainer</option></select>
+<select id="statusFilter" class="filter"><option value="all">All Statuses</option><option value="active">Active</option><option value="completed">Completed</option><option value="pending">Not Started</option></select>
+</div>
+
+<div id="enrollmentList">
+<article class="enrollment-row" data-search="Jordan Williams jordan.williams@example.com DOT Specimen Collector Training" data-course="dot" data-status="active">
+<div class="person"><div class="avatar">JW</div><div><strong>Jordan Williams</strong><span>jordan.williams@example.com</span></div></div>
+<div class="course"><strong>DOT Specimen Collector Training</strong><span>Purchased training access</span></div>
+<div class="date-cell">Aug 14, 2026<small>Enrollment date</small></div>
+<div><span class="status active">ACTIVE</span></div>
+<div class="actions"><button class="action manage-btn">Manage</button><button class="action remove-btn">Remove</button></div>
+</article>
+
+<article class="enrollment-row" data-search="Taylor Johnson taylor.johnson@example.com DOT Specimen Collector Training Hair" data-course="hair" data-status="completed">
+<div class="person"><div class="avatar">TJ</div><div><strong>Taylor Johnson</strong><span>taylor.johnson@example.com</span></div></div>
+<div class="course"><strong>DOT Specimen Collector + Hair</strong><span>Purchased training access</span></div>
+<div class="date-cell">Jul 10, 2026<small>Enrollment date</small></div>
+<div><span class="status completed">COMPLETED</span></div>
+<div class="actions"><button class="action manage-btn">Manage</button><button class="action remove-btn">Remove</button></div>
+</article>
+
+<article class="enrollment-row" data-search="Morgan Davis morgan.davis@example.com DOT Train the Trainer" data-course="trainer" data-status="active">
+<div class="person"><div class="avatar">MD</div><div><strong>Morgan Davis</strong><span>morgan.davis@example.com</span></div></div>
+<div class="course"><strong>DOT Specimen Collector Train the Trainer</strong><span>Administrative enrollment</span></div>
+<div class="date-cell">Aug 8, 2026<small>Enrollment date</small></div>
+<div><span class="status active">ACTIVE</span></div>
+<div class="actions"><button class="action manage-btn">Manage</button><button class="action remove-btn">Remove</button></div>
+</article>
+
+<article class="enrollment-row" data-search="Casey Brown casey.brown@example.com DOT Specimen Collector Training" data-course="dot" data-status="pending">
+<div class="person"><div class="avatar">CB</div><div><strong>Casey Brown</strong><span>casey.brown@example.com</span></div></div>
+<div class="course"><strong>DOT Specimen Collector Training</strong><span>Checkout enrollment</span></div>
+<div class="date-cell">Aug 25, 2026<small>Enrollment date</small></div>
+<div><span class="status pending">NOT STARTED</span></div>
+<div class="actions"><button class="action manage-btn">Manage</button><button class="action remove-btn">Remove</button></div>
+</article>
+</div>
+
+<div id="emptyState" class="empty">No enrollments match your current search or filters.</div>
+<div class="table-footer"><span id="enrollmentCount">Showing 4 enrollments</span><span>Checkout purchases will create live enrollments when the system is wired.</span></div>
+</section>
+
+<section class="info-panel">
+<div class="info-icon">↗</div>
+<div><h2>Enrollment Flow</h2><p>New course purchases should create an enrollment after successful checkout. Administrators can also manually grant access when needed. Active enrollments give learners access through My Learning; completed enrollments retain the learner's progress and certificate history.</p></div>
+</section>
+</section>
+</main>
+</div>
+
+<div class="modal-overlay" id="enrollmentModal" aria-hidden="true">
+<div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+<div class="modal-head"><h2 id="modalTitle">Enroll a Student</h2><button type="button" class="modal-close" id="closeEnrollmentModal">×</button></div>
+<div class="modal-body">
+<div class="field"><label>Student</label><select id="studentSelect"><option value="">Select an existing student</option><option>Jordan Williams</option><option>Taylor Johnson</option><option>Morgan Davis</option><option>Casey Brown</option></select></div>
+<div class="field"><label>Course</label><select id="newCourseSelect"><option value="">Select a course</option><option value="dot">DOT Specimen Collector Training</option><option value="hair">DOT Specimen Collector Training + Hair</option><option value="trainer">DOT Specimen Collector Train the Trainer</option><option value="trainer-hair">DOT Collector Train the Trainer + Hair</option></select></div>
+<div class="field"><label>Enrollment Source</label><select id="sourceSelect"><option>Administrative enrollment</option><option>Purchased training access</option></select></div>
+</div>
+<div class="modal-actions"><button type="button" class="admin-secondary-btn" id="cancelEnrollment">Cancel</button><button type="button" class="admin-primary-btn" id="saveEnrollment">Grant Access</button></div>
+</div>
+</div>
+
+<script src="assets/js/admin-lms-sidebar.js"></script>
+<script>
+(function(){
+"use strict";
+var search=document.getElementById("enrollmentSearch"),course=document.getElementById("courseFilter"),status=document.getElementById("statusFilter");
+var list=document.getElementById("enrollmentList"),rows=[].slice.call(list.querySelectorAll(".enrollment-row")),empty=document.getElementById("emptyState"),count=document.getElementById("enrollmentCount");
+function filter(){
+var term=search.value.toLowerCase().trim(),visible=0;
+[].slice.call(list.querySelectorAll(".enrollment-row")).forEach(function(row){
+var show=(!term||row.dataset.search.toLowerCase().indexOf(term)>-1)&&(course.value==="all"||row.dataset.course===course.value)&&(status.value==="all"||row.dataset.status===status.value);
+row.style.display=show?"grid":"none";if(show)visible++;
+});
+empty.style.display=visible?"none":"block";count.textContent="Showing "+visible+" enrollment"+(visible===1?"":"s");
+}
+search.addEventListener("input",filter);course.addEventListener("change",filter);status.addEventListener("change",filter);
+
+var modal=document.getElementById("enrollmentModal");
+function openModal(){modal.classList.add("show");modal.setAttribute("aria-hidden","false");}
+function closeModal(){modal.classList.remove("show");modal.setAttribute("aria-hidden","true");}
+document.getElementById("openEnrollmentModal").onclick=openModal;
+document.getElementById("closeEnrollmentModal").onclick=closeModal;
+document.getElementById("cancelEnrollment").onclick=closeModal;
+modal.addEventListener("click",function(e){if(e.target===modal)closeModal();});
+
+document.getElementById("saveEnrollment").onclick=function(){
+var student=document.getElementById("studentSelect").value,courseSelect=document.getElementById("newCourseSelect"),courseValue=courseSelect.value,courseName=courseSelect.options[courseSelect.selectedIndex].text,source=document.getElementById("sourceSelect").value;
+if(!student||!courseValue){alert("Please select a student and a course.");return;}
+var initials=student.split(" ").map(function(x){return x[0];}).join("").slice(0,2).toUpperCase();
+var row=document.createElement("article");
+row.className="enrollment-row";
+row.dataset.search=student+" "+courseName;
+row.dataset.course=courseValue==="trainer-hair"?"trainer":courseValue;
+row.dataset.status="pending";
+row.innerHTML='<div class="person"><div class="avatar">'+initials+'</div><div><strong>'+student+'</strong><span>Live student email pending data wiring</span></div></div><div class="course"><strong>'+courseName+'</strong><span>'+source+'</span></div><div class="date-cell">Today<small>Enrollment date</small></div><div><span class="status pending">NOT STARTED</span></div><div class="actions"><button class="action manage-btn">Manage</button><button class="action remove-btn">Remove</button></div>';
+list.prepend(row);closeModal();filter();alert("Enrollment created in the interface. Live database persistence will be connected during wiring.");
+};
+
+list.addEventListener("click",function(e){
+var row=e.target.closest(".enrollment-row");if(!row)return;
+if(e.target.classList.contains("remove-btn")){
+if(confirm("Remove this learner's course access?")){row.remove();filter();}
+}
+if(e.target.classList.contains("manage-btn")){
+alert("Enrollment management controls will connect to the live enrollment record during LMS wiring.");
+}
+});
+filter();
+})();
+</script>
 </body>
 </html>

@@ -1,0 +1,11 @@
+Primary brand system
+Primary Blue: #325aa3
+Dark Blue: #24467f
+Primary Orange: #ff6b00
+Orange Hover: #e66000
+Neutral UI colors
+Page background: #f5f7fa
+Cards: #ffffff
+Borders: #dfe5ec
+Main text: #172033
+Muted text: #687386

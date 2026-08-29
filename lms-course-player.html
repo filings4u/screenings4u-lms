@@ -1,166 +1,1532 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Course Player | screenings4u Learning Center</title>
-<link rel="icon" type="image/png" href="images/fav.png">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Course Player | Screenings4u Learning Center</title>
 
-<style>
-:root{--s4u-blue:#325aa3;--s4u-blue-dark:#24467f;--s4u-orange:#ff6b00;--s4u-bg:#f5f7fa;--s4u-surface:#fff;--s4u-border:#dfe5ec;--s4u-text:#172033;--s4u-muted:#687386;--s4u-soft:#f0f3f7;--sidebar:300px;--topbar:64px}
-*{box-sizing:border-box}body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--s4u-bg);color:var(--s4u-text)}
-button{font-family:inherit}.player{min-height:100vh;padding-left:var(--sidebar)}
-.course-nav{position:fixed;left:0;top:0;bottom:0;width:var(--sidebar);background:#fff;border-right:1px solid var(--s4u-border);display:flex;flex-direction:column;z-index:20}
-.course-brand{height:var(--topbar);padding:0 18px;display:flex;align-items:center;border-bottom:1px solid var(--s4u-border);gap:12px}.course-brand img{max-width:145px;max-height:38px}.back{margin-left:auto;border:0;background:var(--s4u-soft);color:var(--s4u-blue);width:30px;height:30px;border-radius:6px;cursor:pointer;font-weight:bold}
-.course-title{padding:18px;border-bottom:1px solid var(--s4u-border)}.eyebrow{font-size:9px;color:var(--s4u-orange);font-weight:800;letter-spacing:1px}.course-title h1{font-size:14px;line-height:1.4;color:var(--s4u-blue);margin:7px 0}.progress-label{display:flex;justify-content:space-between;font-size:10px;color:var(--s4u-muted);margin-top:12px}.progress-track{height:6px;background:var(--s4u-soft);border-radius:10px;margin-top:7px;overflow:hidden}.progress-fill{height:100%;width:42%;background:var(--s4u-orange);transition:.3s}
-.curriculum{padding:12px 10px;overflow:auto;flex:1}.section{margin-bottom:7px}.section-head{width:100%;border:0;background:#f8fafc;padding:12px;text-align:left;color:var(--s4u-blue);font-size:11px;font-weight:800;border-radius:6px;cursor:pointer;display:flex;justify-content:space-between}.section-head small{color:var(--s4u-muted)}.section-lessons{padding:4px 0}.lesson{width:100%;border:0;background:transparent;text-align:left;padding:11px 12px;display:flex;gap:9px;align-items:center;color:var(--s4u-muted);font-size:11px;cursor:pointer;border-radius:6px}.lesson:hover{background:#f5f8fc}.lesson.active{background:#edf2fb;color:var(--s4u-blue);font-weight:bold}.lesson.done .status{background:var(--s4u-blue);color:#fff;border-color:var(--s4u-blue)}.status{width:17px;height:17px;border:1px solid var(--s4u-border);border-radius:50%;display:grid;place-items:center;font-size:9px;flex:none}.lesson-type{margin-left:auto;font-size:9px;color:var(--s4u-muted)}
-.main{min-height:100vh}.topbar{height:var(--topbar);background:#fff;border-bottom:1px solid var(--s4u-border);padding:0 28px;display:flex;align-items:center;justify-content:space-between}.crumb{font-size:11px;color:var(--s4u-muted)}.crumb b{color:var(--s4u-blue)}.top-actions{display:flex;gap:9px}.icon-btn{border:1px solid var(--s4u-border);background:#fff;border-radius:6px;padding:8px 10px;color:var(--s4u-blue);font-size:10px;font-weight:bold;cursor:pointer}
-.content{max-width:1000px;margin:auto;padding:30px}.lesson-card{background:#fff;border:1px solid var(--s4u-border);border-radius:10px;overflow:hidden}.lesson-header{padding:28px 32px 18px;border-bottom:1px solid var(--s4u-border)}.lesson-header .eyebrow{margin-bottom:7px}.lesson-header h2{color:var(--s4u-blue);font-size:25px;margin:0}.lesson-header p{font-size:12px;color:var(--s4u-muted);line-height:1.7;margin:10px 0 0}
-.content-area{padding:30px 32px}.media{height:290px;border-radius:8px;background:linear-gradient(135deg,#e7eef8,#cbd9ed);display:grid;place-items:center;margin-bottom:26px;position:relative}.play{width:62px;height:62px;border-radius:50%;border:0;background:var(--s4u-orange);color:#fff;font-size:20px;cursor:pointer}.media span{position:absolute;bottom:14px;left:16px;font-size:10px;color:var(--s4u-blue);font-weight:bold}
-.block{margin:22px 0}.block h3{color:var(--s4u-blue);font-size:16px;margin-bottom:10px}.block p,.block li{font-size:13px;color:var(--s4u-muted);line-height:1.75}.callout{background:#fff8f2;border-left:4px solid var(--s4u-orange);padding:15px 17px;font-size:12px;color:#6d513d;line-height:1.65;border-radius:0 6px 6px 0}
-.knowledge{border:1px solid var(--s4u-border);background:#fafcff;padding:20px;border-radius:8px}.knowledge h3{margin-top:0}.option{display:block;border:1px solid var(--s4u-border);background:#fff;border-radius:6px;padding:11px;margin:8px 0;font-size:12px;color:var(--s4u-text);cursor:pointer}.option input{margin-right:8px;accent-color:var(--s4u-blue)}.quiz-result{display:none;margin-top:10px;padding:10px;border-radius:6px;font-size:11px}
-.complete-row{border-top:1px solid var(--s4u-border);padding:20px 32px;display:flex;align-items:center;justify-content:space-between;gap:20px}.complete-note{font-size:11px;color:var(--s4u-muted);line-height:1.5}.btn{border:1px solid var(--s4u-border);background:#fff;color:var(--s4u-blue);padding:11px 15px;border-radius:7px;font-size:11px;font-weight:bold;cursor:pointer}.btn.primary{background:var(--s4u-orange);border-color:var(--s4u-orange);color:#fff}
-.lesson-footer{display:flex;justify-content:space-between;margin-top:20px}.toast{position:fixed;right:20px;bottom:20px;background:var(--s4u-blue);color:#fff;padding:13px 16px;border-radius:7px;font-size:11px;display:none;z-index:50}
-.mobile-toggle{display:none}
-@media(max-width:850px){.player{padding-left:0}.course-nav{transform:translateX(-100%);transition:.2s}.course-nav.open{transform:none}.mobile-toggle{display:inline-block}.content{padding:18px}.content-area,.lesson-header{padding:22px}.complete-row{padding:18px 22px}.media{height:220px}}@media(max-width:560px){.topbar{padding:0 14px}.top-actions{display:none}.lesson-header h2{font-size:20px}.complete-row{display:block}.complete-row .btn{margin-top:12px;width:100%}.lesson-footer{gap:10px}.lesson-footer .btn{flex:1}.content{padding:10px}}
-</style>
+  <!-- Shared LMS shell -->
+  <link rel="stylesheet" href="assets/css/lms.css">
+
+  <style>
+    /* ==========================================================
+       COURSE PLAYER PAGE ONLY
+       Uses the established shared LMS shell and brand system:
+       #325aa3 / #24467f / #ff6b00 / #e66000
+       ========================================================== */
+
+    .lms-course-player-page {
+      width: 100%;
+      min-width: 0;
+      padding-bottom: 28px;
+    }
+
+    .course-player-breadcrumb {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 18px;
+      color: #687386;
+      font-size: 13px;
+      font-weight: 650;
+    }
+
+    .course-player-breadcrumb a {
+      color: #325aa3;
+      text-decoration: none;
+    }
+
+    .course-player-breadcrumb a:hover {
+      color: #24467f;
+    }
+
+    .course-player-breadcrumb svg {
+      width: 15px;
+      height: 15px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .course-player-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 24px;
+      margin-bottom: 24px;
+    }
+
+    .course-player-kicker {
+      margin-bottom: 8px;
+      color: #ff6b00;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+
+    .course-player-title {
+      margin: 0;
+      color: #172033;
+      font-size: clamp(28px, 3vw, 40px);
+      font-weight: 800;
+      line-height: 1.12;
+      letter-spacing: -.025em;
+    }
+
+    .course-player-subtitle {
+      max-width: 760px;
+      margin: 10px 0 0;
+      color: #687386;
+      font-size: 14px;
+      line-height: 1.65;
+    }
+
+    .course-player-progress-summary {
+      min-width: 205px;
+      padding: 15px 17px;
+      border: 1px solid #dfe5ec;
+      border-radius: 14px;
+      background: #ffffff;
+    }
+
+    .course-player-progress-label {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      margin-bottom: 10px;
+      color: #687386;
+      font-size: 11px;
+      font-weight: 750;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+    }
+
+    .course-player-progress-label strong {
+      color: #24467f;
+      font-size: 13px;
+      letter-spacing: 0;
+    }
+
+    .course-player-progress-track {
+      height: 7px;
+      overflow: hidden;
+      border-radius: 999px;
+      background: #f5f7fa;
+    }
+
+    .course-player-progress-fill {
+      width: 8%;
+      height: 100%;
+      border-radius: inherit;
+      background: #ff6b00;
+      transition: width .25s ease;
+    }
+
+    .course-player-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 330px;
+      gap: 24px;
+      align-items: start;
+    }
+
+    .course-player-main {
+      min-width: 0;
+    }
+
+    .course-player-stage {
+      overflow: hidden;
+      border: 1px solid #dfe5ec;
+      border-radius: 16px;
+      background: #ffffff;
+    }
+
+    .course-player-stage-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 14px 18px;
+      border-bottom: 1px solid #dfe5ec;
+      background: #ffffff;
+    }
+
+    .course-player-stage-label {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #24467f;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .course-player-stage-label-icon {
+      width: 30px;
+      height: 30px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 9px;
+      background: #f5f7fa;
+      color: #325aa3;
+    }
+
+    .course-player-stage-label-icon svg {
+      width: 16px;
+      height: 16px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .course-player-lesson-count {
+      color: #687386;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .course-player-lesson-panel {
+      min-height: 520px;
+      padding: clamp(30px, 5vw, 68px);
+      background:
+        radial-gradient(circle at 90% 10%, rgba(50,90,163,.12) 0, rgba(50,90,163,.12) 110px, transparent 111px),
+        #ffffff;
+    }
+
+    .course-player-content-inner {
+      max-width: 760px;
+    }
+
+    .course-player-module-tag {
+      display: inline-flex;
+      align-items: center;
+      min-height: 28px;
+      padding: 0 11px;
+      border-radius: 999px;
+      background: #f5f7fa;
+      color: #325aa3;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+    }
+
+    .course-player-lesson-title {
+      margin: 20px 0 0;
+      color: #172033;
+      font-size: clamp(28px, 4vw, 44px);
+      font-weight: 800;
+      line-height: 1.12;
+      letter-spacing: -.03em;
+    }
+
+    .course-player-lesson-intro {
+      max-width: 700px;
+      margin: 18px 0 0;
+      color: #687386;
+      font-size: 16px;
+      line-height: 1.75;
+    }
+
+    .course-player-info-card {
+      display: grid;
+      grid-template-columns: 44px minmax(0, 1fr);
+      gap: 14px;
+      margin-top: 30px;
+      padding: 20px;
+      border: 1px solid #dfe5ec;
+      border-radius: 14px;
+      background: #f5f7fa;
+    }
+
+    .course-player-info-icon {
+      width: 44px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 12px;
+      background: #325aa3;
+      color: #ffffff;
+    }
+
+    .course-player-info-icon svg {
+      width: 21px;
+      height: 21px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .course-player-info-card h3 {
+      margin: 2px 0 5px;
+      color: #172033;
+      font-size: 15px;
+      font-weight: 800;
+    }
+
+    .course-player-info-card p {
+      margin: 0;
+      color: #687386;
+      font-size: 14px;
+      line-height: 1.65;
+    }
+
+    .course-player-stage-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 18px;
+      border-top: 1px solid #dfe5ec;
+      background: #ffffff;
+    }
+
+    .course-player-prev,
+    .course-player-next {
+      min-height: 46px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      padding: 0 18px;
+      border-radius: 10px;
+      font: inherit;
+      font-size: 13px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: .2s ease;
+    }
+
+    .course-player-prev {
+      border: 1px solid #dfe5ec;
+      background: #ffffff;
+      color: #24467f;
+    }
+
+    .course-player-prev:hover:not(:disabled) {
+      border-color: #325aa3;
+      background: #f5f7fa;
+    }
+
+    .course-player-prev:disabled {
+      opacity: .45;
+      cursor: not-allowed;
+    }
+
+    .course-player-next {
+      border: 1px solid #ff6b00;
+      background: #ff6b00;
+      color: #ffffff;
+    }
+
+    .course-player-next:hover {
+      border-color: #e66000;
+      background: #e66000;
+    }
+
+    .course-player-prev svg,
+    .course-player-next svg {
+      width: 17px;
+      height: 17px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    /* Curriculum sidebar */
+
+    .course-player-sidebar {
+      position: sticky;
+      top: 18px;
+      overflow: hidden;
+      border: 1px solid #dfe5ec;
+      border-radius: 16px;
+      background: #ffffff;
+    }
+
+    .course-player-sidebar-head {
+      padding: 20px;
+      border-bottom: 1px solid #dfe5ec;
+    }
+
+    .course-player-sidebar-kicker {
+      margin-bottom: 6px;
+      color: #ff6b00;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: .11em;
+      text-transform: uppercase;
+    }
+
+    .course-player-sidebar-title {
+      margin: 0;
+      color: #172033;
+      font-size: 18px;
+      font-weight: 800;
+    }
+
+    .course-player-sidebar-scroll {
+      max-height: calc(100vh - 255px);
+      overflow-y: auto;
+    }
+
+    .course-player-module {
+      border-bottom: 1px solid #dfe5ec;
+    }
+
+    .course-player-module:last-child {
+      border-bottom: 0;
+    }
+
+    .course-player-module-button {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 15px 18px;
+      border: 0;
+      background: #ffffff;
+      color: #172033;
+      font: inherit;
+      text-align: left;
+      cursor: pointer;
+    }
+
+    .course-player-module-button:hover {
+      background: #f5f7fa;
+    }
+
+    .course-player-module-left {
+      min-width: 0;
+      display: flex;
+      align-items: center;
+      gap: 11px;
+    }
+
+    .course-player-module-number {
+      flex: 0 0 auto;
+      color: #ff6b00;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: .08em;
+    }
+
+    .course-player-module-name {
+      display: block;
+      color: #24467f;
+      font-size: 12px;
+      font-weight: 800;
+      line-height: 1.35;
+    }
+
+    .course-player-module-chevron {
+      width: 16px;
+      height: 16px;
+      flex: 0 0 auto;
+      fill: none;
+      stroke: #687386;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      transition: transform .2s ease;
+    }
+
+    .course-player-module.is-open .course-player-module-chevron {
+      transform: rotate(180deg);
+    }
+
+    .course-player-lessons {
+      display: none;
+      padding: 0 10px 10px;
+    }
+
+    .course-player-module.is-open .course-player-lessons {
+      display: block;
+    }
+
+    .course-player-lesson-link {
+      width: 100%;
+      display: grid;
+      grid-template-columns: 25px minmax(0, 1fr);
+      gap: 10px;
+      align-items: center;
+      padding: 11px 9px;
+      border: 0;
+      border-radius: 9px;
+      background: transparent;
+      color: #687386;
+      font: inherit;
+      text-align: left;
+      cursor: pointer;
+    }
+
+    .course-player-lesson-link:hover {
+      background: #f5f7fa;
+      color: #24467f;
+    }
+
+    .course-player-lesson-link.is-active {
+      background: rgba(50,90,163,.10);
+      color: #24467f;
+    }
+
+    .course-player-lesson-status {
+      width: 22px;
+      height: 22px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid #dfe5ec;
+      border-radius: 50%;
+      color: #687386;
+      background: #ffffff;
+    }
+
+    .course-player-lesson-link.is-complete .course-player-lesson-status {
+      border-color: #325aa3;
+      background: #325aa3;
+      color: #ffffff;
+    }
+
+    .course-player-lesson-status svg {
+      width: 13px;
+      height: 13px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2.2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .course-player-lesson-copy {
+      min-width: 0;
+    }
+
+    .course-player-lesson-name {
+      display: block;
+      color: inherit;
+      font-size: 12px;
+      font-weight: 750;
+      line-height: 1.4;
+    }
+
+    .course-player-lesson-meta {
+      display: block;
+      margin-top: 2px;
+      color: #687386;
+      font-size: 10px;
+      font-weight: 650;
+    }
+
+    .course-player-sidebar-footer {
+      padding: 14px 18px;
+      border-top: 1px solid #dfe5ec;
+      background: #f5f7fa;
+      color: #687386;
+      font-size: 11px;
+      font-weight: 700;
+      text-align: center;
+    }
+
+    @media (max-width: 1180px) {
+      .course-player-layout {
+        grid-template-columns: minmax(0, 1fr) 300px;
+      }
+    }
+
+    @media (max-width: 980px) {
+      .course-player-header {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .course-player-progress-summary {
+        width: 100%;
+        min-width: 0;
+      }
+
+      .course-player-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .course-player-sidebar {
+        position: static;
+      }
+
+      .course-player-sidebar-scroll {
+        max-height: none;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .course-player-stage-top,
+      .course-player-stage-footer {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .course-player-stage-footer {
+        align-items: stretch;
+      }
+
+      .course-player-prev,
+      .course-player-next {
+        width: 100%;
+      }
+
+      .course-player-lesson-panel {
+        min-height: 430px;
+        padding: 28px 22px;
+      }
+
+      .course-player-info-card {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
 </head>
+
 <body>
-<div class="player">
-<aside class="course-nav" id="courseNav">
- <div class="course-brand"><img src="images/logo.png" alt="Screenings4u"><button class="back" title="Back to courses" onclick="location.href='lms-my-courses.html'">←</button></div>
- <div class="course-title"><div class="eyebrow">CURRENT COURSE</div><h1>DOT Drug &amp; Alcohol Training</h1><div class="progress-label"><span>Course Progress</span><b id="progressText">42%</b></div><div class="progress-track"><div class="progress-fill" id="progressFill"></div></div></div>
- <div class="curriculum">
-  <div class="section"><button class="section-head">Section 1: Course Introduction <small>3/3 ✓</small></button><div class="section-lessons">
-   <button class="lesson done" data-title="Welcome to the Course" data-desc="Begin your training journey with an overview of the course." data-type="LESSON"><span class="status">✓</span><span>Welcome to the Course</span><span class="lesson-type">Lesson</span></button>
-   <button class="lesson done" data-title="Learning Objectives" data-desc="Review the objectives and structure of this training program." data-type="LESSON"><span class="status">✓</span><span>Learning Objectives</span><span class="lesson-type">Lesson</span></button>
-   <button class="lesson done" data-title="Introduction Knowledge Check" data-desc="Confirm your understanding of the introductory material." data-type="QUIZ"><span class="status">✓</span><span>Knowledge Check</span><span class="lesson-type">Quiz</span></button>
-  </div></div>
-  <div class="section"><button class="section-head">Section 2: Core Training Concepts <small>2/3</small></button><div class="section-lessons">
-   <button class="lesson done" data-title="Training Fundamentals" data-desc="Explore foundational concepts used throughout the course." data-type="LESSON"><span class="status">✓</span><span>Training Fundamentals</span><span class="lesson-type">Lesson</span></button>
-   <button class="lesson active" data-title="Workplace Responsibilities" data-desc="Understand important responsibilities covered by this training module." data-type="LESSON"><span class="status"></span><span>Workplace Responsibilities</span><span class="lesson-type">Lesson</span></button>
-   <button class="lesson" data-title="Section Knowledge Check" data-desc="Complete a short knowledge check before continuing." data-type="QUIZ"><span class="status"></span><span>Knowledge Check</span><span class="lesson-type">Quiz</span></button>
-  </div></div>
-  <div class="section"><button class="section-head">Section 3: Compliance Awareness <small>0/3</small></button><div class="section-lessons">
-   <button class="lesson" data-title="Compliance Framework" data-desc="Review the compliance concepts presented in this section." data-type="LESSON"><span class="status"></span><span>Compliance Framework</span><span class="lesson-type">Lesson</span></button>
-   <button class="lesson" data-title="Program Responsibilities" data-desc="Learn about roles and responsibilities within a training program." data-type="LESSON"><span class="status"></span><span>Program Responsibilities</span><span class="lesson-type">Lesson</span></button>
-   <button class="lesson" data-title="Course Review" data-desc="Review important concepts before the final section." data-type="LESSON"><span class="status"></span><span>Course Review</span><span class="lesson-type">Lesson</span></button>
-  </div></div>
-  <div class="section"><button class="section-head">Section 4: Completion <small>0/3</small></button><div class="section-lessons">
-   <button class="lesson" data-title="Final Review" data-desc="Prepare for final course completion." data-type="LESSON"><span class="status"></span><span>Final Review</span><span class="lesson-type">Lesson</span></button>
-   <button class="lesson" data-title="Final Assessment" data-desc="Complete the course assessment." data-type="ASSESSMENT"><span class="status"></span><span>Final Assessment</span><span class="lesson-type">Assessment</span></button>
-   <button class="lesson" data-title="Course Completion" data-desc="Complete the final requirements and receive your completion record when eligible." data-type="COMPLETION"><span class="status"></span><span>Course Completion</span><span class="lesson-type">Complete</span></button>
-  </div></div>
- </div>
-</aside>
 
-<main class="main">
-<header class="topbar"><div><button class="icon-btn mobile-toggle" id="navToggle">☰ Course</button><span class="crumb"><b>Screenings4u Learning Center</b> &nbsp; / &nbsp; DOT Drug &amp; Alcohol Training</span></div><div class="top-actions"><button class="icon-btn" onclick="location.href='lms-my-courses.html'">My Courses</button><button class="icon-btn" onclick="location.href='lms-progress.html'">My Progress</button></div></header>
-<div class="content"><article class="lesson-card">
- <div class="lesson-header"><div class="eyebrow" id="lessonType">SECTION 2 · LESSON</div><h2 id="lessonTitle">Workplace Responsibilities</h2><p id="lessonDesc">Understand important responsibilities covered by this training module.</p></div>
- <div class="content-area">
-  <div class="media"><button class="play" id="playBtn">▶</button><span id="mediaStatus">Course media placeholder — connect to lms_media</span></div>
-  <div class="block"><h3>Understanding the Material</h3><p>This course player is the learner environment where real content blocks will be rendered. Depending on the lesson configuration, content may include text, media, downloadable material, interactive content, quizzes, or assessments.</p><p>Each completed lesson should update the learner's course progress through the LMS progress tables.</p></div>
-  <div class="callout"><b>Remember:</b> Completion requirements should be determined by the actual course and lesson configuration. The learner interface should display progress but the backend should remain the source of truth.</div>
-  <div class="block knowledge" id="knowledgeBlock"><h3>Quick Knowledge Check</h3><p>Which statement best describes the purpose of this learning step?</p>
-   <label class="option"><input type="radio" name="q" value="a"> To automatically complete every remaining lesson.</label>
-   <label class="option"><input type="radio" name="q" value="b"> To review and reinforce the material before progressing.</label>
-   <label class="option"><input type="radio" name="q" value="c"> To replace the course completion requirements.</label>
-   <button class="btn" id="checkAnswer">Check Answer</button><div class="quiz-result" id="quizResult"></div>
+  <div class="lms-app">
+
+    <!-- Dynamic LMS Sidebar -->
+    <div id="lms-sidebar-target"></div>
+
+    <!-- Main shell -->
+    <main class="lms-main">
+
+      <!-- ====================================================
+           TOP BAR
+           ==================================================== -->
+
+      <header class="lms-topbar">
+
+        <div class="lms-topbar-left">
+          <button
+            type="button"
+            class="lms-menu-button"
+            data-lms-menu-toggle
+            aria-label="Toggle navigation"
+          >
+            <svg viewBox="0 0 24 24">
+              <path d="M4 7h16"></path>
+              <path d="M4 12h16"></path>
+              <path d="M4 17h16"></path>
+            </svg>
+          </button>
+        </div>
+
+        <div class="lms-search-wrap">
+          <label class="lms-search">
+            <span class="lms-search-icon">
+              <svg viewBox="0 0 24 24">
+                <circle cx="11" cy="11" r="6"></circle>
+                <path d="m20 20-4-4"></path>
+              </svg>
+            </span>
+
+            <input
+              type="search"
+              placeholder="Search courses, lessons, and resources..."
+              data-lms-search
+            >
+
+            <span class="lms-search-shortcut">Ctrl K</span>
+          </label>
+        </div>
+
+        <div class="lms-topbar-right">
+
+          <button
+            type="button"
+            class="lms-icon-button"
+            aria-label="Notifications"
+          >
+            <svg viewBox="0 0 24 24">
+              <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"></path>
+              <path d="M10 21h4"></path>
+            </svg>
+            <span class="lms-notification-dot"></span>
+          </button>
+
+          <div class="lms-user-wrap">
+
+            <button
+              type="button"
+              class="lms-user-button"
+              data-lms-user-button
+              aria-expanded="false"
+            >
+              <span
+                class="lms-user-avatar"
+                data-lms-learner-initials
+              >JD</span>
+
+              <span
+                class="lms-user-name"
+                data-lms-learner-name
+              >John Doe</span>
+
+              <span class="lms-user-chevron">
+                <svg viewBox="0 0 24 24">
+                  <path d="m7 10 5 5 5-5"></path>
+                </svg>
+              </span>
+            </button>
+
+            <div class="lms-user-menu" data-lms-user-menu>
+
+              <div class="lms-user-menu-header">
+                <span
+                  class="lms-user-menu-name"
+                  data-lms-user-menu-name
+                >John Doe</span>
+
+                <span
+                  class="lms-user-menu-email"
+                  data-lms-user-menu-email
+                >learner@screenings4u.com</span>
+              </div>
+
+              <a href="lms-account.html" class="lms-user-menu-link">
+                My Account
+              </a>
+
+              <a href="lms-certificates.html" class="lms-user-menu-link">
+                My Certificates
+              </a>
+
+              <button
+                type="button"
+                class="lms-user-menu-link"
+                data-lms-sign-out
+              >
+                Sign Out
+              </button>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </header>
+
+      <!-- ====================================================
+           COURSE PLAYER CONTENT
+           ==================================================== -->
+
+      <div class="lms-content lms-course-player-page">
+
+        <nav
+          class="course-player-breadcrumb"
+          aria-label="Breadcrumb"
+        >
+          <a href="lms-dashboard.html">Learning Center</a>
+
+          <svg viewBox="0 0 24 24">
+            <path d="m9 18 6-6-6-6"></path>
+          </svg>
+
+          <a href="lms-courses.html">Course Library</a>
+
+          <svg viewBox="0 0 24 24">
+            <path d="m9 18 6-6-6-6"></path>
+          </svg>
+
+          <a href="lms-course-details.html">
+            DOT Supervisor Training
+          </a>
+
+          <svg viewBox="0 0 24 24">
+            <path d="m9 18 6-6-6-6"></path>
+          </svg>
+
+          <span>Course Player</span>
+        </nav>
+
+        <section class="course-player-header">
+
+          <div>
+            <div class="course-player-kicker">
+              DOT Compliance Training
+            </div>
+
+            <h1 class="course-player-title">
+              DOT Supervisor Training:
+              Reasonable Suspicion
+            </h1>
+
+            <p class="course-player-subtitle">
+              Continue your training from where you left off.
+            </p>
+          </div>
+
+          <div class="course-player-progress-summary">
+            <div class="course-player-progress-label">
+              <span>Course Progress</span>
+              <strong data-course-progress-text>8%</strong>
+            </div>
+
+            <div class="course-player-progress-track">
+              <div
+                class="course-player-progress-fill"
+                data-course-progress-fill
+              ></div>
+            </div>
+          </div>
+
+        </section>
+
+        <div class="course-player-layout">
+
+          <!-- Main lesson area -->
+
+          <div class="course-player-main">
+
+            <section class="course-player-stage">
+
+              <div class="course-player-stage-top">
+
+                <div class="course-player-stage-label">
+                  <span class="course-player-stage-label-icon">
+                    <svg viewBox="0 0 24 24">
+                      <path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v16H6.5A2.5 2.5 0 0 0 4 21.5z"></path>
+                      <path d="M4 5.5v16"></path>
+                    </svg>
+                  </span>
+
+                  <span data-current-lesson-label>
+                    Lesson 1 · Getting Started
+                  </span>
+                </div>
+
+                <span
+                  class="course-player-lesson-count"
+                  data-current-lesson-count
+                >
+                  1 of 12 lessons
+                </span>
+
+              </div>
+
+              <div class="course-player-lesson-panel">
+
+                <div class="course-player-content-inner">
+
+                  <span
+                    class="course-player-module-tag"
+                    data-current-module
+                  >
+                    Module 1
+                  </span>
+
+                  <h2
+                    class="course-player-lesson-title"
+                    data-current-title
+                  >
+                    Welcome to the Course
+                  </h2>
+
+                  <p
+                    class="course-player-lesson-intro"
+                    data-current-intro
+                  >
+                    This course will help you understand the role of a
+                    supervisor when reasonable suspicion testing may be
+                    required. Begin by reviewing the course objectives and
+                    the responsibilities covered throughout the training.
+                  </p>
+
+                  <div class="course-player-info-card">
+
+                    <div class="course-player-info-icon">
+                      <svg viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="9"></circle>
+                        <path d="M12 11v5"></path>
+                        <path d="M12 8h.01"></path>
+                      </svg>
+                    </div>
+
+                    <div>
+                      <h3>Before You Begin</h3>
+
+                      <p
+                        data-current-note
+                      >
+                        Complete each lesson in order. Your progress will be
+                        recorded as you move through the course.
+                      </p>
+                    </div>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+              <div class="course-player-stage-footer">
+
+                <button
+                  type="button"
+                  class="course-player-prev"
+                  data-course-prev
+                  disabled
+                >
+                  <svg viewBox="0 0 24 24">
+                    <path d="M19 12H5"></path>
+                    <path d="m12 19-7-7 7-7"></path>
+                  </svg>
+
+                  Previous Lesson
+                </button>
+
+                <button
+                  type="button"
+                  class="course-player-next"
+                  data-course-next
+                >
+                  <span data-course-next-label>
+                    Complete & Continue
+                  </span>
+
+                  <svg viewBox="0 0 24 24">
+                    <path d="M5 12h14"></path>
+                    <path d="m12 5 7 7-7 7"></path>
+                  </svg>
+                </button>
+
+              </div>
+
+            </section>
+
+          </div>
+
+          <!-- Course curriculum -->
+
+          <aside
+            class="course-player-sidebar"
+            aria-label="Course curriculum"
+          >
+
+            <div class="course-player-sidebar-head">
+              <div class="course-player-sidebar-kicker">
+                Course Content
+              </div>
+
+              <h2 class="course-player-sidebar-title">
+                Your Learning Path
+              </h2>
+            </div>
+
+            <div class="course-player-sidebar-scroll">
+
+              <!-- Module 1 -->
+
+              <div
+                class="course-player-module is-open"
+                data-module="1"
+              >
+
+                <button
+                  type="button"
+                  class="course-player-module-button"
+                  aria-expanded="true"
+                >
+                  <span class="course-player-module-left">
+                    <span class="course-player-module-number">01</span>
+
+                    <span class="course-player-module-name">
+                      Introduction to Reasonable Suspicion
+                    </span>
+                  </span>
+
+                  <svg
+                    class="course-player-module-chevron"
+                    viewBox="0 0 24 24"
+                  >
+                    <path d="m6 9 6 6 6-6"></path>
+                  </svg>
+                </button>
+
+                <div class="course-player-lessons">
+
+                  <button
+                    type="button"
+                    class="course-player-lesson-link is-active"
+                    data-lesson-index="0"
+                  >
+                    <span class="course-player-lesson-status"></span>
+
+                    <span class="course-player-lesson-copy">
+                      <span class="course-player-lesson-name">
+                        Welcome to the Course
+                      </span>
+
+                      <span class="course-player-lesson-meta">
+                        5 minutes
+                      </span>
+                    </span>
+                  </button>
+
+                  <button
+                    type="button"
+                    class="course-player-lesson-link"
+                    data-lesson-index="1"
+                  >
+                    <span class="course-player-lesson-status"></span>
+
+                    <span class="course-player-lesson-copy">
+                      <span class="course-player-lesson-name">
+                        Understanding Your Responsibilities
+                      </span>
+
+                      <span class="course-player-lesson-meta">
+                        8 minutes
+                      </span>
+                    </span>
+                  </button>
+
+                  <button
+                    type="button"
+                    class="course-player-lesson-link"
+                    data-lesson-index="2"
+                  >
+                    <span class="course-player-lesson-status"></span>
+
+                    <span class="course-player-lesson-copy">
+                      <span class="course-player-lesson-name">
+                        Course Knowledge Check
+                      </span>
+
+                      <span class="course-player-lesson-meta">
+                        Assessment
+                      </span>
+                    </span>
+                  </button>
+
+                </div>
+
+              </div>
+
+              <!-- Module 2 -->
+
+              <div
+                class="course-player-module is-open"
+                data-module="2"
+              >
+
+                <button
+                  type="button"
+                  class="course-player-module-button"
+                  aria-expanded="true"
+                >
+                  <span class="course-player-module-left">
+                    <span class="course-player-module-number">02</span>
+
+                    <span class="course-player-module-name">
+                      Recognizing Observable Indicators
+                    </span>
+                  </span>
+
+                  <svg
+                    class="course-player-module-chevron"
+                    viewBox="0 0 24 24"
+                  >
+                    <path d="m6 9 6 6 6-6"></path>
+                  </svg>
+                </button>
+
+                <div class="course-player-lessons">
+
+                  <button
+                    type="button"
+                    class="course-player-lesson-link"
+                    data-lesson-index="3"
+                  >
+                    <span class="course-player-lesson-status"></span>
+
+                    <span class="course-player-lesson-copy">
+                      <span class="course-player-lesson-name">
+                        Signs and Symptoms
+                      </span>
+
+                      <span class="course-player-lesson-meta">
+                        10 minutes
+                      </span>
+                    </span>
+                  </button>
+
+                  <button
+                    type="button"
+                    class="course-player-lesson-link"
+                    data-lesson-index="4"
+                  >
+                    <span class="course-player-lesson-status"></span>
+
+                    <span class="course-player-lesson-copy">
+                      <span class="course-player-lesson-name">
+                        Behavioral Observations
+                      </span>
+
+                      <span class="course-player-lesson-meta">
+                        9 minutes
+                      </span>
+                    </span>
+                  </button>
+
+                  <button
+                    type="button"
+                    class="course-player-lesson-link"
+                    data-lesson-index="5"
+                  >
+                    <span class="course-player-lesson-status"></span>
+
+                    <span class="course-player-lesson-copy">
+                      <span class="course-player-lesson-name">
+                        Module Review
+                      </span>
+
+                      <span class="course-player-lesson-meta">
+                        5 minutes
+                      </span>
+                    </span>
+                  </button>
+
+                </div>
+
+              </div>
+
+              <!-- Module 3 -->
+
+              <div
+                class="course-player-module"
+                data-module="3"
+              >
+
+                <button
+                  type="button"
+                  class="course-player-module-button"
+                  aria-expanded="false"
+                >
+                  <span class="course-player-module-left">
+                    <span class="course-player-module-number">03</span>
+
+                    <span class="course-player-module-name">
+                      Documentation and Next Steps
+                    </span>
+                  </span>
+
+                  <svg
+                    class="course-player-module-chevron"
+                    viewBox="0 0 24 24"
+                  >
+                    <path d="m6 9 6 6 6-6"></path>
+                  </svg>
+                </button>
+
+                <div class="course-player-lessons">
+
+                  <button
+                    type="button"
+                    class="course-player-lesson-link"
+                    data-lesson-index="6"
+                  >
+                    <span class="course-player-lesson-status"></span>
+
+                    <span class="course-player-lesson-copy">
+                      <span class="course-player-lesson-name">
+                        Documenting Concerns
+                      </span>
+
+                      <span class="course-player-lesson-meta">
+                        8 minutes
+                      </span>
+                    </span>
+                  </button>
+
+                  <button
+                    type="button"
+                    class="course-player-lesson-link"
+                    data-lesson-index="7"
+                  >
+                    <span class="course-player-lesson-status"></span>
+
+                    <span class="course-player-lesson-copy">
+                      <span class="course-player-lesson-name">
+                        Communication and Escalation
+                      </span>
+
+                      <span class="course-player-lesson-meta">
+                        7 minutes
+                      </span>
+                    </span>
+                  </button>
+
+                  <button
+                    type="button"
+                    class="course-player-lesson-link"
+                    data-lesson-index="8"
+                  >
+                    <span class="course-player-lesson-status"></span>
+
+                    <span class="course-player-lesson-copy">
+                      <span class="course-player-lesson-name">
+                        Applying the Process
+                      </span>
+
+                      <span class="course-player-lesson-meta">
+                        8 minutes
+                      </span>
+                    </span>
+                  </button>
+
+                </div>
+
+              </div>
+
+              <!-- Module 4 -->
+
+              <div
+                class="course-player-module"
+                data-module="4"
+              >
+
+                <button
+                  type="button"
+                  class="course-player-module-button"
+                  aria-expanded="false"
+                >
+                  <span class="course-player-module-left">
+                    <span class="course-player-module-number">04</span>
+
+                    <span class="course-player-module-name">
+                      Final Review
+                    </span>
+                  </span>
+
+                  <svg
+                    class="course-player-module-chevron"
+                    viewBox="0 0 24 24"
+                  >
+                    <path d="m6 9 6 6 6-6"></path>
+                  </svg>
+                </button>
+
+                <div class="course-player-lessons">
+
+                  <button
+                    type="button"
+                    class="course-player-lesson-link"
+                    data-lesson-index="9"
+                  >
+                    <span class="course-player-lesson-status"></span>
+
+                    <span class="course-player-lesson-copy">
+                      <span class="course-player-lesson-name">
+                        Scenario Review
+                      </span>
+
+                      <span class="course-player-lesson-meta">
+                        10 minutes
+                      </span>
+                    </span>
+                  </button>
+
+                  <button
+                    type="button"
+                    class="course-player-lesson-link"
+                    data-lesson-index="10"
+                  >
+                    <span class="course-player-lesson-status"></span>
+
+                    <span class="course-player-lesson-copy">
+                      <span class="course-player-lesson-name">
+                        Final Assessment Preparation
+                      </span>
+
+                      <span class="course-player-lesson-meta">
+                        5 minutes
+                      </span>
+                    </span>
+                  </button>
+
+                  <button
+                    type="button"
+                    class="course-player-lesson-link"
+                    data-lesson-index="11"
+                  >
+                    <span class="course-player-lesson-status"></span>
+
+                    <span class="course-player-lesson-copy">
+                      <span class="course-player-lesson-name">
+                        Final Assessment
+                      </span>
+
+                      <span class="course-player-lesson-meta">
+                        Assessment
+                      </span>
+                    </span>
+                  </button>
+
+                </div>
+
+              </div>
+
+            </div>
+
+            <div class="course-player-sidebar-footer">
+              Progress saves as you complete each lesson.
+            </div>
+
+          </aside>
+
+        </div>
+
+      </div>
+
+    </main>
+
   </div>
- </div>
- <div class="complete-row"><div class="complete-note"><b id="completeState">Lesson in progress</b><br>When connected, completion will update the learner's lesson and block progress records.</div><button class="btn primary" id="completeBtn">Mark Lesson Complete</button></div>
-</article>
-<div class="lesson-footer"><button class="btn" id="prevBtn">← Previous Lesson</button><button class="btn" id="nextBtn">Next Lesson →</button></div>
-</div></main>
-</div>
-<div class="toast" id="toast"></div>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="assets/js/supabase-config.js"></script>
-<script src="assets/js/config.js"></script>
-<script src="assets/js/lms.js"></script>
-<script>
-(function(){
-"use strict";
-const qs=new URLSearchParams(location.search), courseId=qs.get("course"), enrollmentId=qs.get("enrollment");
-let db,state={course:null,enrollment:null,sections:[],lessons:[],current:0,completed:new Set()};
+  <!-- Shared LMS scripts -->
+  <script src="assets/js/lms.js"></script>
+  <script src="assets/js/lms-sidebar.js"></script>
 
-function getDb(){if(window.supabaseClient?.from)return window.supabaseClient;if(window.supabase?.from)return window.supabase;let u=window.SCREENINGS4U_SUPABASE_URL||window.SUPABASE_URL,k=window.SCREENINGS4U_SUPABASE_ANON_KEY||window.SUPABASE_ANON_KEY;return u&&k&&window.supabase?.createClient?window.supabase.createClient(u,k):null}
-function esc(v){return String(v??"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")}
-function progress(){return state.lessons.length?Math.round(state.completed.size/state.lessons.length*100):0}
-function updateProgress(){let p=progress();let el=document.getElementById("courseProgress");if(el)el.textContent=p+"% complete"}
-function playerBack(){location.href="lms-my-courses.html"}
-function current(){return state.lessons[state.current]}
-function sectionFor(id){return state.sections.find(x=>x.id===id)}
-function renderOutline(){
- const nav=document.getElementById("courseNav")||document.getElementById("courseSidebar")||document.getElementById("courseOutline");
- if(!nav)return;
- let groups=state.sections.map((sec,si)=>{let ls=state.lessons.filter(l=>l.section_id===sec.id), done=ls.filter(l=>state.completed.has(l.id)).length;
- return `<div class="section"><button class="section-head" type="button">${esc(sec.title||("Section "+(si+1)))} <small>${done}/${ls.length}</small></button><div class="section-lessons">`+
- ls.map(l=>{let idx=state.lessons.findIndex(x=>x.id===l.id),active=idx===state.current,done=state.completed.has(l.id);return `<button class="lesson ${active?"active":""}" data-index="${idx}" type="button"><span class="status">${done?"✓":""}</span><span>${esc(l.title||"Untitled Lesson")}</span><span class="lesson-type">${esc(l.lesson_type||"Lesson")}</span></button>`}).join("")+"</div></div>"}).join("");
- nav.innerHTML=groups||'<div class="empty">No lessons are available for this course.</div>';
- nav.querySelectorAll(".lesson[data-index]").forEach(b=>b.onclick=()=>{state.current=Number(b.dataset.index);renderLesson()});
- nav.querySelectorAll(".section-head").forEach(b=>b.onclick=()=>b.parentElement.classList.toggle("collapsed"));
-}
-function renderLesson(){
- let l=current();if(!l)return;
- let sec=sectionFor(l.section_id)||{};
- document.getElementById("lessonTitle").textContent=l.title||"Lesson";
- document.getElementById("lessonDesc").textContent=l.description||l.short_description||"";
- let type=document.getElementById("lessonType");if(type)type.textContent=(sec.title||"COURSE")+" · "+String(l.lesson_type||"LESSON").toUpperCase();
- let content=document.querySelector(".content-area")||document.getElementById("lessonContent");
- if(content){
-   let media=l.video_url?`<div class="media"><video controls playsinline src="${esc(l.video_url)}"></video></div>`:"";
-   let body=l.content||l.lesson_content||"<p>Course content for this lesson is being loaded from the LMS.</p>";
-   content.innerHTML=media+`<div class="block">${body}</div>`;
- }
- let complete=document.getElementById("completeState");if(complete)complete.textContent=state.completed.has(l.id)?"Lesson completed":"Lesson in progress";
- let btn=document.getElementById("completeBtn");if(btn)btn.textContent=state.completed.has(l.id)?"Completed":"Mark Lesson Complete";
- updateProgress();renderOutline();
-}
-async function saveCompletion(){
- let l=current();if(!l||state.completed.has(l.id))return;
- // Supports the established learner progress table; fallback updates enrollment progress.
- let r=await db.from("lms_lesson_progress").upsert({user_id:state.enrollment.user_id,enrollment_id:state.enrollment.id,course_id:state.course.id,lesson_id:l.id,status:"completed",completed_at:new Date().toISOString()},{onConflict:"enrollment_id,lesson_id"});
- if(r.error) console.warn("Lesson progress table unavailable:",r.error);
- state.completed.add(l.id);
- let pct=progress(), status=pct>=100?"completed":"active";
- let er=await db.from("lms_enrollments").update({progress_percent:pct,status:status,last_activity_at:new Date().toISOString()}).eq("id",state.enrollment.id);
- if(er.error)console.error(er.error);
- if(state.current<state.lessons.length-1){state.current++;renderLesson()}else renderLesson();
-}
-async function load(){
- db=getDb();if(!db)throw Error("Missing public Supabase configuration.");
- let sr=await db.auth.getSession(),session=sr.data?.session;if(!session){location.href="lms.html";return}
- if(!courseId){location.href="lms-my-courses.html";return}
- let cr=await db.from("lms_courses").select("*").eq("id",courseId).single();if(cr.error)throw cr.error;state.course=cr.data;
- let er;
- if(enrollmentId)er=await db.from("lms_enrollments").select("*").eq("id",enrollmentId).eq("user_id",session.user.id).single();
- else er=await db.from("lms_enrollments").select("*").eq("course_id",courseId).eq("user_id",session.user.id).maybeSingle();
- if(er.error||!er.data){location.href="lms-course-details.html?course="+encodeURIComponent(courseId);return}state.enrollment=er.data;
- document.title=(state.course.title||"Course")+" | Course Player";
- ["courseTitle","sidebarCourseTitle"].forEach(id=>{let e=document.getElementById(id);if(e)e.textContent=state.course.title||"Course"});
- let sec=await db.from("lms_course_sections").select("*").eq("course_id",courseId).order("position",{ascending:true});
- if(sec.error)sec=await db.from("lms_sections").select("*").eq("course_id",courseId).order("position",{ascending:true});
- state.sections=sec.data||[];
- let ids=state.sections.map(x=>x.id);
- if(ids.length){let lr=await db.from("lms_lessons").select("*").in("section_id",ids).order("position",{ascending:true});state.lessons=lr.data||[]}
- let pr=await db.from("lms_lesson_progress").select("lesson_id,status").eq("enrollment_id",state.enrollment.id);
- if(!pr.error)(pr.data||[]).filter(x=>x.status==="completed").forEach(x=>state.completed.add(x.lesson_id));
- let pct=Number(state.enrollment.progress_percent||0);
- if(!state.completed.size&&pct>=100)state.lessons.forEach(x=>state.completed.add(x.id));
- let loading=document.getElementById("playerLoading");if(loading)loading.style.display="none";
- let view=document.getElementById("lessonView");if(view)view.hidden=false;
- renderLesson();
-}
-document.getElementById("completeBtn")?.addEventListener("click",saveCompletion);
-document.getElementById("prevBtn")?.addEventListener("click",()=>{if(state.current>0){state.current--;renderLesson()}});
-document.getElementById("nextBtn")?.addEventListener("click",()=>{if(state.current<state.lessons.length-1){state.current++;renderLesson()}});
-document.getElementById("exitCourseButton")?.addEventListener("click",playerBack);
-document.getElementById("navToggle")?.addEventListener("click",()=>document.getElementById("courseNav")?.classList.toggle("open"));
-document.addEventListener("DOMContentLoaded",()=>load().catch(e=>{console.error("Course player failed:",e);let t=document.getElementById("lessonTitle");if(t)t.textContent="Unable to load this course";let d=document.getElementById("lessonDesc");if(d)d.textContent="Please return to My Courses and try again."}));
-})();
-</script>
+  <!-- ========================================================
+       COURSE PLAYER INTERACTIONS
+       ======================================================== -->
 
-</body></html>
+  <script>
+    (function () {
+      "use strict";
+
+      var lessons = [
+        {
+          module: "Module 1",
+          title: "Welcome to the Course",
+          intro: "This course will help you understand the role of a supervisor when reasonable suspicion testing may be required. Begin by reviewing the course objectives and the responsibilities covered throughout the training.",
+          note: "Complete each lesson in order. Your progress will be recorded as you move through the course."
+        },
+        {
+          module: "Module 1",
+          title: "Understanding Your Responsibilities",
+          intro: "Review the responsibilities of supervisors and learn how reasonable suspicion decisions should be approached using observable facts and established workplace procedures.",
+          note: "Focus on what can be directly observed and documented. Avoid assumptions or conclusions that are not supported by facts."
+        },
+        {
+          module: "Module 1",
+          title: "Course Knowledge Check",
+          intro: "Review the key concepts from this module before moving into the next section of the course.",
+          note: "This knowledge check helps reinforce the concepts covered in the introduction."
+        },
+        {
+          module: "Module 2",
+          title: "Signs and Symptoms",
+          intro: "Learn about observable physical, behavioral, and performance indicators that may require a supervisor to take additional action.",
+          note: "Reasonable suspicion is based on current, specific, and observable information."
+        },
+        {
+          module: "Module 2",
+          title: "Behavioral Observations",
+          intro: "Explore how patterns of behavior and workplace performance can contribute to an objective assessment.",
+          note: "Document observations clearly and consistently according to your organization's procedures."
+        },
+        {
+          module: "Module 2",
+          title: "Module Review",
+          intro: "Review the main concepts from the observable indicators module and prepare for the next stage of the training.",
+          note: "Use this review to confirm your understanding before continuing."
+        },
+        {
+          module: "Module 3",
+          title: "Documenting Concerns",
+          intro: "Learn how clear documentation can support an appropriate and consistent workplace response.",
+          note: "Record facts, times, and observations rather than personal opinions."
+        },
+        {
+          module: "Module 3",
+          title: "Communication and Escalation",
+          intro: "Understand how to communicate concerns and follow the appropriate escalation process within your organization.",
+          note: "Follow established company procedures when determining the next step."
+        },
+        {
+          module: "Module 3",
+          title: "Applying the Process",
+          intro: "Bring the earlier concepts together and consider how the process may apply in common workplace situations.",
+          note: "The goal is a consistent process grounded in observable information."
+        },
+        {
+          module: "Module 4",
+          title: "Scenario Review",
+          intro: "Work through realistic examples that help connect course concepts to workplace decision-making.",
+          note: "Consider what information is observable and what actions are supported by the facts presented."
+        },
+        {
+          module: "Module 4",
+          title: "Final Assessment Preparation",
+          intro: "Review the most important course concepts before completing the final assessment.",
+          note: "Take a moment to revisit any lesson you would like to review."
+        },
+        {
+          module: "Module 4",
+          title: "Final Assessment",
+          intro: "Complete the final assessment to demonstrate your understanding of the course material.",
+          note: "Successful completion requirements will be applied when the assessment is connected to the LMS data system."
+        }
+      ];
+
+      var currentIndex = 0;
+      var completed = new Set();
+
+      var titleEl = document.querySelector("[data-current-title]");
+      var introEl = document.querySelector("[data-current-intro]");
+      var noteEl = document.querySelector("[data-current-note]");
+      var moduleEl = document.querySelector("[data-current-module]");
+      var labelEl = document.querySelector("[data-current-lesson-label]");
+      var countEl = document.querySelector("[data-current-lesson-count]");
+      var progressTextEl = document.querySelector("[data-course-progress-text]");
+      var progressFillEl = document.querySelector("[data-course-progress-fill]");
+      var prevButton = document.querySelector("[data-course-prev]");
+      var nextButton = document.querySelector("[data-course-next]");
+      var nextLabel = document.querySelector("[data-course-next-label]");
+
+      function updateProgress() {
+        var percent = Math.round((completed.size / lessons.length) * 100);
+
+        progressTextEl.textContent = percent + "%";
+        progressFillEl.style.width = percent + "%";
+      }
+
+      function renderLesson(index) {
+        currentIndex = Math.max(0, Math.min(index, lessons.length - 1));
+
+        var lesson = lessons[currentIndex];
+
+        titleEl.textContent = lesson.title;
+        introEl.textContent = lesson.intro;
+        noteEl.textContent = lesson.note;
+        moduleEl.textContent = lesson.module;
+        labelEl.textContent = "Lesson " + (currentIndex + 1) + " · " + lesson.title;
+        countEl.textContent = (currentIndex + 1) + " of " + lessons.length + " lessons";
+
+        document.querySelectorAll("[data-lesson-index]").forEach(function (button) {
+          var lessonIndex = Number(button.getAttribute("data-lesson-index"));
+
+          button.classList.toggle(
+            "is-active",
+            lessonIndex === currentIndex
+          );
+
+          button.classList.toggle(
+            "is-complete",
+            completed.has(lessonIndex)
+          );
+
+          var status = button.querySelector(".course-player-lesson-status");
+
+          if (status) {
+            status.innerHTML = completed.has(lessonIndex)
+              ? '<svg viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"></path></svg>'
+              : "";
+          }
+        });
+
+        prevButton.disabled = currentIndex === 0;
+
+        if (currentIndex === lessons.length - 1) {
+          nextLabel.textContent = "Finish Course";
+        } else {
+          nextLabel.textContent = "Complete & Continue";
+        }
+
+        updateProgress();
+
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth"
+        });
+      }
+
+      function initializeModules() {
+        document.querySelectorAll(".course-player-module").forEach(function (module) {
+          var button = module.querySelector(".course-player-module-button");
+
+          if (!button) return;
+
+          button.addEventListener("click", function () {
+            var open = module.classList.toggle("is-open");
+            button.setAttribute("aria-expanded", open ? "true" : "false");
+          });
+        });
+      }
+
+      function initializeLessons() {
+        document.querySelectorAll("[data-lesson-index]").forEach(function (button) {
+          button.addEventListener("click", function () {
+            renderLesson(Number(button.getAttribute("data-lesson-index")));
+          });
+        });
+
+        prevButton.addEventListener("click", function () {
+          if (currentIndex > 0) {
+            renderLesson(currentIndex - 1);
+          }
+        });
+
+        nextButton.addEventListener("click", function () {
+          completed.add(currentIndex);
+
+          if (currentIndex < lessons.length - 1) {
+            renderLesson(currentIndex + 1);
+          } else {
+            updateProgress();
+            nextLabel.textContent = "Course Complete";
+            nextButton.disabled = true;
+          }
+        });
+      }
+
+      function initializeLearnerProfile() {
+        if (
+          window.LMS &&
+          typeof window.LMS.setLearnerProfile === "function"
+        ) {
+          window.LMS.setLearnerProfile({
+            name: "John Doe",
+            email: "learner@screenings4u.com"
+          });
+        }
+      }
+
+      function initializePage() {
+        initializeModules();
+        initializeLessons();
+        initializeLearnerProfile();
+        renderLesson(0);
+      }
+
+      if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", initializePage);
+      } else {
+        initializePage();
+      }
+
+    })();
+  </script>
+
+</body>
+</html>

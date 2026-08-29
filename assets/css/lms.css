@@ -21,8 +21,8 @@ html {
 body {
   margin: 0;
   min-height: 100vh;
-  background: #f4f6f8;
-  color: #1c2430;
+  background: #f5f7fa;
+  color: #325aa3;
   font-family:
     Inter,
     ui-sans-serif,
@@ -53,25 +53,25 @@ a {
    ============================================================ */
 
 :root {
-  --lms-navy: #13233a;
-  --lms-navy-deep: #0d1929;
-  --lms-navy-soft: #1d3553;
+  --lms-navy: #325aa3;
+  --lms-navy-deep: #24467f;
+  --lms-navy-soft: #325aa3;
 
   --lms-orange: #ff6b00;
-  --lms-orange-dark: #e95f00;
+  --lms-orange-dark: #e66000;
   --lms-orange-soft: #fff0e5;
 
   --lms-blue: #325aa3;
 
-  --lms-bg: #f4f6f8;
+  --lms-bg: #f5f7fa;
   --lms-surface: #ffffff;
-  --lms-surface-soft: #f8fafc;
+  --lms-surface-soft: #f5f7fa;
 
-  --lms-text: #17202c;
-  --lms-text-soft: #667085;
+  --lms-text: #172033;
+  --lms-text-soft: #687386;
   --lms-text-light: #98a2b3;
 
-  --lms-border: #e4e8ee;
+  --lms-border: #dfe5ec;
 
   --lms-success: #16a36a;
   --lms-success-soft: #e9f8f1;
@@ -753,7 +753,7 @@ body.lms-nav-collapsed .lms-nav-link.active::before {
     linear-gradient(
       135deg,
       var(--lms-blue),
-      #254477
+      #24467f
     );
 
   color: #ffffff;
@@ -1040,8 +1040,8 @@ body.lms-nav-collapsed .lms-nav-link.active::before {
   background:
     linear-gradient(
       125deg,
-      #152840,
-      #1e3c63
+      #24467f,
+      #325aa3
     );
 
   box-shadow:
@@ -1439,8 +1439,8 @@ body.lms-nav-collapsed .lms-nav-link.active::before {
   background:
     linear-gradient(
       135deg,
-      #244a76,
-      #162d4a
+      #325aa3,
+      #24467f
     );
 }
 
@@ -1448,8 +1448,8 @@ body.lms-nav-collapsed .lms-nav-link.active::before {
   background:
     linear-gradient(
       135deg,
-      #6a4a26,
-      #392718
+      #325aa3,
+      #24467f
     );
 }
 
@@ -1457,8 +1457,8 @@ body.lms-nav-collapsed .lms-nav-link.active::before {
   background:
     linear-gradient(
       135deg,
-      #225e54,
-      #123a35
+      #325aa3,
+      #24467f
     );
 }
 
@@ -1565,7 +1565,7 @@ body.lms-nav-collapsed .lms-nav-link.active::before {
 
   border-radius: 10px;
 
-  background: #edf0f4;
+  background: #f5f7fa;
 }
 
 .lms-mini-progress-fill {
@@ -1644,7 +1644,7 @@ body.lms-nav-collapsed .lms-nav-link.active::before {
     0;
 
   border-bottom:
-    1px solid #eef1f4;
+    1px solid #dfe5ec;
 }
 
 .lms-stat-row:last-child {
@@ -1673,7 +1673,7 @@ body.lms-nav-collapsed .lms-nav-link.active::before {
 
 .lms-stat-icon.blue {
   background:
-    #eaf0fa;
+    #eef3fb;
 
   color:
     var(--lms-blue);
@@ -2017,6 +2017,129 @@ body.lms-nav-collapsed .lms-nav-link.active::before {
 
   .lms-continue-title {
     font-size: 27px;
+  }
+
+}
+
+/* ============================================================
+   SIDEBAR BRAND
+   ============================================================ */
+
+.lms-brand {
+  width: 100%;
+  min-height: 135px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  gap: 8px;
+
+  padding: 18px 24px;
+
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+
+  text-align: center;
+}
+
+.lms-brand-logo {
+  display: block;
+
+  width: 100%;
+  max-width: 180px;
+  max-height: 58px;
+
+  height: auto;
+
+  object-fit: contain;
+  object-position: center;
+}
+
+.lms-brand-copy {
+  margin: 0;
+
+  white-space: nowrap;
+
+  text-align: center;
+}
+
+.lms-brand-subtitle {
+  display: block;
+
+  color: rgba(255, 255, 255, 0.72);
+
+  font-size: 11px;
+  font-weight: 600;
+
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+
+/* ============================================================
+   COLLAPSED SIDEBAR
+   ============================================================ */
+
+body.lms-nav-collapsed .lms-brand {
+  min-height: 82px;
+
+  padding: 14px 10px;
+}
+
+body.lms-nav-collapsed .lms-brand-logo {
+  max-width: 52px;
+  max-height: 52px;
+}
+
+body.lms-nav-collapsed .lms-brand-copy {
+  display: none;
+}
+
+
+/* ============================================================
+   SMALL DESKTOP
+   ============================================================ */
+
+@media (max-width: 1100px) {
+
+  .lms-brand {
+    min-height: 82px;
+
+    padding: 14px 10px;
+  }
+
+  .lms-brand-logo {
+    max-width: 52px;
+    max-height: 52px;
+  }
+
+  .lms-brand-copy {
+    display: none;
+  }
+
+}
+
+
+/* ============================================================
+   MOBILE SIDEBAR
+   ============================================================ */
+
+@media (max-width: 860px) {
+
+  .lms-brand {
+    min-height: 135px;
+
+    padding: 18px 24px;
+  }
+
+  .lms-brand-logo {
+    max-width: 180px;
+    max-height: 58px;
+  }
+
+  .lms-brand-copy {
+    display: block;
   }
 
 }
