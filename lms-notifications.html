@@ -1,384 +1,151 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Notifications | Screenings4u Learning Center</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Notifications | Screenings4u Learning Center</title>
 
-<link rel="stylesheet" href="assets/css/lms.css">
-
-<style>
-:root{
-  --s4u-blue:#325aa3;
-  --s4u-dark-blue:#24467f;
-  --s4u-orange:#ff6b00;
-  --s4u-orange-hover:#e66000;
-  --s4u-page:#f5f7fa;
-  --s4u-card:#ffffff;
-  --s4u-border:#dfe5ec;
-  --s4u-text:#172033;
-  --s4u-muted:#687386;
-}
-
-.notifications-page{width:100%;min-width:0;padding-bottom:32px}
-.notifications-breadcrumb{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:22px;color:var(--s4u-muted);font-size:12px;font-weight:700}
-.notifications-breadcrumb a{color:var(--s4u-blue);text-decoration:none}
-.notifications-breadcrumb svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-
-.notifications-header{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;margin-bottom:24px}
-.notifications-header h1{margin:0;color:var(--s4u-text);font-size:32px;font-weight:800;letter-spacing:-.03em}
-.notifications-header p{margin:8px 0 0;color:var(--s4u-muted);font-size:14px;line-height:1.6}
-.notifications-header-actions{display:flex;gap:10px;align-items:center}
-
-.notify-button{min-height:40px;padding:0 15px;border:1px solid var(--s4u-border);border-radius:9px;background:#fff;color:var(--s4u-blue);font-size:12px;font-weight:800;cursor:pointer}
-.notify-button:hover{border-color:var(--s4u-blue);background:var(--s4u-page)}
-.notify-button.orange{background:var(--s4u-orange);border-color:var(--s4u-orange);color:#fff}
-.notify-button.orange:hover{background:var(--s4u-orange-hover);border-color:var(--s4u-orange-hover)}
-
-.notifications-card{background:var(--s4u-card);border:1px solid var(--s4u-border);border-radius:16px;overflow:hidden}
-.notifications-toolbar{display:flex;justify-content:space-between;align-items:center;gap:18px;padding:16px 20px;border-bottom:1px solid var(--s4u-border)}
-.notifications-tabs{display:flex;gap:4px;flex-wrap:wrap}
-.notification-tab{border:0;background:transparent;padding:8px 11px;border-radius:8px;color:var(--s4u-muted);font-size:11px;font-weight:800;cursor:pointer}
-.notification-tab:hover{background:var(--s4u-page);color:var(--s4u-blue)}
-.notification-tab.active{background:rgba(50,90,163,.1);color:var(--s4u-blue)}
-.notification-count{display:inline-grid;place-items:center;min-width:18px;height:18px;margin-left:5px;padding:0 5px;border-radius:999px;background:var(--s4u-orange);color:#fff;font-size:9px}
-
-.notification-list{padding:0}
-.notification-item{display:flex;gap:15px;align-items:flex-start;padding:20px;border-bottom:1px solid var(--s4u-border);transition:.2s}
-.notification-item:last-child{border-bottom:0}
-.notification-item.unread{background:rgba(50,90,163,.035)}
-.notification-item:hover{background:var(--s4u-page)}
-.notification-icon{width:42px;height:42px;flex:0 0 auto;display:grid;place-items:center;border-radius:11px;background:var(--s4u-page);color:var(--s4u-blue)}
-.notification-icon svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
-.notification-icon.certificate{background:rgba(255,107,0,.1);color:var(--s4u-orange)}
-.notification-icon.assessment{background:rgba(50,90,163,.1);color:var(--s4u-dark-blue)}
-.notification-icon.course{background:var(--s4u-page);color:var(--s4u-blue)}
-
-.notification-body{min-width:0;flex:1}
-.notification-topline{display:flex;align-items:flex-start;justify-content:space-between;gap:16px}
-.notification-title-row{display:flex;align-items:center;gap:8px;min-width:0}
-.notification-title{margin:0;color:var(--s4u-text);font-size:13px;font-weight:800;line-height:1.45}
-.unread-dot{width:7px;height:7px;flex:0 0 auto;border-radius:50%;background:var(--s4u-orange)}
-.notification-time{flex:0 0 auto;color:var(--s4u-muted);font-size:10px;white-space:nowrap}
-.notification-message{margin:5px 0 0;color:var(--s4u-muted);font-size:11px;line-height:1.65}
-.notification-actions{display:flex;gap:14px;margin-top:10px}
-.notification-link,.notification-action{border:0;background:transparent;padding:0;color:var(--s4u-blue);font-size:11px;font-weight:800;text-decoration:none;cursor:pointer}
-.notification-link:hover,.notification-action:hover{color:var(--s4u-dark-blue);text-decoration:underline}
-
-.empty-state{display:none;padding:70px 24px;text-align:center}
-.empty-state.show{display:block}
-.empty-icon{width:64px;height:64px;margin:0 auto 16px;display:grid;place-items:center;border-radius:50%;background:var(--s4u-page);color:var(--s4u-blue)}
-.empty-icon svg{width:28px;height:28px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
-.empty-state h2{margin:0;color:var(--s4u-text);font-size:17px;font-weight:800}
-.empty-state p{max-width:390px;margin:8px auto 0;color:var(--s4u-muted);font-size:12px;line-height:1.65}
-
-.notification-summary{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:16px 20px;border-top:1px solid var(--s4u-border);background:var(--s4u-page)}
-.notification-summary span{color:var(--s4u-muted);font-size:11px}
-.notification-summary strong{color:var(--s4u-text)}
-
-@media(max-width:720px){
-  .notifications-header{align-items:flex-start;flex-direction:column}
-  .notifications-header-actions{width:100%}
-  .notifications-header-actions .notify-button{flex:1}
-  .notifications-toolbar{align-items:flex-start;flex-direction:column}
-  .notification-item{padding:16px}
-  .notification-topline{flex-direction:column;gap:5px}
-  .notification-time{white-space:normal}
-}
-@media(max-width:500px){
-  .notifications-header h1{font-size:27px}
-  .notification-icon{width:38px;height:38px}
-  .notification-actions{flex-wrap:wrap}
-  .notification-summary{align-items:flex-start;flex-direction:column}
-}
-</style>
+  <link rel="stylesheet" href="assets/css/lms.css">
+  <link rel="stylesheet" href="assets/css/lms-notifications.css?v=20260831-1">
 </head>
 
-<body>
-<div class="lms-app">
+<body class="lms-notifications-page">
+  <div class="lms-app">
+    <div id="lms-sidebar-target"></div>
 
-  <!-- DYNAMIC SIDEBAR -->
-  <div id="lms-sidebar-target"></div>
+    <main class="lms-main">
+      <header class="lms-topbar">
+        <div class="lms-topbar-left">
+          <button type="button" class="lms-menu-button" data-lms-menu-toggle aria-label="Toggle navigation">
+            <svg viewBox="0 0 24 24"><path d="M4 7h16"></path><path d="M4 12h16"></path><path d="M4 17h16"></path></svg>
+          </button>
+        </div>
 
-  <main class="lms-main">
-
-    <!-- TOPBAR -->
-    <header class="lms-topbar">
-
-      <div class="lms-topbar-left">
-        <button
-          type="button"
-          class="lms-menu-button"
-          data-lms-menu-toggle
-          aria-label="Toggle navigation"
-        >
-          <svg viewBox="0 0 24 24">
-            <path d="M4 7h16"></path>
-            <path d="M4 12h16"></path>
-            <path d="M4 17h16"></path>
-          </svg>
-        </button>
-      </div>
-
-      <div class="lms-search-wrap">
-        <label class="lms-search">
-          <span class="lms-search-icon">
-            <svg viewBox="0 0 24 24">
-              <circle cx="11" cy="11" r="6"></circle>
-              <path d="m20 20-4-4"></path>
-            </svg>
-          </span>
-
-          <input
-            type="search"
-            placeholder="Search courses, lessons, and resources..."
-            data-lms-search
-          >
-
-          <span class="lms-search-shortcut">
-            Ctrl K
-          </span>
-        </label>
-      </div>
-
-      <div class="lms-topbar-right">
-
-        <!-- NOTIFICATIONS -->
-        <a
-          href="lms-notifications.html"
-          class="lms-icon-button"
-          aria-label="Notifications"
-          title="Notifications"
-        >
-          <svg viewBox="0 0 24 24">
-            <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"></path>
-            <path d="M10 21h4"></path>
-          </svg>
-
-          <span
-            class="lms-notification-dot"
-            aria-hidden="true"
-          ></span>
-        </a>
-
-        <!-- USER -->
-        <div class="lms-user-wrap">
-
-          <button
-            type="button"
-            class="lms-user-button"
-            data-lms-user-button
-            aria-expanded="false"
-          >
-            <span
-              class="lms-user-avatar"
-              data-lms-learner-initials
-            >--</span>
-
-            <span
-              class="lms-user-name"
-              data-lms-learner-name
-            >Learner</span>
-
-            <span class="lms-user-chevron">
-              <svg viewBox="0 0 24 24">
-                <path d="m7 10 5 5 5-5"></path>
-              </svg>
+        <div class="lms-search-wrap">
+          <label class="lms-search">
+            <span class="lms-search-icon">
+              <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6"></circle><path d="m20 20-4-4"></path></svg>
             </span>
-          </button>
+            <input type="search" placeholder="Search courses, lessons, and resources..." data-lms-search>
+            <span class="lms-search-shortcut">Ctrl K</span>
+          </label>
+        </div>
 
-          <div
-            class="lms-user-menu"
-            data-lms-user-menu
-          >
-            <div class="lms-user-menu-header">
-              <span class="lms-user-menu-name">
-                John Doe
-              </span>
+        <div class="lms-topbar-right">
+          <a href="lms-notifications.html" class="lms-icon-button" aria-label="Notifications" title="Notifications">
+            <svg viewBox="0 0 24 24"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"></path><path d="M10 21h4"></path></svg>
+            <span class="lms-notification-dot" aria-hidden="true"></span>
+          </a>
 
-              <span class="lms-user-menu-email">
-                learner@screenings4u.com
-              </span>
+          <div class="lms-user-wrap">
+            <button type="button" class="lms-user-button" data-lms-user-button aria-expanded="false">
+              <span class="lms-user-avatar" data-lms-learner-initials>--</span>
+              <span class="lms-user-name" data-lms-learner-name>Learner</span>
+              <span class="lms-user-chevron"><svg viewBox="0 0 24 24"><path d="m7 10 5 5 5-5"></path></svg></span>
+            </button>
+
+            <div class="lms-user-menu" data-lms-user-menu>
+              <div class="lms-user-menu-header">
+                <span class="lms-user-menu-name" data-lms-user-menu-name>Learner</span>
+                <span class="lms-user-menu-email" data-lms-user-menu-email></span>
+              </div>
+              <a href="lms-account.html" class="lms-user-menu-link">My Account</a>
+              <a href="lms-certificates.html" class="lms-user-menu-link">My Certificates</a>
+              <button type="button" class="lms-user-menu-link" data-lms-sign-out>Sign Out</button>
             </div>
+          </div>
+        </div>
+      </header>
 
-            <a
-              href="lms-account.html"
-              class="lms-user-menu-link"
-            >
-              My Account
-            </a>
-
-            <a
-              href="lms-certificates.html"
-              class="lms-user-menu-link"
-            >
-              My Certificates
-            </a>
-
-            <button
-              type="button"
-              class="lms-user-menu-link"
-              data-lms-sign-out
-            >
-              Sign Out
-            </button>
+      <div class="lms-notifications-content">
+        <section class="lms-notifications-intro">
+          <div>
+            <span class="lms-notifications-eyebrow">LEARNING ACTIVITY</span>
+            <h1>Notifications</h1>
+            <p>Important updates about your courses, assessments, certificates, support conversations, and Training account will appear here.</p>
           </div>
 
-        </div>
-      </div>
-    </header>
+          <div class="lms-notifications-actions">
+            <button type="button" class="lms-notifications-mark-all" id="mark-all-read">
+              <svg viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"></path></svg>
+              Mark All Read
+            </button>
+            <button type="button" class="lms-notifications-refresh" id="notifications-refresh" aria-label="Refresh notifications">
+              <svg viewBox="0 0 24 24"><path d="M20 11a8 8 0 1 0 2 5"></path><path d="M20 4v7h-7"></path></svg>
+            </button>
+          </div>
+        </section>
 
-    <!-- PAGE CONTENT -->
-    <div class="lms-content notifications-page">
-
-      <nav
-        class="notifications-breadcrumb"
-        aria-label="Breadcrumb"
-      >
-        <a href="lms-dashboard.html">
-          Home
-        </a>
-
-        <svg viewBox="0 0 24 24">
-          <path d="m9 18 6-6-6-6"></path>
-        </svg>
-
-        <span>
-          Notifications
-        </span>
-      </nav>
-
-      <section class="notifications-header">
-
-        <div>
-          <h1>
-            Notifications
-          </h1>
-
-          <p>
-            Stay up to date with your courses, assessments,
-            certificates, and learning activity.
-          </p>
-        </div>
-
-        <div class="notifications-header-actions">
-          <button
-            type="button"
-            class="notify-button"
-            id="markAllRead"
-          >
-            Mark All as Read
+        <section class="lms-notifications-summary">
+          <button type="button" class="lms-notification-stat active" data-notification-filter="all">
+            <span id="notifications-total">0</span><small>All Notifications</small>
           </button>
-        </div>
+          <button type="button" class="lms-notification-stat" data-notification-filter="unread">
+            <span id="notifications-unread">0</span><small>Unread</small>
+          </button>
+          <button type="button" class="lms-notification-stat" data-notification-filter="courses">
+            <span id="notifications-courses">0</span><small>Course Updates</small>
+          </button>
+          <button type="button" class="lms-notification-stat" data-notification-filter="account">
+            <span id="notifications-account">0</span><small>Account Updates</small>
+          </button>
+        </section>
 
-      </section>
-
-      <!-- NOTIFICATION CARD -->
-      <section class="notifications-card">
-
-        <!-- FILTERS -->
-        <div class="notifications-toolbar">
-
-          <div
-            class="notifications-tabs"
-            role="tablist"
-            aria-label="Notification filters"
-          >
-            <button
-              type="button"
-              class="notification-tab active"
-              data-filter="all"
-            >
-              All
-              <span class="notification-count" id="allCount">
-                5
-              </span>
-            </button>
-
-            <button
-              type="button"
-              class="notification-tab"
-              data-filter="unread"
-            >
-              Unread
-              <span class="notification-count" id="unreadCount">
-                3
-              </span>
-            </button>
-
-            <button
-              type="button"
-              class="notification-tab"
-              data-filter="courses"
-            >
-              Courses
-            </button>
-
-            <button
-              type="button"
-              class="notification-tab"
-              data-filter="assessments"
-            >
-              Assessments
-            </button>
-
-            <button
-              type="button"
-              class="notification-tab"
-              data-filter="certificates"
-            >
-              Certificates
-            </button>
+        <section class="lms-notifications-panel">
+          <div class="lms-notifications-panel-heading">
+            <div>
+              <h2>Recent Notifications</h2>
+              <p id="notifications-result-count">Checking your learning activity...</p>
+            </div>
+            <select id="notifications-type-filter">
+              <option value="all">All Types</option>
+              <option value="courses">Courses</option>
+              <option value="assessments">Assessments</option>
+              <option value="certificates">Certificates</option>
+              <option value="support">Support / Messages</option>
+              <option value="account">Account</option>
+            </select>
           </div>
 
-        </div>
-
-        <!-- LIST -->
-        <div class="notification-list" id="notificationList"></div>
-
-        <!-- EMPTY STATE -->
-        <div
-          class="empty-state"
-          id="emptyState"
-        >
-          <div class="empty-icon">
-            <svg viewBox="0 0 24 24">
-              <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"></path>
-              <path d="M10 21h4"></path>
-            </svg>
+          <div class="lms-notifications-loading" id="notifications-loading">
+            <div class="lms-notifications-spinner"></div>
+            <div><strong>Loading notifications</strong><span>Please wait while we retrieve your Training updates.</span></div>
           </div>
 
-          <h2>
-            No notifications found
-          </h2>
+          <div class="lms-notifications-list" id="notifications-list" hidden></div>
 
-          <p>
-            There are no notifications matching this filter.
-            Check back later for course and learning updates.
-          </p>
-        </div>
+          <div class="lms-notifications-empty" id="notifications-empty" hidden>
+            <div class="lms-notifications-empty-icon">
+              <svg viewBox="0 0 24 24"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"></path><path d="M10 21h4"></path></svg>
+            </div>
+            <h3>No notifications right now</h3>
+            <p>When there are important updates about your courses, assessments, certificates, support messages, or Training account, they will appear here.</p>
+          </div>
+        </section>
 
-        <!-- SUMMARY -->
-        <div class="notification-summary">
-          <span id="notificationSummary">
-            Showing <strong>5 notifications</strong>
-          </span>
-
-          <span>
-            Notifications update as your learning activity changes.
-          </span>
-        </div>
-
-      </section>
-    </div>
-  </main>
-</div>
+        <section class="lms-notifications-help">
+          <div class="lms-notifications-help-icon">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><path d="M9.5 9a2.5 2.5 0 1 1 4.2 1.8c-1.2 1.1-1.7 1.6-1.7 3.2M12 17h.01"></path></svg>
+          </div>
+          <div><strong>Need help with an update?</strong><p>Open Training Support to review conversations or reply when a message requires a response.</p></div>
+          <a href="lms-support.html">Training Support</a>
+        </section>
+      </div>
+    </main>
+  </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="assets/js/supabase-config.js"></script>
-<script src="assets/js/lms-sidebar.js"></script>
-<script src="assets/js/lms.js?v=20260830-2355"></script>
-<script src="assets/js/lms-notifications.js?v=20260830-2355"></script>
 
+<script src="assets/js/supabase-config.js?v=20260831-1"></script>
+<script src="assets/js/core-auth.js?v=20260831-1"></script>
+<script src="assets/js/ui.js?v=20260831-1"></script>
+
+<script src="assets/js/training-auth-guard.js?v=20260831-1"></script>
+
+<script src="assets/js/lms-sidebar.js?v=20260831-1"></script>
+<script src="assets/js/lms.js?v=20260831-1"></script>
+<script src="assets/js/lms-notifications.js?v=20260831-1"></script>
+
+<script src="assets/js/session-security.js?v=20260831-1"></script>
 </body>
 </html>

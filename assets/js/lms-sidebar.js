@@ -1,14 +1,32 @@
 /* ============================================================
    SCREENINGS4U LEARNING CENTER
-   DYNAMIC SIDEBAR
+   DYNAMIC LMS SIDEBAR
+   Mimics the Customer Portal sidebar shell behavior while
+   preserving Learning Center navigation and LMS class names.
    ============================================================ */
 
 (function () {
   "use strict";
 
+  const DESKTOP_BREAKPOINT = 860;
   document.addEventListener("DOMContentLoaded", initializeLmsSidebar);
 
+  /* ============================================================
+     INITIALIZE
+     ============================================================ */
+
   function initializeLmsSidebar() {
+    injectLmsSidebar();
+    setActiveNavigation();
+    initializeMobileNavigation();
+  }
+
+
+  /* ============================================================
+     SIDEBAR
+     ============================================================ */
+
+  function injectLmsSidebar() {
     const sidebarTarget = document.getElementById(
       "lms-sidebar-target"
     );
@@ -18,8 +36,6 @@
     }
 
     sidebarTarget.innerHTML = getSidebarMarkup();
-
-    setActiveNavigation();
   }
 
 
@@ -29,43 +45,42 @@
 
   function getSidebarMarkup() {
     return `
-      <!-- ======================================================
-           SIDEBAR
-           ====================================================== -->
-
       <aside
         class="lms-sidebar"
+        id="lms-sidebar"
         aria-label="Learning navigation"
       >
-
         <div class="lms-sidebar-inner">
 
+          <!-- =================================================
+               BRAND
+               ================================================= -->
 
-          <!-- BRAND -->
+          <div class="lms-sidebar-brand">
 
-          <a
-            href="lms-dashboard.html"
-            class="lms-brand"
-          >
+            <a
+              href="lms-dashboard.html"
+              class="lms-brand"
+              aria-label="Screenings4u Learning Center"
+            >
+              <img
+                src="images/logo2.png"
+                alt="screenings4u"
+                class="lms-brand-logo"
+              />
 
-            <img
-              src="images/logo2.png"
-              alt="screenings4u"
-              class="lms-brand-logo"
-            />
-
-            <div class="lms-brand-copy">
-
-              <span class="lms-brand-subtitle">
-                Learning Center
-              </span>
-
-            </div>
-
-          </a>
+              <div class="lms-brand-copy">
+                <span class="lms-brand-subtitle">
+                  Learning Center
+                </span>
+              </div>
+            </a>
+          </div>
 
 
-          <!-- NAVIGATION -->
+          <!-- =================================================
+               NAVIGATION
+               ================================================= -->
 
           <div class="lms-sidebar-scroll">
 
@@ -78,9 +93,7 @@
                 Learning
               </span>
 
-
               <nav class="lms-nav">
-
 
                 <!-- HOME -->
 
@@ -89,60 +102,46 @@
                   class="lms-nav-link"
                   data-lms-page="lms-dashboard.html"
                 >
-
                   <span class="lms-nav-icon">
-
-                    <svg viewBox="0 0 24 24">
-
-                      <path
-                        d="M3 10.5 12 3l9 7.5"
-                      />
-
-                      <path
-                        d="M5 9.5V21h14V9.5"
-                      />
-
-                      <path
-                        d="M9 21v-6h6v6"
-                      />
-
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M3 10.5 12 3l9 7.5"></path>
+                      <path d="M5 9.5V21h14V9.5"></path>
+                      <path d="M9 21v-6h6v6"></path>
                     </svg>
-
                   </span>
-
 
                   <span class="lms-nav-text">
                     Home
                   </span>
-
                 </a>
 
-<!-- MY LEARNING -->
 
-<a
-  href="lms-my-courses.html"
-  class="lms-nav-link"
-  data-lms-page="lms-my-courses.html"
->
-  <span class="lms-nav-icon">
-    <svg viewBox="0 0 24 24">
-      <rect
-        x="3"
-        y="4"
-        width="18"
-        height="16"
-        rx="2"
-      />
-      <path d="M7 8h10" />
-      <path d="M7 12h7" />
-      <path d="M7 16h5" />
-    </svg>
-  </span>
+                <!-- MY LEARNING -->
 
-  <span class="lms-nav-text">
-    My Learning
-  </span>
-</a>
+                <a
+                  href="lms-my-courses.html"
+                  class="lms-nav-link"
+                  data-lms-page="lms-my-courses.html"
+                >
+                  <span class="lms-nav-icon">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                      <rect
+                        x="3"
+                        y="4"
+                        width="18"
+                        height="16"
+                        rx="2"
+                      ></rect>
+                      <path d="M7 8h10"></path>
+                      <path d="M7 12h7"></path>
+                      <path d="M7 16h5"></path>
+                    </svg>
+                  </span>
+
+                  <span class="lms-nav-text">
+                    My Learning
+                  </span>
+                </a>
 
 
                 <!-- COURSE LIBRARY -->
@@ -152,30 +151,18 @@
                   class="lms-nav-link"
                   data-lms-page="lms-courses.html"
                 >
-
                   <span class="lms-nav-icon">
-
-                    <svg viewBox="0 0 24 24">
-
-                      <path
-                        d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v16H6.5A2.5 2.5 0 0 0 4 21.5z"
-                      />
-
-                      <path d="M4 5.5v16" />
-
-                      <path d="M8 7h8" />
-
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v16H6.5A2.5 2.5 0 0 0 4 21.5z"></path>
+                      <path d="M4 5.5v16"></path>
+                      <path d="M8 7h8"></path>
                     </svg>
-
                   </span>
-
 
                   <span class="lms-nav-text">
                     Course Library
                   </span>
-
                 </a>
-
 
               </nav>
 
@@ -190,9 +177,7 @@
                 Track
               </span>
 
-
               <nav class="lms-nav">
-
 
                 <!-- PROGRESS -->
 
@@ -201,28 +186,18 @@
                   class="lms-nav-link"
                   data-lms-page="lms-progress.html"
                 >
-
                   <span class="lms-nav-icon">
-
-                    <svg viewBox="0 0 24 24">
-
-                      <path d="M4 19V9" />
-
-                      <path d="M10 19V5" />
-
-                      <path d="M16 19v-7" />
-
-                      <path d="M22 19V3" />
-
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M4 19V9"></path>
+                      <path d="M10 19V5"></path>
+                      <path d="M16 19v-7"></path>
+                      <path d="M22 19V3"></path>
                     </svg>
-
                   </span>
-
 
                   <span class="lms-nav-text">
                     Progress
                   </span>
-
                 </a>
 
 
@@ -233,32 +208,21 @@
                   class="lms-nav-link"
                   data-lms-page="lms-certificates.html"
                 >
-
                   <span class="lms-nav-icon">
-
-                    <svg viewBox="0 0 24 24">
-
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
                       <circle
                         cx="12"
                         cy="8"
                         r="5"
-                      />
-
-                      <path
-                        d="m8.5 12.5-1 8L12 18l4.5 2.5-1-8"
-                      />
-
+                      ></circle>
+                      <path d="m8.5 12.5-1 8L12 18l4.5 2.5-1-8"></path>
                     </svg>
-
                   </span>
-
 
                   <span class="lms-nav-text">
                     Certificates
                   </span>
-
                 </a>
-
 
               </nav>
 
@@ -273,9 +237,7 @@
                 Account
               </span>
 
-
               <nav class="lms-nav">
-
 
                 <!-- MY ACCOUNT -->
 
@@ -284,74 +246,80 @@
                   class="lms-nav-link"
                   data-lms-page="lms-account.html"
                 >
-
                   <span class="lms-nav-icon">
-
-                    <svg viewBox="0 0 24 24">
-
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
                       <circle
                         cx="12"
                         cy="8"
                         r="4"
-                      />
-
-                      <path
-                        d="M4 21c.8-4 3.4-6 8-6s7.2 2 8 6"
-                      />
-
+                      ></circle>
+                      <path d="M4 21c.8-4 3.4-6 8-6s7.2 2 8 6"></path>
                     </svg>
-
                   </span>
-
 
                   <span class="lms-nav-text">
                     My Account
                   </span>
-
                 </a>
 
+
+                <!-- TRAINING SUPPORT -->
+
+                <a
+                  href="lms-support.html"
+                  class="lms-nav-link"
+                  data-lms-page="lms-support.html"
+                >
+                  <span class="lms-nav-icon">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                      <circle cx="12" cy="12" r="9"></circle>
+                      <path d="M9.5 9a2.7 2.7 0 0 1 5.2 1c0 2-2.7 2.3-2.7 4"></path>
+                      <path d="M12 18h.01"></path>
+                    </svg>
+                  </span>
+
+                  <span class="lms-nav-text">
+                    Support
+                  </span>
+                </a>
 
               </nav>
 
             </div>
 
-
           </div>
 
 
-          <!-- SIDEBAR FOOTER -->
+          <!-- =================================================
+               SIDEBAR FOOTER
+               ================================================= -->
 
           <div class="lms-sidebar-footer">
 
-            <a
-              href="index.html"
-              class="lms-return-link"
-            >
+            <div class="lms-sidebar-footer-links">
 
-              <span class="lms-nav-icon">
+              <!-- BACK TO MAIN WEBSITE -->
 
-                <svg viewBox="0 0 24 24">
+              <a
+                href="index.html"
+                class="lms-return-link"
+              >
+                <span class="lms-nav-icon">
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M19 12H5"></path>
+                    <path d="m12 19-7-7 7-7"></path>
+                  </svg>
+                </span>
 
-                  <path d="M19 12H5" />
-
-                  <path d="m12 19-7-7 7-7" />
-
-                </svg>
-
-              </span>
-
-
-              <span class="lms-return-text">
-                Back to Screenings4u
-              </span>
-
-            </a>
+                <span class="lms-return-text">
+                  Back to Screenings4u
+                </span>
+              </a>
+            </div>
 
           </div>
 
-
         </div>
-
       </aside>
 
 
@@ -359,37 +327,184 @@
 
       <div
         class="lms-sidebar-overlay"
+        id="lms-sidebar-overlay"
         data-lms-sidebar-overlay
+        aria-hidden="true"
       ></div>
     `;
   }
 
 
   /* ============================================================
-     ACTIVE NAVIGATION
+     DESKTOP SIDEBAR
+     ============================================================
+
+     The Learning Center stylesheet already owns the desktop sidebar
+     presentation. Do not inject Customer Portal collapse/reopen controls
+     here because those controls use different CSS classes.
+  */
+
+
+  /* ============================================================
+     MOBILE NAVIGATION
      ============================================================ */
 
-  function setActiveNavigation() {
-    const currentPage =
-      window.location.pathname
-        .split("/")
-        .pop() || "lms-dashboard.html";
+  function initializeMobileNavigation() {
+    const sidebar =
+      document.getElementById(
+        "lms-sidebar"
+      );
+
+    const overlay =
+      document.getElementById(
+        "lms-sidebar-overlay"
+      );
+
+    if (!sidebar || !overlay) {
+      return;
+    }
+
+    /*
+     * The LMS topbar already uses data-lms-menu-toggle.
+     * Bind those buttons here so the sidebar owns its own
+     * mobile open/close behavior just like customer-portal.js.
+     */
+    const menuButtons =
+      document.querySelectorAll(
+        "[data-lms-menu-toggle]"
+      );
+
+    menuButtons.forEach(function (button) {
+      button.addEventListener(
+        "click",
+        function (event) {
+          if (
+            window.innerWidth >
+            DESKTOP_BREAKPOINT
+          ) {
+            return;
+          }
+
+          event.preventDefault();
+          event.stopPropagation();
+
+          if (
+            sidebar.classList.contains(
+              "mobile-open"
+            )
+          ) {
+            closeMobileSidebar();
+          } else {
+            openMobileSidebar();
+          }
+        }
+      );
+    });
+
+    overlay.addEventListener(
+      "click",
+      closeMobileSidebar
+    );
 
     const navigationLinks =
-      document.querySelectorAll(
-        ".lms-nav-link[data-lms-page]"
+      sidebar.querySelectorAll(
+        ".lms-nav-link, .lms-return-link"
       );
 
     navigationLinks.forEach(function (link) {
-      const page =
-        link.getAttribute("data-lms-page");
-
-      link.classList.remove("active");
-
-      if (page === currentPage) {
-        link.classList.add("active");
-      }
+      link.addEventListener(
+        "click",
+        function () {
+          if (
+            window.innerWidth <=
+            DESKTOP_BREAKPOINT
+          ) {
+            closeMobileSidebar();
+          }
+        }
+      );
     });
+
+    window.addEventListener(
+      "resize",
+      function () {
+        if (
+          window.innerWidth >
+          DESKTOP_BREAKPOINT
+        ) {
+          closeMobileSidebar();
+        }
+      }
+    );
   }
+
+
+  function openMobileSidebar() {
+    const sidebar =
+      document.getElementById(
+        "lms-sidebar"
+      );
+
+    const overlay =
+      document.getElementById(
+        "lms-sidebar-overlay"
+      );
+
+    if (!sidebar || !overlay) {
+      return;
+    }
+
+    sidebar.classList.add(
+      "mobile-open"
+    );
+
+    overlay.classList.add(
+      "active"
+    );
+
+    overlay.setAttribute(
+      "aria-hidden",
+      "false"
+    );
+
+    document.body.classList.add(
+      "sidebar-open"
+    );
+  }
+
+
+  function closeMobileSidebar() {
+    const sidebar =
+      document.getElementById(
+        "lms-sidebar"
+      );
+
+    const overlay =
+      document.getElementById(
+        "lms-sidebar-overlay"
+      );
+
+    if (sidebar) {
+      sidebar.classList.remove(
+        "mobile-open"
+      );
+    }
+
+    if (overlay) {
+      overlay.classList.remove(
+        "active"
+      );
+
+      overlay.setAttribute(
+        "aria-hidden",
+        "true"
+      );
+    }
+
+    document.body.classList.remove(
+      "sidebar-open"
+    );
+  }
+
 
 })();

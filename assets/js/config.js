@@ -1,5 +1,5 @@
 /* ============================================================
-   screenings4u — APPLICATION CORE CONFIG
+   screenings4u — TRAINING / LMS APPLICATION CORE CONFIG
    Browser-safe configuration only.
    ============================================================ */
 
@@ -11,10 +11,13 @@
 
   window.S4U_APP = Object.freeze({
     brand: "screenings4u",
+
     supabaseUrl: url || "",
     supabaseAnonKey: anonKey || "",
-    adminLogin: "admin-login.html",
-    clientLogin: "client-login.html",
+
+    trainingLogin: "training-login.html",
+    trainingDashboard: "lms-dashboard.html",
+
     website: "index.html"
   });
 })();

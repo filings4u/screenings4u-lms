@@ -43,10 +43,13 @@
     window.location.replace(loginPage);
   }
 
-  window.S4UAuth = Object.freeze({
-    getClient,
-    getSession,
-    requireSession,
-    signOut
-  });
+  // Do not overwrite the full Training/LMS auth API if it is already loaded.
+  if (!window.S4UAuth) {
+    window.S4UAuth = Object.freeze({
+      getClient,
+      getSession,
+      requireSession,
+      signOut
+    });
+  }
 })();

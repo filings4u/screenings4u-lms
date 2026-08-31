@@ -48,37 +48,58 @@
   }
 
   async function initializeAuthenticatedLearner() {
+    var trainingState = null;
+
+    if (
+      window.S4UTrainingAuth &&
+      typeof window.S4UTrainingAuth.protect === "function"
+    ) {
+      trainingState = await window.S4UTrainingAuth.protect();
+    } else if (
+      window.S4UAuth &&
+      typeof window.S4UAuth.requireAuth === "function"
+    ) {
+      trainingState = await window.S4UAuth.requireAuth({
+        portal: "training",
+        loginPage: "training-login.html"
+      });
+    }
+
+    if (!trainingState || !trainingState.user) {
+      throw new Error(
+        "Training authentication could not be completed. Check the auth guard console error."
+      );
+    }
+
     var client = await getSupabaseClient();
     authState.client = client;
+    authState.user = trainingState.user;
 
-    var result = await client.auth.getUser();
-    var user = result && result.data ? result.data.user : null;
+    var profile = trainingState.profile || null;
 
-    if (result.error || !user) {
-      window.location.replace("lms.html");
-      throw result.error || new Error("No authenticated learner session.");
+    if (!profile) {
+      var profileResult = await client
+        .from("user_profiles")
+        .select("id,first_name,last_name,display_name,email,phone,avatar_path,is_active")
+        .eq("id", trainingState.user.id)
+        .maybeSingle();
+
+      if (profileResult.error) {
+        console.warn("[LMS] Profile could not be loaded:", profileResult.error);
+      }
+
+      profile = profileResult.data || {
+        id: trainingState.user.id,
+        email: trainingState.user.email || ""
+      };
     }
-
-    authState.user = user;
-
-    var profileResult = await client
-      .from("user_profiles")
-      .select("id,first_name,last_name,display_name,email,phone,avatar_path,is_active")
-      .eq("id", user.id)
-      .maybeSingle();
-
-    if (profileResult.error) {
-      console.warn("[LMS] Profile could not be loaded:", profileResult.error);
-    }
-
-    var profile = profileResult.data || {
-      id: user.id,
-      email: user.email || ""
-    };
 
     if (profile.is_active === false) {
-      await client.auth.signOut();
-      window.location.replace("lms.html");
+      try {
+        await window.S4UAuth?.signOutSilently?.();
+      } catch (_) {}
+
+      window.location.replace("training-login.html");
       throw new Error("This account is inactive.");
     }
 
@@ -88,9 +109,9 @@
       name:
         profile.display_name ||
         [profile.first_name, profile.last_name].filter(Boolean).join(" ") ||
-        user.email ||
+        trainingState.user.email ||
         "Learner",
-      email: profile.email || user.email || ""
+      email: profile.email || trainingState.user.email || ""
     });
   }
 
@@ -239,14 +260,26 @@
   function initializeSignOut() {
     document.querySelectorAll("[data-lms-sign-out]").forEach(function (button) {
       button.addEventListener("click", async function () {
+        button.disabled = true;
+
         try {
+          if (
+            window.S4UAuth &&
+            typeof window.S4UAuth.signOut === "function"
+          ) {
+            await window.S4UAuth.signOut({
+              redirectTo: "training-login.html"
+            });
+            return;
+          }
+
           var client = await getSupabaseClient();
           await client.auth.signOut();
         } catch (error) {
           console.error("[LMS] Sign out error:", error);
         }
 
-        window.location.href = "lms.html";
+        window.location.replace("training-login.html");
       });
     });
   }

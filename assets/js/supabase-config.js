@@ -1,8 +1,4 @@
-/* ============================================================
-   screenings4u — SUPABASE CONFIG
-   Shared Supabase bootstrap for all admin pages.
-   ============================================================ */
-
+/* SCREENINGS4U — TRAINING SUPABASE CONFIG — SESSION STORAGE ONLY */
 (() => {
   "use strict";
 
@@ -20,7 +16,16 @@
   ) {
     window.screenings4uSupabase = window.supabase.createClient(
       SUPABASE_URL,
-      SUPABASE_ANON_KEY
+      SUPABASE_ANON_KEY,
+      {
+        auth: {
+          persistSession: true,
+          autoRefreshToken: true,
+          detectSessionInUrl: true,
+          storage: window.sessionStorage,
+          storageKey: "s4u-training-auth-session"
+        }
+      }
     );
   }
 

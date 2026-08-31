@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Support | Screenings4u Learning Center</title>
+
+  <link rel="icon" type="image/png" href="images/favicon.png">
+  <link rel="stylesheet" href="assets/css/lms.css">
+  <link rel="stylesheet" href="assets/css/lms-support.css?v=20260831-1700">
+</head>
+
+<body class="lms-support-page">
+  <div class="lms-app">
+
+    <!-- Dynamic LMS Sidebar Target -->
+    <div id="lms-sidebar-target"></div>
+
+    <main class="lms-main">
+
+      <header class="lms-topbar">
+        <div class="lms-topbar-left">
+          <button
+            type="button"
+            class="lms-menu-button"
+            data-lms-menu-toggle
+            aria-label="Toggle navigation"
+          >
+            <svg viewBox="0 0 24 24">
+              <path d="M4 7h16"></path>
+              <path d="M4 12h16"></path>
+              <path d="M4 17h16"></path>
+            </svg>
+          </button>
+        </div>
+
+        <div class="lms-search-wrap">
+          <label class="lms-search">
+            <span class="lms-search-icon">
+              <svg viewBox="0 0 24 24">
+                <circle cx="11" cy="11" r="6"></circle>
+                <path d="m20 20-4-4"></path>
+              </svg>
+            </span>
+            <input
+              type="search"
+              placeholder="Search courses, lessons, and resources..."
+              data-lms-search
+            >
+            <span class="lms-search-shortcut">Ctrl K</span>
+          </label>
+        </div>
+
+        <div class="lms-topbar-right">
+          <a
+            href="lms-notifications.html"
+            class="lms-icon-button"
+            aria-label="Notifications"
+          >
+            <svg viewBox="0 0 24 24">
+              <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"></path>
+              <path d="M10 21h4"></path>
+            </svg>
+            <span class="lms-notification-dot"></span>
+          </a>
+
+          <div class="lms-user-wrap">
+            <button
+              type="button"
+              class="lms-user-button"
+              data-lms-user-button
+              aria-expanded="false"
+            >
+              <span class="lms-user-avatar" data-lms-learner-initials>JD</span>
+              <span class="lms-user-name" data-lms-learner-name>Learner</span>
+              <span class="lms-user-chevron">
+                <svg viewBox="0 0 24 24">
+                  <path d="m7 10 5 5 5-5"></path>
+                </svg>
+              </span>
+            </button>
+
+            <div class="lms-user-menu" data-lms-user-menu>
+              <div class="lms-user-menu-header">
+                <span class="lms-user-menu-name" data-lms-user-menu-name>Learner</span>
+                <span class="lms-user-menu-email" data-lms-user-menu-email></span>
+              </div>
+
+              <a href="lms-account.html" class="lms-user-menu-link">My Account</a>
+              <a href="lms-certificates.html" class="lms-user-menu-link">My Certificates</a>
+              <button
+                type="button"
+                class="lms-user-menu-link"
+                data-lms-sign-out
+              >
+                Sign Out
+              </button>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <div class="lms-support-content">
+
+        <section class="lms-support-intro">
+          <div>
+            <span class="lms-support-eyebrow">LEARNER HELP CENTER</span>
+            <h1>Training Support</h1>
+            <p>
+              Send our team a training support request, reply to existing
+              conversations, or start a live support conversation.
+            </p>
+          </div>
+
+          <button class="lms-support-primary" id="new-ticket-btn" type="button">
+            + New Support Ticket
+          </button>
+        </section>
+
+        <section class="lms-support-summary">
+          <article>
+            <span id="support-open-count">0</span>
+            <strong>Open Tickets</strong>
+            <small>Requests being handled</small>
+          </article>
+
+          <article>
+            <span id="support-message-count">0</span>
+            <strong>Conversations</strong>
+            <small>Messages with our team</small>
+          </article>
+
+          <article>
+            <span id="support-reply-count">0</span>
+            <strong>Replies</strong>
+            <small>Messages in your support history</small>
+          </article>
+        </section>
+
+        <section class="lms-support-workspace">
+          <aside class="lms-support-sidebar">
+            <div class="lms-support-tabs">
+              <button class="is-active" data-support-tab="all" type="button">All</button>
+              <button data-support-tab="tickets" type="button">Tickets</button>
+              <button data-support-tab="chat" type="button">Live Chat</button>
+            </div>
+
+            <div class="lms-support-conversations" id="support-conversations">
+              <div class="lms-support-loading">Loading support...</div>
+            </div>
+
+            <button class="lms-support-chat-start" id="start-chat-btn" type="button">
+              Start Live Chat
+            </button>
+          </aside>
+
+          <section class="lms-support-thread">
+            <div class="lms-support-thread-empty" id="support-thread-empty">
+              <div class="lms-support-empty-icon">?</div>
+              <h2>Select a conversation</h2>
+              <p>
+                Choose a ticket or message on the left, or start a new
+                training support request.
+              </p>
+            </div>
+
+            <div id="support-thread-view" hidden>
+              <header class="lms-support-thread-header">
+                <div>
+                  <span id="support-thread-type">TRAINING SUPPORT</span>
+                  <h2 id="support-thread-subject">Conversation</h2>
+                  <p id="support-thread-status"></p>
+                </div>
+              </header>
+
+              <div class="lms-support-messages" id="support-messages"></div>
+
+              <form class="lms-support-reply" id="support-reply-form">
+                <textarea
+                  id="support-reply-body"
+                  rows="3"
+                  maxlength="5000"
+                  placeholder="Type your reply..."
+                  required
+                ></textarea>
+
+                <div>
+                  <small>
+                    Messages are shared securely with the Screenings4u support team.
+                  </small>
+                  <button type="submit">Send Reply</button>
+                </div>
+              </form>
+            </div>
+          </section>
+        </section>
+
+        <section class="lms-support-contact">
+          <div>
+            <strong>Need immediate assistance?</strong>
+            <p>You can also contact the Screenings4u support team by email.</p>
+          </div>
+          <a href="mailto:support@screenings4u.com">support@screenings4u.com</a>
+        </section>
+
+      </div>
+    </main>
+  </div>
+
+  <div class="lms-support-modal" id="ticket-modal" hidden>
+    <div class="lms-support-modal-backdrop" data-close-modal></div>
+
+    <div class="lms-support-modal-card" role="dialog" aria-modal="true" aria-labelledby="ticket-modal-title">
+      <button
+        class="lms-support-modal-close"
+        data-close-modal
+        type="button"
+        aria-label="Close"
+      >×</button>
+
+      <span class="lms-support-eyebrow">NEW REQUEST</span>
+      <h2 id="ticket-modal-title">Create Training Support Ticket</h2>
+
+      <form id="ticket-form">
+        <label>
+          Subject
+          <input id="ticket-subject" maxlength="160" required>
+        </label>
+
+        <div class="lms-support-form-grid">
+          <label>
+            Category
+            <select id="ticket-category">
+              <option value="training">Training / Course</option>
+              <option value="course_access">Course Access</option>
+              <option value="lesson">Lesson / Content</option>
+              <option value="assessment">Quiz / Assessment</option>
+              <option value="certificate">Certificate</option>
+              <option value="technical">Technical</option>
+              <option value="account">Account</option>
+              <option value="general">General Support</option>
+            </select>
+          </label>
+
+          <label>
+            Priority
+            <select id="ticket-priority">
+              <option value="normal">Normal</option>
+              <option value="high">High</option>
+              <option value="urgent">Urgent</option>
+            </select>
+          </label>
+        </div>
+
+        <label>
+          How can we help?
+          <textarea id="ticket-body" rows="6" maxlength="5000" required></textarea>
+        </label>
+
+        <div class="lms-support-modal-actions">
+          <button type="button" class="secondary" data-close-modal>Cancel</button>
+          <button type="submit" class="lms-support-primary">Submit Ticket</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="lms-support-modal" id="chat-modal" hidden>
+    <div class="lms-support-modal-backdrop" data-close-chat></div>
+
+    <div class="lms-support-modal-card" role="dialog" aria-modal="true" aria-labelledby="chat-modal-title">
+      <button
+        class="lms-support-modal-close"
+        data-close-chat
+        type="button"
+        aria-label="Close"
+      >×</button>
+
+      <span class="lms-support-eyebrow">LIVE SUPPORT</span>
+      <h2 id="chat-modal-title">Start a Training Conversation</h2>
+
+      <form id="chat-form">
+        <label>
+          Topic
+          <input id="chat-subject" maxlength="160" value="Training Support">
+        </label>
+
+        <label>
+          Message
+          <textarea
+            id="chat-body"
+            rows="6"
+            maxlength="5000"
+            required
+            placeholder="Tell us how we can help with your training..."
+          ></textarea>
+        </label>
+
+        <div class="lms-support-modal-actions">
+          <button type="button" class="secondary" data-close-chat>Cancel</button>
+          <button type="submit" class="lms-support-primary">Start Chat</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="assets/js/supabase-config.js"></script>
+  <script src="assets/js/core-auth.js"></script>
+  <script src="assets/js/ui.js"></script>
+  <script src="assets/js/session-security.js"></script>
+  <script src="assets/js/portal-auth-guard.js"></script>
+  <script src="assets/js/training-auth-guard.js"></script>
+  <script src="assets/js/lms-sidebar.js"></script>
+  <script src="assets/js/lms.js?v=20260831-1700"></script>
+  <script src="assets/js/lms-support.js?v=20260831-1700"></script>
+</body>
+</html>

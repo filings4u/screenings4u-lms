@@ -66,47 +66,95 @@
     activeModal = wrapper;
     document.body.classList.add("s4u-modal-open");
 
-    wrapper.querySelector("[data-modal-close]")?.addEventListener("click", close);
-    wrapper.querySelector("[data-modal-cancel]")?.addEventListener("click", close);
+    wrapper
+      .querySelector("[data-modal-close]")
+      ?.addEventListener("click", close);
 
-    wrapper.querySelector("[data-modal-confirm]")?.addEventListener("click", async () => {
-      const button = wrapper.querySelector("[data-modal-confirm]");
-      button.disabled = true;
+    wrapper
+      .querySelector("[data-modal-cancel]")
+      ?.addEventListener("click", close);
 
-      try {
-        if (typeof onConfirm === "function") {
-          await onConfirm();
+    wrapper
+      .querySelector("[data-modal-confirm]")
+      ?.addEventListener("click", async () => {
+        const button =
+          wrapper.querySelector("[data-modal-confirm]");
+
+        button.disabled = true;
+
+        try {
+          if (typeof onConfirm === "function") {
+            await onConfirm();
+          }
+
+          close();
+        } catch (error) {
+          button.disabled = false;
+
+          toast(
+            error?.message ||
+              "Unable to complete this action.",
+            "error"
+          );
         }
-        close();
-      } catch (error) {
-        button.disabled = false;
-        toast(error?.message || "Unable to complete this action.", "error");
-      }
-    });
+      });
 
-    return { close };
+    return {
+      close
+    };
   }
 
-  function toast(message, type = "info") {
-    let root = document.getElementById("s4uToastRoot");
+  function toast(
+    message,
+    type = "info"
+  ) {
+    let root =
+      document.getElementById(
+        "s4uToastRoot"
+      );
 
     if (!root) {
-      root = document.createElement("div");
+      root =
+        document.createElement("div");
+
       root.id = "s4uToastRoot";
-      root.className = "s4u-toast-root";
-      document.body.appendChild(root);
+      root.className =
+        "s4u-toast-root";
+
+      document.body.appendChild(
+        root
+      );
     }
 
-    const item = document.createElement("div");
-    item.className = `s4u-toast ${type}`;
-    item.textContent = message;
-    root.appendChild(item);
+    const item =
+      document.createElement("div");
 
-    requestAnimationFrame(() => item.classList.add("show"));
+    item.className =
+      `s4u-toast ${type}`;
+
+    item.textContent =
+      message;
+
+    root.appendChild(
+      item
+    );
+
+    requestAnimationFrame(
+      () =>
+        item.classList.add(
+          "show"
+        )
+    );
 
     setTimeout(() => {
-      item.classList.remove("show");
-      setTimeout(() => item.remove(), 180);
+      item.classList.remove(
+        "show"
+      );
+
+      setTimeout(
+        () => item.remove(),
+        180
+      );
     }, 4200);
   }
 
@@ -128,11 +176,24 @@
     onSubmit = null
   } = {}) {
     close();
+
     const root = ensureRoot();
-    const wrapper = document.createElement("div");
-    wrapper.className = "s4u-modal info";
-    wrapper.setAttribute("role", "dialog");
-    wrapper.setAttribute("aria-modal", "true");
+    const wrapper =
+      document.createElement("div");
+
+    wrapper.className =
+      "s4u-modal info";
+
+    wrapper.setAttribute(
+      "role",
+      "dialog"
+    );
+
+    wrapper.setAttribute(
+      "aria-modal",
+      "true"
+    );
+
     wrapper.innerHTML = `
       <div class="s4u-modal-backdrop" data-modal-close></div>
       <section class="s4u-modal-panel s4u-form-modal-panel">
@@ -140,7 +201,7 @@
           <h2>${escapeHtml(title)}</h2>
           ${message ? `<p>${escapeHtml(message)}</p>` : ""}
           <form class="s4u-form-modal-form">
-            ${fields.map((field, index) => `
+            ${fields.map((field) => `
               <label class="s4u-form-modal-field">
                 <span>${escapeHtml(field.label || field.name)}</span>
                 ${field.type === "textarea"
@@ -158,33 +219,96 @@
         </div>
       </section>
     `;
-    root.appendChild(wrapper);
+
+    root.appendChild(
+      wrapper
+    );
+
     activeModal = wrapper;
-    document.body.classList.add("s4u-modal-open");
-    wrapper.querySelector("[data-modal-close]")?.addEventListener("click", close);
-    wrapper.querySelector("[data-modal-cancel]")?.addEventListener("click", close);
-    wrapper.querySelector("form")?.addEventListener("submit", async (event) => {
-      event.preventDefault();
-      const button = wrapper.querySelector('button[type="submit"]');
-      button.disabled = true;
-      const formData = new FormData(event.currentTarget);
-      const values = Object.fromEntries(formData.entries());
-      try {
-        if (typeof onSubmit === "function") await onSubmit(values);
-        close();
-      } catch (error) {
-        button.disabled = false;
-        toast(error?.message || "Unable to complete this action.", "error");
-      }
-    });
-    wrapper.querySelector("input, select, textarea")?.focus();
-    return { close };
+
+    document.body.classList.add(
+      "s4u-modal-open"
+    );
+
+    wrapper
+      .querySelector("[data-modal-close]")
+      ?.addEventListener(
+        "click",
+        close
+      );
+
+    wrapper
+      .querySelector("[data-modal-cancel]")
+      ?.addEventListener(
+        "click",
+        close
+      );
+
+    wrapper
+      .querySelector("form")
+      ?.addEventListener(
+        "submit",
+        async (event) => {
+          event.preventDefault();
+
+          const button =
+            wrapper.querySelector(
+              'button[type="submit"]'
+            );
+
+          button.disabled =
+            true;
+
+          const formData =
+            new FormData(
+              event.currentTarget
+            );
+
+          const values =
+            Object.fromEntries(
+              formData.entries()
+            );
+
+          try {
+            if (
+              typeof onSubmit ===
+              "function"
+            ) {
+              await onSubmit(
+                values
+              );
+            }
+
+            close();
+          } catch (error) {
+            button.disabled =
+              false;
+
+            toast(
+              error?.message ||
+                "Unable to complete this action.",
+              "error"
+            );
+          }
+        }
+      );
+
+    wrapper
+      .querySelector(
+        "input, select, textarea"
+      )
+      ?.focus();
+
+    return {
+      close
+    };
   }
 
-  window.S4UUI = Object.freeze({
-    modal,
-    formModal,
-    toast,
-    closeModal: close
-  });
+  window.S4UUI =
+    Object.freeze({
+      modal,
+      formModal,
+      toast,
+      closeModal: close
+    });
 })();
