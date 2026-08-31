@@ -831,11 +831,11 @@
             aria-expanded="false"
           >
             <span class="lms-user-avatar" data-lms-learner-initials>
-              JD
+              --
             </span>
 
             <span class="lms-user-name" data-lms-learner-name>
-              John Doe
+              Learner
             </span>
 
             <span class="lms-user-chevron">
@@ -848,10 +848,8 @@
           <div class="lms-user-menu" data-lms-user-menu>
 
             <div class="lms-user-menu-header">
-              <span class="lms-user-menu-name">John Doe</span>
-              <span class="lms-user-menu-email">
-                learner@screenings4u.com
-              </span>
+              <span class="lms-user-menu-name" data-lms-user-menu-name>Learner</span>
+              <span class="lms-user-menu-email" data-lms-user-menu-email></span>
             </div>
 
             <a href="lms-account.html" class="lms-user-menu-link">
@@ -915,12 +913,12 @@
           <div class="certificates-stats">
 
             <div class="cert-stat">
-              <strong>1</strong>
+              <strong data-certificates-earned>0</strong>
               <span>Certificates Earned</span>
             </div>
 
             <div class="cert-stat">
-              <strong>1</strong>
+              <strong data-courses-completed>0</strong>
               <span>Courses Completed</span>
             </div>
 
@@ -950,186 +948,16 @@
 
           </div>
 
-          <!-- Certificate item -->
+          <!-- Live certificates -->
+          <div id="certificatesList"></div>
 
-          <article class="certificate-item">
-
-            <div class="certificate-item-top">
-
-              <div class="certificate-thumbnail">
-
-                <div class="certificate-thumbnail-inner">
-
-                  <div class="certificate-thumbnail-mark">
-                    <svg viewBox="0 0 24 24">
-                      <circle cx="12" cy="8" r="5"></circle>
-                      <path d="m8.5 12.5-1 8L12 18l4.5 2.5-1-8"></path>
-                    </svg>
-                  </div>
-
-                  <strong>Certificate</strong>
-
-                  <span>Screenings4u</span>
-
-                </div>
-
-              </div>
-
-              <div class="certificate-item-content">
-
-                <div class="certificate-status">
-                  <span class="certificate-status-dot"></span>
-                  Verified Completion
-                </div>
-
-                <h3>
-                  DOT Supervisor Training:
-                  Reasonable Suspicion
-                </h3>
-
-                <div class="certificate-item-meta">
-
-                  <span class="certificate-meta">
-                    Completed:
-                    <strong>August 28, 2026</strong>
-                  </span>
-
-                  <span class="certificate-meta">
-                    Score:
-                    <strong>92%</strong>
-                  </span>
-
-                </div>
-
-                <div class="certificate-id">
-                  Certificate ID:
-                  <span>S4U-2026-8X4K-2917</span>
-                </div>
-
-              </div>
-
-            </div>
-
-            <div class="certificate-actions">
-
-              <button
-                type="button"
-                class="cert-button cert-button-secondary"
-                data-view-certificate
-              >
-                <svg viewBox="0 0 24 24">
-                  <path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12z"></path>
-                  <circle cx="12" cy="12" r="2.5"></circle>
-                </svg>
-
-                View Certificate
-              </button>
-
-              <button
-                type="button"
-                class="cert-button cert-button-primary"
-                data-print-certificate
-              >
-                <svg viewBox="0 0 24 24">
-                  <path d="M6 3h12v5H6z"></path>
-                  <path d="M6 17H4a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2"></path>
-                  <path d="M6 14h12v7H6z"></path>
-                </svg>
-
-                Download / Print
-              </button>
-
-            </div>
-
-          </article>
-
-          <!-- Certificate preview -->
-
-          <section
-            class="certificate-preview-card"
-            id="certificatePreview"
-          >
-
+          <!-- Live certificate preview -->
+          <section class="certificate-preview-card" id="certificatePreview" hidden>
             <div class="certificate-preview-head">
-
               <h3>Certificate Preview</h3>
-
-              <span>
-                Professional print layout
-              </span>
-
+              <span>Professional print layout</span>
             </div>
-
-            <div id="printCertificate">
-
-              <div class="real-certificate">
-
-                <div class="real-certificate-content">
-
-                  <img
-                    src="images/logo2.png"
-                    alt="Screenings4u"
-                    class="real-certificate-logo"
-                  >
-
-                  <div class="real-certificate-kicker">
-                    Screenings4u Learning Center
-                  </div>
-
-                  <div class="real-certificate-title">
-                    Certificate of Completion
-                  </div>
-
-                  <div class="real-certificate-presented">
-                    This certificate is proudly presented to
-                  </div>
-
-                  <div class="real-certificate-name">
-                    John Doe
-                  </div>
-
-                  <div class="real-certificate-rule"></div>
-
-                  <div class="real-certificate-text">
-                    For successfully completing the required training
-                    and assessment requirements for
-                  </div>
-
-                  <div class="real-certificate-course">
-                    DOT Supervisor Training:
-                    Reasonable Suspicion
-                  </div>
-
-                  <div class="real-certificate-footer">
-
-                    <div class="certificate-signature">
-                      <div class="certificate-signature-line"></div>
-
-                      <span>
-                        Authorized Representative
-                      </span>
-                    </div>
-
-                    <div class="certificate-seal">
-                      Verified<br>Completion
-                    </div>
-
-                    <div class="certificate-signature certificate-date">
-                      <div class="certificate-signature-line"></div>
-
-                      <span>
-                        August 28, 2026
-                      </span>
-                    </div>
-
-                  </div>
-
-                </div>
-
-              </div>
-
-            </div>
-
+            <div id="printCertificate"></div>
           </section>
 
           <!-- Future empty state -->
@@ -1251,44 +1079,11 @@
 
 </div>
 
-<script src="assets/js/lms.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="assets/js/supabase-config.js"></script>
 <script src="assets/js/lms-sidebar.js"></script>
-
-<script>
-(function () {
-  "use strict";
-
-  const viewButton = document.querySelector(
-    "[data-view-certificate]"
-  );
-
-  const printButton = document.querySelector(
-    "[data-print-certificate]"
-  );
-
-  const preview = document.getElementById(
-    "certificatePreview"
-  );
-
-  viewButton && viewButton.addEventListener(
-    "click",
-    function () {
-      preview.scrollIntoView({
-        behavior: "smooth",
-        block: "center"
-      });
-    }
-  );
-
-  printButton && printButton.addEventListener(
-    "click",
-    function () {
-      window.print();
-    }
-  );
-
-})();
-</script>
+<script src="assets/js/lms.js?v=20260830-2300"></script>
+<script src="assets/js/lms-certificates.js?v=20260830-2300"></script>
 
 </body>
 </html>

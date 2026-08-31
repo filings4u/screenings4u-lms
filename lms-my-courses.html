@@ -654,10 +654,10 @@
               data-lms-user-button
               aria-expanded="false"
             >
-              <span class="lms-user-avatar" data-lms-learner-initials>JD</span>
+              <span class="lms-user-avatar" data-lms-learner-initials>--</span>
 
               <span class="lms-user-name" data-lms-learner-name>
-                John Doe
+                Learner
               </span>
 
               <span class="lms-user-chevron">
@@ -670,10 +670,10 @@
             <div class="lms-user-menu" data-lms-user-menu>
               <div class="lms-user-menu-header">
                 <span class="lms-user-menu-name" data-lms-user-menu-name>
-                  John Doe
+                  Learner
                 </span>
                 <span class="lms-user-menu-email" data-lms-user-menu-email>
-                  learner@screenings4u.com
+                  
                 </span>
               </div>
 
@@ -735,7 +735,7 @@
             </div>
           </div>
 
-          <article class="continue-course-card">
+          <article class="continue-course-card" id="my-learning-continue-card">
 
             <div class="continue-course-visual">
               <div class="continue-course-visual-content">
@@ -868,7 +868,7 @@
 
           </div>
 
-          <div class="my-courses-grid">
+          <div class="my-courses-grid" id="my-learning-course-grid">
 
             <!-- Course 1 -->
 
@@ -1098,43 +1098,12 @@
 
   </div>
 
-  <!-- Established shared LMS scripts -->
-  <script src="assets/js/lms.js"></script>
+  <!-- Authenticated LMS stack -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="assets/js/supabase-config.js"></script>
   <script src="assets/js/lms-sidebar.js"></script>
-
-  <script>
-    (function () {
-      "use strict";
-
-      /*
-       * Placeholder learner data.
-       * This will be replaced with the authenticated learner profile
-       * and enrolled-course records when we wire the LMS to Supabase.
-       */
-
-      function initializeLearnerProfile() {
-        if (
-          window.LMS &&
-          typeof window.LMS.setLearnerProfile === "function"
-        ) {
-          window.LMS.setLearnerProfile({
-            name: "John Doe",
-            email: "learner@screenings4u.com"
-          });
-        }
-      }
-
-      if (document.readyState === "loading") {
-        document.addEventListener(
-          "DOMContentLoaded",
-          initializeLearnerProfile
-        );
-      } else {
-        initializeLearnerProfile();
-      }
-
-    })();
-  </script>
+  <script src="assets/js/lms.js?v=20260830-2030"></script>
+  <script src="assets/js/lms-my-courses.js?v=20260830-2030"></script>
 
 </body>
 </html>

@@ -144,15 +144,15 @@
 
         <div class="lms-user-wrap">
           <button type="button" class="lms-user-button" data-lms-user-button aria-expanded="false">
-            <span class="lms-user-avatar" data-lms-learner-initials>JD</span>
-            <span class="lms-user-name" data-lms-learner-name>John Doe</span>
+            <span class="lms-user-avatar" data-lms-learner-initials>--</span>
+            <span class="lms-user-name" data-lms-learner-name>Learner</span>
             <span class="lms-user-chevron"><svg viewBox="0 0 24 24"><path d="m7 10 5 5 5-5"></path></svg></span>
           </button>
 
           <div class="lms-user-menu" data-lms-user-menu>
             <div class="lms-user-menu-header">
-              <span class="lms-user-menu-name">John Doe</span>
-              <span class="lms-user-menu-email">learner@screenings4u.com</span>
+              <span class="lms-user-menu-name" data-lms-user-menu-name>Learner</span>
+              <span class="lms-user-menu-email" data-lms-user-menu-email></span>
             </div>
             <a href="lms-account.html" class="lms-user-menu-link">My Account</a>
             <a href="lms-certificates.html" class="lms-user-menu-link">My Certificates</a>
@@ -182,9 +182,9 @@
         <aside class="account-sidebar">
 
           <section class="account-card account-profile-summary">
-            <div class="account-avatar">JD</div>
-            <h2>John Doe</h2>
-            <p>learner@screenings4u.com</p>
+            <div class="account-avatar" data-account-avatar>--</div>
+            <h2 data-account-name>Learner</h2>
+            <p data-account-email></p>
             <span class="account-role">Learner Account</span>
           </section>
 
@@ -221,34 +221,35 @@
 
                 <div class="form-group">
                   <label for="firstName">First Name</label>
-                  <input id="firstName" type="text" value="John">
+                  <input id="firstName" type="text" autocomplete="given-name">
                 </div>
 
                 <div class="form-group">
                   <label for="lastName">Last Name</label>
-                  <input id="lastName" type="text" value="Doe">
+                  <input id="lastName" type="text" autocomplete="family-name">
                 </div>
 
                 <div class="form-group">
                   <label for="email">Email Address</label>
-                  <input id="email" type="email" value="learner@screenings4u.com">
+                  <input id="email" type="email" readonly>
                   <p class="form-help">Used for account notifications and training communications.</p>
                 </div>
 
                 <div class="form-group">
                   <label for="phone">Phone Number</label>
-                  <input id="phone" type="tel" placeholder="Add phone number">
+                  <input id="phone" type="tel" placeholder="Add phone number" autocomplete="tel">
                 </div>
 
                 <div class="form-group full">
                   <label for="organization">Organization / Company</label>
-                  <input id="organization" type="text" placeholder="Add organization name">
+                  <input id="organization" type="text" placeholder="Add organization name" autocomplete="organization">
                   <p class="form-help">This information may be used to help identify employer-provided training.</p>
                 </div>
 
               </div>
 
-              <div class="account-actions">
+              <div id="accountMessage" class="form-help" role="status" aria-live="polite"></div>
+<div class="account-actions">
                 <button type="reset" class="btn btn-secondary">Cancel</button>
                 <button type="submit" class="btn btn-primary">Save Changes</button>
               </div>
@@ -272,7 +273,7 @@
                   <span>Receive reminders when you have an active course waiting to be completed.</span>
                 </div>
                 <label class="switch">
-                  <input type="checkbox" checked>
+                  <input type="checkbox" id="prefCourseReminders">
                   <span class="switch-slider"></span>
                 </label>
               </div>
@@ -283,7 +284,7 @@
                   <span>Receive an email when a certificate becomes available.</span>
                 </div>
                 <label class="switch">
-                  <input type="checkbox" checked>
+                  <input type="checkbox" id="prefCertificateNotifications">
                   <span class="switch-slider"></span>
                 </label>
               </div>
@@ -294,7 +295,7 @@
                   <span>Receive occasional updates about new Screenings4u training opportunities.</span>
                 </div>
                 <label class="switch">
-                  <input type="checkbox">
+                  <input type="checkbox" id="prefNewCourseUpdates">
                   <span class="switch-slider"></span>
                 </label>
               </div>
@@ -322,7 +323,7 @@
                     <span>Update your password to keep your account secure.</span>
                   </div>
                 </div>
-                <button type="button" class="text-button">Change Password</button>
+                <button type="button" class="text-button" id="changePasswordButton">Change Password</button>
               </div>
 
               <div class="security-item">
@@ -332,10 +333,10 @@
                   </div>
                   <div class="security-copy">
                     <strong>Email Address</strong>
-                    <span>Your current account email is learner@screenings4u.com.</span>
+                    <span>Your current account email is <strong data-security-email>—</strong>.</span>
                   </div>
                 </div>
-                <button type="button" class="text-button">Update Email</button>
+                <button type="button" class="text-button" id="updateEmailButton">Update Email</button>
               </div>
 
             </div>
@@ -349,7 +350,7 @@
                 <h2>Need help with your account?</h2>
                 <p>For course access, account questions, or training assistance, contact the Screenings4u support team.</p>
               </div>
-              <a href="index.html" class="btn btn-danger">Contact Support</a>
+              <a href="customer-support.html" class="btn btn-danger">Contact Support</a>
             </div>
           </section>
 
@@ -359,7 +360,10 @@
   </main>
 </div>
 
-<script src="assets/js/lms.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="assets/js/supabase-config.js"></script>
 <script src="assets/js/lms-sidebar.js"></script>
+<script src="assets/js/lms.js?v=20260830-2145"></script>
+<script src="assets/js/lms-account.js?v=20260830-2145"></script>
 </body>
 </html>

@@ -25,10 +25,10 @@
     <header class="lms-topbar">
       <div class="lms-topbar-left"><button type="button" class="lms-menu-button" data-lms-menu-toggle aria-label="Toggle navigation"><svg viewBox="0 0 24 24"><path d="M4 7h16"></path><path d="M4 12h16"></path><path d="M4 17h16"></path></svg></button></div>
       <div class="lms-search-wrap"><label class="lms-search"><span class="lms-search-icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6"></circle><path d="m20 20-4-4"></path></svg></span><input type="search" placeholder="Search courses, lessons, and resources..." data-lms-search><span class="lms-search-shortcut">Ctrl K</span></label></div>
-      <div class="lms-topbar-right"><button type="button" class="lms-icon-button" aria-label="Notifications"><svg viewBox="0 0 24 24"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"></path><path d="M10 21h4"></path></svg><span class="lms-notification-dot"></span></button><div class="lms-user-wrap"><button type="button" class="lms-user-button" data-lms-user-button aria-expanded="false"><span class="lms-user-avatar" data-lms-learner-initials>JD</span><span class="lms-user-name" data-lms-learner-name>John Doe</span><span class="lms-user-chevron"><svg viewBox="0 0 24 24"><path d="m7 10 5 5 5-5"></path></svg></span></button><div class="lms-user-menu" data-lms-user-menu><div class="lms-user-menu-header"><span class="lms-user-menu-name">John Doe</span><span class="lms-user-menu-email">learner@screenings4u.com</span></div><a href="lms-account.html" class="lms-user-menu-link">My Account</a><a href="lms-certificates.html" class="lms-user-menu-link">My Certificates</a><button type="button" class="lms-user-menu-link" data-lms-sign-out>Sign Out</button></div></div></div>
+      <div class="lms-topbar-right"><button type="button" class="lms-icon-button" aria-label="Notifications"><svg viewBox="0 0 24 24"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"></path><path d="M10 21h4"></path></svg><span class="lms-notification-dot"></span></button><div class="lms-user-wrap"><button type="button" class="lms-user-button" data-lms-user-button aria-expanded="false"><span class="lms-user-avatar" data-lms-learner-initials>--</span><span class="lms-user-name" data-lms-learner-name>Learner</span><span class="lms-user-chevron"><svg viewBox="0 0 24 24"><path d="m7 10 5 5 5-5"></path></svg></span></button><div class="lms-user-menu" data-lms-user-menu><div class="lms-user-menu-header"><span class="lms-user-menu-name" data-lms-user-menu-name>Learner</span><span class="lms-user-menu-email" data-lms-user-menu-email></span></div><a href="lms-account.html" class="lms-user-menu-link">My Account</a><a href="lms-certificates.html" class="lms-user-menu-link">My Certificates</a><button type="button" class="lms-user-menu-link" data-lms-sign-out>Sign Out</button></div></div></div>
     </header>
     <div class="lms-content quiz-page">
-      <nav class="quiz-breadcrumb" aria-label="Breadcrumb"><a href="lms-my-courses.html">My Learning</a><svg viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"></path></svg><a href="lms-course-player.html">Course Player</a><svg viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"></path></svg><span id="breadcrumbTitle">Knowledge Check</span></nav>
+      <nav class="quiz-breadcrumb" aria-label="Breadcrumb"><a href="lms-my-courses.html">My Learning</a><svg viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"></path></svg><a href="lms-course-player.html" id="coursePlayerLink">Course Player</a><svg viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"></path></svg><span id="breadcrumbTitle">Knowledge Check</span></nav>
       <div class="quiz-layout">
         <section class="quiz-card" id="quizCard">
           <div class="quiz-header"><div class="quiz-kicker"><i></i><span id="quizType">Module Knowledge Check</span></div><h1 id="quizTitle">Module Quiz</h1><p id="quizDescription">Complete this knowledge check before continuing to the next course module.</p></div>
@@ -43,69 +43,9 @@
     </div>
   </main>
 </div>
-<script src="assets/js/lms.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="assets/js/supabase-config.js"></script>
 <script src="assets/js/lms-sidebar.js"></script>
-<script>
-(function(){
-"use strict";
-const params=new URLSearchParams(window.location.search);
-const isFinal=params.get("type")==="final-assessment";
-const moduleQuestions=[
- {q:"What is the primary purpose of a reasonable suspicion training program?",o:["To help supervisors recognize and document signs that may require further action","To allow supervisors to diagnose medical conditions","To replace all workplace testing policies","To eliminate the need for employee training"]},
- {q:"When observing possible signs of impairment, a supervisor should primarily rely on:",o:["Current, objective observations and documented facts","Personal assumptions about the employee","Information from unrelated coworkers only","A diagnosis made without training"]},
- {q:"Why is accurate documentation important when a workplace concern is identified?",o:["It creates a factual record of observations and actions taken","It guarantees a particular testing result","It replaces company policy requirements","It allows assumptions to be recorded as facts"]},
- {q:"Which approach best supports a fair workplace response?",o:["Following established policy and procedures consistently","Making a decision based only on personal opinion","Ignoring observable changes in behavior","Discussing confidential details with unnecessary people"]},
- {q:"Before taking action, a supervisor should generally:",o:["Review the applicable policy and follow established procedures","Immediately announce the concern to all employees","Make a medical diagnosis","Skip documentation to save time"]}
-];
-const finalQuestions=[
- {q:"The final assessment evaluates knowledge gained across which portion of the course?",o:["The complete course and all required modules","Only the first module","Only the most recent lesson","Content unrelated to the course"]},
- {q:"What should a learner do when selecting answers on the final assessment?",o:["Apply knowledge gained throughout the training course","Guess based on answer length","Use unrelated personal preferences","Skip the question requirements"]},
- {q:"A successful final assessment is part of which course stage?",o:["The final completion requirement before certification","The first step before starting a course","A replacement for all course modules","An optional course purchase step"]},
- {q:"Why are module quizzes used during a course?",o:["To check understanding before the learner progresses","To replace the final assessment","To issue a certificate immediately","To purchase another course"]},
- {q:"After successfully meeting all course and final assessment requirements, the learner may:",o:["Become eligible for course completion and certification","Automatically purchase a new course","Skip all future learning requirements","Delete the course record"]},
- {q:"Which is the best approach to course knowledge checks?",o:["Read questions carefully and apply the training material","Answer without reviewing the question","Use assumptions instead of course content","Ignore the stated requirements"]},
- {q:"The purpose of the final assessment is best described as:",o:["A comprehensive evaluation of course knowledge","A duplicate course purchase process","A replacement for the learner account","A navigation menu"]},
- {q:"When a learner needs additional preparation, they should:",o:["Review the relevant course content before continuing","Invent answers not covered by training","Ignore course instructions","Assume all answers are correct"]},
- {q:"Course completion should be based on:",o:["Meeting the established learning and assessment requirements","Opening the course page once","Viewing the navigation menu","Changing account preferences"]},
- {q:"What is the relationship between module quizzes and the final assessment?",o:["Quizzes check learning during modules; the assessment evaluates the complete course","They serve exactly the same purpose at the same stage","The final assessment occurs before every module","Neither relates to course completion"]}
-];
-const questions=isFinal?finalQuestions:moduleQuestions;
-const state={index:0,answers:Array(questions.length).fill(null)};
-const panel=document.getElementById("questionPanel"), list=document.getElementById("questionList");
-function setup(){
- if(isFinal){
-  document.title="Final Assessment | Screenings4u Learning Center";
-  document.getElementById("breadcrumbTitle").textContent="Final Assessment";
-  document.getElementById("quizType").textContent="Final Comprehensive Assessment";
-  document.getElementById("quizTitle").textContent="Final Assessment";
-  document.getElementById("quizDescription").textContent="Complete the final assessment to demonstrate your understanding of the entire course.";
-  document.getElementById("sideTitle").textContent="Final Assessment";
-  document.getElementById("sideDescription").textContent="This assessment covers knowledge from the complete training course.";
-  document.getElementById("attempts").textContent="3 available";
- } else document.getElementById("attempts").textContent="Available";
- document.getElementById("questionCount").textContent=questions.length;
- document.getElementById("questionList").innerHTML=questions.map((_,i)=>'<button type="button" class="question-dot" data-go="'+i+'">'+(i+1)+'</button>').join("");
- list.addEventListener("click",e=>{const b=e.target.closest("[data-go]");if(b){state.index=+b.dataset.go;render()}});
- render();
-}
-function render(){
- const i=state.index,q=questions[i],answer=state.answers[i],pct=Math.round(((i+1)/questions.length)*100);
- document.getElementById("progressLabel").textContent="Question "+(i+1)+" of "+questions.length;
- document.getElementById("progressPercent").textContent=pct+"%";
- document.getElementById("quizFill").style.width=pct+"%";
- panel.innerHTML='<div class="question-number">Question '+(i+1)+'</div><h2>'+q.q+'</h2><div class="quiz-options">'+q.o.map((x,n)=>'<button type="button" class="quiz-option '+(answer===n?"selected":"")+'" data-answer="'+n+'"><span class="option-letter">'+String.fromCharCode(65+n)+'</span><span class="option-copy">'+x+'</span></button>').join("")+'</div><div class="quiz-actions"><button type="button" class="quiz-btn quiz-btn-secondary" id="prevBtn" '+(i===0?"disabled":"")+'>Previous Question</button><button type="button" class="quiz-btn quiz-btn-primary" id="nextBtn" '+(answer===null?"disabled":"")+'>'+ (i===questions.length-1?"Go to Next Module":"Next Question")+'</button></div>';
- panel.querySelectorAll("[data-answer]").forEach(b=>b.addEventListener("click",()=>{state.answers[i]=+b.dataset.answer;render()}));
- document.getElementById("prevBtn").addEventListener("click",()=>{if(i>0){state.index--;render()}});
- document.getElementById("nextBtn").addEventListener("click",()=>{if(state.answers[i]===null)return;if(i<questions.length-1){state.index++;render()}else showResult()});
- document.querySelectorAll(".question-dot").forEach((b,n)=>{b.classList.toggle("current",n===i);b.classList.toggle("answered",state.answers[n]!==null&&n!==i)});
-}
-function showResult(){
- const answered=state.answers.filter(x=>x!==null).length;
- panel.innerHTML='<div class="result-panel"><div class="result-icon"><svg viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"></path></svg></div><h2>Assessment Submitted</h2><div class="result-score">'+answered+' / '+questions.length+'</div><p>Your answers have been submitted. When this page is wired to the LMS database, scoring and attempt tracking will be processed here.</p><div class="quiz-actions" style="justify-content:center;margin-top:28px;border-top:0"><a class="quiz-btn quiz-btn-secondary" href="'+(isFinal?'lms-assessment.html':'lms-course-player.html')+'">Return to Course</a><a class="quiz-btn quiz-btn-primary" href="'+(isFinal?'lms-certificates.html':'lms-course-player.html')+'">'+(isFinal?'Continue to Certificates':'Continue Learning')+'</a></div></div>';
- document.getElementById("quizFill").style.width="100%";document.getElementById("progressPercent").textContent="100%";
-}
-setup();
-})();
-</script>
-</body>
-</html>
+<script src="assets/js/lms.js?v=20260830-2440"></script>
+<script src="assets/js/lms-quiz.js?v=20260830-2440"></script>
+</body></html>

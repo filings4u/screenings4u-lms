@@ -731,11 +731,11 @@
               aria-expanded="false"
             >
               <span class="lms-user-avatar" data-lms-learner-initials>
-                JD
+                --
               </span>
 
               <span class="lms-user-name" data-lms-learner-name>
-                John Doe
+                Learner
               </span>
 
               <span class="lms-user-chevron">
@@ -747,10 +747,8 @@
 
             <div class="lms-user-menu" data-lms-user-menu>
               <div class="lms-user-menu-header">
-                <span class="lms-user-menu-name">John Doe</span>
-                <span class="lms-user-menu-email">
-                  learner@screenings4u.com
-                </span>
+                <span class="lms-user-menu-name" data-lms-user-menu-name>Learner</span>
+                <span class="lms-user-menu-email" data-lms-user-menu-email></span>
               </div>
 
               <a href="lms-account.html" class="lms-user-menu-link">
@@ -809,7 +807,7 @@
               Final Course Requirement
             </div>
 
-            <h1>Final Assessment</h1>
+            <h1 data-assessment-title>Final Assessment</h1>
 
             <p>
               You have completed the required course modules. The final
@@ -826,9 +824,7 @@
                 </svg>
               </span>
 
-              <span>
-                DOT Supervisor Training: Reasonable Suspicion
-              </span>
+              <span data-assessment-course>Training Course</span>
             </div>
 
           </div>
@@ -860,7 +856,7 @@
                 </div>
 
                 <strong>Estimated Time</strong>
-                <span>Approximately 20–30 minutes</span>
+                <span data-assessment-time>—</span>
               </div>
 
               <div class="assessment-requirement">
@@ -874,7 +870,7 @@
                 </div>
 
                 <strong>Passing Score</strong>
-                <span>Minimum score of 80%</span>
+                <span data-assessment-passing>—</span>
               </div>
 
               <div class="assessment-requirement">
@@ -886,7 +882,7 @@
                 </div>
 
                 <strong>Assessment Length</strong>
-                <span>25 comprehensive questions</span>
+                <span data-assessment-length>—</span>
               </div>
 
               <div class="assessment-requirement">
@@ -902,7 +898,7 @@
                 </div>
 
                 <strong>Attempts</strong>
-                <span>3 attempts available</span>
+                <span data-assessment-attempts>—</span>
               </div>
 
             </div>
@@ -987,8 +983,7 @@
             <div class="assessment-actions">
 
               <a
-                href="lms-course-player.html"
-                class="assessment-back"
+                href="lms-course-player.html" class="assessment-back" data-course-review-link
               >
                 <svg viewBox="0 0 24 24">
                   <path d="M19 12H5"></path>
@@ -1043,9 +1038,7 @@
                     Course Modules
                   </div>
 
-                  <span class="assessment-summary-value">
-                    Completed
-                  </span>
+                  <span class="assessment-summary-value" data-summary-modules>Checking…</span>
                 </div>
 
                 <div class="assessment-summary-item">
@@ -1061,9 +1054,7 @@
                     Passing Score
                   </div>
 
-                  <span class="assessment-summary-value">
-                    80%
-                  </span>
+                  <span class="assessment-summary-value" data-summary-passing>—</span>
                 </div>
 
                 <div class="assessment-summary-item">
@@ -1078,9 +1069,7 @@
                     Time Estimate
                   </div>
 
-                  <span class="assessment-summary-value">
-                    20–30 min
-                  </span>
+                  <span class="assessment-summary-value" data-summary-time>—</span>
                 </div>
 
                 <div class="assessment-summary-item">
@@ -1097,9 +1086,7 @@
                     Attempts Remaining
                   </div>
 
-                  <span class="assessment-summary-value">
-                    3
-                  </span>
+                  <span class="assessment-summary-value" data-summary-attempts>—</span>
                 </div>
 
               </div>
@@ -1108,15 +1095,15 @@
 
                 <div class="assessment-completion-top">
                   <span>Course Content</span>
-                  <strong>100%</strong>
+                  <strong data-content-progress>0%</strong>
                 </div>
 
                 <div class="assessment-completion-track">
-                  <div class="assessment-completion-fill"></div>
+                  <div class="assessment-completion-fill" data-content-progress-fill style="width:0%"></div>
                 </div>
 
                 <div class="assessment-completion-note">
-                  All required learning modules have been completed.
+                  <span data-content-progress-note>Checking course progress…</span>
                 </div>
 
               </div>
@@ -1132,7 +1119,7 @@
                 lessons before starting your final assessment.
               </p>
 
-              <a href="lms-course-player.html">
+              <a href="lms-course-player.html" data-course-review-link>
                 Return to Course Content
               </a>
 
@@ -1191,90 +1178,11 @@
 
     </div>
 
-  </div>
-
-  <!-- Established shared LMS scripts -->
-  <script src="assets/js/lms.js"></script>
+  </div>  <!-- Authenticated LMS scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="assets/js/supabase-config.js"></script>
   <script src="assets/js/lms-sidebar.js"></script>
-
-  <script>
-    (function () {
-      "use strict";
-
-      const beginButton = document.querySelector(
-        "[data-begin-assessment]"
-      );
-
-      const modal = document.querySelector(
-        "[data-assessment-modal]"
-      );
-
-      const closeButton = document.querySelector(
-        "[data-close-assessment-modal]"
-      );
-
-      const confirmButton = document.querySelector(
-        "[data-confirm-assessment]"
-      );
-
-      function openModal() {
-        if (!modal) return;
-        modal.hidden = false;
-        confirmButton && confirmButton.focus();
-      }
-
-      function closeModal() {
-        if (!modal) return;
-        modal.hidden = true;
-        beginButton && beginButton.focus();
-      }
-
-      beginButton && beginButton.addEventListener(
-        "click",
-        openModal
-      );
-
-      closeButton && closeButton.addEventListener(
-        "click",
-        closeModal
-      );
-
-      modal && modal.addEventListener(
-        "click",
-        function (event) {
-          if (event.target === modal) {
-            closeModal();
-          }
-        }
-      );
-
-      document.addEventListener(
-        "keydown",
-        function (event) {
-          if (event.key === "Escape" && modal && !modal.hidden) {
-            closeModal();
-          }
-        }
-      );
-
-      confirmButton && confirmButton.addEventListener(
-        "click",
-        function () {
-          /*
-           * The final assessment will use its own assessment mode/data
-           * when the LMS is wired to the database.
-           *
-           * For now, lms-quiz.html serves as the assessment question
-           * interface. The query parameter allows the quiz page to
-           * distinguish final-assessment mode from module quizzes.
-           */
-          window.location.href =
-            "lms-quiz.html?type=final-assessment";
-        }
-      );
-
-    })();
-  </script>
-
+  <script src="assets/js/lms.js?v=20260830-2200"></script>
+  <script src="assets/js/lms-assessment.js?v=20260830-2200"></script>
 </body>
 </html>

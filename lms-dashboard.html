@@ -168,7 +168,7 @@
                 class="lms-user-name"
                 data-lms-learner-name
               >
-                John Doe
+                Learner
               </span>
 
 
@@ -199,7 +199,7 @@
                   class="lms-user-menu-name"
                   data-lms-user-menu-name
                 >
-                  John Doe
+                  Learner
                 </span>
 
 
@@ -207,7 +207,7 @@
                   class="lms-user-menu-email"
                   data-lms-user-menu-email
                 >
-                  learner@screenings4u.com
+                  
                 </span>
 
               </div>
@@ -268,7 +268,7 @@
 
 
             <h1 class="lms-page-title">
-              Good morning, John.
+              Welcome to your Learning Center
             </h1>
 
 
@@ -1003,36 +1003,11 @@
        JAVASCRIPT
        ======================================================== -->
 
-  <script src="assets/js/lms.js"></script>
-
-
-  <!-- TEMPORARY DEMO PROFILE -->
-
-  <script>
-
-    document.addEventListener(
-      "DOMContentLoaded",
-      function () {
-
-        if (
-          window.LMS &&
-          typeof window.LMS.setLearnerProfile ===
-            "function"
-        ) {
-
-          window.LMS.setLearnerProfile({
-            name: "John Doe",
-            email: "learner@screenings4u.com"
-          });
-
-        }
-
-      }
-    );
-
-  </script>
-
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="assets/js/supabase-config.js"></script>
 <script src="assets/js/lms-sidebar.js"></script>
+<script src="assets/js/lms.js?v=20260830-2000"></script>
+<script src="assets/js/lms-dashboard.js?v=20260830-2000"></script>
 
 </body>
 

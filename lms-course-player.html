@@ -673,12 +673,12 @@
               <span
                 class="lms-user-avatar"
                 data-lms-learner-initials
-              >JD</span>
+              >--</span>
 
               <span
                 class="lms-user-name"
                 data-lms-learner-name
-              >John Doe</span>
+              >Learner</span>
 
               <span class="lms-user-chevron">
                 <svg viewBox="0 0 24 24">
@@ -693,12 +693,12 @@
                 <span
                   class="lms-user-menu-name"
                   data-lms-user-menu-name
-                >John Doe</span>
+                >Learner</span>
 
                 <span
                   class="lms-user-menu-email"
                   data-lms-user-menu-email
-                >learner@screenings4u.com</span>
+                ></span>
               </div>
 
               <a href="lms-account.html" class="lms-user-menu-link">
@@ -1302,231 +1302,12 @@
 
   </div>
 
-  <!-- Shared LMS scripts -->
-  <script src="assets/js/lms.js"></script>
+  <!-- Authenticated LMS scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="assets/js/supabase-config.js"></script>
   <script src="assets/js/lms-sidebar.js"></script>
-
-  <!-- ========================================================
-       COURSE PLAYER INTERACTIONS
-       ======================================================== -->
-
-  <script>
-    (function () {
-      "use strict";
-
-      var lessons = [
-        {
-          module: "Module 1",
-          title: "Welcome to the Course",
-          intro: "This course will help you understand the role of a supervisor when reasonable suspicion testing may be required. Begin by reviewing the course objectives and the responsibilities covered throughout the training.",
-          note: "Complete each lesson in order. Your progress will be recorded as you move through the course."
-        },
-        {
-          module: "Module 1",
-          title: "Understanding Your Responsibilities",
-          intro: "Review the responsibilities of supervisors and learn how reasonable suspicion decisions should be approached using observable facts and established workplace procedures.",
-          note: "Focus on what can be directly observed and documented. Avoid assumptions or conclusions that are not supported by facts."
-        },
-        {
-          module: "Module 1",
-          title: "Course Knowledge Check",
-          intro: "Review the key concepts from this module before moving into the next section of the course.",
-          note: "This knowledge check helps reinforce the concepts covered in the introduction."
-        },
-        {
-          module: "Module 2",
-          title: "Signs and Symptoms",
-          intro: "Learn about observable physical, behavioral, and performance indicators that may require a supervisor to take additional action.",
-          note: "Reasonable suspicion is based on current, specific, and observable information."
-        },
-        {
-          module: "Module 2",
-          title: "Behavioral Observations",
-          intro: "Explore how patterns of behavior and workplace performance can contribute to an objective assessment.",
-          note: "Document observations clearly and consistently according to your organization's procedures."
-        },
-        {
-          module: "Module 2",
-          title: "Module Review",
-          intro: "Review the main concepts from the observable indicators module and prepare for the next stage of the training.",
-          note: "Use this review to confirm your understanding before continuing."
-        },
-        {
-          module: "Module 3",
-          title: "Documenting Concerns",
-          intro: "Learn how clear documentation can support an appropriate and consistent workplace response.",
-          note: "Record facts, times, and observations rather than personal opinions."
-        },
-        {
-          module: "Module 3",
-          title: "Communication and Escalation",
-          intro: "Understand how to communicate concerns and follow the appropriate escalation process within your organization.",
-          note: "Follow established company procedures when determining the next step."
-        },
-        {
-          module: "Module 3",
-          title: "Applying the Process",
-          intro: "Bring the earlier concepts together and consider how the process may apply in common workplace situations.",
-          note: "The goal is a consistent process grounded in observable information."
-        },
-        {
-          module: "Module 4",
-          title: "Scenario Review",
-          intro: "Work through realistic examples that help connect course concepts to workplace decision-making.",
-          note: "Consider what information is observable and what actions are supported by the facts presented."
-        },
-        {
-          module: "Module 4",
-          title: "Final Assessment Preparation",
-          intro: "Review the most important course concepts before completing the final assessment.",
-          note: "Take a moment to revisit any lesson you would like to review."
-        },
-        {
-          module: "Module 4",
-          title: "Final Assessment",
-          intro: "Complete the final assessment to demonstrate your understanding of the course material.",
-          note: "Successful completion requirements will be applied when the assessment is connected to the LMS data system."
-        }
-      ];
-
-      var currentIndex = 0;
-      var completed = new Set();
-
-      var titleEl = document.querySelector("[data-current-title]");
-      var introEl = document.querySelector("[data-current-intro]");
-      var noteEl = document.querySelector("[data-current-note]");
-      var moduleEl = document.querySelector("[data-current-module]");
-      var labelEl = document.querySelector("[data-current-lesson-label]");
-      var countEl = document.querySelector("[data-current-lesson-count]");
-      var progressTextEl = document.querySelector("[data-course-progress-text]");
-      var progressFillEl = document.querySelector("[data-course-progress-fill]");
-      var prevButton = document.querySelector("[data-course-prev]");
-      var nextButton = document.querySelector("[data-course-next]");
-      var nextLabel = document.querySelector("[data-course-next-label]");
-
-      function updateProgress() {
-        var percent = Math.round((completed.size / lessons.length) * 100);
-
-        progressTextEl.textContent = percent + "%";
-        progressFillEl.style.width = percent + "%";
-      }
-
-      function renderLesson(index) {
-        currentIndex = Math.max(0, Math.min(index, lessons.length - 1));
-
-        var lesson = lessons[currentIndex];
-
-        titleEl.textContent = lesson.title;
-        introEl.textContent = lesson.intro;
-        noteEl.textContent = lesson.note;
-        moduleEl.textContent = lesson.module;
-        labelEl.textContent = "Lesson " + (currentIndex + 1) + " · " + lesson.title;
-        countEl.textContent = (currentIndex + 1) + " of " + lessons.length + " lessons";
-
-        document.querySelectorAll("[data-lesson-index]").forEach(function (button) {
-          var lessonIndex = Number(button.getAttribute("data-lesson-index"));
-
-          button.classList.toggle(
-            "is-active",
-            lessonIndex === currentIndex
-          );
-
-          button.classList.toggle(
-            "is-complete",
-            completed.has(lessonIndex)
-          );
-
-          var status = button.querySelector(".course-player-lesson-status");
-
-          if (status) {
-            status.innerHTML = completed.has(lessonIndex)
-              ? '<svg viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"></path></svg>'
-              : "";
-          }
-        });
-
-        prevButton.disabled = currentIndex === 0;
-
-        if (currentIndex === lessons.length - 1) {
-          nextLabel.textContent = "Finish Course";
-        } else {
-          nextLabel.textContent = "Complete & Continue";
-        }
-
-        updateProgress();
-
-        window.scrollTo({
-          top: 0,
-          behavior: "smooth"
-        });
-      }
-
-      function initializeModules() {
-        document.querySelectorAll(".course-player-module").forEach(function (module) {
-          var button = module.querySelector(".course-player-module-button");
-
-          if (!button) return;
-
-          button.addEventListener("click", function () {
-            var open = module.classList.toggle("is-open");
-            button.setAttribute("aria-expanded", open ? "true" : "false");
-          });
-        });
-      }
-
-      function initializeLessons() {
-        document.querySelectorAll("[data-lesson-index]").forEach(function (button) {
-          button.addEventListener("click", function () {
-            renderLesson(Number(button.getAttribute("data-lesson-index")));
-          });
-        });
-
-        prevButton.addEventListener("click", function () {
-          if (currentIndex > 0) {
-            renderLesson(currentIndex - 1);
-          }
-        });
-
-        nextButton.addEventListener("click", function () {
-          completed.add(currentIndex);
-
-          if (currentIndex < lessons.length - 1) {
-            renderLesson(currentIndex + 1);
-          } else {
-            updateProgress();
-            nextLabel.textContent = "Course Complete";
-            nextButton.disabled = true;
-          }
-        });
-      }
-
-      function initializeLearnerProfile() {
-        if (
-          window.LMS &&
-          typeof window.LMS.setLearnerProfile === "function"
-        ) {
-          window.LMS.setLearnerProfile({
-            name: "John Doe",
-            email: "learner@screenings4u.com"
-          });
-        }
-      }
-
-      function initializePage() {
-        initializeModules();
-        initializeLessons();
-        initializeLearnerProfile();
-        renderLesson(0);
-      }
-
-      if (document.readyState === "loading") {
-        document.addEventListener("DOMContentLoaded", initializePage);
-      } else {
-        initializePage();
-      }
-
-    })();
-  </script>
+  <script src="assets/js/lms.js?v=20260830-2110"></script>
+  <script src="assets/js/lms-course-player.js?v=20260830-2110"></script>
 
 </body>
 </html>

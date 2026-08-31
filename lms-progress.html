@@ -709,16 +709,12 @@
             <span
               class="lms-user-avatar"
               data-lms-learner-initials
-            >
-              JD
-            </span>
+            >--</span>
 
             <span
               class="lms-user-name"
               data-lms-learner-name
-            >
-              John Doe
-            </span>
+            >Learner</span>
 
             <span class="lms-user-chevron">
               <svg viewBox="0 0 24 24">
@@ -735,11 +731,11 @@
 
             <div class="lms-user-menu-header">
               <span class="lms-user-menu-name">
-                John Doe
+                Learner
               </span>
 
               <span class="lms-user-menu-email">
-                learner@screenings4u.com
+                
               </span>
             </div>
 
@@ -806,7 +802,7 @@
         </div>
 
         <div class="progress-date">
-          Last updated: Today
+          Last updated: <span id="progressUpdated">—</span>
         </div>
 
       </section>
@@ -840,7 +836,7 @@
               </svg>
 
               <div class="progress-ring-label">
-                <strong>66%</strong>
+                <strong id="overallProgress">0%</strong>
                 <span>Complete</span>
               </div>
 
@@ -857,7 +853,7 @@
               </p>
 
               <strong>
-                2 of 3 learning goals completed
+                <span id="learningGoals">0 learning goals completed</span>
               </strong>
 
             </div>
@@ -877,7 +873,7 @@
             </svg>
           </div>
 
-          <span class="progress-stat-value">8</span>
+          <span class="progress-stat-value" id="modulesCompleted">0</span>
 
           <span class="progress-stat-label">
             Modules Completed
@@ -894,7 +890,7 @@
             </svg>
           </div>
 
-          <span class="progress-stat-value">6</span>
+          <span class="progress-stat-value" id="quizzesPassed">0</span>
 
           <span class="progress-stat-label">
             Quizzes Passed
@@ -911,7 +907,7 @@
             </svg>
           </div>
 
-          <span class="progress-stat-value">1</span>
+          <span class="progress-stat-value" id="certificatesEarned">0</span>
 
           <span class="progress-stat-label">
             Certificate Earned
@@ -949,195 +945,9 @@
 
           </div>
 
-          <div class="course-progress-list">
-
-            <!-- Course 1 -->
-
-            <article class="course-progress-item">
-
-              <div class="course-progress-icon">
-                <svg viewBox="0 0 24 24">
-                  <path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v16H6.5A2.5 2.5 0 0 0 4 21.5z"></path>
-                  <path d="M4 5.5v16"></path>
-                  <path d="M8 7h8"></path>
-                </svg>
-              </div>
-
-              <div class="course-progress-content">
-
-                <div class="course-progress-top">
-
-                  <div>
-
-                    <h3 class="course-progress-title">
-                      DOT Supervisor Training:
-                      Reasonable Suspicion
-                    </h3>
-
-                    <div class="course-progress-meta">
-                      6 of 8 modules completed
-                    </div>
-
-                  </div>
-
-                  <span class="course-progress-percent">
-                    75%
-                  </span>
-
-                </div>
-
-                <div class="course-progress-bar">
-                  <div
-                    class="course-progress-fill"
-                    style="width:75%"
-                  ></div>
-                </div>
-
-                <div class="course-progress-footer">
-
-                  <span class="course-progress-status">
-                    Next: Module 7 Knowledge Check
-                  </span>
-
-                  <a
-                    href="lms-course-player.html"
-                    class="course-progress-action"
-                  >
-                    Continue Learning
-                  </a>
-
-                </div>
-
-              </div>
-
-            </article>
-
-            <!-- Course 2 -->
-
-            <article class="course-progress-item">
-
-              <div class="course-progress-icon">
-                <svg viewBox="0 0 24 24">
-                  <path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v16H6.5A2.5 2.5 0 0 0 4 21.5z"></path>
-                  <path d="M4 5.5v16"></path>
-                  <path d="M8 7h8"></path>
-                </svg>
-              </div>
-
-              <div class="course-progress-content">
-
-                <div class="course-progress-top">
-
-                  <div>
-
-                    <h3 class="course-progress-title">
-                      Workplace Drug & Alcohol
-                      Awareness Training
-                    </h3>
-
-                    <div class="course-progress-meta">
-                      Course completed
-                    </div>
-
-                  </div>
-
-                  <span class="course-progress-percent">
-                    100%
-                  </span>
-
-                </div>
-
-                <div class="course-progress-bar">
-                  <div
-                    class="course-progress-fill complete"
-                    style="width:100%"
-                  ></div>
-                </div>
-
-                <div class="course-progress-footer">
-
-                  <span class="course-progress-status">
-                    Certificate available
-                  </span>
-
-                  <a
-                    href="lms-certificates.html"
-                    class="course-progress-action"
-                  >
-                    View Certificate
-                  </a>
-
-                </div>
-
-              </div>
-
-            </article>
-
-            <!-- Course 3 -->
-
-            <article class="course-progress-item">
-
-              <div class="course-progress-icon">
-                <svg viewBox="0 0 24 24">
-                  <path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v16H6.5A2.5 2.5 0 0 0 4 21.5z"></path>
-                  <path d="M4 5.5v16"></path>
-                  <path d="M8 7h8"></path>
-                </svg>
-              </div>
-
-              <div class="course-progress-content">
-
-                <div class="course-progress-top">
-
-                  <div>
-
-                    <h3 class="course-progress-title">
-                      DOT Compliance Fundamentals
-                    </h3>
-
-                    <div class="course-progress-meta">
-                      Not started
-                    </div>
-
-                  </div>
-
-                  <span class="course-progress-percent">
-                    0%
-                  </span>
-
-                </div>
-
-                <div class="course-progress-bar">
-                  <div
-                    class="course-progress-fill"
-                    style="width:0%"
-                  ></div>
-                </div>
-
-                <div class="course-progress-footer">
-
-                  <span class="course-progress-status">
-                    Ready to begin
-                  </span>
-
-                  <a
-                    href="lms-my-courses.html"
-                    class="course-progress-action"
-                  >
-                    Start Course
-                  </a>
-
-                </div>
-
-              </div>
-
-            </article>
-
-          </div>
-
-        </section>
-
-        <!-- RIGHT COLUMN -->
+          <div class="course-progress-list" id="courseProgressList"></div>
+</section>
+<!-- RIGHT COLUMN -->
 
         <aside>
 
@@ -1159,107 +969,18 @@
 
             </div>
 
-            <div class="milestone-list">
-
-              <div class="milestone-item">
-
-                <div class="milestone-check complete">
-                  <svg viewBox="0 0 24 24">
-                    <path d="m5 12 4 4L19 6"></path>
-                  </svg>
-                </div>
-
-                <div class="milestone-copy">
-                  <strong>Course Started</strong>
-                  <span>Training access activated</span>
-                </div>
-
-              </div>
-
-              <div class="milestone-item">
-
-                <div class="milestone-check complete">
-                  <svg viewBox="0 0 24 24">
-                    <path d="m5 12 4 4L19 6"></path>
-                  </svg>
-                </div>
-
-                <div class="milestone-copy">
-                  <strong>Modules Completed</strong>
-                  <span>6 modules successfully finished</span>
-                </div>
-
-              </div>
-
-              <div class="milestone-item">
-
-                <div class="milestone-check">
-                  <svg viewBox="0 0 24 24">
-                    <path d="m5 12 4 4L19 6"></path>
-                  </svg>
-                </div>
-
-                <div class="milestone-copy">
-                  <strong>Final Assessment</strong>
-                  <span>Available after all modules</span>
-                </div>
-
-              </div>
-
-              <div class="milestone-item">
-
-                <div class="milestone-check">
-                  <svg viewBox="0 0 24 24">
-                    <path d="m5 12 4 4L19 6"></path>
-                  </svg>
-                </div>
-
-                <div class="milestone-copy">
-                  <strong>Certificate</strong>
-                  <span>Issued after successful completion</span>
-                </div>
-
-              </div>
-
-            </div>
-
-          </section>
-
-          <!-- Next step -->
+            <div class="milestone-list" id="milestoneList"></div>
+</section>
+<!-- Next step -->
 
           <section
             class="progress-panel"
             style="margin-top:18px"
           >
 
-            <div class="next-step">
-
-              <div class="next-step-badge">
-                <i></i>
-                Up Next
-              </div>
-
-              <h3>
-                Continue Your Current Course
-              </h3>
-
-              <p>
-                Resume where you left off and complete your next
-                module knowledge check.
-              </p>
-
-              <a
-                href="lms-course-player.html"
-                class="next-step-button"
-              >
-                Continue Learning
-              </a>
-
-            </div>
-
-          </section>
-
-          <!-- Recent activity -->
+            <div class="next-step" id="nextStep"></div>
+</section>
+<!-- Recent activity -->
 
           <section
             class="progress-panel"
@@ -1276,74 +997,9 @@
 
             </div>
 
-            <div class="activity-list">
-
-              <div class="activity-item">
-
-                <div class="activity-icon complete">
-                  <svg viewBox="0 0 24 24">
-                    <path d="m5 12 4 4L19 6"></path>
-                  </svg>
-                </div>
-
-                <div class="activity-copy">
-                  <strong>
-                    Module 6 completed
-                  </strong>
-
-                  <span>
-                    Today
-                  </span>
-                </div>
-
-              </div>
-
-              <div class="activity-item">
-
-                <div class="activity-icon complete">
-                  <svg viewBox="0 0 24 24">
-                    <path d="m5 12 4 4L19 6"></path>
-                  </svg>
-                </div>
-
-                <div class="activity-copy">
-                  <strong>
-                    Knowledge check passed
-                  </strong>
-
-                  <span>
-                    Score: 90%
-                  </span>
-                </div>
-
-              </div>
-
-              <div class="activity-item">
-
-                <div class="activity-icon certificate">
-                  <svg viewBox="0 0 24 24">
-                    <circle cx="12" cy="8" r="5"></circle>
-                    <path d="m8.5 12.5-1 8L12 18l4.5 2.5-1-8"></path>
-                  </svg>
-                </div>
-
-                <div class="activity-copy">
-                  <strong>
-                    Certificate issued
-                  </strong>
-
-                  <span>
-                    Previous course completed
-                  </span>
-                </div>
-
-              </div>
-
-            </div>
-
-          </section>
-
-        </aside>
+            <div class="activity-list" id="activityList"></div>
+</section>
+</aside>
 
       </div>
 
@@ -1353,8 +1009,9 @@
 
 </div>
 
-<script src="assets/js/lms.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="assets/js/supabase-config.js"></script>
 <script src="assets/js/lms-sidebar.js"></script>
-
-</body>
-</html>
+<script src="assets/js/lms.js?v=20260830-2405"></script>
+<script src="assets/js/lms-progress.js?v=20260830-2405"></script>
+</body></html>
