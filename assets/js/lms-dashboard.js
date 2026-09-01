@@ -6,12 +6,18 @@
 (function () {
   "use strict";
 
-  document.addEventListener("DOMContentLoaded", function () {
+  function startDashboard() {
     initializeDashboard().catch(function (error) {
       console.error("[LMS Dashboard]", error);
       showDashboardError(error);
     });
-  });
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", startDashboard, { once: true });
+  } else {
+    startDashboard();
+  }
 
   async function initializeDashboard() {
     if (!window.LMS || !window.LMS.ready) {
@@ -57,6 +63,8 @@
     }
 
     var enrollments = enrollmentResult.data || [];
+
+    await hydrateCourseImages(db, enrollments);
 
     var certificateResult = await db
       .from("lms_certificates")
@@ -119,6 +127,55 @@
       enrollments,
       lessonProgressResult.data || []
     );
+  }
+
+  async function hydrateCourseImages(db, enrollments) {
+    var mediaIds = Array.from(new Set(
+      enrollments
+        .map(function (enrollment) {
+          return enrollment.course && enrollment.course.thumbnail_media_id;
+        })
+        .filter(Boolean)
+    ));
+
+    if (!mediaIds.length) return;
+
+    var mediaResult = await db
+      .from("lms_media")
+      .select("id,storage_bucket,storage_path,thumbnail_url,playback_url")
+      .in("id", mediaIds);
+
+    if (mediaResult.error) {
+      console.warn("[LMS Dashboard] Course images could not be loaded:", mediaResult.error);
+      return;
+    }
+
+    var urls = new Map();
+    await Promise.all((mediaResult.data || []).map(async function (media) {
+      var directUrl = media.thumbnail_url || media.playback_url || "";
+      if (directUrl) {
+        urls.set(media.id, directUrl);
+        return;
+      }
+
+      if (!media.storage_bucket || !media.storage_path) return;
+      var signed = await db.storage
+        .from(media.storage_bucket)
+        .createSignedUrl(media.storage_path, 3600);
+
+      if (signed.error) {
+        console.warn("[LMS Dashboard] Signed course image URL failed:", signed.error);
+        return;
+      }
+
+      urls.set(media.id, signed.data && signed.data.signedUrl || "");
+    }));
+
+    enrollments.forEach(function (enrollment) {
+      if (!enrollment.course) return;
+      enrollment.course.thumbnail_url =
+        urls.get(enrollment.course.thumbnail_media_id) || "";
+    });
   }
 
   function setGreeting(profile, user) {
@@ -215,6 +272,19 @@
 
     if (visualSmall) visualSmall.textContent = "Active Course";
     if (visualStrong) visualStrong.textContent = course.title || "Course";
+
+    var visual = card.querySelector(".lms-visual-card") ||
+      card.querySelector(".lms-continue-visual");
+    if (visual && course.thumbnail_url) {
+      visual.style.backgroundImage =
+        "linear-gradient(rgba(11,50,111,.12),rgba(11,50,111,.12)),url(\"" +
+        String(course.thumbnail_url).replace(/\"/g, "%22") + "\")";
+      visual.style.backgroundSize = "cover";
+      visual.style.backgroundPosition = "center";
+      visual.setAttribute("aria-label", (course.title || "Course") + " cover image");
+      if (visualSmall) visualSmall.style.display = "none";
+      if (visualStrong) visualStrong.style.display = "none";
+    }
   }
 
   function renderCourseGrid(enrollments) {
@@ -254,8 +324,8 @@
             href="lms-course-details.html?course=${encodeURIComponent(course.id)}"
             class="lms-course-card"
           >
-            <div class="lms-course-cover ${coverClass}">
-              <div class="lms-course-cover-icon">▶</div>
+            <div class="lms-course-cover ${coverClass}"${course.thumbnail_url ? ` style="background-image:url('${escapeHtml(course.thumbnail_url)}');background-size:cover;background-position:center"` : ""}>
+              <div class="lms-course-cover-icon"${course.thumbnail_url ? ' style="display:none"' : ""}>▶</div>
             </div>
 
             <div class="lms-course-body">
