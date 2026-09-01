@@ -92,7 +92,10 @@
           return lesson.id === lessonId;
         });
 
-      if (requested >= 0) {
+      if (
+        requested >= 0 &&
+        canOpenLesson(requested)
+      ) {
         state.currentIndex = requested;
       } else {
         state.currentIndex = firstIncompleteIndex();
@@ -891,7 +894,7 @@
         renderCurriculum();
 
         await renderCurrentLesson(
-          true
+          false
         );
       }
 
@@ -1066,10 +1069,7 @@
             interactive.label;
         } else {
           nextLabel.textContent =
-            state.currentIndex ===
-            state.lessons.length - 1
-              ? "Complete Course"
-              : "Complete & Continue";
+            "Mark Lesson Complete";
         }
       }
 
@@ -2006,22 +2006,12 @@
 
     renderCurriculum();
 
-    if (
-      state.currentIndex <
-      state.lessons.length - 1
-    ) {
-      state.currentIndex += 1;
-
-      renderCurriculum();
-
-      await renderCurrentLesson(
-        true
-      );
-    } else {
-      await renderCurrentLesson(
-        false
-      );
-    }
+    /*
+      Completing a lesson and navigating to the next lesson are separate
+      actions. This prevents the Continue button from awarding completion
+      and skipping forward in the same click.
+    */
+    await renderCurrentLesson(false);
   }
 
 
@@ -2350,30 +2340,47 @@
     var lesson =
       state.lessons[index];
 
+    if (!lesson) {
+      return false;
+    }
+
+    var courseRequiresOrder = !!(
+      state.course &&
+      (
+        state.course.navigation_mode ===
+          "sequential" ||
+        state.course.require_all_required_lessons ===
+          true
+      )
+    );
+
+    var lessonRequiresPrevious =
+      lesson.lock_until_previous_complete ===
+      true;
+
     if (
-      !lesson ||
-      lesson
-        .lock_until_previous_complete !==
-        true
+      !courseRequiresOrder &&
+      !lessonRequiresPrevious
     ) {
       return true;
     }
 
-    var previous =
-      state.lessons[
-        index - 1
-      ];
-
-    if (!previous) {
-      return true;
-    }
-
-    return (
-      previous.is_required === false ||
-      isLessonComplete(
-        previous.id
-      )
-    );
+    /*
+      A later lesson remains locked until every earlier required lesson is
+      complete. Optional lessons never block the learner's path.
+    */
+    return state.lessons
+      .slice(0, index)
+      .every(
+        function (previous) {
+          return (
+            previous.is_required === false ||
+            isLessonComplete(
+              previous.id
+            )
+          );
+        }
+      );
   }
 
 
