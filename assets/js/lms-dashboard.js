@@ -127,6 +127,8 @@
       enrollments,
       lessonProgressResult.data || []
     );
+
+    document.body.classList.remove("lms-dashboard-data-pending");
   }
 
   async function hydrateCourseImages(db, enrollments) {
@@ -182,12 +184,12 @@
     var name =
       profile.display_name ||
       profile.first_name ||
-      (user.email ? user.email.split("@")[0] : "Learner");
+      (user.email ? user.email.split("@")[0] : "");
 
     var first =
       profile.first_name ||
-      String(name).trim().split(/\s+/)[0] ||
-      "Learner";
+      String(name || "").trim().split(/\s+/)[0] ||
+      "";
 
     var title = document.querySelector(".lms-page-title");
     if (title) {
@@ -216,20 +218,11 @@
     });
 
     if (!active || !active.course) {
-      card.innerHTML = `
-        <div class="lms-continue-content" style="grid-column:1/-1;">
-          <span class="lms-card-label">Continue Learning</span>
-          <h2 class="lms-continue-title">No active course yet</h2>
-          <p class="lms-continue-description">
-            Your assigned or purchased training courses will appear here once enrollment is active.
-          </p>
-          <div class="lms-continue-actions">
-            <a href="lms-courses.html" class="lms-button">View Courses</a>
-          </div>
-        </div>
-      `;
+      card.hidden = true;
       return;
     }
+
+    card.hidden = false;
 
     var progress = clampPercent(active.progress_percent);
     var course = active.course;
@@ -242,48 +235,23 @@
     var details = card.querySelector(
       ".lms-continue-actions .lms-button-secondary"
     );
-    var visualSmall = card.querySelector(".lms-visual-card small");
-    var visualStrong = card.querySelector(".lms-visual-card strong");
+    var visual = card.querySelector(".lms-course-visual");
 
-    if (title) title.textContent = course.title || "Training Course";
-    if (desc) {
-      desc.textContent =
-        course.short_description ||
-        "Continue your course from your latest progress.";
-    }
-    if (progressStrong) {
-      progressStrong.textContent = progress + "% Complete";
-    }
-    if (fill) fill.style.width = progress + "%";
+    if (visual) {
+      if (course.thumbnail_url) {
+        visual.style.backgroundImage =
+          "url(\"" +
+          String(course.thumbnail_url).replace(/\"/g, "%22") +
+          "\")";
 
-    if (resume) {
-      resume.href =
-        "lms-course-player.html?course=" +
-        encodeURIComponent(course.id) +
-        "&enrollment=" +
-        encodeURIComponent(active.id);
-    }
-
-    if (details) {
-      details.href =
-        "lms-course-details.html?course=" +
-        encodeURIComponent(course.id);
-    }
-
-    if (visualSmall) visualSmall.textContent = "Active Course";
-    if (visualStrong) visualStrong.textContent = course.title || "Course";
-
-    var visual = card.querySelector(".lms-visual-card") ||
-      card.querySelector(".lms-continue-visual");
-    if (visual && course.thumbnail_url) {
-      visual.style.backgroundImage =
-        "linear-gradient(rgba(11,50,111,.12),rgba(11,50,111,.12)),url(\"" +
-        String(course.thumbnail_url).replace(/\"/g, "%22") + "\")";
-      visual.style.backgroundSize = "cover";
-      visual.style.backgroundPosition = "center";
-      visual.setAttribute("aria-label", (course.title || "Course") + " cover image");
-      if (visualSmall) visualSmall.style.display = "none";
-      if (visualStrong) visualStrong.style.display = "none";
+        visual.setAttribute(
+          "aria-label",
+          (course.title || "Training course") + " cover image"
+        );
+      } else {
+        visual.style.backgroundImage = "none";
+        visual.removeAttribute("aria-label");
+      }
     }
   }
 
@@ -298,16 +266,14 @@
       .slice(0, 3);
 
     if (!active.length) {
-      grid.innerHTML = `
-        <div class="lms-widget" style="grid-column:1/-1;">
-          <h2 class="lms-widget-title">No courses in your learning plan</h2>
-          <p class="lms-section-subtitle" style="margin-top:8px;">
-            Enrolled courses will appear here automatically.
-          </p>
-        </div>
-      `;
+      grid.innerHTML = "";
+      var section = grid.closest(".lms-section");
+      if (section) section.hidden = true;
       return;
     }
+
+    var section = grid.closest(".lms-section");
+    if (section) section.hidden = false;
 
     grid.innerHTML = active
       .map(function (e, index) {
@@ -334,7 +300,7 @@
               </div>
 
               <h3 class="lms-course-title">
-                ${escapeHtml(course.title || "Training Course")}
+                ${escapeHtml(course.title || "")}
               </h3>
 
               <div class="lms-course-meta">
@@ -403,19 +369,14 @@
       .slice(0, 5);
 
     if (!rows.length) {
-      list.innerHTML = `
-        <div class="lms-activity-item">
-          <span class="lms-activity-marker"></span>
-          <div>
-            <p class="lms-activity-title">No learning activity yet</p>
-            <div class="lms-activity-time">
-              Your lesson progress will appear here.
-            </div>
-          </div>
-        </div>
-      `;
+      list.innerHTML = "";
+      var widget = list.closest(".lms-widget");
+      if (widget) widget.hidden = true;
       return;
     }
+
+    var widget = list.closest(".lms-widget");
+    if (widget) widget.hidden = false;
 
     list.innerHTML = rows
       .map(function (row) {
@@ -478,6 +439,8 @@
   }
 
   function showDashboardError(error) {
+    document.body.classList.remove("lms-dashboard-data-pending");
+
     var content = document.querySelector(".lms-content");
     if (!content) return;
 
