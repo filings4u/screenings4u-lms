@@ -1,87 +1,64 @@
-/* ============================================================
-   SCREENINGS4U — TRAINING PORTAL AUTH GUARD
-   Protects all Training / LMS pages.
-   ============================================================ */
+/**
+ * screenings4u — Training Portal Authentication Guard
+ *
+ * Load this file only on protected Training Portal pages.
+ * Do not load it on training-login.html, set-password.html,
+ * reset-password.html, or other public authentication pages.
+ *
+ * Access is decided by core-auth.js through the Supabase
+ * can_access_training_portal database function.
+ */
 
 (() => {
   "use strict";
 
-  const TRAINING_LOGIN_PAGE =
-    "training-login.html";
+  let started = false;
 
-  let authPromise = null;
-
-  async function protect() {
-    if (authPromise) {
-      return authPromise;
+  async function protectTrainingPortal() {
+    if (started) {
+      return;
     }
 
-    authPromise =
-      (async () => {
-        try {
-          if (
-            !window.S4UPortalGuard ||
-            typeof window.S4UPortalGuard
-              .protectPortal !== "function"
-          ) {
-            throw new Error(
-              "S4UPortalGuard is unavailable. " +
-              "Load portal-auth-guard.js before training-auth-guard.js."
-            );
+    started = true;
+    document.documentElement.classList.add(
+      "s4u-auth-pending"
+    );
+
+    if (
+      !window.S4UPortalGuard ||
+      typeof window.S4UPortalGuard.protectPortal !== "function"
+    ) {
+      // Fail closed. The pending class remains, so portal content stays hidden.
+      console.error(
+        "[Training auth guard] S4UPortalGuard.protectPortal is unavailable. " +
+        "Load portal-auth-guard.js before training-auth-guard.js."
+      );
+
+      window.dispatchEvent(
+        new CustomEvent("s4u:auth-error", {
+          detail: {
+            portal: "training",
+            reason: "portal_guard_unavailable"
           }
+        })
+      );
 
-          const state =
-            await window.S4UPortalGuard
-              .protectPortal({
-                portal:
-                  "training",
-                loginPage:
-                  TRAINING_LOGIN_PAGE
-              });
+      return;
+    }
 
-          if (!state?.user?.id) {
-            return null;
-          }
-
-          window.S4UTrainingAuthState =
-            state;
-
-          window.dispatchEvent(
-            new CustomEvent(
-              "s4u:training-authenticated",
-              {
-                detail:
-                  state
-              }
-            )
-          );
-
-          return state;
-
-        } catch (error) {
-          console.error(
-            "[Training Auth Guard]",
-            error
-          );
-
-          // Allow a later retry. Do not sign out for an operational error.
-          authPromise = null;
-          return null;
-        }
-      })();
-
-    return authPromise;
+    await window.S4UPortalGuard.protectPortal({
+      portal: "training",
+      loginPage: "training-login.html"
+    });
   }
 
-  window.S4UTrainingAuth =
-    Object.freeze({
-      protect
-    });
-
-  document.addEventListener(
-    "DOMContentLoaded",
-    () => {
-      protect();
-    }
-  );
+  if (document.readyState === "loading") {
+    document.addEventListener(
+      "DOMContentLoaded",
+      protectTrainingPortal,
+      { once: true }
+    );
+  } else {
+    protectTrainingPortal();
+  }
 })();
