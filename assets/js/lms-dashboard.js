@@ -64,9 +64,38 @@
 
     var enrollments = enrollmentResult.data || [];
 
-    await hydrateCourseImages(db, enrollments);
+    /*
+     * Render the customer's actual enrollment immediately.
+     * Do not hold the entire dashboard behind course-image,
+     * certificate, or lesson-progress requests.
+     */
+    renderContinueLearning(enrollments);
+    renderCourseGrid(enrollments);
 
-    var certificateResult = await db
+    document.body.classList.remove(
+      "lms-dashboard-data-pending"
+    );
+
+    /*
+     * Load secondary dashboard data in parallel.
+     */
+    var imagePromise =
+      hydrateCourseImages(db, enrollments)
+        .then(function () {
+          /*
+           * Re-render only after real thumbnail URLs have been hydrated.
+           */
+          renderContinueLearning(enrollments);
+          renderCourseGrid(enrollments);
+        })
+        .catch(function (error) {
+          console.warn(
+            "[LMS Dashboard] Course image hydration failed:",
+            error
+          );
+        });
+
+    var certificatePromise = db
       .from("lms_certificates")
       .select(`
         id,
@@ -79,14 +108,7 @@
       .eq("enrollment.user_id", user.id)
       .eq("status", "issued");
 
-    if (certificateResult.error) {
-      console.warn(
-        "[LMS Dashboard] Certificates could not be loaded:",
-        certificateResult.error
-      );
-    }
-
-    var lessonProgressResult = await db
+    var lessonProgressPromise = db
       .from("lms_lesson_progress")
       .select(`
         id,
@@ -109,6 +131,26 @@
       .order("last_activity_at", { ascending: false, nullsFirst: false })
       .limit(20);
 
+    var secondaryResults =
+      await Promise.all([
+        certificatePromise,
+        lessonProgressPromise,
+        imagePromise
+      ]);
+
+    var certificateResult =
+      secondaryResults[0] || {};
+
+    var lessonProgressResult =
+      secondaryResults[1] || {};
+
+    if (certificateResult.error) {
+      console.warn(
+        "[LMS Dashboard] Certificates could not be loaded:",
+        certificateResult.error
+      );
+    }
+
     if (lessonProgressResult.error) {
       console.warn(
         "[LMS Dashboard] Lesson activity could not be loaded:",
@@ -116,19 +158,16 @@
       );
     }
 
-    renderContinueLearning(enrollments);
-    renderCourseGrid(enrollments);
     renderStats(
       enrollments,
       certificateResult.data || [],
       lessonProgressResult.data || []
     );
+
     renderRecentActivity(
       enrollments,
       lessonProgressResult.data || []
     );
-
-    document.body.classList.remove("lms-dashboard-data-pending");
   }
 
   async function hydrateCourseImages(db, enrollments) {
@@ -235,6 +274,42 @@
     var details = card.querySelector(
       ".lms-continue-actions .lms-button-secondary"
     );
+    if (title) {
+      title.textContent =
+        course.title || "";
+    }
+
+    if (desc) {
+      desc.textContent =
+        course.short_description ||
+        course.description ||
+        "";
+    }
+
+    if (progressStrong) {
+      progressStrong.textContent =
+        progress + "% Complete";
+    }
+
+    if (fill) {
+      fill.style.width =
+        progress + "%";
+    }
+
+    if (resume) {
+      resume.href =
+        "lms-course-player.html?course=" +
+        encodeURIComponent(course.id) +
+        "&enrollment=" +
+        encodeURIComponent(active.id);
+    }
+
+    if (details) {
+      details.href =
+        "lms-course-details.html?course=" +
+        encodeURIComponent(course.id);
+    }
+
     var visual = card.querySelector(".lms-course-visual");
 
     if (visual) {
