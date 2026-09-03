@@ -1,4 +1,4 @@
-
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -34,12 +34,25 @@
 
     body {
       min-height: 100vh;
-      display: grid;
-      place-items: center;
-      padding: 24px;
+      margin: 0;
       background: var(--s4u-bg);
       color: var(--s4u-text);
       font-family: Arial, Helvetica, sans-serif;
+    }
+
+    .handoff-shell {
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 160ms ease;
+    }
+
+    body.handoff-visible .handoff-shell {
+      opacity: 1;
+      visibility: visible;
     }
 
     .handoff-card {
@@ -123,6 +136,7 @@
 
 <body data-s4u-portal="training">
 
+  <div class="handoff-shell">
   <main class="handoff-card">
     <div class="handoff-mark">S4</div>
 
@@ -154,6 +168,7 @@
       </a>
     </div>
   </main>
+  </div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="assets/js/supabase-config.js"></script>
@@ -178,6 +193,8 @@
 
       const fallbackLink =
         document.getElementById("trainingLoginFallback");
+
+      let revealTimer = null;
 
 
       function getClient() {
@@ -297,6 +314,14 @@
         message,
         next
       ) {
+        if (revealTimer) {
+          window.clearTimeout(revealTimer);
+          revealTimer = null;
+        }
+
+        document.body.classList.add(
+          "handoff-visible"
+        );
         if (spinnerEl) {
           spinnerEl.hidden = true;
         }
@@ -336,6 +361,15 @@
 
 
       async function run() {
+        revealTimer = window.setTimeout(
+          function () {
+            document.body.classList.add(
+              "handoff-visible"
+            );
+          },
+          1800
+        );
+
         const {
           next,
           tokenHash
@@ -408,9 +442,9 @@
             );
           }
 
-          if (statusEl) {
-            statusEl.textContent =
-              "Access verified. Opening the Learning Center...";
+          if (revealTimer) {
+            window.clearTimeout(revealTimer);
+            revealTimer = null;
           }
 
           window.location.replace(next);
