@@ -846,11 +846,63 @@
             }
 
         }
+        .training-login-help {
+    margin-top: 16px;
+    padding: 14px 16px;
+
+    border: 1px solid #dce6f2;
+    border-radius: 10px;
+
+    background: #f7faff;
+
+    color: #5f7087;
+
+    font-size: 12px;
+    line-height: 1.55;
+}
+
+.training-login-help p {
+    margin: 0;
+}
+
+.training-login-help p + p {
+    margin-top: 10px;
+}
+
+.training-login-help strong {
+    color: var(--s4u-navy);
+}
     </style>
 <style id="training-mobile-login-final">
 *,*::before,*::after{box-sizing:border-box}html,body{max-width:100%;overflow-x:hidden}
 @media(max-width:767px){html{font-size:16px}body{min-height:100dvh}.login-shell{display:flex;flex-direction:column;width:100%;min-height:100dvh}.login-brand{width:100%;min-height:0;padding:28px 18px 24px;order:1}.brand-content{width:100%;max-width:none}.brand-logo{margin-bottom:24px}.brand-kicker{font-size:11px}.brand-content h1{font-size:30px;line-height:1.12;overflow-wrap:anywhere}.brand-content p{font-size:15px;line-height:1.6}.brand-footer{display:none}.login-panel{width:100%;min-height:0;padding:22px 14px 36px;order:2}.login-card{width:100%;max-width:none;padding:24px 16px;border-radius:14px}.login-card-header{margin-bottom:20px}.login-card-header h2{font-size:25px;line-height:1.2}.login-card-header p{font-size:14px}.login-form{display:grid;grid-template-columns:1fr;width:100%;gap:16px}.field{width:100%;min-width:0}.field input,.password-wrap input{width:100%;min-height:48px;font-size:16px}.password-toggle{min-width:44px;min-height:44px}.login-options{align-items:flex-start;flex-direction:column;gap:12px}.help-link{font-size:14px}.login-button{width:100%;min-height:49px;font-size:16px}.security-note{align-items:flex-start;font-size:13px}.portal-label{font-size:11px}}
 @media(max-width:420px){.login-brand{padding-top:22px}.brand-content h1{font-size:27px}.login-card{padding:21px 14px}}
+.training-login-help {
+    margin-top: 16px;
+    padding: 14px 16px;
+
+    border: 1px solid #dce6f2;
+    border-radius: 10px;
+
+    background: #f7faff;
+
+    color: #5f7087;
+
+    font-size: 12px;
+    line-height: 1.55;
+}
+
+.training-login-help p {
+    margin: 0;
+}
+
+.training-login-help p + p {
+    margin-top: 10px;
+}
+
+.training-login-help strong {
+    color: var(--s4u-navy);
+}
 </style>
 </head>
 
@@ -934,9 +986,23 @@
                     </h2>
 
                     <p>
-                        Sign in to continue to your Screenings4u
-                        training account.
-                    </p>
+    Sign in to continue to your Screenings4u
+    training account.
+</p>
+
+<div class="training-login-help">
+    <p>
+        <strong>Already have a screenings4u account?</strong><br>
+        Sign in using the same email address and password you use
+        for your screenings4u Customer Portal.
+    </p>
+
+    <p>
+        <strong>Purchased training as a guest?</strong><br>
+        Use the email address used during checkout and the password
+        you created from your screenings4u invitation email.
+    </p>
+</div>
 
                 </div>
 
@@ -1083,8 +1149,7 @@
 <script src="assets/js/supabase-config.js"></script>
 <script src="assets/js/core-auth.js"></script>
 <script src="assets/js/ui.js"></script>
-<script src="assets/js/training-login.js?v=20260831-1"></script>
-
+<script src="assets/js/training-login.js?v=20260903-2"></script>
 </body>
 
 </html>

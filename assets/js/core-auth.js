@@ -532,6 +532,61 @@
   }
 
 
+
+
+  /* ============================================================
+     SAFE RETURN-TO SUPPORT
+     ============================================================ */
+
+  function getCurrentReturnTo() {
+
+    return (
+      window.location.pathname +
+      window.location.search +
+      window.location.hash
+    );
+
+  }
+
+
+  function buildLoginRedirect(
+    loginPage,
+    { preserveReturnTo = true } = {}
+  ) {
+
+    const loginUrl = new URL(
+      loginPage,
+      window.location.origin + "/"
+    );
+
+    if (preserveReturnTo) {
+
+      const currentPage =
+        window.location.pathname
+          .split("/")
+          .filter(Boolean)
+          .pop()
+          ?.toLowerCase() || "";
+
+      /*
+       * Never send public authentication pages back to themselves.
+       */
+      if (
+        currentPage !== "training-login.html" &&
+        currentPage !== "reset-password.html"
+      ) {
+        loginUrl.searchParams.set(
+          "returnTo",
+          getCurrentReturnTo()
+        );
+      }
+    }
+
+    return loginUrl.href;
+
+  }
+
+
   /* ============================================================
      REQUIRE AUTHENTICATION
 
@@ -583,7 +638,9 @@
     if (!session?.user) {
 
       window.location.replace(
-        resolvedLoginPage
+        buildLoginRedirect(
+          resolvedLoginPage
+        )
       );
 
       return null;
@@ -641,7 +698,9 @@
 
 
       window.location.replace(
-        resolvedLoginPage
+        buildLoginRedirect(
+          resolvedLoginPage
+        )
       );
 
 
