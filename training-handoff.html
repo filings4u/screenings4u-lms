@@ -1,0 +1,450 @@
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+  <meta name="robots" content="noindex,nofollow">
+  <title>Opening Training | screenings4u</title>
+
+  <style>
+    :root {
+      --s4u-navy: #173b70;
+      --s4u-navy-dark: #102f5b;
+      --s4u-orange: #ff6b00;
+      --s4u-text: #33475f;
+      --s4u-muted: #6d7b8f;
+      --s4u-border: #dce4ed;
+      --s4u-bg: #f4f7fb;
+      --s4u-white: #ffffff;
+      --s4u-error: #b42318;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      min-height: 100%;
+    }
+
+    body {
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      background: var(--s4u-bg);
+      color: var(--s4u-text);
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    .handoff-card {
+      width: min(100%, 460px);
+      padding: 34px;
+      border: 1px solid var(--s4u-border);
+      border-radius: 16px;
+      background: var(--s4u-white);
+      text-align: center;
+      box-shadow: 0 18px 48px rgba(29, 55, 90, 0.10);
+    }
+
+    .handoff-mark {
+      width: 52px;
+      height: 52px;
+      margin: 0 auto 18px;
+      display: grid;
+      place-items: center;
+      border-radius: 12px;
+      background: var(--s4u-navy);
+      color: var(--s4u-white);
+      font-weight: 900;
+    }
+
+    h1 {
+      margin: 0 0 10px;
+      color: var(--s4u-navy);
+      font-size: 27px;
+    }
+
+    p {
+      margin: 0;
+      color: var(--s4u-muted);
+      line-height: 1.6;
+      font-size: 14px;
+    }
+
+    .spinner {
+      width: 28px;
+      height: 28px;
+      margin: 22px auto 0;
+      border: 3px solid #dce4ed;
+      border-top-color: var(--s4u-orange);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    .handoff-error {
+      margin-top: 18px;
+      color: var(--s4u-error);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .handoff-actions {
+      display: none;
+      margin-top: 20px;
+    }
+
+    .handoff-actions a {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      padding: 0 18px;
+      border-radius: 8px;
+      background: var(--s4u-navy);
+      color: #fff;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+  </style>
+</head>
+
+<body data-s4u-portal="training">
+
+  <main class="handoff-card">
+    <div class="handoff-mark">S4</div>
+
+    <h1>Opening your Training Portal</h1>
+
+    <p id="handoffStatus">
+      Securely verifying your screenings4u account and training access.
+    </p>
+
+    <div
+      id="handoffSpinner"
+      class="spinner"
+      aria-hidden="true"
+    ></div>
+
+    <div
+      id="handoffError"
+      class="handoff-error"
+      role="alert"
+      aria-live="polite"
+    ></div>
+
+    <div
+      id="handoffActions"
+      class="handoff-actions"
+    >
+      <a id="trainingLoginFallback" href="training-login.html">
+        Sign in to Training
+      </a>
+    </div>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="assets/js/supabase-config.js"></script>
+
+  <script>
+    (() => {
+      "use strict";
+
+      const DEFAULT_NEXT = "/lms-dashboard.html";
+
+      const statusEl =
+        document.getElementById("handoffStatus");
+
+      const errorEl =
+        document.getElementById("handoffError");
+
+      const spinnerEl =
+        document.getElementById("handoffSpinner");
+
+      const actionsEl =
+        document.getElementById("handoffActions");
+
+      const fallbackLink =
+        document.getElementById("trainingLoginFallback");
+
+
+      function getClient() {
+        if (
+          typeof window.getScreenings4uSupabase === "function"
+        ) {
+          return window.getScreenings4uSupabase();
+        }
+
+        if (
+          window.screenings4uSupabase &&
+          window.screenings4uSupabase.auth
+        ) {
+          return window.screenings4uSupabase;
+        }
+
+        if (
+          window.supabaseClient &&
+          window.supabaseClient.auth
+        ) {
+          return window.supabaseClient;
+        }
+
+        throw new Error(
+          "The Training authentication service is unavailable."
+        );
+      }
+
+
+      function safeNext(raw) {
+        try {
+          const target =
+            new URL(
+              raw || DEFAULT_NEXT,
+              window.location.origin + "/"
+            );
+
+          if (
+            target.origin !==
+            window.location.origin
+          ) {
+            return DEFAULT_NEXT;
+          }
+
+          const filename =
+            target.pathname
+              .split("/")
+              .filter(Boolean)
+              .pop()
+              ?.toLowerCase() || "";
+
+          if (
+            filename === "training-login.html" ||
+            filename === "reset-password.html" ||
+            filename === "training-handoff.html"
+          ) {
+            return DEFAULT_NEXT;
+          }
+
+          return (
+            target.pathname +
+            target.search +
+            target.hash
+          ) || DEFAULT_NEXT;
+
+        } catch {
+          return DEFAULT_NEXT;
+        }
+      }
+
+
+      function getHandoffData() {
+        const query =
+          new URLSearchParams(
+            window.location.search
+          );
+
+        const fragment =
+          new URLSearchParams(
+            window.location.hash
+              .replace(/^#/, "")
+          );
+
+        return {
+          next:
+            safeNext(
+              query.get("next")
+            ),
+
+          tokenHash:
+            fragment.get("token_hash")
+        };
+      }
+
+
+      function clearHandoffSecret(next) {
+        const cleanUrl =
+          new URL(
+            "training-handoff.html",
+            window.location.origin + "/"
+          );
+
+        cleanUrl.searchParams.set(
+          "next",
+          next
+        );
+
+        window.history.replaceState(
+          null,
+          "",
+          cleanUrl.href
+        );
+      }
+
+
+      function showFailure(
+        message,
+        next
+      ) {
+        if (spinnerEl) {
+          spinnerEl.hidden = true;
+        }
+
+        if (statusEl) {
+          statusEl.textContent =
+            "Automatic sign-in could not be completed.";
+        }
+
+        if (errorEl) {
+          errorEl.textContent =
+            message ||
+            "Please sign in to continue.";
+        }
+
+        if (fallbackLink) {
+          const loginUrl =
+            new URL(
+              "training-login.html",
+              window.location.origin + "/"
+            );
+
+          loginUrl.searchParams.set(
+            "returnTo",
+            next
+          );
+
+          fallbackLink.href =
+            loginUrl.href;
+        }
+
+        if (actionsEl) {
+          actionsEl.style.display =
+            "block";
+        }
+      }
+
+
+      async function run() {
+        const {
+          next,
+          tokenHash
+        } = getHandoffData();
+
+        /*
+         * Remove the one-time credential from the browser URL
+         * before making network requests.
+         */
+        clearHandoffSecret(next);
+
+        if (!tokenHash) {
+          showFailure(
+            "The automatic Training sign-in link is missing or has already been used.",
+            next
+          );
+
+          return;
+        }
+
+        try {
+          const client =
+            getClient();
+
+          /*
+           * The handoff token was generated server-side only
+           * after the Customer session and Training enrollment
+           * were verified.
+           */
+          const {
+            data,
+            error
+          } = await client.auth.verifyOtp({
+            token_hash: tokenHash,
+            type: "magiclink"
+          });
+
+          if (error) {
+            throw error;
+          }
+
+          if (!data?.session?.user?.id) {
+            throw new Error(
+              "The Training session could not be created."
+            );
+          }
+
+          /*
+           * Re-check Training authorization from the Training
+           * domain before revealing protected LMS pages.
+           */
+          const {
+            data: allowed,
+            error: accessError
+          } = await client.rpc(
+            "can_access_training_portal"
+          );
+
+          if (accessError) {
+            throw accessError;
+          }
+
+          if (allowed !== true) {
+            await client.auth.signOut({
+              scope: "local"
+            });
+
+            throw new Error(
+              "This account does not have access to the Training Portal."
+            );
+          }
+
+          if (statusEl) {
+            statusEl.textContent =
+              "Access verified. Opening the Learning Center...";
+          }
+
+          window.location.replace(next);
+
+        } catch (error) {
+          console.error(
+            "[Training Handoff]",
+            error
+          );
+
+          showFailure(
+            error?.message ||
+              "Please sign in to Training to continue.",
+            next
+          );
+        }
+      }
+
+
+      if (
+        document.readyState === "loading"
+      ) {
+        document.addEventListener(
+          "DOMContentLoaded",
+          run,
+          {
+            once: true
+          }
+        );
+      } else {
+        run();
+      }
+    })();
+  </script>
+
+</body>
+</html>
