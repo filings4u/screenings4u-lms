@@ -380,7 +380,6 @@
         }
       });
 
-    updateMobileCurrentLabel();
   }
 
   /* ============================================================
@@ -388,161 +387,283 @@
      ============================================================ */
 
   function injectMobileDropdownNavigation() {
-    if (document.getElementById("lms-mobile-nav")) return;
+    if (
+      document.getElementById(
+        "lms-mobile-dropdown"
+      )
+    ) {
+      return;
+    }
 
-    const host =
-      document.querySelector(".lms-main") ||
-      document.querySelector("main") ||
-      document.body;
+    if (!document.body) {
+      return;
+    }
 
-    if (!host) return;
+    const backdrop =
+      document.createElement("div");
 
-    const wrapper = document.createElement("div");
-    wrapper.id = "lms-mobile-nav";
-    wrapper.className = "lms-mobile-nav";
-    wrapper.innerHTML = `
-      <button type="button" class="lms-mobile-nav-toggle" id="lms-mobile-nav-toggle"
-        aria-expanded="false" aria-controls="lms-mobile-nav-menu">
-        <span class="lms-mobile-nav-toggle-copy">
-          <small>Learning Center</small>
-          <strong id="lms-mobile-nav-current">Navigation</strong>
-        </span>
-        <span class="lms-mobile-nav-toggle-icon" aria-hidden="true">
-          <svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"></path></svg>
-        </span>
-      </button>
+    backdrop.id =
+      "lms-mobile-dropdown-backdrop";
 
-      <div class="lms-mobile-nav-menu" id="lms-mobile-nav-menu" hidden>
-        <div class="lms-mobile-nav-section">
-          <span>Learning</span>
-          <a href="lms-dashboard.html" data-lms-page="lms-dashboard.html">Home</a>
-          <a href="lms-my-courses.html" data-lms-page="lms-my-courses.html">My Learning</a>
-          <a href="lms-courses.html" data-lms-page="lms-courses.html">Course Library</a>
-        </div>
+    backdrop.className =
+      "lms-mobile-dropdown-backdrop";
 
-        <div class="lms-mobile-nav-section">
-          <span>Track</span>
-          <a href="lms-progress.html" data-lms-page="lms-progress.html">Progress</a>
-          <a href="lms-certificates.html" data-lms-page="lms-certificates.html">Certificates</a>
-        </div>
+    backdrop.hidden = true;
 
-        <div class="lms-mobile-nav-section">
-          <span>Account</span>
-          <a href="lms-account.html" data-lms-page="lms-account.html">My Account</a>
-          <a href="lms-support.html" data-lms-page="lms-support.html">Support</a>
-        </div>
 
-        <div class="lms-mobile-nav-section lms-mobile-nav-return">
-          <a href="https://screenings4u.com">Back to Screenings4u</a>
-        </div>
-      </div>
-    `;
+    const dropdown =
+      document.createElement("div");
 
-    host.prepend(wrapper);
+    dropdown.id =
+      "lms-mobile-dropdown";
+
+    dropdown.className =
+      "lms-mobile-dropdown";
+
+    dropdown.hidden = true;
+
+    dropdown.setAttribute(
+      "role",
+      "navigation"
+    );
+
+    dropdown.setAttribute(
+      "aria-label",
+      "Learning Center navigation"
+    );
+
+
+    document.body.append(
+      backdrop,
+      dropdown
+    );
+
     injectMobileStyles();
-    updateMobileCurrentLabel();
   }
 
-  function injectMobileStyles() {
-    if (document.getElementById("lms-mobile-nav-styles")) return;
 
-    const style = document.createElement("style");
-    style.id = "lms-mobile-nav-styles";
+  function rebuildMobileDropdown() {
+    const sidebar =
+      document.getElementById(
+        "lms-sidebar"
+      );
+
+    const dropdown =
+      document.getElementById(
+        "lms-mobile-dropdown"
+      );
+
+    if (!sidebar || !dropdown) {
+      return;
+    }
+
+    dropdown.innerHTML = "";
+
+    const groups =
+      sidebar.querySelectorAll(
+        ".lms-nav-group"
+      );
+
+    groups.forEach(function (group) {
+      const links =
+        group.querySelectorAll(
+          ".lms-nav-link"
+        );
+
+      if (!links.length) {
+        return;
+      }
+
+      const section =
+        document.createElement("section");
+
+      section.className =
+        "lms-mobile-dropdown-section";
+
+      const sourceLabel =
+        group.querySelector(
+          ".lms-nav-label"
+        );
+
+      if (sourceLabel) {
+        const heading =
+          document.createElement("div");
+
+        heading.className =
+          "lms-mobile-dropdown-label";
+
+        heading.textContent =
+          sourceLabel.textContent.trim();
+
+        section.appendChild(heading);
+      }
+
+      links.forEach(function (sourceLink) {
+        const link =
+          document.createElement("a");
+
+        link.href =
+          sourceLink.getAttribute("href") || "#";
+
+        link.className =
+          "lms-mobile-dropdown-link";
+
+        const text =
+          sourceLink.querySelector(
+            ".lms-nav-text"
+          );
+
+        link.textContent =
+          text
+            ? text.textContent.trim()
+            : sourceLink.textContent
+                .replace(/\s+/g, " ")
+                .trim();
+
+        if (
+          sourceLink.classList.contains(
+            "active"
+          )
+        ) {
+          link.classList.add("active");
+
+          link.setAttribute(
+            "aria-current",
+            "page"
+          );
+        }
+
+        section.appendChild(link);
+      });
+
+      dropdown.appendChild(section);
+    });
+
+
+    const footer =
+      sidebar.querySelector(
+        ".lms-sidebar-footer"
+      );
+
+    const returnLink =
+      footer
+        ? footer.querySelector(
+            ".lms-return-link"
+          )
+        : null;
+
+    if (returnLink) {
+      const section =
+        document.createElement("section");
+
+      section.className =
+        "lms-mobile-dropdown-section lms-mobile-dropdown-return";
+
+      const link =
+        document.createElement("a");
+
+      link.href =
+        returnLink.getAttribute("href") || "#";
+
+      link.className =
+        "lms-mobile-dropdown-link";
+
+      const text =
+        returnLink.querySelector(
+          ".lms-return-text"
+        );
+
+      link.textContent =
+        text
+          ? text.textContent.trim()
+          : "Back to Screenings4u";
+
+      section.appendChild(link);
+      dropdown.appendChild(section);
+    }
+  }
+
+
+  function injectMobileStyles() {
+    if (
+      document.getElementById(
+        "lms-mobile-dropdown-styles"
+      )
+    ) {
+      return;
+    }
+
+    const style =
+      document.createElement("style");
+
+    style.id =
+      "lms-mobile-dropdown-styles";
+
     style.textContent = `
       @media (max-width: ${DESKTOP_BREAKPOINT}px) {
-        .lms-sidebar, #lms-sidebar,
-        .lms-sidebar-overlay, #lms-sidebar-overlay {
+
+        /*
+         * Mobile uses the dropdown only.
+         * The desktop Learning Center sidebar is completely hidden.
+         */
+        .lms-sidebar,
+        #lms-sidebar,
+        .lms-sidebar-overlay,
+        #lms-sidebar-overlay {
           display: none !important;
         }
 
-        body.sidebar-open { overflow: auto !important; }
-
-        .lms-mobile-nav {
-          display: block;
-          width: 100%;
-          padding: 12px 16px 0;
-          position: relative;
-          z-index: 70;
+        body.sidebar-open {
+          overflow: auto !important;
         }
 
-        .lms-mobile-nav-toggle {
-          width: 100%;
-          min-height: 58px;
+        .lms-main,
+        .lms-content,
+        main {
+          width: 100% !important;
+          max-width: 100% !important;
+          margin-left: 0 !important;
+        }
+
+        .lms-mobile-dropdown-backdrop {
+          position: fixed;
+          inset: 0;
+          z-index: 9998;
+          background: rgba(17, 36, 67, .18);
+        }
+
+        .lms-mobile-dropdown {
+          position: fixed;
+          left: 12px;
+          right: 12px;
+          top: 76px;
+          z-index: 9999;
+
+          overflow-y: auto;
+          overscroll-behavior: contain;
+
+          background: #ffffff;
           border: 1px solid #d8e0ec;
           border-radius: 12px;
-          background: #fff;
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          gap: 14px;
-          padding: 10px 14px;
-          color: #173d78;
-          box-shadow: 0 8px 22px rgba(22,61,120,.08);
-          cursor: pointer;
-          text-align: left;
+          box-shadow: 0 18px 42px rgba(18, 45, 82, .18);
         }
 
-        .lms-mobile-nav-toggle-copy { display: grid; gap: 2px; }
-
-        .lms-mobile-nav-toggle-copy small {
-          color: #ff6b00;
-          font-size: 10px;
-          font-weight: 900;
-          letter-spacing: .09em;
-          text-transform: uppercase;
+        .lms-mobile-dropdown[hidden],
+        .lms-mobile-dropdown-backdrop[hidden] {
+          display: none !important;
         }
 
-        .lms-mobile-nav-toggle-copy strong {
-          color: #173d78;
-          font-size: 15px;
-          line-height: 1.25;
-        }
-
-        .lms-mobile-nav-toggle-icon {
-          width: 34px;
-          height: 34px;
-          display: inline-flex;
-          align-items: center;
-          justify-content: center;
-          flex: 0 0 34px;
-          border-radius: 9px;
-          background: #f2f6fb;
-          transition: transform .18s ease;
-        }
-
-        .lms-mobile-nav-toggle-icon svg {
-          width: 18px;
-          height: 18px;
-          fill: none;
-          stroke: currentColor;
-          stroke-width: 2;
-          stroke-linecap: round;
-          stroke-linejoin: round;
-        }
-
-        .lms-mobile-nav.open .lms-mobile-nav-toggle-icon {
-          transform: rotate(180deg);
-        }
-
-        .lms-mobile-nav-menu {
-          margin-top: 8px;
-          border: 1px solid #d8e0ec;
-          border-radius: 12px;
-          background: #fff;
-          box-shadow: 0 16px 35px rgba(16,45,88,.14);
-          overflow: hidden;
-        }
-
-        .lms-mobile-nav-section {
-          padding: 10px;
+        .lms-mobile-dropdown-section {
+          padding: 8px;
           border-bottom: 1px solid #edf1f5;
         }
 
-        .lms-mobile-nav-section:last-child { border-bottom: 0; }
+        .lms-mobile-dropdown-section:last-child {
+          border-bottom: 0;
+        }
 
-        .lms-mobile-nav-section > span {
-          display: block;
-          padding: 5px 8px 7px;
+        .lms-mobile-dropdown-label {
+          padding: 8px 10px 6px;
           color: #748197;
           font-size: 10px;
           font-weight: 900;
@@ -550,7 +671,7 @@
           text-transform: uppercase;
         }
 
-        .lms-mobile-nav-section a {
+        .lms-mobile-dropdown-link {
           display: flex;
           align-items: center;
           min-height: 42px;
@@ -562,51 +683,61 @@
           font-weight: 700;
         }
 
-        .lms-mobile-nav-section a:hover,
-        .lms-mobile-nav-section a.active {
+        .lms-mobile-dropdown-link:hover,
+        .lms-mobile-dropdown-link.active {
           background: #f2f6fb;
           color: #173d78;
         }
 
-        .lms-main, .lms-content, main {
-          margin-left: 0 !important;
-          width: 100% !important;
-          max-width: 100% !important;
+        [data-lms-menu-toggle][aria-expanded="true"] {
+          background: #f2f6fb;
         }
-
-        [data-lms-menu-toggle] { display: none !important; }
       }
+
 
       @media (min-width: ${DESKTOP_BREAKPOINT + 1}px) {
-        .lms-mobile-nav { display: none !important; }
+        .lms-mobile-dropdown,
+        .lms-mobile-dropdown-backdrop {
+          display: none !important;
+        }
       }
     `;
+
     document.head.appendChild(style);
   }
 
-  function updateMobileCurrentLabel() {
-    const current = currentPageName();
-    const links = document.querySelectorAll("#lms-mobile-nav-menu [data-lms-page]");
-    let label = "Navigation";
 
-    links.forEach(function (link) {
-      const page = String(link.dataset.lmsPage || "").split("?")[0];
-      if (page === current) {
-        link.classList.add("active");
-        label = link.textContent.trim();
-      } else {
-        link.classList.remove("active");
-      }
-    });
+  function positionMobileDropdown(
+    button,
+    dropdown
+  ) {
+    const header =
+      button.closest(
+        ".lms-topbar, .lms-header, header"
+      );
 
-    const node = document.getElementById("lms-mobile-nav-current");
-    if (node) node.textContent = label;
+    const referenceRect =
+      header
+        ? header.getBoundingClientRect()
+        : button.getBoundingClientRect();
+
+    const top =
+      Math.max(
+        8,
+        Math.round(
+          referenceRect.bottom + 8
+        )
+      );
+
+    dropdown.style.top =
+      top + "px";
+
+    dropdown.style.maxHeight =
+      "calc(100vh - " +
+      (top + 12) +
+      "px)";
   }
 
-  function currentPageName() {
-    const path = String(location.pathname || "");
-    return path.split("/").pop() || "lms-dashboard.html";
-  }
 
   /* ============================================================
      DESKTOP SIDEBAR
@@ -623,134 +754,160 @@
      ============================================================ */
 
   function initializeMobileNavigation() {
-    const wrapper = document.getElementById("lms-mobile-nav");
-    const toggle = document.getElementById("lms-mobile-nav-toggle");
-    const menu = document.getElementById("lms-mobile-nav-menu");
-
-    if (!wrapper || !toggle || !menu) return;
-
-    function closeMenu() {
-      wrapper.classList.remove("open");
-      menu.hidden = true;
-      toggle.setAttribute("aria-expanded", "false");
-    }
-
-    function openMenu() {
-      wrapper.classList.add("open");
-      menu.hidden = false;
-      toggle.setAttribute("aria-expanded", "true");
-    }
-
-    toggle.addEventListener("click", function (event) {
-      if (window.innerWidth > DESKTOP_BREAKPOINT) {
-        return;
-      }
-
-      event.preventDefault();
-      event.stopPropagation();
-
-      const isOpen =
-        toggle.getAttribute("aria-expanded") === "true";
-
-      if (isOpen) {
-        closeMenu();
-      } else {
-        openMenu();
-      }
-    });
-
-    menu.addEventListener("click", function (event) {
-      event.stopPropagation();
-    });
-
-    menu.querySelectorAll("a").forEach(function (link) {
-      link.addEventListener("click", closeMenu);
-    });
-
-    document.addEventListener("click", function (event) {
-      if (
-        window.innerWidth <= DESKTOP_BREAKPOINT &&
-        !wrapper.contains(event.target)
-      ) {
-        closeMenu();
-      }
-    });
-
-    document.addEventListener("keydown", function (event) {
-      if (event.key === "Escape") closeMenu();
-    });
-
-    window.addEventListener("resize", function () {
-      if (window.innerWidth > DESKTOP_BREAKPOINT) closeMenu();
-    });
-  }
-
-  function openMobileSidebar() {
-    const sidebar =
-      document.getElementById(
-        "lms-sidebar"
+    const button =
+      document.querySelector(
+        "[data-lms-menu-toggle]"
       );
 
-    const overlay =
+    const dropdown =
       document.getElementById(
-        "lms-sidebar-overlay"
+        "lms-mobile-dropdown"
       );
 
-    if (!sidebar || !overlay) {
+    const backdrop =
+      document.getElementById(
+        "lms-mobile-dropdown-backdrop"
+      );
+
+    if (!button || !dropdown) {
       return;
     }
 
-    sidebar.classList.add(
-      "mobile-open"
+    button.setAttribute(
+      "aria-controls",
+      "lms-mobile-dropdown"
     );
 
-    overlay.classList.add(
-      "active"
-    );
-
-    overlay.setAttribute(
-      "aria-hidden",
+    button.setAttribute(
+      "aria-expanded",
       "false"
     );
 
-    document.body.classList.add(
-      "sidebar-open"
-    );
-  }
 
+    function closeMenu() {
+      dropdown.hidden = true;
 
-  function closeMobileSidebar() {
-    const sidebar =
-      document.getElementById(
-        "lms-sidebar"
+      if (backdrop) {
+        backdrop.hidden = true;
+      }
+
+      button.setAttribute(
+        "aria-expanded",
+        "false"
       );
 
-    const overlay =
-      document.getElementById(
-        "lms-sidebar-overlay"
-      );
-
-    if (sidebar) {
-      sidebar.classList.remove(
-        "mobile-open"
+      button.setAttribute(
+        "aria-label",
+        "Open navigation"
       );
     }
 
-    if (overlay) {
-      overlay.classList.remove(
-        "active"
+
+    function openMenu() {
+      rebuildMobileDropdown();
+
+      positionMobileDropdown(
+        button,
+        dropdown
       );
 
-      overlay.setAttribute(
-        "aria-hidden",
+      if (backdrop) {
+        backdrop.hidden = false;
+      }
+
+      dropdown.hidden = false;
+
+      button.setAttribute(
+        "aria-expanded",
         "true"
       );
+
+      button.setAttribute(
+        "aria-label",
+        "Close navigation"
+      );
     }
 
-    document.body.classList.remove(
-      "sidebar-open"
+
+    button.addEventListener(
+      "click",
+      function (event) {
+        if (
+          window.innerWidth >
+          DESKTOP_BREAKPOINT
+        ) {
+          return;
+        }
+
+        event.preventDefault();
+        event.stopPropagation();
+
+        const isOpen =
+          button.getAttribute(
+            "aria-expanded"
+          ) === "true";
+
+        if (isOpen) {
+          closeMenu();
+        } else {
+          openMenu();
+        }
+      }
+    );
+
+
+    dropdown.addEventListener(
+      "click",
+      function (event) {
+        event.stopPropagation();
+
+        const link =
+          event.target.closest("a");
+
+        if (link) {
+          closeMenu();
+        }
+      }
+    );
+
+
+    if (backdrop) {
+      backdrop.addEventListener(
+        "click",
+        closeMenu
+      );
+    }
+
+
+    document.addEventListener(
+      "click",
+      function (event) {
+        if (
+          window.innerWidth <=
+            DESKTOP_BREAKPOINT &&
+          !dropdown.contains(event.target) &&
+          !button.contains(event.target)
+        ) {
+          closeMenu();
+        }
+      }
+    );
+
+
+    document.addEventListener(
+      "keydown",
+      function (event) {
+        if (event.key === "Escape") {
+          closeMenu();
+        }
+      }
+    );
+
+
+    window.addEventListener(
+      "resize",
+      closeMenu
     );
   }
-
 
 })();
