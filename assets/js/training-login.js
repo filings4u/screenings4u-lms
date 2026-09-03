@@ -2,7 +2,7 @@
   "use strict";
 
   const DASHBOARD_PAGE = "lms-dashboard.html";
-  const RESET_PAGE = "training-reset-password.html";
+  const RESET_PAGE = "reset-password.html";
 
   const form = document.getElementById("trainingLoginForm");
   const emailInput = document.getElementById("email");

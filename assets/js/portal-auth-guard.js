@@ -1,4 +1,5 @@
 /* SCREENINGS4U — STRICT PORTAL AUTH GUARD */
+
 (() => {
   "use strict";
 
@@ -6,6 +7,7 @@
     portal,
     loginPage = null
   } = {}) {
+
     if (!portal) {
       throw new Error(
         "Portal name is required."
@@ -23,8 +25,7 @@
       const state =
         await window.S4UAuth.requireAuth({
           portal,
-          loginPage:
-            destination
+          loginPage: destination
         });
 
       if (!state) {
@@ -47,8 +48,7 @@
         new CustomEvent(
           "s4u:authenticated",
           {
-            detail:
-              state
+            detail: state
           }
         )
       );
@@ -61,22 +61,32 @@
         error
       );
 
-      document.documentElement
-        .classList
-        .remove("s4u-auth-pending");
+      /*
+       * FAIL CLOSED:
+       *
+       * Do not remove s4u-auth-pending here.
+       * An authorization/network/config failure must not reveal
+       * protected page content.
+       */
 
       document.documentElement
         .classList
-        .add("s4u-auth-error");
+        .add(
+          "s4u-auth-error"
+        );
 
       window.dispatchEvent(
-        new CustomEvent("s4u:auth-error", {
-          detail: { portal, error }
-        })
+        new CustomEvent(
+          "s4u:auth-error",
+          {
+            detail: {
+              portal,
+              error
+            }
+          }
+        )
       );
 
-      // IMPORTANT: an RPC/network/config error is not proof that the
-      // user is unauthorized. Do not destroy a valid Supabase session.
       return null;
     }
   }
@@ -85,4 +95,5 @@
     Object.freeze({
       protectPortal
     });
+
 })();
