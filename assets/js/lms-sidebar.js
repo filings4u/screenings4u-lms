@@ -301,7 +301,7 @@
               <!-- BACK TO MAIN WEBSITE -->
 
               <a
-                href="index.html"
+                href="https://screenings4u.com"
                 class="lms-return-link"
               >
                 <span class="lms-nav-icon">
