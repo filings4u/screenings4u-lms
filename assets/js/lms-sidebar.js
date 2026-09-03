@@ -9,13 +9,29 @@
   "use strict";
 
   const DESKTOP_BREAKPOINT = 860;
-  document.addEventListener("DOMContentLoaded", initializeLmsSidebar);
+
+  // This navigation file may be loaded normally or injected by the portal shell.
+  // If DOMContentLoaded has already fired, waiting for it again leaves the
+  // mobile toggle unbound. Initialize immediately in that case.
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initializeLmsSidebar, {
+      once: true
+    });
+  } else {
+    initializeLmsSidebar();
+  }
 
   /* ============================================================
      INITIALIZE
      ============================================================ */
 
   function initializeLmsSidebar() {
+    if (document.documentElement.dataset.lmsNavigationInitialized === "true") {
+      return;
+    }
+
+    document.documentElement.dataset.lmsNavigationInitialized = "true";
+
     injectLmsSidebar();
     injectMobileDropdownNavigation();
     setActiveNavigation();
@@ -337,6 +353,36 @@
 
 
 
+
+  /* ============================================================
+     ACTIVE NAVIGATION
+     ============================================================ */
+
+  function setActiveNavigation() {
+    const current = currentPageName();
+
+    document
+      .querySelectorAll("[data-lms-page]")
+      .forEach(function (link) {
+        const page =
+          String(link.dataset.lmsPage || "")
+            .split("?")[0]
+            .split("#")[0];
+
+        const isActive = page === current;
+
+        link.classList.toggle("active", isActive);
+
+        if (isActive) {
+          link.setAttribute("aria-current", "page");
+        } else {
+          link.removeAttribute("aria-current");
+        }
+      });
+
+    updateMobileCurrentLabel();
+  }
+
   /* ============================================================
      MOBILE DROPDOWN NAVIGATION
      ============================================================ */
@@ -596,9 +642,25 @@
     }
 
     toggle.addEventListener("click", function (event) {
-      if (window.innerWidth > DESKTOP_BREAKPOINT) return;
+      if (window.innerWidth > DESKTOP_BREAKPOINT) {
+        return;
+      }
+
       event.preventDefault();
-      menu.hidden ? openMenu() : closeMenu();
+      event.stopPropagation();
+
+      const isOpen =
+        toggle.getAttribute("aria-expanded") === "true";
+
+      if (isOpen) {
+        closeMenu();
+      } else {
+        openMenu();
+      }
+    });
+
+    menu.addEventListener("click", function (event) {
+      event.stopPropagation();
     });
 
     menu.querySelectorAll("a").forEach(function (link) {
