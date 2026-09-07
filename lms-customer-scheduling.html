@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="en" class="s4u-auth-pending">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Appointments | Screenings4u</title>
+  <link rel="stylesheet" href="assets/css/customer-scheduling.css">
+</head>
+<body data-page-title="Appointments" data-page-subtitle="Book, view, reschedule, and cancel your appointments.">
+  <div class="customer-portal-app">
+    <div id="customer-portal-sidebar"></div>
+
+    <main class="customer-portal-main">
+      <div id="customer-portal-header"></div>
+
+      <div class="scheduler" id="customerScheduler">
+        <div id="msg" class="scheduler-message" hidden aria-live="polite"></div>
+
+        <section id="book">
+          <header class="scheduler-page-head">
+            <div>
+              <b class="eyebrow">MY APPOINTMENTS</b>
+              <h1>Schedule an Appointment</h1>
+              <p>Choose an appointment type, then select a live available date and time.</p>
+            </div>
+            <button id="myAppts" class="btn" type="button">My Appointments</button>
+          </header>
+
+          <div class="steps" aria-label="Booking progress">
+            <span class="active" data-step="1">1 Appointment</span>
+            <span data-step="2">2 Date &amp; Time</span>
+            <span data-step="3">3 Information</span>
+            <span data-step="4">4 Review</span>
+          </div>
+
+          <div class="card booking-card">
+            <div id="p1">
+              <h2>Choose an appointment type</h2>
+              <p class="section-copy">Only appointment types made available by the administrator are shown here.</p>
+              <div id="services" class="service-grid">
+                <div class="scheduler-loading">Loading appointment types…</div>
+              </div>
+            </div>
+
+            <div id="p2" hidden>
+              <button class="back" data-back="1" type="button">← Back</button>
+              <div class="step-heading">
+                <div>
+                  <h2>Select a date and time</h2>
+                  <p id="selectedServiceSummary" class="section-copy"></p>
+                </div>
+              </div>
+
+              <div class="calendar-wrap">
+                <div class="calendar-panel">
+                  <div class="cal-head">
+                    <button id="prev" type="button" aria-label="Previous month">‹</button>
+                    <strong id="month"></strong>
+                    <button id="next" type="button" aria-label="Next month">›</button>
+                  </div>
+                  <div class="week" aria-hidden="true">
+                    <b>Sun</b><b>Mon</b><b>Tue</b><b>Wed</b><b>Thu</b><b>Fri</b><b>Sat</b>
+                  </div>
+                  <div id="calendar" class="calendar"></div>
+                </div>
+
+                <aside class="times-panel">
+                  <h3 id="dateLabel">Choose a date</h3>
+                  <p id="timeHint" class="section-copy">Available times will appear here.</p>
+                  <div id="times" class="times"></div>
+                </aside>
+              </div>
+            </div>
+
+            <div id="p3" hidden>
+              <button class="back" data-back="2" type="button">← Back</button>
+              <h2>Your information</h2>
+              <p class="section-copy">We use your signed-in account to connect this appointment to your dashboard.</p>
+
+              <div class="form">
+                <label>
+                  Full name
+                  <input id="name" autocomplete="name">
+                </label>
+                <label>
+                  Email
+                  <input id="email" type="email" autocomplete="email">
+                </label>
+                <label>
+                  Phone
+                  <input id="phone" autocomplete="tel">
+                </label>
+                <label>
+                  Party size
+                  <input id="party" type="number" min="1" value="1" inputmode="numeric">
+                </label>
+              </div>
+
+              <button id="review" class="btn primary" type="button">Continue</button>
+            </div>
+
+            <div id="p4" hidden>
+              <button class="back" data-back="3" type="button">← Back</button>
+              <h2>Review your appointment</h2>
+              <div id="reviewBox" class="review"></div>
+              <button id="confirm" class="btn primary" type="button">Book Appointment</button>
+            </div>
+
+            <div id="success" hidden class="success-panel">
+              <div class="success-mark" aria-hidden="true">✓</div>
+              <h2>You're scheduled.</h2>
+              <p>Your appointment is now synced with the Screenings4u admin calendar.</p>
+              <div id="successBox" class="review"></div>
+              <div class="success-actions">
+                <button id="viewAppointments" class="btn primary" type="button">View My Appointments</button>
+                <button id="another" class="btn" type="button">Book Another</button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="listPanel" class="card appointments-panel" hidden>
+          <header class="list-head">
+            <div>
+              <b class="eyebrow">MY APPOINTMENTS</b>
+              <h2>Upcoming &amp; Past Appointments</h2>
+              <p>Changes made here update the same appointment shown to the administrator.</p>
+            </div>
+            <button id="newBook" class="btn primary" type="button">+ Schedule Appointment</button>
+          </header>
+
+          <div class="appointment-tabs" role="tablist" aria-label="Appointment filters">
+            <button type="button" class="active" data-appt-filter="upcoming">Upcoming</button>
+            <button type="button" data-appt-filter="past">Past</button>
+            <button type="button" data-appt-filter="all">All</button>
+          </div>
+
+          <div id="appointments"></div>
+        </section>
+
+        <dialog id="resDialog" class="scheduler-dialog">
+          <form method="dialog" class="dialog-shell" onsubmit="return false;">
+            <button id="closeRes" class="x" type="button" aria-label="Close">×</button>
+            <b class="eyebrow">RESCHEDULE</b>
+            <h2>Choose a new time</h2>
+            <p id="resTitle"></p>
+
+            <div class="calendar-wrap">
+              <div class="calendar-panel">
+                <div class="cal-head">
+                  <button id="rprev" type="button" aria-label="Previous month">‹</button>
+                  <strong id="rmonth"></strong>
+                  <button id="rnext" type="button" aria-label="Next month">›</button>
+                </div>
+                <div class="week" aria-hidden="true">
+                  <b>Sun</b><b>Mon</b><b>Tue</b><b>Wed</b><b>Thu</b><b>Fri</b><b>Sat</b>
+                </div>
+                <div id="rcalendar" class="calendar"></div>
+              </div>
+
+              <aside class="times-panel">
+                <h3 id="rdate">Choose a date</h3>
+                <p id="rtimeHint" class="section-copy">Select a date to see available times.</p>
+                <div id="rtimes" class="times"></div>
+              </aside>
+            </div>
+          </form>
+        </dialog>
+
+        <dialog id="cancelDialog" class="scheduler-dialog compact-dialog">
+          <form id="cancelForm" class="dialog-shell">
+            <button id="closeCancel" class="x" type="button" aria-label="Close">×</button>
+            <b class="eyebrow danger-text">CANCEL APPOINTMENT</b>
+            <h2>Cancel this appointment?</h2>
+            <p id="cancelTitle"></p>
+            <label class="cancel-reason">
+              Cancellation reason <span>(optional)</span>
+              <textarea id="cancelReason" rows="4" maxlength="1000" placeholder="Tell us why you need to cancel."></textarea>
+            </label>
+            <div class="dialog-actions">
+              <button id="keepAppointment" type="button" class="btn">Keep Appointment</button>
+              <button id="confirmCancel" type="submit" class="btn danger">Cancel Appointment</button>
+            </div>
+          </form>
+        </dialog>
+      </div>
+    </main>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="assets/js/supabase-config.js"></script>
+  <script src="assets/js/core-auth.js"></script>
+  <script src="assets/js/session-security.js"></script>
+  <script src="assets/js/portal-auth-guard.js"></script>
+  <script src="assets/js/customer-auth-guard.js"></script>
+  <script src="assets/js/customer-scheduling.js"></script>
+</body>
+</html>

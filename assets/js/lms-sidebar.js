@@ -246,6 +246,67 @@
             </div>
 
 
+            <!-- APPOINTMENTS -->
+
+            <div class="lms-nav-group">
+
+              <span class="lms-nav-label">
+                Appointments
+              </span>
+
+              <nav class="lms-nav">
+
+                <!-- SCHEDULE APPOINTMENT -->
+
+                <a
+                  href="lms-schedule-appointment.html"
+                  class="lms-nav-link"
+                  data-lms-page="lms-schedule-appointment.html"
+                >
+                  <span class="lms-nav-icon">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                      <rect x="3" y="5" width="18" height="16" rx="2"></rect>
+                      <path d="M8 3v4"></path>
+                      <path d="M16 3v4"></path>
+                      <path d="M3 10h18"></path>
+                      <path d="M12 13v5"></path>
+                      <path d="M9.5 15.5h5"></path>
+                    </svg>
+                  </span>
+
+                  <span class="lms-nav-text">
+                    Schedule Appointment
+                  </span>
+                </a>
+
+
+                <!-- MY APPOINTMENTS -->
+
+                <a
+                  href="lms-my-appointments.html"
+                  class="lms-nav-link"
+                  data-lms-page="lms-my-appointments.html"
+                >
+                  <span class="lms-nav-icon">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                      <rect x="3" y="5" width="18" height="16" rx="2"></rect>
+                      <path d="M8 3v4"></path>
+                      <path d="M16 3v4"></path>
+                      <path d="M3 10h18"></path>
+                      <path d="m8 15 2 2 5-5"></path>
+                    </svg>
+                  </span>
+
+                  <span class="lms-nav-text">
+                    My Appointments
+                  </span>
+                </a>
+
+              </nav>
+
+            </div>
+
+
             <!-- ACCOUNT -->
 
             <div class="lms-nav-group">
