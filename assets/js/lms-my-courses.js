@@ -145,6 +145,11 @@
     }
   }
 
+  function extensionCheckoutUrl(enrollmentId) {
+    return "https://screenings4u.com/checkout.html?service=training_course_extension_30_days&enrollment_id=" +
+      encodeURIComponent(enrollmentId);
+  }
+
   function renderContinueLearning() {
     var card = document.getElementById("my-learning-continue-card");
     if (!card) return;
@@ -268,6 +273,13 @@
           >
             ${progress > 0 ? "Resume Course" : "Start Course"}
           </a>
+
+          <a
+            href="${extensionCheckoutUrl(enrollment.id)}"
+            class="course-action-secondary"
+          >
+            Extend My Course · $100
+          </a>
         </div>
       </div>
     `;
@@ -378,12 +390,21 @@
                   ${lessonCount === 1 ? "lesson" : "lessons"}
                 </span>
 
-                <a
-                  href="${actionHref}"
-                  class="my-course-card-link"
-                >
-                  ${actionLabel}
-                </a>
+                <div class="my-course-card-actions">
+                  <a
+                    href="${extensionCheckoutUrl(enrollment.id)}"
+                    class="my-course-card-link my-course-card-extend"
+                  >
+                    Extend · $100
+                  </a>
+
+                  <a
+                    href="${actionHref}"
+                    class="my-course-card-link"
+                  >
+                    ${actionLabel}
+                  </a>
+                </div>
               </div>
             </div>
           </article>
