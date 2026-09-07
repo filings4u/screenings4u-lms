@@ -35,6 +35,7 @@
     injectLmsSidebar();
     injectMobileDropdownNavigation();
     setActiveNavigation();
+    initializeDesktopAccordion();
     initializeMobileNavigation();
   }
 
@@ -106,9 +107,9 @@
 
             <div class="lms-nav-group">
 
-              <span class="lms-nav-label">
-                Learning
-              </span>
+              <button type="button" class="lms-nav-label" aria-expanded="false">
+                <span>Learning</span>
+              </button>
 
               <nav class="lms-nav">
 
@@ -190,9 +191,9 @@
 
             <div class="lms-nav-group">
 
-              <span class="lms-nav-label">
-                Track
-              </span>
+              <button type="button" class="lms-nav-label" aria-expanded="false">
+                <span>Track</span>
+              </button>
 
               <nav class="lms-nav">
 
@@ -250,56 +251,24 @@
 
             <div class="lms-nav-group">
 
-              <span class="lms-nav-label">
-                Appointments
-              </span>
+              <button type="button" class="lms-nav-label" aria-expanded="false">
+                <span>Appointments</span>
+              </button>
 
               <nav class="lms-nav">
 
-                <!-- SCHEDULE APPOINTMENT -->
-
-                <a
-                  href="lms-schedule-appointment.html"
-                  class="lms-nav-link"
-                  data-lms-page="lms-schedule-appointment.html"
-                >
+                <a href="lms-schedule-appointment.html" class="lms-nav-link" data-lms-page="lms-schedule-appointment.html">
                   <span class="lms-nav-icon">
-                    <svg viewBox="0 0 24 24" aria-hidden="true">
-                      <rect x="3" y="5" width="18" height="16" rx="2"></rect>
-                      <path d="M8 3v4"></path>
-                      <path d="M16 3v4"></path>
-                      <path d="M3 10h18"></path>
-                      <path d="M12 13v5"></path>
-                      <path d="M9.5 15.5h5"></path>
-                    </svg>
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"></rect><path d="M16 3v4M8 3v4M3 10h18M12 13v5M9.5 15.5h5"></path></svg>
                   </span>
-
-                  <span class="lms-nav-text">
-                    Schedule Appointment
-                  </span>
+                  <span class="lms-nav-text">Schedule Appointment</span>
                 </a>
 
-
-                <!-- MY APPOINTMENTS -->
-
-                <a
-                  href="lms-my-appointments.html"
-                  class="lms-nav-link"
-                  data-lms-page="lms-my-appointments.html"
-                >
+                <a href="lms-my-appointments.html" class="lms-nav-link" data-lms-page="lms-my-appointments.html">
                   <span class="lms-nav-icon">
-                    <svg viewBox="0 0 24 24" aria-hidden="true">
-                      <rect x="3" y="5" width="18" height="16" rx="2"></rect>
-                      <path d="M8 3v4"></path>
-                      <path d="M16 3v4"></path>
-                      <path d="M3 10h18"></path>
-                      <path d="m8 15 2 2 5-5"></path>
-                    </svg>
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"></rect><path d="M16 3v4M8 3v4M3 10h18M8 15l2.5 2.5L16 12"></path></svg>
                   </span>
-
-                  <span class="lms-nav-text">
-                    My Appointments
-                  </span>
+                  <span class="lms-nav-text">My Appointments</span>
                 </a>
 
               </nav>
@@ -311,9 +280,9 @@
 
             <div class="lms-nav-group">
 
-              <span class="lms-nav-label">
-                Account
-              </span>
+              <button type="button" class="lms-nav-label" aria-expanded="false">
+                <span>Account</span>
+              </button>
 
               <nav class="lms-nav">
 
@@ -413,6 +382,65 @@
   }
 
 
+
+
+  /* ============================================================
+     PAGE + DESKTOP ACCORDION
+     ============================================================ */
+
+  function currentPageName() {
+    let page = window.location.pathname.split("/").pop() || "lms-dashboard.html";
+    page = page.split("?")[0].split("#")[0];
+
+    if (page === "lms-customer-scheduling.html") {
+      page = "lms-schedule-appointment.html";
+    }
+
+    return page;
+  }
+
+  function initializeDesktopAccordion() {
+    const sidebar = document.getElementById("lms-sidebar");
+    if (!sidebar) return;
+
+    const groups = Array.from(sidebar.querySelectorAll(".lms-nav-group"));
+    if (!groups.length) return;
+
+    function setGroupState(group, open) {
+      group.classList.toggle("is-open", open);
+      const button = group.querySelector(".lms-nav-label");
+      if (button) button.setAttribute("aria-expanded", open ? "true" : "false");
+    }
+
+    function openOnly(target) {
+      groups.forEach(function (group) {
+        setGroupState(group, group === target);
+      });
+    }
+
+    groups.forEach(function (group) {
+      const button = group.querySelector(".lms-nav-label");
+      if (!button) return;
+
+      button.addEventListener("click", function () {
+        if (window.innerWidth <= 1100) return;
+        openOnly(group);
+      });
+    });
+
+    const activeLink = sidebar.querySelector(".lms-nav-link.active");
+    const activeGroup = activeLink ? activeLink.closest(".lms-nav-group") : null;
+    openOnly(activeGroup || groups[0]);
+
+    window.addEventListener("resize", function () {
+      if (window.innerWidth <= 1100) {
+        groups.forEach(function (group) { setGroupState(group, true); });
+      } else {
+        const currentOpen = groups.find(function (group) { return group.classList.contains("is-open"); });
+        openOnly(activeGroup || currentOpen || groups[0]);
+      }
+    });
+  }
 
 
   /* ============================================================
