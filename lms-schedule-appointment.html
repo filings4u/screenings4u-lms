@@ -24,7 +24,23 @@
 </div></section>
 <section id="listPanel" class="card appointments-panel" hidden><header class="list-head"><div><b class="eyebrow">MY APPOINTMENTS</b><h2>Upcoming &amp; Past Appointments</h2><p>Changes here update the same appointment shown to the administrator.</p></div><button id="newBook" class="btn primary" type="button">+ Schedule Appointment</button></header><div id="appointments"></div></section>
 <dialog id="resDialog" class="scheduler-dialog"><form method="dialog" class="dialog-shell" onsubmit="return false;"><button id="closeRes" class="x" type="button">×</button><b class="eyebrow">RESCHEDULE</b><h2>Choose a new time</h2><p id="resTitle"></p><div class="calendar-wrap"><div class="calendar-panel"><div class="cal-head"><button id="rprev" type="button">‹</button><strong id="rmonth"></strong><button id="rnext" type="button">›</button></div><div class="week"><b>Sun</b><b>Mon</b><b>Tue</b><b>Wed</b><b>Thu</b><b>Fri</b><b>Sat</b></div><div id="rcalendar" class="calendar"></div></div><aside class="times-panel"><h3 id="rdate">Choose a date</h3><div id="rtimes" class="times"></div></aside></div></form></dialog>
+
+<dialog id="cancelDialog" class="scheduler-dialog cancel-dialog">
+  <form id="cancelForm" class="dialog-shell">
+    <button id="closeCancel" class="x" type="button" aria-label="Close">×</button>
+    <b class="eyebrow danger-text">CANCEL APPOINTMENT</b>
+    <h2>Cancel this appointment?</h2>
+    <p id="cancelTitle"></p>
+    <label class="cancel-reason">Cancellation reason <span>(optional)</span>
+      <textarea id="cancelReason" rows="4" maxlength="1000" placeholder="Tell us why you need to cancel."></textarea>
+    </label>
+    <div class="dialog-actions">
+      <button id="keepAppointment" type="button" class="btn">Keep Appointment</button>
+      <button id="confirmCancel" type="submit" class="btn danger">Cancel Appointment</button>
+    </div>
+  </form>
+</dialog>
 </div>
 </div>
 </main></div><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="assets/js/supabase-config.js"></script><script src="assets/js/core-auth.js"></script><script src="assets/js/ui.js"></script><script src="assets/js/portal-auth-guard.js"></script><script src="assets/js/training-auth-guard.js"></script><script src="assets/js/lms-sidebar.js"></script><script src="assets/js/lms.js?v=20260830-2000"></script><script src="assets/js/customer-scheduling.js?v=20260906-2359"></script></body></html>
+<script src="assets/js/supabase-config.js"></script><script src="assets/js/core-auth.js"></script><script src="assets/js/ui.js"></script><script src="assets/js/portal-auth-guard.js"></script><script src="assets/js/training-auth-guard.js"></script><script src="assets/js/lms-sidebar.js"></script><script src="assets/js/lms.js?v=20260830-2000"></script><script src="assets/js/customer-scheduling.js?v=20260907-0100"></script></body></html>
