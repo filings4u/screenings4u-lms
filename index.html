@@ -3,112 +3,379 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#325aa3" />
+  <meta name="theme-color" content="#325aa3">
 
-  <meta name="robots" content="noindex">
-  <meta http-equiv="refresh" content="0; url=training-login.html">
-  <title>Opening Training Login | screenings4u</title>
+  <title>DOT Specimen Collector Training | screenings4u Learning Center</title>
+  <meta name="description" content="Self-paced DOT Specimen Collector Training with five online mock collections, downloadable resources, and a completion certificate pathway.">
   <link rel="icon" type="image/png" href="images/fav.png">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --orange: #ff6b00;
-      --blue: #325aa3;
-      --blue-deep: #17335f;
-      --blue-darker: #10284b;
-      --blue-pale: #f4f7fc;
-      --muted: #667892;
-      --white: #ffffff;
-    }
 
-    * { box-sizing: border-box; }
-
-    html, body { min-height: 100%; }
-
-    body {
-      margin: 0;
-      display: grid;
-      place-items: center;
-      padding: 24px;
-      font-family: "Inter", Arial, sans-serif;
-      color: var(--white);
-      background:
-        radial-gradient(circle at 18% 20%, rgba(50, 90, 163, 0.42), transparent 30%),
-        radial-gradient(circle at 82% 80%, rgba(255, 107, 0, 0.18), transparent 28%),
-        linear-gradient(135deg, var(--blue-darker), var(--blue-deep));
-    }
-
-    .redirect-card {
-      width: min(100%, 480px);
-      padding: 42px 34px;
-      border: 1px solid rgba(255, 255, 255, 0.16);
-      border-radius: 18px;
-      background: rgba(255, 255, 255, 0.08);
-      box-shadow: 0 22px 60px rgba(7, 26, 49, 0.28);
-      text-align: center;
-      backdrop-filter: blur(14px);
-    }
-
-    .brand {
-      display: inline-flex;
-      margin-bottom: 28px;
-      padding: 9px 14px;
-      border-radius: 10px;
-      background: var(--white);
-    }
-
-    .brand img {
-      display: block;
-      width: 145px;
-      max-height: 42px;
-      object-fit: contain;
-    }
-
-    .loader {
-      width: 38px;
-      height: 38px;
-      margin: 0 auto 20px;
-      border: 4px solid rgba(255, 255, 255, 0.22);
-      border-top-color: var(--orange);
-      border-radius: 50%;
-      animation: spin 0.8s linear infinite;
-    }
-
-    h1 {
-      margin: 0 0 10px;
-      font-size: 24px;
-      letter-spacing: -0.035em;
-    }
-
-    p {
-      margin: 0;
-      color: #d7e3f1;
-      font-size: 13px;
-      line-height: 1.7;
-    }
-
-    a { color: #ffb47d; font-weight: 800; }
-
-    @keyframes spin { to { transform: rotate(360deg); } }
-
-    @media (prefers-reduced-motion: reduce) {
-      .loader { animation: none; }
-    }
-  </style>
-  <script>
-    window.location.replace("training-login.html");
-  </script>
+  <link rel="stylesheet" href="assets/css/lms.css">
+  <link rel="stylesheet" href="assets/css/training-landing.css">
 </head>
-<body>
-  <main class="redirect-card">
-    <a class="brand" href="https://screenings4u.com" aria-label="screenings4u home">
-      <img src="images/logo.png" alt="screenings4u">
-    </a>
-    <div class="loader" aria-hidden="true"></div>
-    <h1>Opening the Training Center</h1>
-    <p>If you are not redirected automatically, <a href="training-login.html">continue to the training login</a>.</p>
+
+<body class="training-sales-page">
+
+  <header class="training-site-header">
+    <div class="training-shell training-header-inner">
+      <a class="training-brand" href="index.html" aria-label="screenings4u Learning Center home">
+        <img src="images/logo.png" alt="screenings4u">
+        <span>Learning Center</span>
+      </a>
+
+      <nav class="training-header-nav" aria-label="Training website">
+        <a href="#curriculum">Curriculum</a>
+        <a href="#included">What's Included</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#faq">FAQ</a>
+      </nav>
+
+      <div class="training-header-actions">
+        <a class="training-login-link" href="training-login.html">Student Login</a>
+        <a class="training-button training-button-primary" href="#pricing">Enroll Now</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+
+    <section class="training-hero">
+      <div class="training-shell training-hero-grid">
+
+        <div class="training-hero-copy">
+          <div class="training-kicker">DOT SPECIMEN COLLECTOR TRAINING</div>
+
+          <h1>Build the knowledge and skills to perform DOT specimen collections.</h1>
+
+          <p class="training-hero-lead">
+            Learn the fundamentals of DOT urine drug test collections with self-paced training covering
+            49 CFR Part 40, collector responsibilities, collection procedures, chain of custody, site
+            security, mock collections, and supporting reference materials.
+          </p>
+
+          <div class="training-hero-actions">
+            <a class="training-button training-button-primary training-button-large" href="#pricing">
+              View Training Options
+            </a>
+            <a class="training-button training-button-secondary training-button-large" href="training-login.html">
+              Already Enrolled? Sign In
+            </a>
+          </div>
+
+          <div class="training-hero-trust">
+            <span>Self-paced</span>
+            <span>60-day access</span>
+            <span>5 online mock collections</span>
+            <span>Completion certificate pathway</span>
+          </div>
+        </div>
+
+        <aside class="training-hero-card">
+          <div class="training-card-label">START WITH THE CORE PROGRAM</div>
+          <div class="training-price">$320</div>
+          <h2>DOT Specimen Collector Training</h2>
+
+          <ul>
+            <li>3 hours of structured collector training</li>
+            <li>5 DOT online video mock collections</li>
+            <li>49 CFR Part 40-focused curriculum</li>
+            <li>Training materials, guides, and forms</li>
+            <li>Certificate after five error-free mock collections</li>
+          </ul>
+
+          <a class="training-button training-button-primary training-button-block"
+             href="https://screenings4u.com/checkout.html?service=dot_specimen_collector_training">
+            Enroll for $320
+          </a>
+
+          <p class="training-card-note">
+            One learner · 60-day access
+          </p>
+        </aside>
+
+      </div>
+    </section>
+
+    <section class="training-stat-strip">
+      <div class="training-shell training-stat-grid">
+        <div>
+          <strong>49 CFR Part 40</strong>
+          <span>Training focused on DOT collection requirements</span>
+        </div>
+        <div>
+          <strong>Self-Paced</strong>
+          <span>Complete the training on your schedule</span>
+        </div>
+        <div>
+          <strong>5 Mock Collections</strong>
+          <span>Online video mock collection exercises</span>
+        </div>
+        <div>
+          <strong>Certificate</strong>
+          <span>After five error-free mock collections</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="training-section">
+      <div class="training-shell training-two-column">
+        <div>
+          <div class="training-eyebrow">DOT COLLECTOR TRAINING</div>
+          <h2>Training built around the collection process.</h2>
+          <p>
+            Work through the curriculum, review the documentation and procedures used in DOT urine
+            specimen collections, and complete the included mock collections in a structured learning path.
+          </p>
+
+          <div class="training-check-grid">
+            <span>DOT collector requirements</span>
+            <span>Collection site security</span>
+            <span>Custody &amp; Control Form completion</span>
+            <span>Urine specimen collection procedures</span>
+            <span>Monitored collections</span>
+            <span>Direct observation collections</span>
+          </div>
+        </div>
+
+        <div class="training-feature-stack">
+          <article class="training-feature-card">
+            <strong>3 Hours</strong>
+            <span>DOT Specimen Collector Training</span>
+          </article>
+          <article class="training-feature-card">
+            <strong>5 Mocks</strong>
+            <span>Online video mock collections totaling about 2 hours</span>
+          </article>
+          <article class="training-feature-card">
+            <strong>Downloads</strong>
+            <span>Training materials, guides, and forms</span>
+          </article>
+          <article class="training-feature-card">
+            <strong>Certificate</strong>
+            <span>After five error-free mock collections</span>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="training-section training-section-soft" id="curriculum">
+      <div class="training-shell">
+        <div class="training-section-heading">
+          <div class="training-eyebrow">COURSE CURRICULUM</div>
+          <h2>A structured curriculum covering the fundamentals of DOT specimen collection.</h2>
+          <p>
+            The training follows the major areas involved in DOT urine specimen collection procedures,
+            collector responsibilities, documentation, and unusual collection situations.
+          </p>
+        </div>
+
+        <div class="training-curriculum-grid">
+          <article><span>01</span><h3>Introduction &amp; Background</h3><p>DOT regulations, regulated agencies, safety-sensitive positions, testing reasons, panels, methods, and laboratories.</p></article>
+          <article><span>02</span><h3>The Collector</h3><p>Who may become a collector, training requirements, responsibilities, employer obligations, and collector restrictions.</p></article>
+          <article><span>03</span><h3>Collection Site &amp; Supplies</h3><p>Collection-site requirements, donor privacy, security, required supplies, and collection-kit contents.</p></article>
+          <article><span>04</span><h3>Custody &amp; Control Form</h3><p>DOT forms, required information, completion steps, signatures, and proper distribution.</p></article>
+          <article><span>05</span><h3>The Collection Process</h3><p>Collection steps, donor instructions, specimen inspection, splitting, sealing, and shipment preparation.</p></article>
+          <article><span>06</span><h3>Monitored &amp; Direct Observation</h3><p>When monitored or observed collections are required and how those collections must be performed and documented.</p></article>
+          <article><span>07</span><h3>Shy Bladder</h3><p>Required shy-bladder procedures, donor instructions, timing, documentation, and next steps.</p></article>
+          <article><span>08</span><h3>Problem Specimens</h3><p>Temperature-out-of-range, adulterated, substituted, and other problematic specimen situations.</p></article>
+          <article><span>09</span><h3>Unusual Collections &amp; Mishaps</h3><p>Refusals, missing signatures, catheter situations, fatal and correctable flaws, seals, and related issues.</p></article>
+          <article><span>10</span><h3>Non-Regulated Testing</h3><p>Key differences between DOT and non-DOT collections, including performing both for the same donor.</p></article>
+          <article><span>11</span><h3>Starter Guide</h3><p>Access a DOT Specimen Collector Starter Guide and supporting reference materials.</p></article>
+          <article><span>12</span><h3>Policy Guides</h3><p>Reference materials include sample DOT and NON-DOT Drug &amp; Alcohol Policy guides.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="training-section" id="included">
+      <div class="training-shell">
+        <div class="training-section-heading">
+          <div class="training-eyebrow">WHAT'S INCLUDED</div>
+          <h2>More than a training video.</h2>
+          <p>
+            The package combines structured instruction, mock collections, downloadable reference materials,
+            and a certificate pathway.
+          </p>
+        </div>
+
+        <div class="training-included-grid">
+          <article class="training-included-card">
+            <div class="training-included-icon">01</div>
+            <h3>Training &amp; Practice</h3>
+            <ul>
+              <li>3 hours of DOT Specimen Collector Training</li>
+              <li>5 DOT online video mock collections</li>
+              <li>Approximately 2 hours of mock collection content</li>
+              <li>Self-paced learning modules</li>
+              <li>49 CFR Part 40-focused curriculum</li>
+            </ul>
+          </article>
+
+          <article class="training-included-card">
+            <div class="training-included-icon">02</div>
+            <h3>Resources &amp; Certification</h3>
+            <ul>
+              <li>Downloadable training materials and forms</li>
+              <li>DOT Specimen Collector Starter Guide</li>
+              <li>Sample DOT Drug &amp; Alcohol Policy</li>
+              <li>Sample NON-DOT Drug &amp; Alcohol Policy</li>
+              <li>Completion certificate after 5 error-free mock collections</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="training-section training-process">
+      <div class="training-shell">
+        <div class="training-section-heading training-section-heading-light">
+          <div class="training-eyebrow">HOW TRAINING WORKS</div>
+          <h2>Learn the process. Practice the process. Complete the training.</h2>
+        </div>
+
+        <div class="training-process-grid">
+          <article><span>01</span><h3>Complete the Training Modules</h3><p>Work through DOT regulations, collector requirements, site security, documentation, and collection procedures.</p></article>
+          <article><span>02</span><h3>Review Collection Procedures</h3><p>Build familiarity with donor instructions, specimen handling, CCF completion, and unusual collections.</p></article>
+          <article><span>03</span><h3>Complete Five Mock Collections</h3><p>Complete the five online video mock collections included with your training package.</p></article>
+          <article><span>04</span><h3>Earn Your Completion Certificate</h3><p>Receive your completion certificate after completing five error-free mock collections.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="training-section training-section-soft" id="pricing">
+      <div class="training-shell">
+        <div class="training-section-heading">
+          <div class="training-eyebrow">TRAINING OPTIONS &amp; PRICING</div>
+          <h2>Choose the training path that fits your goals.</h2>
+          <p>Each option includes single-person enrollment and 60-day access.</p>
+        </div>
+
+        <div class="training-pricing-grid">
+          <article class="training-price-card training-price-card-featured">
+            <div class="training-popular">CORE PROGRAM</div>
+            <div class="training-price">$320</div>
+            <h3>DOT Specimen Collector Training</h3>
+            <p>Self-paced DOT collector training, mock collections, documentation, procedures, and certificate pathway.</p>
+            <a class="training-button training-button-primary training-button-block"
+               href="https://screenings4u.com/checkout.html?service=dot_specimen_collector_training">
+              Enroll Now
+            </a>
+          </article>
+
+          <article class="training-price-card">
+            <div class="training-price">$360</div>
+            <h3>DOT Specimen Collector Training + Hair</h3>
+            <p>Includes the core DOT Specimen Collector Training package plus Hair Drug Test Training and a Hair Drug Test Certificate.</p>
+            <a class="training-button training-button-secondary training-button-block"
+               href="https://screenings4u.com/checkout.html?service=dot_specimen_collector_training_hair">
+              Enroll Now
+            </a>
+          </article>
+
+          <article class="training-price-card">
+            <div class="training-price">$550</div>
+            <h3>DOT Specimen Collector Train the Trainer</h3>
+            <p>Includes collector training plus instructor materials, the ability to train others, and an Instructor Certificate.</p>
+            <a class="training-button training-button-secondary training-button-block"
+               href="https://screenings4u.com/checkout.html?service=dot_specimen_collector_train_the_trainer">
+              Enroll Now
+            </a>
+          </article>
+
+          <article class="training-price-card">
+            <div class="training-price">$600</div>
+            <h3>Train the Trainer + Hair</h3>
+            <p>Includes the Train the Trainer package plus Hair Drug Test Training and a Hair Drug Test Certificate.</p>
+            <a class="training-button training-button-secondary training-button-block"
+               href="https://screenings4u.com/checkout.html?service=dot_collector_train_the_trainer_hair">
+              Enroll Now
+            </a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="training-section" id="faq">
+      <div class="training-shell training-faq-layout">
+        <div class="training-faq-heading">
+          <div class="training-eyebrow">TRAINING FAQ</div>
+          <h2>Questions about DOT Specimen Collector Training?</h2>
+          <p>Review the core training options and included features before enrolling.</p>
+        </div>
+
+        <div class="training-faq-list">
+          <details>
+            <summary>What comes with the DOT Specimen Collector Training?</summary>
+            <p>
+              One-person enrollment, 60-day access, self-paced learning modules, 49 CFR Part 40-focused
+              training, DOT mock collections, collection-site security, collector requirements, DOT
+              regulated agencies, specimen collection procedures, CCF completion, and a certificate pathway.
+            </p>
+          </details>
+
+          <details>
+            <summary>What comes with the Training + Hair option?</summary>
+            <p>
+              The Hair option includes the DOT Specimen Collector Training package plus Hair Drug Test Training
+              and a Hair Drug Test Certificate.
+            </p>
+          </details>
+
+          <details>
+            <summary>What is included in Train the Trainer?</summary>
+            <p>
+              The Train the Trainer option includes the collector training curriculum plus instructor materials,
+              the ability to train others, and an Instructor Certificate.
+            </p>
+          </details>
+
+          <details>
+            <summary>How do I receive the completion certificate?</summary>
+            <p>
+              The completion certificate is available after completing five error-free mock collections.
+            </p>
+          </details>
+
+          <details>
+            <summary>I already purchased training. Where do I sign in?</summary>
+            <p>
+              Use the Student Login button at the top of this page to access the screenings4u Learning Center.
+            </p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <section class="training-final-cta">
+      <div class="training-shell training-final-cta-inner">
+        <div>
+          <div class="training-eyebrow">READY TO BEGIN?</div>
+          <h2>Start your DOT Specimen Collector Training.</h2>
+          <p>Choose your training option, complete enrollment, and access your courses through the screenings4u Learning Center.</p>
+        </div>
+        <div class="training-final-actions">
+          <a class="training-button training-button-light training-button-large" href="#pricing">View Training Options</a>
+          <a class="training-button training-button-ghost training-button-large" href="training-login.html">Student Login</a>
+        </div>
+      </div>
+    </section>
+
   </main>
+
+  <footer class="training-footer">
+    <div class="training-shell training-footer-inner">
+      <div class="training-footer-brand">
+        <img src="images/logo2.png" alt="screenings4u">
+        <span>Learning Center</span>
+      </div>
+
+      <div class="training-footer-links">
+        <a href="https://screenings4u.com">Main Website</a>
+        <a href="training-login.html">Student Login</a>
+        <a href="#pricing">Training Options</a>
+      </div>
+
+      <p>© screenings4u. All rights reserved.</p>
+    </div>
+  </footer>
+
 </body>
 </html>
