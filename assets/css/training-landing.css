@@ -1086,16 +1086,6 @@ body.training-sales-page .training-hero h1 {
     gap:35px;
   }
 
-  #siteFooter .footer-bottom{
-    grid-template-columns:1fr;
-    justify-items:center;
-    text-align:center;
-    gap:11px;
-  }
-
-  #siteFooter .footer-admin-login{
-    justify-self:center;
-  }
 }
 
 @media(max-width:800px){
@@ -1246,3 +1236,130 @@ body.training-sales-page .training-hero h1 {
     transition-duration:.01ms!important;
   }
 }
+
+/* ============================================================
+   MOBILE — VERY BOTTOM FOOTER ONLY
+   Leaves footer CTA, brand area, and 4 navigation columns alone.
+   ============================================================ */
+
+@media (max-width:800px){
+
+  #siteFooter .footer-bottom{
+    display:flex;
+    flex-direction:column;
+    align-items:flex-start;
+    justify-content:flex-start;
+    gap:9px;
+    text-align:left;
+  }
+
+  /* Line 1 — copyright */
+  #siteFooter .footer-copyright{
+    display:block;
+    width:100%;
+  }
+
+  /* Line 2 — subsidiary */
+  #siteFooter .footer-subsidiary{
+    display:block;
+    width:100%;
+    margin-top:4px;
+  }
+
+  /* Line 3 — legal links */
+  #siteFooter .footer-legal-links{
+    display:flex;
+    width:100%;
+    justify-content:flex-start;
+    gap:6px 14px;
+    margin-top:3px;
+  }
+
+  /* Line 4 — admin login */
+  #siteFooter .footer-admin-login{
+    display:block;
+    width:100%;
+    justify-self:auto;
+    margin-top:3px;
+  }
+}
+
+/* ============================================================
+   MOBILE FINAL ORDER
+   1) $320 enrollment card first
+   2) Hero copy/text below it
+   3) Very bottom footer = exactly 4 centered rows
+   ============================================================ */
+
+@media (max-width:800px){
+
+  /* HERO: card first, copy second */
+  .training-hero-grid{
+    display:flex;
+    flex-direction:column;
+    align-items:stretch;
+    gap:36px;
+  }
+
+  .training-hero-card{
+    order:1;
+    width:100%;
+    max-width:none;
+  }
+
+  .training-hero-copy{
+    order:2;
+    width:100%;
+  }
+
+  /* VERY BOTTOM FOOTER ONLY — exactly 4 rows */
+  #siteFooter .footer-bottom{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:9px;
+    justify-items:center;
+    text-align:center;
+  }
+
+  /* Let copyright and subsidiary become their own rows */
+  #siteFooter .footer-bottom-copy{
+    display:contents;
+  }
+
+  #siteFooter .footer-copyright{
+    grid-row:1;
+    display:block;
+    width:100%;
+    text-align:center;
+  }
+
+  #siteFooter .footer-subsidiary{
+    grid-row:2;
+    display:block;
+    width:100%;
+    margin:0;
+    text-align:center;
+  }
+
+  #siteFooter .footer-legal-links{
+    grid-row:3;
+    display:flex;
+    width:100%;
+    justify-content:center;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:6px 14px;
+    margin:0;
+    text-align:center;
+  }
+
+  #siteFooter .footer-admin-login{
+    grid-row:4;
+    display:block;
+    width:100%;
+    justify-self:center;
+    margin:0;
+    text-align:center;
+  }
+}
+

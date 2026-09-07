@@ -143,9 +143,7 @@ function initS4UFooter() {
           <a href="${MAIN}/disclaimer.html">Disclaimer</a>
         </nav>
 
-        <a href="${PORTAL}/admin-login.html" class="footer-admin-login">
-          Admin Login
-        </a>
+     
       </div>
     `;
 
