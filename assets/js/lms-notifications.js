@@ -217,12 +217,6 @@
     }
 
     setLoading(false);
-
-    if (window.LMS?.refreshNotificationBell) {
-      window.LMS.refreshNotificationBell().catch(function (error) {
-        console.warn("[LMS Notifications] Bell refresh failed:", error);
-      });
-    }
   }
 
   function updateCounts() {
