@@ -53,6 +53,8 @@
   function closePopup() {
     const popup = document.getElementById('s4u-global-popup');
     if (!popup) return;
+    const active = document.activeElement;
+    if (active && popup.contains(active) && typeof active.blur === 'function') active.blur();
     popup.classList.remove('is-open');
     popup.setAttribute('aria-hidden', 'true');
     if (state.resolve) { const resolve = state.resolve; state.resolve = null; resolve(); }
@@ -84,6 +86,7 @@
     popup.querySelector('[data-s4u-popup-ok]').textContent=options.confirmText||'Continue';
     const cancel=popup.querySelector('[data-s4u-popup-cancel]'); cancel.hidden=false; cancel.textContent=options.cancelText||'Cancel';
     popup.classList.add('is-open'); popup.setAttribute('aria-hidden','false');
+    setTimeout(() => popup.querySelector('[data-s4u-popup-ok]')?.focus(), 0);
     return new Promise(resolve=>{state.confirmResolve=resolve;});
   }
 
