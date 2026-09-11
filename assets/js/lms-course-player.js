@@ -15,7 +15,8 @@
     media: "lms_media",
     quizzes: "lms_quizzes",
     assessments: "lms_assessments",
-    lessonProgress: "lms_lesson_progress"
+    lessonProgress: "lms_lesson_progress",
+    blockProgress: "lms_block_progress"
   });
 
   var state = {
@@ -26,6 +27,7 @@
     sections: [],
     lessons: [],
     progress: new Map(),
+    blockProgress: new Map(),
     blocksByLesson: new Map(),
     mediaById: new Map(),
     quizzesByLesson: new Map(),
@@ -513,6 +515,22 @@
             }
           )
       );
+
+    var blockResult =
+      await state.db
+        .from(TABLES.blockProgress)
+        .select("*")
+        .eq("enrollment_id", state.enrollment.id);
+
+    if (blockResult.error) {
+      throw blockResult.error;
+    }
+
+    state.blockProgress = new Map(
+      (blockResult.data || []).map(function (row) {
+        return [row.block_id, row];
+      })
+    );
   }
 
 
@@ -1136,6 +1154,8 @@
 
     host.innerHTML =
       rendered.join("");
+
+    bindBlockProgressTracking(host, lesson, blocks);
   }
 
 
@@ -1452,7 +1472,7 @@
       looksEmbeddableVideoUrl(source)
     ) {
       return `
-        <section class="course-player-block">
+        <section class="course-player-block" data-lms-block-id="${escapeAttribute(block.id)}" data-lms-block-type="video">
           ${title}
           <div class="course-player-video-frame">
             <iframe
@@ -1472,7 +1492,7 @@
       looksDirectVideoFile(source)
     ) {
       return `
-        <section class="course-player-block">
+        <section class="course-player-block" data-lms-block-id="${escapeAttribute(block.id)}" data-lms-block-type="video">
           ${title}
           <video
             class="course-player-video-element"
@@ -1487,7 +1507,7 @@
     }
 
     return `
-      <section class="course-player-block course-player-resource-card">
+      <section class="course-player-block course-player-resource-card" data-lms-block-id="${escapeAttribute(block.id)}" data-lms-block-type="video">
         ${title}
         <p>Open the video resource in a new tab.</p>
         <a
@@ -1592,7 +1612,7 @@
       "Download Resource";
 
     return `
-      <section class="course-player-block course-player-resource-card">
+      <section class="course-player-block course-player-resource-card" data-lms-block-id="${escapeAttribute(block.id)}" data-lms-block-type="file">
         ${title}
         ${
           block.content
@@ -2140,103 +2160,87 @@
 
 
   async function updateEnrollmentProgress() {
-    var requiredLessons =
-      state.lessons.filter(
-        function (lesson) {
-          return (
-            lesson.is_required !==
-            false
-          );
-        }
-      );
+    var rpcResult = await state.db.rpc(
+      "lms_refresh_enrollment_progress",
+      { p_enrollment_id: state.enrollment.id }
+    );
 
-    var targetLessons =
-      requiredLessons.length
-        ? requiredLessons
-        : state.lessons;
-
-    var completedCount =
-      targetLessons.filter(
-        function (lesson) {
-          return isLessonComplete(
-            lesson.id
-          );
-        }
-      ).length;
-
-    var progressPercent =
-      targetLessons.length
-        ? Math.round(
-            (
-              completedCount /
-              targetLessons.length
-            ) *
-            100
-          )
-        : 0;
-
-    var now =
-      new Date().toISOString();
-
-    var enrollmentUpdate = {
-      progress_percent:
-        progressPercent,
-
-      last_activity_at:
-        now
-    };
-
-    if (
-      !state.enrollment.started_at
-    ) {
-      enrollmentUpdate.started_at =
-        now;
+    if (rpcResult.error) {
+      throw rpcResult.error;
     }
 
-    if (
-      progressPercent >= 100
-    ) {
-      enrollmentUpdate.status =
-        "completed";
-
-      enrollmentUpdate.completed_at =
-        state.enrollment.completed_at ||
-        now;
-    }
-
-    var enrollmentResult =
-      await state.db
-        .from(TABLES.enrollments)
-        .update(
-          enrollmentUpdate
-        )
-        .eq(
-          "id",
-          state.enrollment.id
-        )
-        .eq(
-          "user_id",
-          state.user.id
-        )
-        .select("*")
-        .maybeSingle();
+    var enrollmentResult = await state.db
+      .from(TABLES.enrollments)
+      .select("*")
+      .eq("id", state.enrollment.id)
+      .eq("user_id", state.user.id)
+      .maybeSingle();
 
     if (enrollmentResult.error) {
       throw enrollmentResult.error;
     }
 
-    if (!enrollmentResult.data) {
-      throw new Error(
-        "Enrollment progress could not be updated. The enrollment may be blocked by the current Supabase policy or no longer exists."
-      );
+    if (enrollmentResult.data) {
+      state.enrollment = enrollmentResult.data;
     }
 
-    state.enrollment =
-      enrollmentResult.data;
-
     updateProgressSummary();
+    return Number(rpcResult.data || state.enrollment.progress_percent || 0);
   }
 
+
+  async function saveBlockProgressRecord(blockId, percent) {
+    var existing = state.blockProgress.get(blockId);
+    var now = new Date().toISOString();
+    var completed = Number(percent || 0) >= 100;
+    var payload = {
+      enrollment_id: state.enrollment.id,
+      block_id: blockId,
+      progress_percent: completed ? 100 : Math.max(0, Math.min(100, Number(percent || 0))),
+      last_position_seconds: Number(existing?.last_position_seconds || 0),
+      completed_at: completed ? (existing?.completed_at || now) : (existing?.completed_at || null),
+      updated_at: now
+    };
+
+    var result;
+    if (existing?.id) {
+      result = await state.db.from(TABLES.blockProgress).update(payload)
+        .eq("id", existing.id).eq("enrollment_id", state.enrollment.id)
+        .select("*").maybeSingle();
+    } else {
+      result = await state.db.from(TABLES.blockProgress).insert(payload)
+        .select("*").maybeSingle();
+    }
+    if (result.error) throw result.error;
+    if (result.data) state.blockProgress.set(blockId, result.data);
+    return result.data;
+  }
+
+
+  function bindBlockProgressTracking(host, lesson, blocks) {
+    var byId = new Map(blocks.map(function (b) { return [b.id, b]; }));
+    host.querySelectorAll("[data-lms-block-id]").forEach(function (node) {
+      var blockId = node.getAttribute("data-lms-block-id");
+      var block = byId.get(blockId);
+      if (!block) return;
+
+      var finish = async function () {
+        try {
+          await saveBlockProgressRecord(blockId, 100);
+        } catch (error) {
+          console.error("[LMS Course Player] block progress", error);
+        }
+      };
+
+      node.querySelectorAll("a.course-player-runtime-button").forEach(function (link) {
+        link.addEventListener("click", finish, { once: true });
+      });
+
+      node.querySelectorAll("video,audio").forEach(function (media) {
+        media.addEventListener("ended", finish, { once: true });
+      });
+    });
+  }
 
   /* ============================================================
      PLAYER API FOR QUIZ RUNTIME
