@@ -22,13 +22,21 @@
 
   function initializeLms() {
     initializeNavigation();
+    initializeNotificationBellNavigation();
     initializeUserMenu();
     initializeSearchShortcut();
     initializeSignOut();
 
     initializeAuthenticatedLearner()
-      .then(function () {
+      .then(async function () {
         initializeActiveNavigation();
+
+        try {
+          await refreshNotificationBell();
+        } catch (notificationError) {
+          console.warn("[LMS] Notification bell could not be refreshed:", notificationError);
+        }
+
         readyResolve({
           client: authState.client,
           user: authState.user,
@@ -188,6 +196,88 @@
     }
   }
 
+  function initializeNotificationBellNavigation() {
+    document
+      .querySelectorAll('.lms-icon-button[aria-label="Notifications"]')
+      .forEach(function (bell) {
+        if (bell.tagName === "A") {
+          if (!bell.getAttribute("href")) {
+            bell.setAttribute("href", "lms-notifications.html");
+          }
+          bell.setAttribute("title", "Notifications");
+          return;
+        }
+
+        if (!bell.dataset.lmsNotificationBound) {
+          bell.dataset.lmsNotificationBound = "1";
+          bell.setAttribute("title", "Notifications");
+          bell.addEventListener("click", function () {
+            window.location.href = "lms-notifications.html";
+          });
+        }
+      });
+  }
+
+  async function refreshNotificationBell() {
+    if (!authState.client || !authState.user?.id) return;
+
+    var notificationsResult = await authState.client
+      .from("notifications")
+      .select("id")
+      .eq("recipient_user_id", authState.user.id)
+      .order("created_at", { ascending: false })
+      .limit(100);
+
+    if (notificationsResult.error) {
+      throw notificationsResult.error;
+    }
+
+    var notificationIds = (notificationsResult.data || [])
+      .map(function (row) { return row.id; })
+      .filter(Boolean);
+
+    var readIds = new Set();
+
+    if (notificationIds.length) {
+      var readsResult = await authState.client
+        .from("customer_notification_reads")
+        .select("notification_id")
+        .eq("user_id", authState.user.id)
+        .in("notification_id", notificationIds);
+
+      if (readsResult.error) {
+        throw readsResult.error;
+      }
+
+      (readsResult.data || []).forEach(function (row) {
+        if (row.notification_id) readIds.add(row.notification_id);
+      });
+    }
+
+    var unreadCount = notificationIds.filter(function (id) {
+      return !readIds.has(id);
+    }).length;
+
+    document.querySelectorAll(".lms-notification-dot").forEach(function (dot) {
+      dot.style.display = unreadCount > 0 ? "" : "none";
+      dot.setAttribute("aria-hidden", "true");
+    });
+
+    document
+      .querySelectorAll('.lms-icon-button[aria-label="Notifications"]')
+      .forEach(function (bell) {
+        var label = unreadCount > 0
+          ? "Notifications, " + unreadCount + " unread"
+          : "Notifications";
+        bell.setAttribute("aria-label", label);
+        bell.setAttribute("title", label);
+      });
+
+    window.dispatchEvent(new CustomEvent("lms:notifications-updated", {
+      detail: { unreadCount: unreadCount }
+    }));
+  }
+
   function initializeUserMenu() {
     var userButton = document.querySelector("[data-lms-user-button]");
     var userMenu = document.querySelector("[data-lms-user-menu]");
@@ -316,6 +406,7 @@
   window.LMS.getInitials = getInitials;
   window.LMS.closeNavigation = closeMobileNavigation;
   window.LMS.getSupabaseClient = getSupabaseClient;
+  window.LMS.refreshNotificationBell = refreshNotificationBell;
   window.LMS.getCurrentUser = function () {
     return authState.user;
   };
