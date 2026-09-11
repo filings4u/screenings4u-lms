@@ -1,5 +1,7 @@
 /* SCREENINGS4U LMS — SECURE QUIZ / ASSESSMENT */
 (function(){"use strict";
+window.__LMS_QUIZ_BUILD__="20260911-4";
+console.info("[LMS Quiz] build 20260911-4");
 let db,user,mode="quiz",attemptId,attemptNumber=0,meta={},questions=[],index=0;
 const answers=new Map(),params=new URLSearchParams(location.search);
 const enrollmentId=params.get("enrollment"),quizId=params.get("quiz"),assessmentId=params.get("assessment"),courseId=params.get("course"),lessonId=params.get("lesson");
