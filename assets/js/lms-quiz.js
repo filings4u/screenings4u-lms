@@ -1,8 +1,8 @@
 /* SCREENINGS4U LMS — SECURE QUIZ / ASSESSMENT */
 (function(){"use strict";
-window.__LMS_QUIZ_BUILD__="20260911-7";
-console.info("[LMS Quiz] build 20260911-7");
-let db,user,mode="quiz",attemptId,attemptNumber=0,meta={},questions=[],index=0,submittedReview=null;
+window.__LMS_QUIZ_BUILD__="20260911-8";
+console.info("[LMS Quiz] build 20260911-8");
+let db,user,mode="quiz",attemptId,attemptNumber=0,meta={},questions=[],index=0,submittedReview=null,lastCompletedReview=null;
 const answers=new Map(),params=new URLSearchParams(location.search);
 const enrollmentId=params.get("enrollment"),quizId=params.get("quiz"),assessmentId=params.get("assessment"),courseId=params.get("course"),lessonId=params.get("lesson");
 document.addEventListener("DOMContentLoaded",()=>init().catch(fail));
@@ -12,7 +12,28 @@ async function init(){
  if(!enrollmentId)throw new Error("Missing LMS enrollment.");
  mode=assessmentId||params.get("type")==="final-assessment"?"assessment":"quiz";
  let link=document.getElementById("coursePlayerLink");if(link)link.href=playerUrl();
+
+ if(mode==="quiz" && quizId){
+  const prior=await db.rpc("lms_get_latest_completed_quiz_review",{p_quiz_id:quizId,p_enrollment_id:enrollmentId});
+  if(prior.error)throw prior.error;
+  if(prior.data && prior.data.attempt_id){
+   lastCompletedReview=prior.data;
+   meta=prior.data.quiz||{};
+   attemptNumber=Number(prior.data.attempt_number||0);
+   showCompletedSummary(prior.data);
+   return;
+  }
+ }
+
+ await startNewAttempt();
+}
+async function startNewAttempt(){
  let r;
+ submittedReview=null;
+ lastCompletedReview=null;
+ answers.clear();
+ index=0;
+
  if(mode==="assessment"){
   if(!assessmentId)throw new Error("Missing assessment ID.");
   r=await db.rpc("lms_start_assessment_attempt",{p_assessment_id:assessmentId,p_enrollment_id:enrollmentId});
@@ -94,7 +115,8 @@ function result(r){
    <div><strong>${esc(attemptNumber)}</strong><span>Attempt</span></div>
  </div>`:"";
  let review=reviewQuestions.length?`<section class="quiz-review"><div class="quiz-review-head"><div><span class="quiz-review-eyebrow">ANSWER REVIEW</span><h3>Review Your Answers</h3></div><span class="quiz-review-count">${correctCount} of ${totalCount} correct</span></div>${reviewQuestions.map((item,i)=>reviewCard(item,i)).join("")}</section>`:"";
- p.innerHTML=`<div class="result-panel quiz-result-complete"><div class="result-icon ${passed?"is-success":"is-retry"}">${passed?check():retry()}</div><div class="quiz-result-status ${passed?"passed":"not-passed"}">${passed?"PASSED":"REVIEW REQUIRED"}</div><h2>${passed?"Quiz Successfully Completed":"Attempt Completed"}</h2><div class="result-score">${score.toFixed(score%1?2:0)}%</div><p>${passed?`You passed this quiz. Your score and LMS progress have been saved successfully.`:`The required score is ${required}%. Your attempt and score have been saved. Review the answers below before trying again.`}</p>${summary}${review}<div class="quiz-actions quiz-result-actions"><a class="quiz-btn quiz-btn-secondary" href="${playerUrl()}">Return to Course</a>${passed&&mode==="assessment"?'<a class="quiz-btn quiz-btn-primary" href="lms-certificates.html">My Certificates</a>':`<a class="quiz-btn quiz-btn-primary" href="${playerUrl()}">${passed?"Continue Learning":"Review Course"}</a>`}</div></div>`;
+ p.innerHTML=`<div class="result-panel quiz-result-complete"><div class="result-icon ${passed?"is-success":"is-retry"}">${passed?check():retry()}</div><div class="quiz-result-status ${passed?"passed":"not-passed"}">${passed?"PASSED":"REVIEW REQUIRED"}</div><h2>${passed?"Quiz Successfully Completed":"Attempt Completed"}</h2><div class="result-score">${score.toFixed(score%1?2:0)}%</div><p>${passed?`You passed this quiz. Your score and LMS progress have been saved successfully.`:`The required score is ${required}%. Your attempt and score have been saved. Review the answers below before trying again.`}</p>${summary}${review}<div class="quiz-actions quiz-result-actions"><button type="button" class="quiz-btn quiz-btn-primary" id="takeQuizAgainBtn">Take Quiz Again</button><a class="quiz-btn quiz-btn-secondary" href="${playerUrl()}">Go Back to Course</a></div></div>`;
+ document.getElementById("takeQuizAgainBtn")?.addEventListener("click",async()=>{let b=document.getElementById("takeQuizAgainBtn");if(b){b.disabled=true;b.textContent="Starting Quiz...";}try{await startNewAttempt();}catch(e){if(b){b.disabled=false;b.textContent="Take Quiz Again";}fail(e);}});
  window.scrollTo({top:0,behavior:"smooth"});
 }
 function reviewCard(item,i){
@@ -113,6 +135,52 @@ function ensureReviewStyles(){
  .quiz-review-answer{margin:8px 0 0 40px;padding:10px 12px;border-radius:9px;background:#f7f9fc}.quiz-review-answer span{display:block;color:#7b8798;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.04em}.quiz-review-answer strong{display:block;margin-top:4px;color:#243b5a;font-size:13px;line-height:1.45}.quiz-review-answer.correct-answer{background:#ecfdf5}.quiz-review-explanation{margin:10px 0 0 40px;color:#53647a;font-size:13px;line-height:1.5}.quiz-review-explanation p{margin:4px 0 0}.quiz-result-actions{justify-content:center;margin-top:28px;border-top:1px solid #e4e9f0;padding-top:24px}
  @media(max-width:700px){.quiz-result-summary{grid-template-columns:repeat(2,1fr)}.quiz-review-head{align-items:flex-start;flex-direction:column}.quiz-review-answer,.quiz-review-explanation{margin-left:0}.quiz-review-card{padding:14px}.quiz-review-question{grid-template-columns:28px 1fr}}
  `;document.head.appendChild(s);
+}
+
+function showCompletedSummary(review){
+ let p=document.getElementById("questionPanel");
+ let score=Number(review.score||0),passed=review.passed===true,required=Number(review.passing_score||review.quiz?.passing_score||80);
+ let rows=Array.isArray(review.questions)?review.questions:[];
+ let correctCount=rows.filter(x=>x.is_correct===true).length;
+ let totalCount=rows.length||Number(review.question_count||0);
+ text("quizTitle",review.quiz?.title||"Knowledge Check");
+ text("quizDescription",passed?"You have already completed this quiz. Review your result below or take it again.":"You have completed this quiz before. Review your result below or take another attempt.");
+ text("sideTitle",review.quiz?.title||"Knowledge Check");
+ text("sideDescription","Your most recent completed attempt is shown below.");
+ text("questionCount",totalCount||"—");
+ text("passingScore",`${required}%`);
+ text("attempts",`Last completed attempt ${review.attempt_number||"—"}`);
+ text("progressLabel","Last completed attempt");
+ text("progressPercent",`${score.toFixed(score%1?2:0)}%`);
+ document.getElementById("quizFill").style.width=Math.min(100,Math.max(0,score))+"%";
+ document.getElementById("questionList").innerHTML="";
+ ensureReviewStyles();
+ let summary=`<div class="quiz-result-summary">
+   <div><strong>${esc(score.toFixed(score%1?2:0))}%</strong><span>Score</span></div>
+   <div><strong>${correctCount}/${totalCount||"—"}</strong><span>Correct</span></div>
+   <div><strong>${esc(required)}%</strong><span>Required</span></div>
+   <div><strong>${esc(review.attempt_number||"—")}</strong><span>Attempt</span></div>
+ </div>`;
+ let reviewHtml=rows.length?`<section class="quiz-review"><div class="quiz-review-head"><div><span class="quiz-review-eyebrow">ANSWER REVIEW</span><h3>Previous Attempt Review</h3></div><span class="quiz-review-count">${correctCount} of ${totalCount} correct</span></div>${rows.map((item,i)=>reviewCard(item,i)).join("")}</section>`:"";
+ p.innerHTML=`<div class="result-panel quiz-result-complete">
+   <div class="result-icon ${passed?"is-success":"is-retry"}">${passed?check():retry()}</div>
+   <div class="quiz-result-status ${passed?"passed":"not-passed"}">${passed?"PASSED":"COMPLETED"}</div>
+   <h2>${passed?"Quiz Already Completed":"Previous Quiz Attempt"}</h2>
+   <div class="result-score">${score.toFixed(score%1?2:0)}%</div>
+   <p>${passed?"You already passed this quiz. Your completed result is saved. You may review it below or take the quiz again.":"Your previous completed attempt is saved. You may review it below or take the quiz again."}</p>
+   ${summary}
+   ${reviewHtml}
+   <div class="quiz-actions quiz-result-actions">
+     <button type="button" class="quiz-btn quiz-btn-primary" id="takeQuizAgainBtn">Take Quiz Again</button>
+     <a class="quiz-btn quiz-btn-secondary" href="${playerUrl()}">Go Back to Course</a>
+   </div>
+ </div>`;
+ document.getElementById("takeQuizAgainBtn")?.addEventListener("click",async()=>{
+  const b=document.getElementById("takeQuizAgainBtn");
+  if(b){b.disabled=true;b.textContent="Starting Quiz...";}
+  try{await startNewAttempt();}
+  catch(e){if(b){b.disabled=false;b.textContent="Take Quiz Again";}fail(e);}
+ });
 }
 function playerUrl(){let p=new URLSearchParams();if(courseId)p.set("course",courseId);if(enrollmentId)p.set("enrollment",enrollmentId);if(lessonId)p.set("lesson",lessonId);return "lms-course-player.html"+(p.toString()?"?"+p:"")}
 function fail(e){console.error("[LMS Quiz]",e);let p=document.getElementById("questionPanel");if(p)p.innerHTML=`<div class="result-panel"><h2>Knowledge Check Unavailable</h2><p>${esc(e?.message||"Unable to load this knowledge check.")}</p><div class="quiz-actions" style="justify-content:center;margin-top:28px;border-top:0"><a class="quiz-btn quiz-btn-secondary" href="${playerUrl()}">Return to Course</a></div></div>`}
