@@ -2,7 +2,7 @@
   'use strict';
 
   const BRAND = '#10b981';
-  const state = { resolve: null, lastMessage: '', lastAt: 0 };
+  const state = { resolve: null, confirmResolve: null, lastMessage: '', lastAt: 0 };
 
   function ensurePopup() {
     if (document.getElementById('s4u-global-popup')) return;
@@ -18,7 +18,7 @@
       .s4u-popup__title{margin:0 0 9px;color:#0f172a;font-size:22px;line-height:1.25;font-weight:800}
       .s4u-popup__message{margin:0;color:#475569;font-size:15px;line-height:1.65;white-space:pre-line;overflow-wrap:anywhere}
       .s4u-popup__actions{display:flex;justify-content:center;gap:10px;margin-top:23px}
-      .s4u-popup__button{min-width:120px;min-height:44px;border:0;border-radius:12px;padding:11px 18px;background:${BRAND};color:#fff;font:inherit;font-weight:800;cursor:pointer}
+      .s4u-popup__button{min-width:120px;min-height:44px;border:0;border-radius:12px;padding:11px 18px;background:${BRAND};color:#fff;font:inherit;font-weight:800;cursor:pointer}.s4u-popup__button--secondary{background:#e2e8f0;color:#0f172a}
       .s4u-popup__button:hover{background:#059669}
       .s4u-popup__button:focus-visible{outline:3px solid rgba(16,185,129,.3);outline-offset:3px}
       @keyframes s4uPopupIn{from{opacity:0;transform:translateY(8px) scale(.98)}to{opacity:1;transform:none}}
@@ -36,12 +36,18 @@
         <div class="s4u-popup__mark" aria-hidden="true">S4</div>
         <h2 class="s4u-popup__title" id="s4u-popup-title">Screenings4u</h2>
         <p class="s4u-popup__message" id="s4u-popup-message"></p>
-        <div class="s4u-popup__actions"><button class="s4u-popup__button" type="button" data-s4u-popup-ok>OK</button></div>
+        <div class="s4u-popup__actions"><button class="s4u-popup__button s4u-popup__button--secondary" type="button" data-s4u-popup-cancel hidden>Cancel</button><button class="s4u-popup__button" type="button" data-s4u-popup-ok>OK</button></div>
       </section>`;
     document.body.appendChild(popup);
-    popup.querySelector('[data-s4u-popup-ok]').addEventListener('click', closePopup);
+    popup.querySelector('[data-s4u-popup-ok]').addEventListener('click', () => finishPopup(true));
+    popup.querySelector('[data-s4u-popup-cancel]').addEventListener('click', () => finishPopup(false));
     popup.querySelector('[data-s4u-popup-close]').addEventListener('click', closePopup);
     document.addEventListener('keydown', e => { if (e.key === 'Escape' && popup.classList.contains('is-open')) closePopup(); });
+  }
+
+  function finishPopup(value) {
+    if (state.confirmResolve) { const resolve = state.confirmResolve; state.confirmResolve = null; resolve(value); }
+    closePopup();
   }
 
   function closePopup() {
@@ -62,13 +68,26 @@
     const popup = document.getElementById('s4u-global-popup');
     popup.querySelector('#s4u-popup-title').textContent = options.title || 'Screenings4u';
     popup.querySelector('#s4u-popup-message').textContent = text;
+    popup.querySelector('[data-s4u-popup-ok]').textContent = options.confirmText || 'OK';
+    const cancel = popup.querySelector('[data-s4u-popup-cancel]'); cancel.hidden = true;
     popup.classList.add('is-open');
     popup.setAttribute('aria-hidden', 'false');
     setTimeout(() => popup.querySelector('[data-s4u-popup-ok]')?.focus(), 0);
     return new Promise(resolve => { state.resolve = resolve; });
   }
 
-  window.S4UPopup = { show: showPopup, close: closePopup, success: (m,t='Success') => showPopup(m,{title:t}), error: (m,t='Something went wrong') => showPopup(m,{title:t}), info: (m,t='Screenings4u') => showPopup(m,{title:t}) };
+  function confirmPopup(message, options={}) {
+    ensurePopup();
+    const popup=document.getElementById('s4u-global-popup');
+    popup.querySelector('#s4u-popup-title').textContent=options.title||'Please Confirm';
+    popup.querySelector('#s4u-popup-message').textContent=String(message??'');
+    popup.querySelector('[data-s4u-popup-ok]').textContent=options.confirmText||'Continue';
+    const cancel=popup.querySelector('[data-s4u-popup-cancel]'); cancel.hidden=false; cancel.textContent=options.cancelText||'Cancel';
+    popup.classList.add('is-open'); popup.setAttribute('aria-hidden','false');
+    return new Promise(resolve=>{state.confirmResolve=resolve;});
+  }
+
+  window.S4UPopup = { show: showPopup, confirm: confirmPopup, close: closePopup, success: (m,t='Success') => showPopup(m,{title:t}), error: (m,t='Something went wrong') => showPopup(m,{title:t}), info: (m,t='Screenings4u') => showPopup(m,{title:t}) };
   window.alert = message => { showPopup(message); };
 
   function watchInlineAlerts() {
