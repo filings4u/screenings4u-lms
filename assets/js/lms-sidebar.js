@@ -271,6 +271,13 @@
                   <span class="lms-nav-text">My Appointments</span>
                 </a>
 
+                <a href="lms-live-training.html" class="lms-nav-link" data-lms-page="lms-live-training.html">
+                  <span class="lms-nav-icon">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"></rect><path d="m10 9 5 3-5 3V9z"></path></svg>
+                  </span>
+                  <span class="lms-nav-text">Live Training</span>
+                </a>
+
               </nav>
 
             </div>

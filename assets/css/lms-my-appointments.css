@@ -752,3 +752,5 @@
     padding:15px;
   }
 }
+
+.appt-actions a.btn{display:inline-flex;align-items:center;justify-content:center;text-decoration:none;}
