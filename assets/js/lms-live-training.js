@@ -13,13 +13,9 @@ async function init(){
   try{
     let appointmentId=new URLSearchParams(location.search).get("appointment");
     if(!appointmentId){
-      const booking=await invokeBooking({action:"my_appointments"});
-      const now=Date.now();
-      const eligible=(booking.appointments||[])
-        .filter(a=>a.meeting_provider==="microsoft_teams" && a.meeting_url && !["cancelled","completed","no_show"].includes(String(a.status||"").toLowerCase()) && new Date(a.end_at).getTime()+3600000>now)
-        .sort((a,b)=>new Date(a.start_at)-new Date(b.start_at));
-      if(!eligible.length){showEmpty();return;}
-      appointmentId=eligible[0].id;
+      const upcoming=await invoke({action:"upcoming"});
+      if(!upcoming.appointment){showEmpty();return;}
+      appointmentId=upcoming.appointment.id;
       history.replaceState(null,"",`lms-live-training.html?appointment=${encodeURIComponent(appointmentId)}`);
     }
     const data=await invoke({action:"details",appointment_id:appointmentId});

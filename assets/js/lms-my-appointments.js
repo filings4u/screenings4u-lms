@@ -60,12 +60,12 @@
       const active=!['cancelled','completed','no_show'].includes(status) && end.getTime()+3600000>now;
       const opens=start.getTime()-30*60000;
       const joinWindow=active && now>=opens && now<=end.getTime()+3600000;
-      const teams=a.meeting_provider==='microsoft_teams' && !!a.meeting_url;
       const date=start.toLocaleDateString([],{weekday:'short',month:'short',day:'numeric',year:'numeric'});
       const time=start.toLocaleTimeString([],{hour:'numeric',minute:'2-digit'});
       const endTime=end.toLocaleTimeString([],{hour:'numeric',minute:'2-digit'});
       const badge=status==='cancelled'?'Cancelled':active?'Scheduled':status.replace(/_/g,' ');
       const joinLabel=joinWindow?'Enter Live Training':'View Live Training';
+      const openingNote=active&&!joinWindow?'<span class="appointment-opening-note">Live Training opens 30 minutes before start</span>':'';
       return `<article class="appointment-item ${active?'is-active':'is-past'}">
         <div class="appointment-date"><strong>${esc(start.toLocaleDateString([],{day:'2-digit'}))}</strong><span>${esc(start.toLocaleDateString([],{month:'short'}).toUpperCase())}</span></div>
         <div class="appointment-main">
@@ -74,7 +74,7 @@
           <div class="appointment-host">Instructor: ${esc(a.host_name||'Screenings4u Training')}</div>
         </div>
         <div class="appointment-actions">
-          ${active&&teams?`<a class="appointment-join" href="lms-live-training.html?appointment=${encodeURIComponent(a.id)}">${joinLabel}</a>`:''}
+          ${active?`<a class="appointment-join" href="lms-live-training.html?appointment=${encodeURIComponent(a.id)}">${joinLabel}</a>${openingNote}`:''}
         </div>
       </article>`;
     }).join('');
