@@ -82,7 +82,7 @@
               aria-label="Screenings4u Learning Center"
             >
               <img
-                src="images/logo.png"
+                src="images/logo2.png"
                 alt="screenings4u"
                 class="lms-brand-logo"
               />
