@@ -1369,3 +1369,34 @@ body.training-sales-page .training-hero h1 {
   }
 }
 
+
+/* ============================================================
+   PUBLIC TRAINING HEADER CONSISTENCY
+   ============================================================ */
+.training-site-header,
+.training-site-header *,
+.training-site-header a,
+.training-site-header button {
+  font-family: Inter, Arial, sans-serif !important;
+}
+.training-site-header .training-header-nav a,
+.training-site-header .training-login-link,
+.training-site-header .training-button {
+  font-size: 13px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0 !important;
+}
+.training-site-header .training-button-primary {
+  min-height: 50px !important;
+  padding: 0 22px !important;
+  color: #fff !important;
+  background: #ff6b00 !important;
+  border: 1px solid #ff6b00 !important;
+  border-radius: 8px !important;
+  box-shadow: 0 9px 25px rgba(255,107,0,.20) !important;
+}
+.training-site-header .training-button-primary:hover {
+  color: #fff !important;
+  background: #e66000 !important;
+  border-color: #e66000 !important;
+}

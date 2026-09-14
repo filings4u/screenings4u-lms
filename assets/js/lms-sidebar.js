@@ -134,6 +134,23 @@
                 </a>
 
 
+                <!-- WELCOME & POLICIES -->
+
+                <a
+                  href="lms-welcome.html"
+                  class="lms-nav-link"
+                  data-lms-page="lms-welcome.html"
+                >
+                  <span class="lms-nav-icon">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                      <rect x="4" y="4" width="16" height="16" rx="2"></rect>
+                      <path d="M8 9h8M8 13h8M8 17h5"></path>
+                    </svg>
+                  </span>
+                  <span class="lms-nav-text">Welcome &amp; Policies</span>
+                </a>
+
+
                 <!-- MY LEARNING -->
 
                 <a
@@ -310,6 +327,24 @@
                 </a>
 
 
+                <!-- DOCUMENTS -->
+
+                <a
+                  href="lms-documents.html"
+                  class="lms-nav-link"
+                  data-lms-page="lms-documents.html"
+                >
+                  <span class="lms-nav-icon">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M6 3h8l4 4v14H6z"></path>
+                      <path d="M14 3v5h5"></path>
+                      <path d="M9 13h6M9 17h6"></path>
+                    </svg>
+                  </span>
+                  <span class="lms-nav-text">Documents</span>
+                </a>
+
+
                 <!-- MY ACCOUNT -->
 
                 <a
@@ -448,7 +483,10 @@
 
       button.addEventListener("click", function () {
         if (window.innerWidth <= 1100) return;
-        openOnly(group);
+        const willOpen = !group.classList.contains("is-open");
+        groups.forEach(function (item) {
+          setGroupState(item, willOpen && item === group);
+        });
       });
     });
 

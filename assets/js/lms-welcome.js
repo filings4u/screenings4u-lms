@@ -1,0 +1,11 @@
+(()=>{
+  const $=x=>document.getElementById(x);let db,session;
+  async function call(body){const r=await fetch(window.SCREENINGS4U_SUPABASE_URL+'/functions/v1/lms-learner-documents',{method:'POST',headers:{'Content-Type':'application/json','apikey':window.SCREENINGS4U_SUPABASE_ANON_KEY,'Authorization':'Bearer '+session.access_token},body:JSON.stringify(body)}),d=await r.json();if(!r.ok)throw Error(d.error||'Request failed');return d}
+  function returnDestination(){const q=new URLSearchParams(location.search).get('returnTo');if(!q)return'lms-dashboard.html';try{const u=new URL(q,location.origin);return u.origin===location.origin?u.pathname+u.search+u.hash:'lms-dashboard.html'}catch{return'lms-dashboard.html'}}
+  document.addEventListener('DOMContentLoaded',async()=>{
+    db=await window.getScreenings4uSupabase();session=(await db.auth.getSession()).data.session;if(!session)return;
+    try{const d=await call({action:'status'}),p=d.profile||{};$('firstName').value=p.first_name||'';$('lastName').value=p.last_name||'';$('email').value=p.email||session.user.email||'';$('phone').value=p.phone||'';if(d.consent){['terms','refund','disclaimer','mock'].forEach(x=>$(x).checked=true);const s=$('consentStatus');s.hidden=false;s.textContent='Onboarding completed '+new Date(d.consent.accepted_at).toLocaleString()+'. Your acknowledgment is available in Documents.';$('acceptBtn').textContent='Onboarding Completed';$('acceptBtn').disabled=true}}
+    catch(e){console.error(e)}
+    $('acceptBtn').onclick=async()=>{try{$('acceptBtn').disabled=true;$('acceptBtn').textContent='Submitting…';const d=await call({action:'consent',firstName:$('firstName').value,lastName:$('lastName').value,email:$('email').value,phone:$('phone').value,acceptedTerms:$('terms').checked,acceptedRefund:$('refund').checked,acceptedDisclaimer:$('disclaimer').checked,acceptedMock:$('mock').checked});const s=$('consentStatus');s.hidden=false;s.textContent='Onboarding completed '+new Date(d.consent.accepted_at).toLocaleString()+'. Your acknowledgment is now available in Documents.';$('acceptBtn').textContent='Onboarding Completed';setTimeout(()=>location.replace(returnDestination()),650)}catch(e){alert(e.message);$('acceptBtn').disabled=false;$('acceptBtn').textContent='Submit Onboarding'}}
+  })
+})();

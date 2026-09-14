@@ -96,15 +96,3 @@
 }
 
 
-/* Header brand lockup — logo | Learning Center */
-.training-brand span {
-  margin-left: 14px;
-  padding-left: 14px;
-  border-left: 1px solid #c8d2df;
-  color: var(--brand-blue-deep);
-  font-size: 14px;
-  font-weight: 700;
-  letter-spacing: 0;
-  text-transform: none;
-  line-height: 32px;
-}
