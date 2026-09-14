@@ -7,6 +7,8 @@ function initS4UFooter() {
   const MAIN = "https://screenings4u.com";
   const PORTAL = "https://portal.screenings4u.com";
   const TRAINING = "https://training.screenings4u.com";
+  const WORKFORCE = "https://workforce.screenings4u.com";
+  const DOT = "https://dot.screenings4u.com";
 
   const hasPageCTA = !!document.querySelector(
     "main .cta, main [class*='final-cta'], main [class*='closing-cta']"
@@ -104,7 +106,14 @@ function initS4UFooter() {
             <a href="${TRAINING}/lms-support.html">Training Support</a>
             <a href="mailto:support@screenings4u.com">Email Support</a>
             <a href="${MAIN}/contact.html">Contact screenings4u</a>
-            <a href="${MAIN}/">Main Website</a>
+          </div>
+
+          <div class="footer-col footer-family-col">
+            <h4>screenings4u Family</h4>
+            <a href="${MAIN}/">screenings4u.com</a>
+            <a href="${WORKFORCE}/">workforce.screenings4u.com</a>
+            <a href="${TRAINING}/">training.screenings4u.com</a>
+            <a href="${DOT}/">dot.screenings4u.com</a>
           </div>
         </nav>
       </div>

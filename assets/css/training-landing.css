@@ -91,6 +91,12 @@ button{
    TRAINING HEADER
    ============================================================ */
 
+.training-site-header,
+.training-site-header a,
+.training-site-header button {
+  font-family:Inter,Arial,sans-serif;
+}
+
 .training-site-header{
   position:sticky;
   top:0;
