@@ -2224,3 +2224,34 @@ body.lms-nav-collapsed .lms-brand-copy {
     display: flex !important;
   }
 }
+
+
+/* Learning Center brand lockup — logo | Learning Center */
+.lms-brand {
+  min-height: 92px;
+  flex-direction: row;
+  justify-content: flex-start;
+  gap: 0;
+  padding: 18px 20px;
+  text-align: left;
+}
+.lms-brand-logo {
+  width: 145px;
+  max-width: 145px;
+  max-height: 48px;
+  flex: 0 0 auto;
+}
+.lms-brand-copy {
+  margin-left: 14px;
+  padding-left: 14px;
+  border-left: 1px solid rgba(255,255,255,.30);
+  text-align: left;
+}
+.lms-brand-subtitle {
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.2;
+  backdrop-filter: none;
+  box-shadow: none;
+}
