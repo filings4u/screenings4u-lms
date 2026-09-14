@@ -7,7 +7,7 @@
     host.innerHTML=`
       <div class="training-shell training-header-inner">
         <a class="training-brand" href="index.html" aria-label="screenings4u Learning Center home">
-          <img src="images/logo.png" alt="screenings4u">
+          <img src="https://rgsrubdtljyxmnihwlah.supabase.co/storage/v1/object/public/branding/logo.png" alt="screenings4u">
           <span>Learning Center</span>
         </a>
         <nav class="training-header-nav" aria-label="Learning Center navigation">

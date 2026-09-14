@@ -60,5 +60,5 @@ async function start(){
  location.href="lms-quiz.html?type=final-assessment&assessment="+encodeURIComponent(s.assessment.id)+"&attempt="+encodeURIComponent(r.data.id)+"&course="+encodeURIComponent(s.course.id)+"&enrollment="+encodeURIComponent(s.enrollment.id);
 }
 function text(q,v){document.querySelectorAll(q).forEach(x=>x.textContent=v==null?"":String(v));}
-function fail(e){console.error("[LMS Assessment]",e);var b=document.querySelector("[data-begin-assessment]");if(b){b.disabled=true;b.textContent="Assessment Unavailable";}alert(e.message||"Unable to load assessment.");}
+function fail(e){console.error("[LMS Assessment]",e);var b=document.querySelector("[data-begin-assessment]");if(b){b.disabled=true;b.textContent="Assessment Unavailable";}window.S4UUI?.modal({title:"Assessment Unavailable",message:e.message||"Unable to load assessment.",type:"error",confirmText:"Close"});}
 })();

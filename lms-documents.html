@@ -8,6 +8,7 @@
 <link rel="icon" href="images/fav.png">
 <link rel="stylesheet" href="assets/css/lms.css">
 <link rel="stylesheet" href="assets/css/lms-refinement.css">
+<link rel="stylesheet" href="assets/css/lms-ui-modals.css">
 <link rel="stylesheet" href="assets/css/lms-onboarding.css">
 </head>
 <body>
@@ -17,13 +18,13 @@
 <header class="lms-topbar"><div class="lms-topbar-left"><button type="button" class="lms-menu-button" data-lms-menu-toggle aria-label="Toggle navigation"><svg viewBox="0 0 24 24"><path d="M4 7h16"></path><path d="M4 12h16"></path><path d="M4 17h16"></path></svg></button></div></header>
 <div class="onboard-wrap">
 <div class="onboard-page-head"><div><div class="onboard-eyebrow">Learning Center</div><h1>Documents</h1><p>Download your Learning Center acknowledgments and documents, or submit completed DOT mock-training documentation for review.</p></div></div>
-<section class="upload-panel"><h2>Upload DOT Mock Training Documents</h2><p>After completing your five required DOT mock collection sessions, upload the supporting documentation here. An administrator is notified when you submit a file.</p><select id="enrollment" class="docs-select"><option value="">Loading your courses…</option></select><div class="docs-dropzone" id="mockDropzone" tabindex="0" role="button" aria-controls="mockFile">
+<div class="docs-workspace"><section class="upload-panel"><h2>Upload DOT Mock Training Documents</h2><p>After completing your five required DOT mock collection sessions, upload the supporting documentation here. An administrator is notified when you submit a file.</p><select id="enrollment" class="docs-select"><option value="">Loading your courses…</option></select><div class="docs-dropzone" id="mockDropzone" tabindex="0" role="button" aria-controls="mockFile">
   <div class="docs-dropzone-icon">↑</div>
   <div><strong>Choose files or drag them here</strong><span>PDF, Word, JPG, PNG, or WebP · up to 25 MB each</span></div>
 </div>
 <input id="mockFile" class="docs-file docs-file-hidden" type="file" multiple accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.webp">
 <div id="selectedFiles" class="docs-selected-files" aria-live="polite"></div><button id="uploadBtn" class="orange-btn" type="button">Upload Document(s) for Review</button><div id="uploadStatus" class="notice" hidden></div></section>
-<section class="upload-panel"><h2>Your Documents</h2><table class="docs-table"><thead><tr><th>Document</th><th>Type</th><th>Status</th><th>Date</th><th>Action</th></tr></thead><tbody id="docsBody"><tr><td colspan="5">Loading documents…</td></tr></tbody></table></section>
+<section class="upload-panel"><h2>Your Documents</h2><table class="docs-table"><thead><tr><th>Document</th><th>Type</th><th>Status</th><th>Date</th><th>Action</th></tr></thead><tbody id="docsBody"><tr><td colspan="5">Loading documents…</td></tr></tbody></table></section></div>
 </div>
 </main>
 </div>
@@ -33,6 +34,7 @@
 <script src="assets/js/core-auth.js"></script>
 <script src="assets/js/portal-auth-guard.js"></script>
 <script src="assets/js/training-auth-guard.js"></script>
+<script src="assets/js/ui.js"></script>
 <script src="assets/js/lms-sidebar.js"></script>
 <script src="assets/js/lms-documents.js"></script>
 </body>

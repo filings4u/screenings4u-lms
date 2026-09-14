@@ -7,6 +7,7 @@
   "use strict";
 
   let activeModal = null;
+  let activeResolve = null;
 
   function ensureRoot() {
     let root = document.getElementById("s4uModalRoot");
@@ -21,12 +22,16 @@
     return root;
   }
 
-  function close() {
+  function close(result = false) {
     if (!activeModal) return;
-
     activeModal.remove();
     activeModal = null;
     document.body.classList.remove("s4u-modal-open");
+    if (activeResolve) {
+      const resolve = activeResolve;
+      activeResolve = null;
+      resolve(result);
+    }
   }
 
   function modal({
@@ -50,14 +55,19 @@
     wrapper.innerHTML = `
       <div class="s4u-modal-backdrop" data-modal-close></div>
       <section class="s4u-modal-panel">
-        <div class="s4u-modal-icon" aria-hidden="true"></div>
-        <div class="s4u-modal-content">
-          <h2>${escapeHtml(title)}</h2>
-          <p>${escapeHtml(message)}</p>
+        <div class="s4u-modal-brand">
+          <img class="s4u-modal-brand-logo" src="https://rgsrubdtljyxmnihwlah.supabase.co/storage/v1/object/public/branding/logo.png" alt="screenings4u">
         </div>
-        <div class="s4u-modal-actions">
-          ${showCancel ? `<button class="s4u-modal-button secondary" type="button" data-modal-cancel>${escapeHtml(cancelText)}</button>` : ""}
-          <button class="s4u-modal-button primary" type="button" data-modal-confirm>${escapeHtml(confirmText)}</button>
+        <div class="s4u-modal-body">
+          <div class="s4u-modal-icon" aria-hidden="true"></div>
+          <div class="s4u-modal-content">
+            <h2>${escapeHtml(title)}</h2>
+            <p>${escapeHtml(message)}</p>
+          </div>
+          <div class="s4u-modal-actions">
+            ${showCancel ? `<button class="s4u-modal-button secondary" type="button" data-modal-cancel>${escapeHtml(cancelText)}</button>` : ""}
+            <button class="s4u-modal-button primary" type="button" data-modal-confirm>${escapeHtml(confirmText)}</button>
+          </div>
         </div>
       </section>
     `;
@@ -68,11 +78,11 @@
 
     wrapper
       .querySelector("[data-modal-close]")
-      ?.addEventListener("click", close);
+      ?.addEventListener("click", () => close(false));
 
     wrapper
       .querySelector("[data-modal-cancel]")
-      ?.addEventListener("click", close);
+      ?.addEventListener("click", () => close(false));
 
     wrapper
       .querySelector("[data-modal-confirm]")
@@ -87,7 +97,7 @@
             await onConfirm();
           }
 
-          close();
+          close(true);
         } catch (error) {
           button.disabled = false;
 
@@ -99,9 +109,9 @@
         }
       });
 
-    return {
-      close
-    };
+    const promise = new Promise(resolve => { activeResolve = resolve; });
+    promise.close = () => close(false);
+    return promise;
   }
 
   function toast(
@@ -197,10 +207,14 @@
     wrapper.innerHTML = `
       <div class="s4u-modal-backdrop" data-modal-close></div>
       <section class="s4u-modal-panel s4u-form-modal-panel">
-        <div class="s4u-modal-content">
-          <h2>${escapeHtml(title)}</h2>
-          ${message ? `<p>${escapeHtml(message)}</p>` : ""}
-          <form class="s4u-form-modal-form">
+        <div class="s4u-modal-brand">
+          <img class="s4u-modal-brand-logo" src="https://rgsrubdtljyxmnihwlah.supabase.co/storage/v1/object/public/branding/logo.png" alt="screenings4u">
+        </div>
+        <div class="s4u-modal-body">
+          <div class="s4u-modal-content">
+            <h2>${escapeHtml(title)}</h2>
+            ${message ? `<p>${escapeHtml(message)}</p>` : ""}
+            <form class="s4u-form-modal-form">
             ${fields.map((field) => `
               <label class="s4u-form-modal-field">
                 <span>${escapeHtml(field.label || field.name)}</span>
@@ -216,6 +230,7 @@
               <button class="s4u-modal-button primary" type="submit">${escapeHtml(confirmText)}</button>
             </div>
           </form>
+          </div>
         </div>
       </section>
     `;

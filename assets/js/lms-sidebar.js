@@ -82,7 +82,7 @@
               aria-label="Screenings4u Learning Center"
             >
               <img
-                src="images/logo2.png"
+                src="https://rgsrubdtljyxmnihwlah.supabase.co/storage/v1/object/public/branding/logo.png"
                 alt="screenings4u"
                 class="lms-brand-logo"
               />
@@ -920,9 +920,32 @@
         "lms-mobile-dropdown-backdrop"
       );
 
-    if (!button || !dropdown) {
+    if (!button) {
       return;
     }
+
+    // Desktop show/hide must work even if the mobile dropdown is unavailable.
+    if (window.innerWidth > DESKTOP_BREAKPOINT) {
+      let collapsed = false;
+      try { collapsed = localStorage.getItem("s4u-lms-sidebar-collapsed") === "1"; } catch (_) {}
+      document.body.classList.toggle("lms-nav-collapsed", collapsed);
+      button.setAttribute("aria-expanded", collapsed ? "false" : "true");
+      button.setAttribute("aria-label", collapsed ? "Show navigation" : "Hide navigation");
+
+      button.addEventListener("click", function (event) {
+        if (window.innerWidth <= DESKTOP_BREAKPOINT) return;
+        event.preventDefault();
+        event.stopPropagation();
+        const next = document.body.classList.toggle("lms-nav-collapsed");
+        button.setAttribute("aria-expanded", next ? "false" : "true");
+        button.setAttribute("aria-label", next ? "Show navigation" : "Hide navigation");
+        try { localStorage.setItem("s4u-lms-sidebar-collapsed", next ? "1" : "0"); } catch (_) {}
+      });
+
+      if (!dropdown) return;
+    }
+
+    if (!dropdown) return;
 
     button.setAttribute(
       "aria-controls",
@@ -983,29 +1006,16 @@
     button.addEventListener(
       "click",
       function (event) {
-        if (
-          window.innerWidth >
-          DESKTOP_BREAKPOINT
-        ) {
-          return;
-        }
-
         event.preventDefault();
         event.stopPropagation();
 
-        const isOpen =
-          button.getAttribute(
-            "aria-expanded"
-          ) === "true";
+        if (window.innerWidth > DESKTOP_BREAKPOINT) return;
 
-        if (isOpen) {
-          closeMenu();
-        } else {
-          openMenu();
-        }
+        const isOpen = button.getAttribute("aria-expanded") === "true";
+        if (isOpen) closeMenu();
+        else openMenu();
       }
     );
-
 
     dropdown.addEventListener(
       "click",

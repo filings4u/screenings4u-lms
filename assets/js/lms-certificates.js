@@ -62,17 +62,17 @@ function show(id,scroll){
 }
 function certificate(c){
  var name=state.profile.display_name||[state.profile.first_name,state.profile.last_name].filter(Boolean).join(" ")||state.user.email||"Learner";
- return `<div class="real-certificate"><div class="real-certificate-content"><img src="images/logo2.png" alt="Screenings4u" class="real-certificate-logo"><div class="real-certificate-kicker">Screenings4u Learning Center</div><div class="real-certificate-title">Certificate of Completion</div><div class="real-certificate-presented">This certificate is proudly presented to</div><div class="real-certificate-name">${esc(name)}</div><div class="real-certificate-rule"></div><div class="real-certificate-text">For successfully completing the required training and assessment requirements for</div><div class="real-certificate-course">${esc(c.course.title||"Training Course")}</div><div class="real-certificate-footer"><div class="certificate-signature"><div class="certificate-signature-line"></div><span>Authorized Representative</span></div><div class="certificate-seal">Verified<br>Completion</div><div class="certificate-signature certificate-date"><div class="certificate-signature-line"></div><span>${esc(date(c.issued_at))}</span></div></div></div></div>`;
+ return `<div class="real-certificate"><div class="real-certificate-content"><img src="https://rgsrubdtljyxmnihwlah.supabase.co/storage/v1/object/public/branding/logo.png" alt="Screenings4u" class="real-certificate-logo"><div class="real-certificate-kicker">Screenings4u Learning Center</div><div class="real-certificate-title">Certificate of Completion</div><div class="real-certificate-presented">This certificate is proudly presented to</div><div class="real-certificate-name">${esc(name)}</div><div class="real-certificate-rule"></div><div class="real-certificate-text">For successfully completing the required training and assessment requirements for</div><div class="real-certificate-course">${esc(c.course.title||"Training Course")}</div><div class="real-certificate-footer"><div class="certificate-signature"><div class="certificate-signature-line"></div><span>Authorized Representative</span></div><div class="certificate-seal">Verified<br>Completion</div><div class="certificate-signature certificate-date"><div class="certificate-signature-line"></div><span>${esc(date(c.issued_at))}</span></div></div></div></div>`;
 }
 function printCert(id){show(id,false);setTimeout(()=>window.print(),50);}
 async function download(id){
  var c=state.certs.find(x=>x.id===id);if(!c||!c.media)return;
- var m=c.media,bucket=m.storage_bucket,path=m.storage_path;if(!bucket||!path)return alert("Certificate file is not available.");
+ var m=c.media,bucket=m.storage_bucket,path=m.storage_path;if(!bucket||!path)return window.S4UUI?.modal({title:"Certificate Unavailable",message:"Certificate file is not available.",type:"error",confirmText:"Close"});
  var r=await state.db.storage.from(bucket).createSignedUrl(path,300);if(r.error)throw r.error;
  window.open(r.data.signedUrl,"_blank","noopener");
 }
 function date(v){if(!v)return "—";var d=new Date(v);return isNaN(d)?String(v):d.toLocaleDateString(undefined,{year:"numeric",month:"long",day:"numeric"});}
 function esc(v){return String(v??"").replace(/[&<>'"]/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;","'":"&#39;",'"':"&quot;"}[m]));}
 function text(q,v){document.querySelectorAll(q).forEach(x=>x.textContent=String(v??""));}
-function fail(e){console.error("[LMS Certificates]",e);var empty=document.getElementById("emptyCertificates");if(empty)empty.classList.add("active");alert(e.message||"Unable to load certificates.");}
+function fail(e){console.error("[LMS Certificates]",e);var empty=document.getElementById("emptyCertificates");if(empty)empty.classList.add("active");window.S4UUI?.modal({title:"Unable to Load Certificates",message:e.message||"Unable to load certificates.",type:"error",confirmText:"Close"});}
 })();

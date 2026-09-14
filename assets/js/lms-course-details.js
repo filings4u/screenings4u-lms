@@ -91,5 +91,5 @@ function set(q,v){document.querySelectorAll(q).forEach(x=>x.textContent=v||"");}
 function setLast(el,v){var nodes=[...el.childNodes].filter(n=>n.nodeType===3); if(nodes.length)nodes[nodes.length-1].textContent=" "+v; else el.append(" "+v);}
 function formatMinutes(m){m=Math.round(m);return m>=60?`${Math.floor(m/60)} hr${Math.floor(m/60)===1?"":"s"}${m%60?" "+m%60+" min":""}`:`${m} min`;}
 function esc(v){return String(v??"").replace(/[&<>'"]/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;","'":"&#39;",'"':"&quot;"}[m]));}
-function fail(e){console.error("[LMS Course Details]",e);alert(e.message||"Unable to load course details.");}
+function fail(e){console.error("[LMS Course Details]",e);window.S4UUI?.modal({title:"Unable to Load Course",message:e.message||"Unable to load course details.",type:"error",confirmText:"Close"});}
 })();

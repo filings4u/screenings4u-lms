@@ -124,19 +124,9 @@
   }
 
   function initializeNavigation() {
-    var menuButton = document.querySelector("[data-lms-menu-toggle]");
+    // The shared lms-sidebar.js owns the show/hide button on every LMS page.
+    // Do not bind the same button here or a click toggles twice and appears broken.
     var overlay = document.querySelector("[data-lms-sidebar-overlay]");
-
-    if (menuButton) {
-      menuButton.addEventListener("click", function () {
-        if (window.innerWidth <= 860) {
-          document.body.classList.toggle("lms-navigation-open");
-          return;
-        }
-
-        document.body.classList.toggle("lms-nav-collapsed");
-      });
-    }
 
     if (overlay) {
       overlay.addEventListener("click", closeMobileNavigation);
