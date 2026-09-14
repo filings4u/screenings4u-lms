@@ -146,7 +146,7 @@
   }
 
   function extensionCheckoutUrl(enrollmentId) {
-    return "https://screenings4u.com/checkout.html?service=training_course_extension_30_days&enrollment_id=" +
+    return "https://training.screenings4u.com/?extension_enrollment_id=" +
       encodeURIComponent(enrollmentId);
   }
 

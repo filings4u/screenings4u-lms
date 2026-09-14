@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Training Checkout | screenings4u Learning Center</title>
+<link rel="icon" href="images/favicon.png">
+<style>
+*{box-sizing:border-box}body{margin:0;background:#f5f7fb;color:#10234a;font-family:Arial,Helvetica,sans-serif}.top{background:#fff;border-bottom:1px solid #dbe2ee}.topin{max-width:1120px;margin:auto;padding:22px 24px;display:flex;align-items:center;gap:18px}.top img{width:190px;max-width:45vw;height:auto}.divider{width:1px;height:34px;background:#cbd5e1}.label{font-size:18px;font-weight:700;color:#274b83}.wrap{max-width:1060px;margin:44px auto;padding:0 22px}.back{display:inline-block;margin-bottom:22px;color:#274b83;text-decoration:none;font-weight:700}.grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:26px}.card{background:#fff;border:1px solid #dce4ef;border-radius:18px;padding:28px;box-shadow:0 10px 30px rgba(16,35,74,.06)}.eyebrow{font-size:12px;font-weight:800;letter-spacing:.12em;color:#f56600}.course{font-size:27px;line-height:1.15;margin:10px 0 14px}.price{font-size:34px;font-weight:800;margin:20px 0}.muted{color:#64748b;line-height:1.6}.field{margin-bottom:15px}.field label{display:block;font-size:13px;font-weight:700;margin-bottom:7px}.field input{width:100%;border:1px solid #ccd6e5;border-radius:9px;padding:13px 12px;font-size:15px}.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}#payment-element{margin:18px 0}.pay{width:100%;border:0;border-radius:10px;background:#ff6500;color:#fff;font-size:16px;font-weight:800;padding:15px;cursor:pointer}.pay:disabled{opacity:.6;cursor:not-allowed}.status{margin:14px 0 0;padding:12px;border-radius:9px;display:none}.status.err{display:block;background:#fff1f1;color:#9b1c1c}.status.ok{display:block;background:#eefbf3;color:#176b3a}.secure{font-size:12px;color:#64748b;text-align:center;margin-top:13px}@media(max-width:760px){.grid{grid-template-columns:1fr}.wrap{margin-top:25px}.topin{padding:16px}.label{font-size:15px}.card{padding:20px}.row{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header class="top"><div class="topin"><img src="images/logo.png" alt="screenings4u"><span class="divider"></span><span class="label">Learning Center</span></div></header>
+<main class="wrap">
+<a class="back" href="index.html#pricing">← Back to Training Options</a>
+<div class="grid">
+<section class="card"><div class="eyebrow">TRAINING ENROLLMENT</div><h1 class="course" id="courseName">Loading training...</h1><p class="muted">Your purchase is processed directly through the screenings4u Learning Center. After payment, your training enrollment is created automatically.</p><div class="price" id="coursePrice">—</div><p class="muted">Single learner · 60-day access</p></section>
+<section class="card"><div class="eyebrow">SECURE CHECKOUT</div><h2>Complete your enrollment</h2><div id="customerFields"><div class="row"><div class="field"><label for="firstName">First name</label><input id="firstName" autocomplete="given-name"></div><div class="field"><label for="lastName">Last name</label><input id="lastName" autocomplete="family-name"></div></div><div class="field"><label for="email">Email address</label><input id="email" type="email" autocomplete="email"></div><div class="field"><label for="phone">Phone</label><input id="phone" type="tel" autocomplete="tel"></div></div><div id="payment-element"></div><button class="pay" id="payButton" type="button" disabled>Pay & Enroll</button><div id="status" class="status"></div><div class="secure">Secure payment powered by Stripe</div></section>
+</div>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://js.stripe.com/v3/"></script>
+<script src="assets/js/supabase-config.js"></script>
+<script src="assets/js/lms-checkout.js"></script>
+</body></html>

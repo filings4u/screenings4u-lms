@@ -78,7 +78,7 @@ function render(){
    if(rows[0])rows[0].textContent="Enrollment required";
    if(rows[1])rows[1].textContent="Not enrolled";
    if(rows[2])rows[2].textContent=mins?formatMinutes(mins):"Self-paced";
-   if(action){action.href=`customer-catalog.html?course=${encodeURIComponent(course.id)}`;action.textContent="View Training Options";}
+   if(action){action.href=`checkout.html?course=${encodeURIComponent(course.id)}`;action.textContent="Purchase Full Access";}
    if(note)note.textContent="Purchase or assignment is required before course content can be opened.";
  }
 }
