@@ -146,7 +146,8 @@
   }
 
   function extensionCheckoutUrl(enrollmentId) {
-    return "course-extension.html?enrollment=" + encodeURIComponent(enrollmentId);
+    return "checkout.html?product=training_course_extension_30_days&enrollment=" +
+      encodeURIComponent(enrollmentId);
   }
 
   function renderContinueLearning() {
@@ -243,7 +244,7 @@
             Last activity ${escapeHtml(formatDate(enrollment.last_activity_at))}
           </span>
           <span class="continue-course-meta-item">
-            Access through ${escapeHtml(formatDate(enrollment.expires_at))}${Number(enrollment.extension_days_total||0)>0 ? " · +"+Number(enrollment.extension_days_total)+" extension days" : ""}
+            Access through ${escapeHtml(formatDate(enrollment.expires_at))}${Number(enrollment.extension_days_total||0)>0 ? " · Extended "+Number(enrollment.extension_days_total||0)+" days" : ""}
           </span>
         </div>
 
@@ -389,10 +390,10 @@
               <div class="my-course-card-footer">
                 <span class="my-course-card-meta">
                   ${lessonCount}
-                  ${lessonCount === 1 ? "lesson" : "lessons"}<br>
-                  Access through ${escapeHtml(formatDate(enrollment.expires_at))}${Number(enrollment.extension_days_total||0)>0 ? " · +"+Number(enrollment.extension_days_total)+" days" : ""}
+                  ${lessonCount === 1 ? "lesson" : "lessons"}
                 </span>
 
+                <div class="my-course-card-access">Access through ${escapeHtml(formatDate(enrollment.expires_at))}${Number(enrollment.extension_days_total||0)>0 ? " · Extended "+Number(enrollment.extension_days_total||0)+" days" : ""}</div>
                 <div class="my-course-card-actions">
                   <a
                     href="${extensionCheckoutUrl(enrollment.id)}"
