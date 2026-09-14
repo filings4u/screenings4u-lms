@@ -43,7 +43,7 @@
     var enrollmentResult = await state.db
       .from("lms_enrollments")
       .select(
-        "id,user_id,course_id,status,progress_percent,enrolled_at,started_at,completed_at,last_activity_at"
+        "id,user_id,course_id,status,progress_percent,enrolled_at,started_at,completed_at,last_activity_at,expires_at,extension_days_total"
       )
       .eq("user_id", state.user.id)
       .in("status", ["active", "completed"])
@@ -146,8 +146,7 @@
   }
 
   function extensionCheckoutUrl(enrollmentId) {
-    return "https://training.screenings4u.com/?extension_enrollment_id=" +
-      encodeURIComponent(enrollmentId);
+    return "course-extension.html?enrollment=" + encodeURIComponent(enrollmentId);
   }
 
   function renderContinueLearning() {
@@ -242,6 +241,9 @@
           </span>
           <span class="continue-course-meta-item">
             Last activity ${escapeHtml(formatDate(enrollment.last_activity_at))}
+          </span>
+          <span class="continue-course-meta-item">
+            Access through ${escapeHtml(formatDate(enrollment.expires_at))}${Number(enrollment.extension_days_total||0)>0 ? " · +"+Number(enrollment.extension_days_total)+" extension days" : ""}
           </span>
         </div>
 
@@ -387,7 +389,8 @@
               <div class="my-course-card-footer">
                 <span class="my-course-card-meta">
                   ${lessonCount}
-                  ${lessonCount === 1 ? "lesson" : "lessons"}
+                  ${lessonCount === 1 ? "lesson" : "lessons"}<br>
+                  Access through ${escapeHtml(formatDate(enrollment.expires_at))}${Number(enrollment.extension_days_total||0)>0 ? " · +"+Number(enrollment.extension_days_total)+" days" : ""}
                 </span>
 
                 <div class="my-course-card-actions">
