@@ -36,11 +36,6 @@
       visibility: hidden;
     }
 
-    .lms-course-visual {
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
-    }
   </style>
 
 <link rel="stylesheet" href="assets/css/site-footer.css">
@@ -351,11 +346,10 @@
 
           </div>
 
-          <!-- Real course thumbnail is applied directly here. -->
-          <div
-            class="lms-course-visual"
-            role="img"
-          ></div>
+          <!-- Real course thumbnail is loaded from the learner's course record. -->
+          <div class="lms-course-visual is-empty" role="img" aria-label="Course image">
+            <img class="lms-resume-course-image" alt="" hidden>
+          </div>
 
         </section>
 

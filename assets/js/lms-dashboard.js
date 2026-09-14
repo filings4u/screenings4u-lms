@@ -311,21 +311,24 @@
     }
 
     var visual = card.querySelector(".lms-course-visual");
+    var visualImage = card.querySelector(".lms-resume-course-image");
 
-    if (visual) {
+    if (visual && visualImage) {
       if (course.thumbnail_url) {
-        visual.style.backgroundImage =
-          "url(\"" +
-          String(course.thumbnail_url).replace(/\"/g, "%22") +
-          "\")";
-
+        visualImage.src = String(course.thumbnail_url);
+        visualImage.alt = (course.title || "Training course") + " course image";
+        visualImage.hidden = false;
+        visual.classList.remove("is-empty");
         visual.setAttribute(
           "aria-label",
           (course.title || "Training course") + " cover image"
         );
       } else {
-        visual.style.backgroundImage = "none";
-        visual.removeAttribute("aria-label");
+        visualImage.removeAttribute("src");
+        visualImage.alt = "";
+        visualImage.hidden = true;
+        visual.classList.add("is-empty");
+        visual.setAttribute("aria-label", "Training course");
       }
     }
   }
