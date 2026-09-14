@@ -134,8 +134,6 @@
                 </a>
 
 
-                <a href="lms-welcome.html" class="lms-nav-link" data-lms-page="lms-welcome.html"><span class="lms-nav-icon"><svg viewBox="0 0 24 24"><path d="M4 5h16v14H4z"></path><path d="M8 9h8M8 13h6"></path></svg></span><span class="lms-nav-text">Welcome & Policies</span></a>
-
                 <!-- MY LEARNING -->
 
                 <a
@@ -311,8 +309,6 @@
                   <span class="lms-nav-text">Orders</span>
                 </a>
 
-
-                <a href="lms-documents.html" class="lms-nav-link" data-lms-page="lms-documents.html"><span class="lms-nav-icon"><svg viewBox="0 0 24 24"><path d="M6 3h9l3 3v15H6z"></path><path d="M14 3v4h4M9 12h6M9 16h6"></path></svg></span><span class="lms-nav-text">Documents</span></a>
 
                 <!-- MY ACCOUNT -->
 

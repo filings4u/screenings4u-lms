@@ -9,7 +9,14 @@ function initS4UFooter() {
   const TRAINING = "https://training.screenings4u.com";
   const WORKFORCE = "https://workforce.screenings4u.com";
   const DOT = "https://dot.screenings4u.com";
-  const cta = `
+
+  const hasPageCTA = !!document.querySelector(
+    "main .cta, main [class*='final-cta'], main [class*='closing-cta']"
+  );
+
+  const cta = hasPageCTA
+    ? ""
+    : `
       <div class="container footer-cta">
         <div class="footer-cta-copy">
           <span class="footer-cta-label">screenings4u Learning Center</span>
