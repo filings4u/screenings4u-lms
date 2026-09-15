@@ -82,6 +82,27 @@
     return data;
   }
 
+  async function callBrandedOnboardingPdf() {
+    const response = await fetch(
+      `${window.SCREENINGS4U_SUPABASE_URL}/functions/v1/lms-branded-onboarding-pdf`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          apikey: window.SCREENINGS4U_SUPABASE_ANON_KEY,
+          Authorization: `Bearer ${session.access_token}`
+        },
+        body: "{}"
+      }
+    );
+
+    const raw = await response.text();
+    let data = {};
+    try { data = raw ? JSON.parse(raw) : {}; } catch (_) {}
+    if (!response.ok) throw new Error(data.error || `PDF request failed (${response.status}).`);
+    return data;
+  }
+
   function showPageMessage(message) {
     const box = $("documentsMessage");
     if (!box) return;
@@ -146,7 +167,7 @@
           <td data-label="Status">${statusBadge(item.status)}</td>
           <td data-label="Date">${escapeHtml(formatDate(item.created_at))}</td>
           <td data-label="Action">
-            <button class="docs-download" data-doc="${escapeHtml(item.id)}" type="button">Download</button>
+            <button class="docs-download" data-doc="${escapeHtml(item.id)}" data-category="${escapeHtml(item.category || "")}" type="button">${item.category === "onboarding_acknowledgment" || doc?.mime_type === "application/pdf" ? "Download PDF" : "Download"}</button>
           </td>
         </tr>`;
     }).join("");
@@ -175,12 +196,31 @@
 
   async function downloadDocument(button) {
     const original = button.textContent;
+    let objectUrl = "";
     try {
       button.disabled = true;
       button.textContent = "Preparing…";
-      const data = await call({ action: "signed", id: button.dataset.doc });
+
+      const data = button.dataset.category === "onboarding_acknowledgment"
+        ? await callBrandedOnboardingPdf()
+        : await call({ action: "signed", id: button.dataset.doc });
+
       if (!data.url) throw new Error("The document download is unavailable.");
-      window.location.assign(data.url);
+
+      const response = await fetch(data.url, { cache: "no-store" });
+      if (!response.ok) throw new Error(`Document download failed (${response.status}).`);
+
+      const blob = await response.blob();
+      objectUrl = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = objectUrl;
+      link.download = data.fileName || (data.mimeType === "application/pdf"
+        ? "screenings4u-learning-center-document.pdf"
+        : (data.title || "learning-center-document"));
+      link.style.display = "none";
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
     } catch (error) {
       window.S4UUI?.modal({
         title: "Download Unavailable",
@@ -189,6 +229,7 @@
         confirmText: "Close"
       });
     } finally {
+      if (objectUrl) setTimeout(() => URL.revokeObjectURL(objectUrl), 1000);
       button.disabled = false;
       button.textContent = original;
     }

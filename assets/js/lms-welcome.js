@@ -113,7 +113,8 @@
     try {
       const state = await call({ action: "status" });
       if (consentIsComplete(state)) {
-        markCompleted(state.consent);
+        // Completed learners should bypass Welcome entirely.
+        location.replace(returnDestination());
         return;
       }
       if (state.consent && !state.hasDocument) {

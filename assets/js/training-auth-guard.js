@@ -51,15 +51,32 @@
     );
   }
 
-  async function verifyOnboarding(state) {
-    if (currentPage() === ONBOARDING_PAGE) return true;
+  function welcomeReturnDestination() {
+    const requested = new URLSearchParams(location.search).get("returnTo");
+    if (!requested) return "lms-dashboard.html";
 
+    try {
+      const url = new URL(requested, location.origin);
+      if (url.origin !== location.origin) return "lms-dashboard.html";
+      if ((url.pathname.split("/").pop() || "").toLowerCase() === ONBOARDING_PAGE) {
+        return "lms-dashboard.html";
+      }
+      return url.pathname + url.search + url.hash;
+    } catch (_) {
+      return "lms-dashboard.html";
+    }
+  }
+
+  async function verifyOnboarding(state) {
+    const isWelcomePage = currentPage() === ONBOARDING_PAGE;
     const userId = state?.user?.id;
     const session = state?.session;
     if (!userId) throw new Error("Training user is unavailable.");
     if (!session?.access_token) throw new Error("Training session is unavailable.");
 
-    document.documentElement.classList.add("s4u-onboarding-pending");
+    if (!isWelcomePage) {
+      document.documentElement.classList.add("s4u-onboarding-pending");
+    }
 
     let response;
     try {
@@ -78,6 +95,10 @@
       );
     } catch (error) {
       console.error("[Training onboarding gate] status request failed", error);
+
+      // The Welcome page must remain usable if verification itself fails.
+      if (isWelcomePage) return true;
+
       const target = buildWelcomeTarget(currentReturnTarget());
       target.searchParams.set("reason", "verification");
       location.replace(target.href);
@@ -86,22 +107,34 @@
 
     const data = await response.json().catch(() => ({}));
 
-    // Fail closed. If status cannot be verified, do not reveal course material.
     if (!response.ok) {
       console.error("[Training onboarding gate] status verification failed", data);
+
+      // Do not trap a learner outside the form they need to complete.
+      if (isWelcomePage) return true;
+
       const target = buildWelcomeTarget(currentReturnTarget());
       target.searchParams.set("reason", "verification");
       location.replace(target.href);
       return false;
     }
 
-    if (!consentIsComplete(data)) {
-      location.replace(buildWelcomeTarget(currentReturnTarget()).href);
-      return false;
+    if (consentIsComplete(data)) {
+      // A learner who already completed onboarding should never be trapped on Welcome.
+      if (isWelcomePage) {
+        location.replace(welcomeReturnDestination());
+        return false;
+      }
+
+      document.documentElement.classList.remove("s4u-onboarding-pending");
+      return true;
     }
 
-    document.documentElement.classList.remove("s4u-onboarding-pending");
-    return true;
+    // Incomplete learners are allowed to use the Welcome form, but nowhere else.
+    if (isWelcomePage) return true;
+
+    location.replace(buildWelcomeTarget(currentReturnTarget()).href);
+    return false;
   }
 
   async function bootstrap() {
