@@ -880,16 +880,45 @@
 
         body:not(.lms-onboarding-mode) .lms-nav-label {
           display: block !important;
+          width: auto !important;
+          min-width: 0 !important;
+          min-height: 0 !important;
           margin: 0 0 8px 12px !important;
           padding: 0 !important;
-          min-height: 0 !important;
+          border: 0 !important;
+          border-radius: 0 !important;
+          outline: 0 !important;
+          box-shadow: none !important;
           background: transparent !important;
+          appearance: none !important;
+          -webkit-appearance: none !important;
           color: rgba(255,255,255,.46) !important;
+          font-family: inherit !important;
           font-size: 10px !important;
           font-weight: 800 !important;
+          line-height: 1.2 !important;
           letter-spacing: .12em !important;
           text-transform: uppercase !important;
           text-align: left !important;
+          cursor: default !important;
+          pointer-events: none !important;
+        }
+
+        body:not(.lms-onboarding-mode) .lms-nav-label:hover,
+        body:not(.lms-onboarding-mode) .lms-nav-label:focus,
+        body:not(.lms-onboarding-mode) .lms-nav-label:focus-visible,
+        body:not(.lms-onboarding-mode) .lms-nav-group.is-open > .lms-nav-label {
+          border: 0 !important;
+          outline: 0 !important;
+          box-shadow: none !important;
+          background: transparent !important;
+          color: rgba(255,255,255,.46) !important;
+        }
+
+        body:not(.lms-onboarding-mode) .lms-nav-label::before,
+        body:not(.lms-onboarding-mode) .lms-nav-label::after {
+          display: none !important;
+          content: none !important;
         }
 
         body:not(.lms-onboarding-mode) .lms-nav-link,
