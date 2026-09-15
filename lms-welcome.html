@@ -14,7 +14,13 @@
   <link rel="stylesheet" href="assets/css/lms-shell-v2.css?v=20260915-2">
   <link rel="stylesheet" href="assets/css/lms-shell-v3.css?v=20260915-2">
 </head>
-<body>
+<body class="lms-onboarding-mode">
+<div class="onboard-brandbar" aria-label="screenings4u Learning Center">
+  <img src="images/logo2.png" alt="screenings4u">
+  <span class="divider" aria-hidden="true"></span>
+  <span>Learning Center</span>
+  <b>Required onboarding</b>
+</div>
 <div class="lms-app">
   <div id="lms-sidebar-target"></div>
   <main class="lms-main">
@@ -59,6 +65,10 @@
         <section class="onboard-card"><div class="onboard-card-icon">06</div><h2>Refunds & legal information</h2><p><strong>Online training courses and digital products are final and non-refundable once purchased.</strong> Review the <a href="refund-policy.html">Refund Policy</a>, <a href="terms.html">Terms</a>, <a href="privacy.html">Privacy Policy</a>, and <a href="disclaimer.html">Training Disclaimer</a>.</p></section>
       </div>
 
+      <div class="notice" role="status">
+        <strong>Required before course access:</strong> Complete this acknowledgment once. Until it is submitted, Learning Center course lessons, assessments, and training materials remain locked.
+      </div>
+
       <section class="consent">
         <div class="consent-head">
           <div>
@@ -69,15 +79,15 @@
         </div>
         <div id="consentStatus" class="notice" hidden></div>
         <div class="consent-grid">
-          <label>First name<input id="firstName" autocomplete="given-name"></label>
-          <label>Last name<input id="lastName" autocomplete="family-name"></label>
-          <label>Email<input id="email" type="email" autocomplete="email"></label>
+          <label>First name<input id="firstName" autocomplete="given-name" required></label>
+          <label>Last name<input id="lastName" autocomplete="family-name" required></label>
+          <label>Email<input id="email" type="email" autocomplete="email" required></label>
           <label>Phone<input id="phone" type="tel" autocomplete="tel"></label>
         </div>
-        <label class="check"><input id="terms" type="checkbox"><span>I have reviewed and agree to the Learning Center <a href="terms.html" target="_blank">Terms of Use</a>.</span></label>
-        <label class="check"><input id="refund" type="checkbox"><span>I understand that online training courses and digital products are final and non-refundable once purchased.</span></label>
-        <label class="check"><input id="disclaimer" type="checkbox"><span>I have reviewed and understand the <a href="disclaimer.html" target="_blank">Training Disclaimer</a>.</span></label>
-        <label class="check"><input id="mock" type="checkbox"><span>I understand that applicable DOT collector training requires documentation of five required mock collection sessions before certificate processing.</span></label>
+        <label class="check"><input id="terms" type="checkbox" required><span>I have reviewed and agree to the Learning Center <a href="terms.html" target="_blank">Terms of Use</a>.</span></label>
+        <label class="check"><input id="refund" type="checkbox" required><span>I understand that online training courses and digital products are final and non-refundable once purchased.</span></label>
+        <label class="check"><input id="disclaimer" type="checkbox" required><span>I have reviewed and understand the <a href="disclaimer.html" target="_blank">Training Disclaimer</a>.</span></label>
+        <label class="check"><input id="mock" type="checkbox" required><span>I understand that applicable DOT collector training requires documentation of five required mock collection sessions before certificate processing.</span></label>
         <button id="acceptBtn" class="orange-btn" type="button">Submit Onboarding</button>
       </section>
     </div>
@@ -87,9 +97,9 @@
 <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
 <script src="assets/js/supabase-config.js"></script>
 <script src="assets/js/core-auth.js"></script>
-<script src="assets/js/training-auth-guard.js"></script>
+<script src="assets/js/training-auth-guard.js?v=20260915-onboarding2"></script>
 <script src="assets/js/lms-sidebar.js"></script>
 <script src="assets/js/ui.js"></script>
-<script src="assets/js/lms-welcome.js"></script>
+<script src="assets/js/lms-welcome.js?v=20260915-onboarding2"></script>
 </body>
 </html>

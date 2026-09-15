@@ -1,39 +1,16 @@
-/* SOURCE: assets/js/training-auth-guard.js */
 /**
- * screenings4u — Training LMS bootstrap
- * One authentication/onboarding pipeline shared by every LMS script.
+ * screenings4u Learning Center — Welcome & Policies
+ * Page-only onboarding form behavior. Shared auth/navigation stay in their own files.
  */
 (() => {
   "use strict";
 
   const CONSENT_VERSION = "2026-08-23";
-  const ONBOARDING_PAGE = "lms-welcome.html";
+  const $ = (id) => document.getElementById(id);
+  let session = null;
 
-  function currentPage() {
-    return (location.pathname.split("/").pop() || "").split("?")[0].toLowerCase();
-  }
-
-  function onboardingCacheKey(userId) {
-    return `s4u:lms:onboarding:${CONSENT_VERSION}:${userId}`;
-  }
-
-  async function verifyOnboarding(state) {
-    if (currentPage() === ONBOARDING_PAGE) return true;
-
-    const userId = state?.user?.id;
-    if (!userId) throw new Error("Training user is unavailable.");
-
-    try {
-      if (sessionStorage.getItem(onboardingCacheKey(userId)) === "1") return true;
-    } catch (_) {}
-
-    document.documentElement.classList.add("s4u-onboarding-pending");
-
-    const client = window.getScreenings4uSupabase?.();
-    if (!client) throw new Error("Supabase client is unavailable.");
-
-    const session = state.session;
-    if (!session?.access_token) throw new Error("Training session is unavailable.");
+  async function call(body) {
+    if (!session?.access_token) throw new Error("Your training session is unavailable. Please sign in again.");
 
     const response = await fetch(
       `${window.SCREENINGS4U_SUPABASE_URL}/functions/v1/lms-learner-documents`,
@@ -44,1549 +21,193 @@
           apikey: window.SCREENINGS4U_SUPABASE_ANON_KEY,
           Authorization: `Bearer ${session.access_token}`
         },
-        body: JSON.stringify({ action: "status" })
+        body: JSON.stringify(body),
+        cache: "no-store"
       }
     );
 
-    const data = await response.json().catch(() => ({}));
-    if (!response.ok) throw new Error(data.error || "Unable to verify onboarding status.");
-
-    const consent = data.consent || {};
-    const complete = Boolean(
-      consent.consent_version === CONSENT_VERSION &&
-      consent.accepted_terms &&
-      consent.accepted_refund_policy &&
-      consent.accepted_disclaimer &&
-      consent.accepted_mock_requirements
-    );
-
-    if (!complete) {
-      const target = new URL(ONBOARDING_PAGE, location.href);
-      target.searchParams.set("returnTo", location.pathname + location.search + location.hash);
-      location.replace(target.href);
-      return false;
-    }
-
-    try { sessionStorage.setItem(onboardingCacheKey(userId), "1"); } catch (_) {}
-    document.documentElement.classList.remove("s4u-onboarding-pending");
-    return true;
+    const raw = await response.text();
+    let data = {};
+    try { data = raw ? JSON.parse(raw) : {}; } catch (_) {}
+    if (!response.ok) throw new Error(data.error || `Learning Center request failed (${response.status}).`);
+    return data;
   }
 
-  async function bootstrap() {
-    document.documentElement.classList.add("s4u-auth-pending");
-    if (currentPage() !== ONBOARDING_PAGE) {
-      document.documentElement.classList.add("s4u-onboarding-pending");
+  function returnDestination() {
+    const requested = new URLSearchParams(location.search).get("returnTo");
+    if (!requested) return "lms-dashboard.html";
+
+    try {
+      const url = new URL(requested, location.origin);
+      if (url.origin !== location.origin) return "lms-dashboard.html";
+      if ((url.pathname.split("/").pop() || "").toLowerCase() === "lms-welcome.html") return "lms-dashboard.html";
+      return url.pathname + url.search + url.hash;
+    } catch (_) {
+      return "lms-dashboard.html";
+    }
+  }
+
+  function consentIsComplete(data) {
+    const consent = data?.consent || {};
+    return Boolean(
+      data?.hasDocument === true &&
+      consent.consent_version === CONSENT_VERSION &&
+      consent.accepted_terms === true &&
+      consent.accepted_refund_policy === true &&
+      consent.accepted_disclaimer === true &&
+      consent.accepted_mock_requirements === true
+    );
+  }
+
+  function setStatus(message, isError = false) {
+    const node = $("consentStatus");
+    if (!node) return;
+    node.hidden = false;
+    node.textContent = message;
+    node.classList.toggle("error", isError);
+  }
+
+  async function showModal(options) {
+    if (window.S4UUI?.modal) return await window.S4UUI.modal(options);
+    alert(options.message || options.title || "Learning Center");
+  }
+
+  function fillFromConsent(consent) {
+    if (!consent) return;
+    if ($("firstName")) $("firstName").value = consent.first_name || "";
+    if ($("lastName")) $("lastName").value = consent.last_name || "";
+    if ($("email")) $("email").value = consent.email || session?.user?.email || "";
+    if ($("phone")) $("phone").value = consent.phone || "";
+  }
+
+  function markCompleted(consent) {
+    fillFromConsent(consent);
+    ["terms", "refund", "disclaimer", "mock"].forEach((id) => {
+      const input = $(id);
+      if (input) {
+        input.checked = true;
+        input.disabled = true;
+      }
+    });
+    ["firstName", "lastName", "email", "phone"].forEach((id) => {
+      const input = $(id);
+      if (input) input.readOnly = true;
+    });
+    if ($("acceptBtn")) {
+      $("acceptBtn").textContent = "Onboarding Completed";
+      $("acceptBtn").disabled = true;
+    }
+    setStatus("Onboarding is complete. Your signed acknowledgment is available in Documents.");
+  }
+
+  async function initialize() {
+    const authState = await window.S4UTrainingReady;
+    if (!authState?.session) return;
+    session = authState.session;
+
+    const reason = new URLSearchParams(location.search).get("reason");
+    if (reason === "verification") {
+      setStatus("We could not verify a completed onboarding record, so course access remains locked until this form is completed.");
     }
 
     try {
-      if (!window.S4UAuth?.requireAuth) {
-        throw new Error("core-auth.js must load before training-auth-guard.js.");
+      const state = await call({ action: "status" });
+      if (consentIsComplete(state)) {
+        markCompleted(state.consent);
+        return;
       }
-
-      const state = await window.S4UAuth.requireAuth({
-        portal: "training",
-        loginPage: "training-login.html"
-      });
-      if (!state) return null;
-
-      if (!(await verifyOnboarding(state))) return null;
-
-      document.documentElement.classList.remove("s4u-auth-pending", "s4u-onboarding-pending");
-      document.documentElement.classList.add("s4u-authenticated");
-
-      window.S4UTrainingAuthState = state;
-      window.dispatchEvent(new CustomEvent("s4u:training-ready", { detail: state }));
-      return state;
+      if (state.consent && !state.hasDocument) {
+        setStatus("Your acknowledgments were saved, but the signed document still needs to be finalized. Submit the form once more to finish onboarding.");
+      }
     } catch (error) {
-      console.error("[Training bootstrap]", error);
-      document.documentElement.classList.add("s4u-auth-error");
-      document.documentElement.classList.remove("s4u-authenticated");
-      throw error;
-    }
-  }
-
-  // Starts as soon as this script is parsed; no DOMContentLoaded delay.
-  window.S4UTrainingReady = bootstrap();
-})();
-
-;
-/* SOURCE: assets/js/lms-sidebar.js */
-/* ============================================================
-   SCREENINGS4U LEARNING CENTER
-   DYNAMIC LMS SIDEBAR
-   Mimics the Customer Portal sidebar shell behavior while
-   preserving Learning Center navigation and LMS class names.
-   ============================================================ */
-
-(function () {
-  "use strict";
-
-  const DESKTOP_BREAKPOINT = 860;
-
-  // This navigation file may be loaded normally or injected by the portal shell.
-  // If DOMContentLoaded has already fired, waiting for it again leaves the
-  // mobile toggle unbound. Initialize immediately in that case.
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", initializeLmsSidebar, {
-      once: true
-    });
-  } else {
-    initializeLmsSidebar();
-  }
-
-  /* ============================================================
-     INITIALIZE
-     ============================================================ */
-
-  function initializeLmsSidebar() {
-    if (document.documentElement.dataset.lmsNavigationInitialized === "true") {
-      return;
+      console.warn("[Welcome] status check failed", error);
     }
 
-    document.documentElement.dataset.lmsNavigationInitialized = "true";
-
-    injectLmsSidebar();
-    injectMobileDropdownNavigation();
-    setActiveNavigation();
-    initializeDesktopAccordion();
-    initializeMobileNavigation();
-    initializeShellEnhancements();
-    window.dispatchEvent(new CustomEvent("lms:sidebar-ready"));
-  }
-
-
-  /* ============================================================
-     SIDEBAR
-     ============================================================ */
-
-  function injectLmsSidebar() {
-    const sidebarTarget = document.getElementById(
-      "lms-sidebar-target"
-    );
-
-    if (!sidebarTarget) {
-      return;
-    }
-
-    sidebarTarget.innerHTML = getSidebarMarkup();
-  }
-
-
-  /* ============================================================
-     SIDEBAR MARKUP
-     ============================================================ */
-
-  function getSidebarMarkup() {
-    return `
-      <aside
-        class="lms-sidebar"
-        id="lms-sidebar"
-        aria-label="Learning navigation"
-      >
-        <div class="lms-sidebar-inner">
-
-          <!-- =================================================
-               BRAND
-               ================================================= -->
-
-          <div class="lms-sidebar-brand">
-
-            <a
-              href="lms-dashboard.html"
-              class="lms-brand"
-              aria-label="Screenings4u Learning Center"
-            >
-              <img
-                src="images/logo2.png"
-                alt="screenings4u"
-                class="lms-brand-logo"
-              />
-
-              <div class="lms-brand-copy">
-                <span class="lms-brand-subtitle">
-                  Learning Center
-                </span>
-              </div>
-            </a>
-          </div>
-
-
-          <!-- =================================================
-               NAVIGATION
-               ================================================= -->
-
-          <div class="lms-sidebar-scroll">
-
-
-            <!-- LEARNING -->
-
-            <div class="lms-nav-group">
-
-              <button type="button" class="lms-nav-label" aria-expanded="false">
-                <span>Learning</span>
-              </button>
-
-              <nav class="lms-nav">
-
-                <!-- HOME -->
-
-                <a
-                  href="lms-dashboard.html"
-                  class="lms-nav-link"
-                  data-lms-page="lms-dashboard.html"
-                >
-                  <span class="lms-nav-icon">
-                    <svg viewBox="0 0 24 24" aria-hidden="true">
-                      <path d="M3 10.5 12 3l9 7.5"></path>
-                      <path d="M5 9.5V21h14V9.5"></path>
-                      <path d="M9 21v-6h6v6"></path>
-                    </svg>
-                  </span>
-
-                  <span class="lms-nav-text">
-                    Home
-                  </span>
-                </a>
-
-
-                <!-- WELCOME & POLICIES -->
-
-                <a
-                  href="lms-welcome.html"
-                  class="lms-nav-link"
-                  data-lms-page="lms-welcome.html"
-                >
-                  <span class="lms-nav-icon">
-                    <svg viewBox="0 0 24 24" aria-hidden="true">
-                      <rect x="4" y="4" width="16" height="16" rx="2"></rect>
-                      <path d="M8 9h8M8 13h8M8 17h5"></path>
-                    </svg>
-                  </span>
-                  <span class="lms-nav-text">Welcome &amp; Policies</span>
-                </a>
-
-
-                <!-- MY LEARNING -->
-
-                <a
-                  href="lms-my-courses.html"
-                  class="lms-nav-link"
-                  data-lms-page="lms-my-courses.html"
-                >
-                  <span class="lms-nav-icon">
-                    <svg viewBox="0 0 24 24" aria-hidden="true">
-                      <rect
-                        x="3"
-                        y="4"
-                        width="18"
-                        height="16"
-                        rx="2"
-                      ></rect>
-                      <path d="M7 8h10"></path>
-                      <path d="M7 12h7"></path>
-                      <path d="M7 16h5"></path>
-                    </svg>
-                  </span>
-
-                  <span class="lms-nav-text">
-                    My Learning
-                  </span>
-                </a>
-
-
-                <!-- COURSE LIBRARY -->
-
-                <a
-                  href="lms-courses.html"
-                  class="lms-nav-link"
-                  data-lms-page="lms-courses.html"
-                >
-                  <span class="lms-nav-icon">
-                    <svg viewBox="0 0 24 24" aria-hidden="true">
-                      <path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v16H6.5A2.5 2.5 0 0 0 4 21.5z"></path>
-                      <path d="M4 5.5v16"></path>
-                      <path d="M8 7h8"></path>
-                    </svg>
-                  </span>
-
-                  <span class="lms-nav-text">
-                    Course Library
-                  </span>
-                </a>
-
-              </nav>
-
-            </div>
-
-
-            <!-- TRACK -->
-
-            <div class="lms-nav-group">
-
-              <button type="button" class="lms-nav-label" aria-expanded="false">
-                <span>Track</span>
-              </button>
-
-              <nav class="lms-nav">
-
-                <!-- PROGRESS -->
-
-                <a
-                  href="lms-progress.html"
-                  class="lms-nav-link"
-                  data-lms-page="lms-progress.html"
-                >
-                  <span class="lms-nav-icon">
-                    <svg viewBox="0 0 24 24" aria-hidden="true">
-                      <path d="M4 19V9"></path>
-                      <path d="M10 19V5"></path>
-                      <path d="M16 19v-7"></path>
-                      <path d="M22 19V3"></path>
-                    </svg>
-                  </span>
-
-                  <span class="lms-nav-text">
-                    Progress
-                  </span>
-                </a>
-
-
-                <!-- CERTIFICATES -->
-
-                <a
-                  href="lms-certificates.html"
-                  class="lms-nav-link"
-                  data-lms-page="lms-certificates.html"
-                >
-                  <span class="lms-nav-icon">
-                    <svg viewBox="0 0 24 24" aria-hidden="true">
-                      <circle
-                        cx="12"
-                        cy="8"
-                        r="5"
-                      ></circle>
-                      <path d="m8.5 12.5-1 8L12 18l4.5 2.5-1-8"></path>
-                    </svg>
-                  </span>
-
-                  <span class="lms-nav-text">
-                    Certificates
-                  </span>
-                </a>
-
-              </nav>
-
-            </div>
-
-
-            <!-- APPOINTMENTS -->
-
-            <div class="lms-nav-group">
-
-              <button type="button" class="lms-nav-label" aria-expanded="false">
-                <span>Appointments</span>
-              </button>
-
-              <nav class="lms-nav">
-
-                <a href="lms-schedule-appointment.html" class="lms-nav-link" data-lms-page="lms-schedule-appointment.html">
-                  <span class="lms-nav-icon">
-                    <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"></rect><path d="M16 3v4M8 3v4M3 10h18M12 13v5M9.5 15.5h5"></path></svg>
-                  </span>
-                  <span class="lms-nav-text">Schedule Appointment</span>
-                </a>
-
-                <a href="lms-my-appointments.html" class="lms-nav-link" data-lms-page="lms-my-appointments.html">
-                  <span class="lms-nav-icon">
-                    <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"></rect><path d="M16 3v4M8 3v4M3 10h18M8 15l2.5 2.5L16 12"></path></svg>
-                  </span>
-                  <span class="lms-nav-text">My Appointments</span>
-                </a>
-
-                <a href="lms-live-training.html" class="lms-nav-link" data-lms-page="lms-live-training.html">
-                  <span class="lms-nav-icon">
-                    <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"></rect><path d="m10 9 5 3-5 3V9z"></path></svg>
-                  </span>
-                  <span class="lms-nav-text">Live Training</span>
-                </a>
-
-              </nav>
-
-            </div>
-
-
-            <!-- ACCOUNT -->
-
-            <div class="lms-nav-group">
-
-              <button type="button" class="lms-nav-label" aria-expanded="false">
-                <span>Account</span>
-              </button>
-
-              <nav class="lms-nav">
-
-                <!-- ORDERS -->
-
-                <a
-                  href="lms-orders.html"
-                  class="lms-nav-link"
-                  data-lms-page="lms-orders.html"
-                >
-                  <span class="lms-nav-icon">
-                    <svg viewBox="0 0 24 24" aria-hidden="true">
-                      <path d="M6 3h12v18l-3-2-3 2-3-2-3 2V3z"></path>
-                      <path d="M9 8h6M9 12h6"></path>
-                    </svg>
-                  </span>
-                  <span class="lms-nav-text">Orders</span>
-                </a>
-
-
-                <!-- DOCUMENTS -->
-
-                <a
-                  href="lms-documents.html"
-                  class="lms-nav-link"
-                  data-lms-page="lms-documents.html"
-                >
-                  <span class="lms-nav-icon">
-                    <svg viewBox="0 0 24 24" aria-hidden="true">
-                      <path d="M6 3h8l4 4v14H6z"></path>
-                      <path d="M14 3v5h5"></path>
-                      <path d="M9 13h6M9 17h6"></path>
-                    </svg>
-                  </span>
-                  <span class="lms-nav-text">Documents</span>
-                </a>
-
-
-                <!-- MY ACCOUNT -->
-
-                <a
-                  href="lms-account.html"
-                  class="lms-nav-link"
-                  data-lms-page="lms-account.html"
-                >
-                  <span class="lms-nav-icon">
-                    <svg viewBox="0 0 24 24" aria-hidden="true">
-                      <circle
-                        cx="12"
-                        cy="8"
-                        r="4"
-                      ></circle>
-                      <path d="M4 21c.8-4 3.4-6 8-6s7.2 2 8 6"></path>
-                    </svg>
-                  </span>
-
-                  <span class="lms-nav-text">
-                    My Account
-                  </span>
-                </a>
-
-
-                <!-- TRAINING SUPPORT -->
-
-                <a
-                  href="lms-support.html"
-                  class="lms-nav-link"
-                  data-lms-page="lms-support.html"
-                >
-                  <span class="lms-nav-icon">
-                    <svg viewBox="0 0 24 24" aria-hidden="true">
-                      <circle cx="12" cy="12" r="9"></circle>
-                      <path d="M9.5 9a2.7 2.7 0 0 1 5.2 1c0 2-2.7 2.3-2.7 4"></path>
-                      <path d="M12 18h.01"></path>
-                    </svg>
-                  </span>
-
-                  <span class="lms-nav-text">
-                    Support
-                  </span>
-                </a>
-
-              </nav>
-
-            </div>
-
-          </div>
-
-
-          <!-- =================================================
-               SIDEBAR FOOTER
-               ================================================= -->
-
-          <div class="lms-sidebar-footer">
-
-            <div class="lms-sidebar-footer-links">
-
-              <!-- BACK TO MAIN WEBSITE -->
-
-              <a
-                href="https://screenings4u.com"
-                class="lms-return-link"
-              >
-                <span class="lms-nav-icon">
-                  <svg viewBox="0 0 24 24" aria-hidden="true">
-                    <path d="M19 12H5"></path>
-                    <path d="m12 19-7-7 7-7"></path>
-                  </svg>
-                </span>
-
-                <span class="lms-return-text">
-                  Back to Screenings4u
-                </span>
-              </a>
-            </div>
-
-          </div>
-
-        </div>
-      </aside>
-
-
-      <!-- MOBILE OVERLAY -->
-
-      <div
-        class="lms-sidebar-overlay"
-        id="lms-sidebar-overlay"
-        data-lms-sidebar-overlay
-        aria-hidden="true"
-      ></div>
-    `;
-  }
-
-
-  /* ============================================================
-     PAGE + DESKTOP ACCORDION
-     ============================================================ */
-
-  function currentPageName() {
-    let page = window.location.pathname.split("/").pop() || "lms-dashboard.html";
-    page = page.split("?")[0].split("#")[0];
-
-    if (page === "lms-customer-scheduling.html") {
-      page = "lms-schedule-appointment.html";
-    }
-
-    return page;
-  }
-
-  function initializeDesktopAccordion() {
-    const sidebar = document.getElementById("lms-sidebar");
-    if (!sidebar) return;
-
-    const groups = Array.from(sidebar.querySelectorAll(".lms-nav-group"));
-    if (!groups.length) return;
-
-    function setGroupState(group, open) {
-      group.classList.toggle("is-open", open);
-      const button = group.querySelector(".lms-nav-label");
-      if (button) button.setAttribute("aria-expanded", open ? "true" : "false");
-    }
-
-    function openOnly(target) {
-      groups.forEach(function (group) {
-        setGroupState(group, group === target);
-      });
-    }
-
-    groups.forEach(function (group) {
-      const button = group.querySelector(".lms-nav-label");
-      if (!button) return;
-
-      button.addEventListener("click", function () {
-        if (window.innerWidth <= 1100) return;
-        const willOpen = !group.classList.contains("is-open");
-        groups.forEach(function (item) {
-          setGroupState(item, willOpen && item === group);
-        });
-      });
-    });
-
-    const activeLink = sidebar.querySelector(".lms-nav-link.active");
-    const activeGroup = activeLink ? activeLink.closest(".lms-nav-group") : null;
-    openOnly(activeGroup || groups[0]);
-
-    window.addEventListener("resize", function () {
-      if (window.innerWidth <= 1100) {
-        groups.forEach(function (group) { setGroupState(group, true); });
-      } else {
-        const currentOpen = groups.find(function (group) { return group.classList.contains("is-open"); });
-        openOnly(activeGroup || currentOpen || groups[0]);
+    try {
+      const db = window.getScreenings4uSupabase?.();
+      if (db) {
+        const { data: profile } = await db
+          .from("user_profiles")
+          .select("first_name,last_name,email,phone")
+          .eq("id", session.user.id)
+          .maybeSingle();
+
+        if ($("firstName") && !$("firstName").value) $("firstName").value = profile?.first_name || "";
+        if ($("lastName") && !$("lastName").value) $("lastName").value = profile?.last_name || "";
+        if ($("email") && !$("email").value) $("email").value = profile?.email || session.user.email || "";
+        if ($("phone") && !$("phone").value) $("phone").value = profile?.phone || "";
       }
-    });
-  }
-
-
-  /* ============================================================
-     ACTIVE NAVIGATION
-     ============================================================ */
-
-  function setActiveNavigation() {
-    const current = currentPageName();
-
-    document
-      .querySelectorAll("[data-lms-page]")
-      .forEach(function (link) {
-        const page =
-          String(link.dataset.lmsPage || "")
-            .split("?")[0]
-            .split("#")[0];
-
-        const isActive = page === current;
-
-        link.classList.toggle("active", isActive);
-
-        if (isActive) {
-          link.setAttribute("aria-current", "page");
-        } else {
-          link.removeAttribute("aria-current");
-        }
-      });
-
-  }
-
-  /* ============================================================
-     MOBILE DROPDOWN NAVIGATION
-     ============================================================ */
-
-  function injectMobileDropdownNavigation() {
-    if (
-      document.getElementById(
-        "lms-mobile-dropdown"
-      )
-    ) {
-      return;
+    } catch (error) {
+      console.warn("[Welcome] profile load failed", error);
     }
 
-    if (!document.body) {
-      return;
-    }
+    const button = $("acceptBtn");
+    if (!button) return;
 
-    const backdrop =
-      document.createElement("div");
+    button.addEventListener("click", async () => {
+      const values = {
+        firstName: $("firstName")?.value.trim() || "",
+        lastName: $("lastName")?.value.trim() || "",
+        email: $("email")?.value.trim() || "",
+        phone: $("phone")?.value.trim() || "",
+        acceptedTerms: $("terms")?.checked === true,
+        acceptedRefund: $("refund")?.checked === true,
+        acceptedDisclaimer: $("disclaimer")?.checked === true,
+        acceptedMock: $("mock")?.checked === true
+      };
 
-    backdrop.id =
-      "lms-mobile-dropdown-backdrop";
-
-    backdrop.className =
-      "lms-mobile-dropdown-backdrop";
-
-    backdrop.hidden = true;
-
-
-    const dropdown =
-      document.createElement("div");
-
-    dropdown.id =
-      "lms-mobile-dropdown";
-
-    dropdown.className =
-      "lms-mobile-dropdown";
-
-    dropdown.hidden = true;
-
-    dropdown.setAttribute(
-      "role",
-      "navigation"
-    );
-
-    dropdown.setAttribute(
-      "aria-label",
-      "Learning Center navigation"
-    );
-
-
-    document.body.append(
-      backdrop,
-      dropdown
-    );
-
-    injectMobileStyles();
-  }
-
-
-  function rebuildMobileDropdown() {
-    const sidebar =
-      document.getElementById(
-        "lms-sidebar"
-      );
-
-    const dropdown =
-      document.getElementById(
-        "lms-mobile-dropdown"
-      );
-
-    if (!sidebar || !dropdown) {
-      return;
-    }
-
-    dropdown.innerHTML = "";
-
-    const groups =
-      sidebar.querySelectorAll(
-        ".lms-nav-group"
-      );
-
-    groups.forEach(function (group) {
-      const links =
-        group.querySelectorAll(
-          ".lms-nav-link"
-        );
-
-      if (!links.length) {
+      if (!values.firstName || !values.lastName || !values.email) {
+        await showModal({
+          title: "Complete Your Information",
+          message: "First name, last name, and email are required.",
+          type: "error",
+          confirmText: "Review Form"
+        });
         return;
       }
 
-      const section =
-        document.createElement("section");
-
-      section.className =
-        "lms-mobile-dropdown-section";
-
-      const sourceLabel =
-        group.querySelector(
-          ".lms-nav-label"
-        );
-
-      if (sourceLabel) {
-        const heading =
-          document.createElement("div");
-
-        heading.className =
-          "lms-mobile-dropdown-label";
-
-        heading.textContent =
-          sourceLabel.textContent.trim();
-
-        section.appendChild(heading);
+      if (!values.acceptedTerms || !values.acceptedRefund || !values.acceptedDisclaimer || !values.acceptedMock) {
+        await showModal({
+          title: "Complete All Acknowledgments",
+          message: "Please review and accept all four Learning Center acknowledgments before submitting.",
+          type: "error",
+          confirmText: "Review Acknowledgments"
+        });
+        return;
       }
 
-      links.forEach(function (sourceLink) {
-        const link =
-          document.createElement("a");
-
-        link.href =
-          sourceLink.getAttribute("href") || "#";
-
-        link.className =
-          "lms-mobile-dropdown-link";
-
-        const text =
-          sourceLink.querySelector(
-            ".lms-nav-text"
-          );
-
-        link.textContent =
-          text
-            ? text.textContent.trim()
-            : sourceLink.textContent
-                .replace(/\s+/g, " ")
-                .trim();
-
-        if (
-          sourceLink.classList.contains(
-            "active"
-          )
-        ) {
-          link.classList.add("active");
-
-          link.setAttribute(
-            "aria-current",
-            "page"
-          );
-        }
-
-        section.appendChild(link);
-      });
-
-      dropdown.appendChild(section);
-    });
-
-
-    const footer =
-      sidebar.querySelector(
-        ".lms-sidebar-footer"
-      );
-
-    const returnLink =
-      footer
-        ? footer.querySelector(
-            ".lms-return-link"
-          )
-        : null;
-
-    if (returnLink) {
-      const section =
-        document.createElement("section");
-
-      section.className =
-        "lms-mobile-dropdown-section lms-mobile-dropdown-return";
-
-      const link =
-        document.createElement("a");
-
-      link.href =
-        returnLink.getAttribute("href") || "#";
-
-      link.className =
-        "lms-mobile-dropdown-link";
-
-      const text =
-        returnLink.querySelector(
-          ".lms-return-text"
-        );
-
-      link.textContent =
-        text
-          ? text.textContent.trim()
-          : "Back to Screenings4u";
-
-      section.appendChild(link);
-      dropdown.appendChild(section);
-    }
-  }
-
-
-  function injectMobileStyles() {
-    if (
-      document.getElementById(
-        "lms-mobile-dropdown-styles"
-      )
-    ) {
-      return;
-    }
-
-    const style =
-      document.createElement("style");
-
-    style.id =
-      "lms-mobile-dropdown-styles";
-
-    style.textContent = `
-      @media (max-width: ${DESKTOP_BREAKPOINT}px) {
-
-        /*
-         * Mobile uses the dropdown only.
-         * The desktop Learning Center sidebar is completely hidden.
-         */
-        .lms-sidebar,
-        #lms-sidebar,
-        .lms-sidebar-overlay,
-        #lms-sidebar-overlay {
-          display: none !important;
-        }
-
-        body.sidebar-open {
-          overflow: auto !important;
-        }
-
-        .lms-main,
-        .lms-content,
-        main {
-          width: 100% !important;
-          max-width: 100% !important;
-          margin-left: 0 !important;
-        }
-
-        .lms-mobile-dropdown-backdrop {
-          position: fixed;
-          inset: 0;
-          z-index: 9998;
-          background: rgba(17, 36, 67, .18);
-        }
-
-        .lms-mobile-dropdown {
-          position: fixed;
-          left: 12px;
-          right: 12px;
-          top: 76px;
-          z-index: 9999;
-
-          overflow-y: auto;
-          overscroll-behavior: contain;
-
-          background: #ffffff;
-          border: 1px solid #d8e0ec;
-          border-radius: 12px;
-          box-shadow: 0 18px 42px rgba(18, 45, 82, .18);
-        }
-
-        .lms-mobile-dropdown[hidden],
-        .lms-mobile-dropdown-backdrop[hidden] {
-          display: none !important;
-        }
-
-        .lms-mobile-dropdown-section {
-          padding: 8px;
-          border-bottom: 1px solid #edf1f5;
-        }
-
-        .lms-mobile-dropdown-section:last-child {
-          border-bottom: 0;
-        }
-
-        .lms-mobile-dropdown-label {
-          padding: 8px 10px 6px;
-          color: #748197;
-          font-size: 10px;
-          font-weight: 900;
-          letter-spacing: .08em;
-          text-transform: uppercase;
-        }
-
-        .lms-mobile-dropdown-link {
-          display: flex;
-          align-items: center;
-          min-height: 42px;
-          padding: 0 10px;
-          border-radius: 8px;
-          color: #273348;
-          text-decoration: none;
-          font-size: 14px;
-          font-weight: 700;
-        }
-
-        .lms-mobile-dropdown-link:hover,
-        .lms-mobile-dropdown-link.active {
-          background: #f2f6fb;
-          color: #173d78;
-        }
-
-        [data-lms-menu-toggle][aria-expanded="true"] {
-          background: #f2f6fb;
-        }
-      }
-
-
-      @media (min-width: ${DESKTOP_BREAKPOINT + 1}px) {
-        .lms-mobile-dropdown,
-        .lms-mobile-dropdown-backdrop {
-          display: none !important;
-        }
-      }
-    `;
-
-    document.head.appendChild(style);
-  }
-
-
-  function positionMobileDropdown(
-    button,
-    dropdown
-  ) {
-    const header =
-      button.closest(
-        ".lms-topbar, .lms-header, header"
-      );
-
-    const referenceRect =
-      header
-        ? header.getBoundingClientRect()
-        : button.getBoundingClientRect();
-
-    const top =
-      Math.max(
-        8,
-        Math.round(
-          referenceRect.bottom + 8
-        )
-      );
-
-    dropdown.style.top =
-      top + "px";
-
-    dropdown.style.maxHeight =
-      "calc(100vh - " +
-      (top + 12) +
-      "px)";
-  }
-
-
-  /* ============================================================
-     DESKTOP SIDEBAR
-     ============================================================
-
-     The Learning Center stylesheet already owns the desktop sidebar
-     presentation. Do not inject Customer Portal collapse/reopen controls
-     here because those controls use different CSS classes.
-  */
-
-
-  /* ============================================================
-     MOBILE NAVIGATION
-     ============================================================ */
-
-  function initializeMobileNavigation() {
-    const button =
-      document.querySelector(
-        "[data-lms-menu-toggle]"
-      );
-
-    const dropdown =
-      document.getElementById(
-        "lms-mobile-dropdown"
-      );
-
-    const backdrop =
-      document.getElementById(
-        "lms-mobile-dropdown-backdrop"
-      );
-
-    if (!button) {
-      return;
-    }
-
-    // Desktop show/hide must work even if the mobile dropdown is unavailable.
-    if (window.innerWidth > DESKTOP_BREAKPOINT) {
-      let collapsed = false;
-      try { collapsed = localStorage.getItem("s4u-lms-sidebar-collapsed") === "1"; } catch (_) {}
-      document.body.classList.toggle("lms-nav-collapsed", collapsed);
-      button.setAttribute("aria-expanded", collapsed ? "false" : "true");
-      button.setAttribute("aria-label", collapsed ? "Show navigation" : "Hide navigation");
-
-      button.addEventListener("click", function (event) {
-        if (window.innerWidth <= DESKTOP_BREAKPOINT) return;
-        event.preventDefault();
-        event.stopPropagation();
-        const next = document.body.classList.toggle("lms-nav-collapsed");
-        button.setAttribute("aria-expanded", next ? "false" : "true");
-        button.setAttribute("aria-label", next ? "Show navigation" : "Hide navigation");
-        try { localStorage.setItem("s4u-lms-sidebar-collapsed", next ? "1" : "0"); } catch (_) {}
-      });
-
-      if (!dropdown) return;
-    }
-
-    if (!dropdown) return;
-
-    button.setAttribute(
-      "aria-controls",
-      "lms-mobile-dropdown"
-    );
-
-    button.setAttribute(
-      "aria-expanded",
-      "false"
-    );
-
-
-    function closeMenu() {
-      dropdown.hidden = true;
-
-      if (backdrop) {
-        backdrop.hidden = true;
-      }
-
-      button.setAttribute(
-        "aria-expanded",
-        "false"
-      );
-
-      button.setAttribute(
-        "aria-label",
-        "Open navigation"
-      );
-    }
-
-
-    function openMenu() {
-      rebuildMobileDropdown();
-
-      positionMobileDropdown(
-        button,
-        dropdown
-      );
-
-      if (backdrop) {
-        backdrop.hidden = false;
-      }
-
-      dropdown.hidden = false;
-
-      button.setAttribute(
-        "aria-expanded",
-        "true"
-      );
-
-      button.setAttribute(
-        "aria-label",
-        "Close navigation"
-      );
-    }
-
-
-    button.addEventListener(
-      "click",
-      function (event) {
-        event.preventDefault();
-        event.stopPropagation();
-
-        if (window.innerWidth > DESKTOP_BREAKPOINT) return;
-
-        const isOpen = button.getAttribute("aria-expanded") === "true";
-        if (isOpen) closeMenu();
-        else openMenu();
-      }
-    );
-
-    dropdown.addEventListener(
-      "click",
-      function (event) {
-        event.stopPropagation();
-
-        const link =
-          event.target.closest("a");
-
-        if (link) {
-          closeMenu();
-        }
-      }
-    );
-
-
-    if (backdrop) {
-      backdrop.addEventListener(
-        "click",
-        closeMenu
-      );
-    }
-
-
-    document.addEventListener(
-      "click",
-      function (event) {
-        if (
-          window.innerWidth <=
-            DESKTOP_BREAKPOINT &&
-          !dropdown.contains(event.target) &&
-          !button.contains(event.target)
-        ) {
-          closeMenu();
-        }
-      }
-    );
-
-
-    document.addEventListener(
-      "keydown",
-      function (event) {
-        if (event.key === "Escape") {
-          closeMenu();
-        }
-      }
-    );
-
-
-    window.addEventListener(
-      "resize",
-      closeMenu
-    );
-  }
-
-
-  /* ============================================================
-     SHELL ENHANCEMENTS
-     Replaces lms-shell-v2.js and lms-shell-v3.js without observers.
-     ============================================================ */
-  function initializeShellEnhancements() {
-    const page = (location.pathname.split("/").pop() || "lms-dashboard.html").toLowerCase();
-
-    if (page === "lms-welcome.html") {
-      document.body.classList.add("lms-onboarding-mode");
-      const app = document.querySelector(".lms-app");
-      if (app && !document.querySelector(".onboard-brandbar")) {
-        const bar = document.createElement("div");
-        bar.className = "onboard-brandbar";
-        bar.innerHTML = '<img src="images/logo2.png" alt="screenings4u"><span class="divider" aria-hidden="true"></span><span>Learning Center</span><b>New Learner Orientation</b>';
-        app.parentNode.insertBefore(bar, app);
-      }
-      return;
-    }
-
-    const button = document.querySelector("[data-lms-menu-toggle]");
-    if (button && window.innerWidth > DESKTOP_BREAKPOINT) {
-      let collapsed = false;
-      try { collapsed = localStorage.getItem("s4u-lms-sidebar-collapsed") === "1"; } catch (_) {}
-      document.body.classList.toggle("lms-nav-collapsed", collapsed);
-      button.setAttribute("aria-expanded", collapsed ? "false" : "true");
-    }
-
-    const titles = {
-      "lms-dashboard.html":"Home", "lms-my-courses.html":"My Learning", "lms-courses.html":"Course Library",
-      "lms-course-details.html":"Course Details", "lms-progress.html":"Progress", "lms-certificates.html":"Certificates",
-      "lms-documents.html":"Documents", "lms-orders.html":"Orders", "lms-live-training.html":"Live Training",
-      "lms-my-appointments.html":"My Appointments", "lms-schedule-appointment.html":"Schedule Appointment",
-      "lms-customer-scheduling.html":"Scheduling", "lms-support.html":"Training Support", "lms-notifications.html":"Notifications",
-      "lms-account.html":"Account", "lms-quiz.html":"Knowledge Check", "lms-assessment.html":"Assessment"
-    };
-    const left = document.querySelector(".lms-topbar-left");
-    if (left && !left.querySelector(".s4u-page-title")) {
-      const title = document.createElement("span");
-      title.className = "s4u-page-title";
-      title.textContent = titles[page] || document.title.split("|")[0].trim() || "Learning Center";
-      left.appendChild(title);
-    }
-  }
-
-})();
-
-;
-/* SOURCE: assets/js/ui.js */
-/* ============================================================
-   screenings4u — CORE UI
-   Replaces browser alert()/confirm() for application actions.
-   ============================================================ */
-
-(() => {
-  "use strict";
-
-  let activeModal = null;
-  let activeResolve = null;
-
-  function ensureRoot() {
-    let root = document.getElementById("s4uModalRoot");
-
-    if (!root) {
-      root = document.createElement("div");
-      root.id = "s4uModalRoot";
-      root.className = "s4u-modal-root";
-      document.body.appendChild(root);
-    }
-
-    return root;
-  }
-
-  function close(result = false) {
-    if (!activeModal) return;
-    activeModal.remove();
-    activeModal = null;
-    document.body.classList.remove("s4u-modal-open");
-    if (activeResolve) {
-      const resolve = activeResolve;
-      activeResolve = null;
-      resolve(result);
-    }
-  }
-
-  function modal({
-    title = "screenings4u",
-    message = "",
-    type = "info",
-    confirmText = "Continue",
-    cancelText = "Cancel",
-    showCancel = false,
-    onConfirm = null
-  } = {}) {
-    close();
-
-    const root = ensureRoot();
-    const wrapper = document.createElement("div");
-
-    wrapper.className = `s4u-modal ${type}`;
-    wrapper.setAttribute("role", "dialog");
-    wrapper.setAttribute("aria-modal", "true");
-
-    wrapper.innerHTML = `
-      <div class="s4u-modal-backdrop" data-modal-close></div>
-      <section class="s4u-modal-panel">
-        <div class="s4u-modal-brand">
-          <img class="s4u-modal-brand-logo" src="https://rgsrubdtljyxmnihwlah.supabase.co/storage/v1/object/public/branding/logo.png" alt="screenings4u">
-        </div>
-        <div class="s4u-modal-body">
-          <div class="s4u-modal-icon" aria-hidden="true"></div>
-          <div class="s4u-modal-content">
-            <h2>${escapeHtml(title)}</h2>
-            <p>${escapeHtml(message)}</p>
-          </div>
-          <div class="s4u-modal-actions">
-            ${showCancel ? `<button class="s4u-modal-button secondary" type="button" data-modal-cancel>${escapeHtml(cancelText)}</button>` : ""}
-            <button class="s4u-modal-button primary" type="button" data-modal-confirm>${escapeHtml(confirmText)}</button>
-          </div>
-        </div>
-      </section>
-    `;
-
-    root.appendChild(wrapper);
-    activeModal = wrapper;
-    document.body.classList.add("s4u-modal-open");
-
-    wrapper
-      .querySelector("[data-modal-close]")
-      ?.addEventListener("click", () => close(false));
-
-    wrapper
-      .querySelector("[data-modal-cancel]")
-      ?.addEventListener("click", () => close(false));
-
-    wrapper
-      .querySelector("[data-modal-confirm]")
-      ?.addEventListener("click", async () => {
-        const button =
-          wrapper.querySelector("[data-modal-confirm]");
-
+      try {
         button.disabled = true;
+        button.textContent = "Submitting…";
 
-        try {
-          if (typeof onConfirm === "function") {
-            await onConfirm();
-          }
+        // The Edge Function creates the signed PDF, document record, and notifications.
+        const result = await call({ action: "consent", ...values });
+        markCompleted(result.consent);
 
-          close(true);
-        } catch (error) {
-          button.disabled = false;
+        await showModal({
+          title: "Onboarding Complete",
+          message: "Your signed Learning Center acknowledgment has been saved to Documents. Your course access is now unlocked.",
+          type: "success",
+          confirmText: "Continue"
+        });
 
-          toast(
-            error?.message ||
-              "Unable to complete this action.",
-            "error"
-          );
-        }
-      });
-
-    const promise = new Promise(resolve => { activeResolve = resolve; });
-    promise.close = () => close(false);
-    return promise;
-  }
-
-  function toast(
-    message,
-    type = "info"
-  ) {
-    let root =
-      document.getElementById(
-        "s4uToastRoot"
-      );
-
-    if (!root) {
-      root =
-        document.createElement("div");
-
-      root.id = "s4uToastRoot";
-      root.className =
-        "s4u-toast-root";
-
-      document.body.appendChild(
-        root
-      );
-    }
-
-    const item =
-      document.createElement("div");
-
-    item.className =
-      `s4u-toast ${type}`;
-
-    item.textContent =
-      message;
-
-    root.appendChild(
-      item
-    );
-
-    requestAnimationFrame(
-      () =>
-        item.classList.add(
-          "show"
-        )
-    );
-
-    setTimeout(() => {
-      item.classList.remove(
-        "show"
-      );
-
-      setTimeout(
-        () => item.remove(),
-        180
-      );
-    }, 4200);
-  }
-
-  function escapeHtml(value) {
-    return String(value)
-      .replaceAll("&", "&amp;")
-      .replaceAll("<", "&lt;")
-      .replaceAll(">", "&gt;")
-      .replaceAll('"', "&quot;")
-      .replaceAll("'", "&#039;");
-  }
-
-  function formModal({
-    title = "screenings4u",
-    message = "",
-    fields = [],
-    confirmText = "Save",
-    cancelText = "Cancel",
-    onSubmit = null
-  } = {}) {
-    close();
-
-    const root = ensureRoot();
-    const wrapper =
-      document.createElement("div");
-
-    wrapper.className =
-      "s4u-modal info";
-
-    wrapper.setAttribute(
-      "role",
-      "dialog"
-    );
-
-    wrapper.setAttribute(
-      "aria-modal",
-      "true"
-    );
-
-    wrapper.innerHTML = `
-      <div class="s4u-modal-backdrop" data-modal-close></div>
-      <section class="s4u-modal-panel s4u-form-modal-panel">
-        <div class="s4u-modal-brand">
-          <img class="s4u-modal-brand-logo" src="https://rgsrubdtljyxmnihwlah.supabase.co/storage/v1/object/public/branding/logo.png" alt="screenings4u">
-        </div>
-        <div class="s4u-modal-body">
-          <div class="s4u-modal-content">
-            <h2>${escapeHtml(title)}</h2>
-            ${message ? `<p>${escapeHtml(message)}</p>` : ""}
-            <form class="s4u-form-modal-form">
-            ${fields.map((field) => `
-              <label class="s4u-form-modal-field">
-                <span>${escapeHtml(field.label || field.name)}</span>
-                ${field.type === "textarea"
-                  ? `<textarea name="${escapeHtml(field.name)}" rows="4">${escapeHtml(field.value ?? "")}</textarea>`
-                  : field.type === "select"
-                    ? `<select name="${escapeHtml(field.name)}">${(field.options || []).map(o => `<option value="${escapeHtml(o.value)}" ${String(o.value) === String(field.value) ? "selected" : ""}>${escapeHtml(o.label)}</option>`).join("")}</select>`
-                    : `<input type="${escapeHtml(field.type || "text")}" name="${escapeHtml(field.name)}" value="${escapeHtml(field.value ?? "")}" ${field.required ? "required" : ""} ${field.min !== undefined ? `min="${escapeHtml(field.min)}"` : ""} ${field.max !== undefined ? `max="${escapeHtml(field.max)}"` : ""}>`}
-              </label>
-            `).join("")}
-            <div class="s4u-modal-actions">
-              <button class="s4u-modal-button secondary" type="button" data-modal-cancel>${escapeHtml(cancelText)}</button>
-              <button class="s4u-modal-button primary" type="submit">${escapeHtml(confirmText)}</button>
-            </div>
-          </form>
-          </div>
-        </div>
-      </section>
-    `;
-
-    root.appendChild(
-      wrapper
-    );
-
-    activeModal = wrapper;
-
-    document.body.classList.add(
-      "s4u-modal-open"
-    );
-
-    wrapper
-      .querySelector("[data-modal-close]")
-      ?.addEventListener(
-        "click",
-        close
-      );
-
-    wrapper
-      .querySelector("[data-modal-cancel]")
-      ?.addEventListener(
-        "click",
-        close
-      );
-
-    wrapper
-      .querySelector("form")
-      ?.addEventListener(
-        "submit",
-        async (event) => {
-          event.preventDefault();
-
-          const button =
-            wrapper.querySelector(
-              'button[type="submit"]'
-            );
-
-          button.disabled =
-            true;
-
-          const formData =
-            new FormData(
-              event.currentTarget
-            );
-
-          const values =
-            Object.fromEntries(
-              formData.entries()
-            );
-
-          try {
-            if (
-              typeof onSubmit ===
-              "function"
-            ) {
-              await onSubmit(
-                values
-              );
-            }
-
-            close();
-          } catch (error) {
-            button.disabled =
-              false;
-
-            toast(
-              error?.message ||
-                "Unable to complete this action.",
-              "error"
-            );
-          }
-        }
-      );
-
-    wrapper
-      .querySelector(
-        "input, select, textarea"
-      )
-      ?.focus();
-
-    return {
-      close
-    };
-  }
-
-  window.S4UUI =
-    Object.freeze({
-      modal,
-      formModal,
-      toast,
-      closeModal: close
+        location.replace(returnDestination());
+      } catch (error) {
+        await showModal({
+          title: "Unable to Complete Onboarding",
+          message: error?.message || "Please review the form and try again.",
+          type: "error",
+          confirmText: "Review Form"
+        });
+        button.disabled = false;
+        button.textContent = "Submit Onboarding";
+      }
     });
-})();
-
-;
-/* SOURCE: assets/js/lms-welcome.js */
-(()=>{
-  const $=x=>document.getElementById(x);let db,session;
-  async function call(body){const r=await fetch(window.SCREENINGS4U_SUPABASE_URL+'/functions/v1/lms-learner-documents',{method:'POST',headers:{'Content-Type':'application/json','apikey':window.SCREENINGS4U_SUPABASE_ANON_KEY,'Authorization':'Bearer '+session.access_token},body:JSON.stringify(body)});const raw=await r.text();let d={};try{d=raw?JSON.parse(raw):{}}catch{}if(!r.ok)throw Error(d.error||`Learning Center request failed (${r.status}).`);return d}
-  function returnDestination(){const q=new URLSearchParams(location.search).get('returnTo');if(!q)return'lms-dashboard.html';try{const u=new URL(q,location.origin);return u.origin===location.origin?u.pathname+u.search+u.hash:'lms-dashboard.html'}catch{return'lms-dashboard.html'}}
-  function acknowledgmentPdfBase64(values){
-    const {jsPDF}=window.jspdf||{}; if(!jsPDF) throw new Error('Acknowledgment PDF service is unavailable. Please refresh and try again.');
-    const doc=new jsPDF();doc.setFont('helvetica','bold');doc.setFontSize(20);doc.text('screenings4u | Learning Center',20,22);doc.setFontSize(15);doc.text('Learning Center Onboarding Acknowledgment',20,34);doc.setFont('helvetica','normal');doc.setFontSize(10);
-    const lines=[`Name: ${values.firstName} ${values.lastName}`,`Email: ${values.email}`,`Phone: ${values.phone||'—'}`,`Accepted: ${new Date().toLocaleString()}`,`Consent version: 2026-08-23`,'','Acknowledgments:','• Learning Center Terms of Use accepted','• Refund Policy acknowledged: online courses and digital products are final and non-refundable once purchased.','• Training Disclaimer acknowledged','• DOT mock-training requirement acknowledged for applicable courses.'];let y=46;for(const l of lines){for(const z of doc.splitTextToSize(l,170)){doc.text(z,20,y);y+=6}}
-    return doc.output('datauristring').split(',')[1];
   }
-  document.addEventListener('DOMContentLoaded',async()=>{
-    db=await window.getScreenings4uSupabase();session=(await db.auth.getSession()).data.session;if(!session)return;
-    try{const state=await call({action:'status'});if(state.consent&&state.hasDocument){const s=$('consentStatus');s.hidden=false;s.textContent='Onboarding is complete. Your signed acknowledgment is available in Documents.';$('acceptBtn').textContent='Onboarding Completed';$('acceptBtn').disabled=true}else if(state.consent&&!state.hasDocument){const s=$('consentStatus');s.hidden=false;s.textContent='Your acknowledgments were saved, but the signed PDF still needs to be created. Submit once more to finish onboarding.'}}
-    catch(e){console.warn('[Welcome] status check failed',e)}
-    try{const {data:p}=await db.from('user_profiles').select('first_name,last_name,email,phone').eq('id',session.user.id).maybeSingle();$('firstName').value=p?.first_name||'';$('lastName').value=p?.last_name||'';$('email').value=p?.email||session.user.email||'';$('phone').value=p?.phone||''}catch(e){console.warn('[Welcome] profile load failed',e)}
-    $('acceptBtn').onclick=async()=>{
-      const values={firstName:$('firstName').value.trim(),lastName:$('lastName').value.trim(),email:$('email').value.trim(),phone:$('phone').value.trim(),acceptedTerms:$('terms').checked,acceptedRefund:$('refund').checked,acceptedDisclaimer:$('disclaimer').checked,acceptedMock:$('mock').checked};
-      if(!values.firstName||!values.lastName||!values.email)return window.S4UUI?.modal({title:'Complete Your Information',message:'First name, last name, and email are required.',type:'error',confirmText:'Review Form'});
-      if(!values.acceptedTerms||!values.acceptedRefund||!values.acceptedDisclaimer||!values.acceptedMock)return window.S4UUI?.modal({title:'Complete All Acknowledgments',message:'Please review and accept all four Learning Center acknowledgments before submitting.',type:'error',confirmText:'Review Acknowledgments'});
-      try{$('acceptBtn').disabled=true;$('acceptBtn').textContent='Submitting…';values.acknowledgmentPdf=acknowledgmentPdfBase64(values);const d=await call({action:'consent',...values});const s=$('consentStatus');s.hidden=false;s.textContent='Onboarding completed '+new Date(d.consent.accepted_at).toLocaleString()+'. Your signed acknowledgment is now stored in Documents.';$('acceptBtn').textContent='Onboarding Completed';try{sessionStorage.setItem(`s4u:lms:onboarding:2026-08-23:${window.S4UTrainingAuthState?.user?.id||''}`,'1')}catch(_){}window.S4UUI?.modal({title:'Onboarding Complete',message:'Your signed Learning Center acknowledgment has been saved to Documents.',type:'success',confirmText:'Continue'}).then(()=>location.replace(returnDestination()))}catch(e){window.S4UUI?.modal({title:'Unable to Complete Onboarding',message:e.message||'Please review the form and try again.',type:'error',confirmText:'Review Form'});$('acceptBtn').disabled=false;$('acceptBtn').textContent='Submit Onboarding'}
-    }
-  })
-})();
 
-;
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initialize, { once: true });
+  } else {
+    initialize();
+  }
+})();
