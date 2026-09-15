@@ -33,12 +33,12 @@
     document.documentElement.dataset.lmsNavigationInitialized = "true";
 
     injectLmsSidebar();
-    injectMobileDropdownNavigation();
+    injectMobileStyles();
     setActiveNavigation();
     initializeDesktopAccordion();
     initializeMobileNavigation();
+    initializeUserMenu();
     initializeShellEnhancements();
-    initializeGlobalUserMenu();
     window.dispatchEvent(new CustomEvent("lms:sidebar-ready"));
   }
 
@@ -494,7 +494,12 @@
 
     const activeLink = sidebar.querySelector(".lms-nav-link.active");
     const activeGroup = activeLink ? activeLink.closest(".lms-nav-group") : null;
-    openOnly(activeGroup || groups[0]);
+
+    if (window.innerWidth <= 1100) {
+      groups.forEach(function (group) { setGroupState(group, true); });
+    } else {
+      openOnly(activeGroup || groups[0]);
+    }
 
     window.addEventListener("resize", function () {
       if (window.innerWidth <= 1100) {
@@ -738,119 +743,299 @@
 
 
   function injectMobileStyles() {
-    if (
-      document.getElementById(
-        "lms-mobile-dropdown-styles"
-      )
-    ) {
+    if (document.getElementById("lms-mobile-responsive-styles")) {
       return;
     }
 
-    const style =
-      document.createElement("style");
-
-    style.id =
-      "lms-mobile-dropdown-styles";
-
+    const style = document.createElement("style");
+    style.id = "lms-mobile-responsive-styles";
     style.textContent = `
-      @media (max-width: ${DESKTOP_BREAKPOINT}px) {
+      /* ========================================================
+         Shared Learning Center shell fixes
+         ======================================================== */
+      .lms-user-menu-link:hover,
+      .lms-user-menu-link:focus-visible {
+        background: #eef4fb !important;
+        color: #173d78 !important;
+      }
 
-        /*
-         * Mobile uses the dropdown only.
-         * The desktop Learning Center sidebar is completely hidden.
-         */
-        .lms-sidebar,
-        #lms-sidebar,
+      .lms-user-menu-link:focus-visible {
+        outline: 2px solid #ff6b00;
+        outline-offset: -2px;
+      }
+
+      @media (max-width: ${DESKTOP_BREAKPOINT}px) {
+        html,
+        body {
+          width: 100%;
+          max-width: 100%;
+          overflow-x: hidden;
+        }
+
+        body.lms-navigation-open {
+          overflow: hidden !important;
+        }
+
+        body:not(.lms-onboarding-mode) .lms-sidebar,
+        body:not(.lms-onboarding-mode) #lms-sidebar {
+          display: flex !important;
+          position: fixed !important;
+          inset: 0 auto 0 0 !important;
+          width: min(320px, 86vw) !important;
+          height: 100dvh !important;
+          max-height: 100dvh !important;
+          margin: 0 !important;
+          transform: translate3d(-105%, 0, 0);
+          transition: transform .22s ease;
+          z-index: 10021 !important;
+          box-shadow: 18px 0 44px rgba(17, 36, 67, .22);
+          visibility: visible !important;
+        }
+
+        body.lms-navigation-open:not(.lms-onboarding-mode) .lms-sidebar,
+        body.lms-navigation-open:not(.lms-onboarding-mode) #lms-sidebar {
+          transform: translate3d(0, 0, 0);
+        }
+
+        body.lms-onboarding-mode .lms-sidebar,
+        body.lms-onboarding-mode #lms-sidebar,
+        body.lms-onboarding-mode .lms-sidebar-overlay,
+        body.lms-onboarding-mode #lms-sidebar-overlay {
+          display: none !important;
+        }
+
+        .lms-sidebar-inner {
+          width: 100%;
+          min-width: 0;
+          height: 100%;
+        }
+
+        .lms-sidebar-scroll {
+          min-height: 0;
+          overflow-y: auto !important;
+          overscroll-behavior: contain;
+          -webkit-overflow-scrolling: touch;
+        }
+
         .lms-sidebar-overlay,
         #lms-sidebar-overlay {
           display: none !important;
         }
 
-        body.sidebar-open {
-          overflow: auto !important;
+        body.lms-navigation-open:not(.lms-onboarding-mode) .lms-sidebar-overlay,
+        body.lms-navigation-open:not(.lms-onboarding-mode) #lms-sidebar-overlay {
+          display: block !important;
+          position: fixed !important;
+          inset: 0 !important;
+          z-index: 10020 !important;
+          background: rgba(14, 31, 56, .42) !important;
+          backdrop-filter: blur(2px);
         }
 
-        .lms-main,
-        .lms-content,
-        main {
-          width: 100% !important;
-          max-width: 100% !important;
-          margin-left: 0 !important;
-        }
-
+        /* The legacy cloned mobile dropdown is no longer used. */
+        .lms-mobile-dropdown,
         .lms-mobile-dropdown-backdrop {
-          position: fixed;
-          inset: 0;
-          z-index: 9998;
-          background: rgba(17, 36, 67, .18);
-        }
-
-        .lms-mobile-dropdown {
-          position: fixed;
-          left: 12px;
-          right: 12px;
-          top: 76px;
-          z-index: 9999;
-
-          overflow-y: auto;
-          overscroll-behavior: contain;
-
-          background: #ffffff;
-          border: 1px solid #d8e0ec;
-          border-radius: 12px;
-          box-shadow: 0 18px 42px rgba(18, 45, 82, .18);
-        }
-
-        .lms-mobile-dropdown[hidden],
-        .lms-mobile-dropdown-backdrop[hidden] {
           display: none !important;
         }
 
-        .lms-mobile-dropdown-section {
-          padding: 8px;
-          border-bottom: 1px solid #edf1f5;
+        body:not(.lms-course-player-immersive) .lms-main,
+        body:not(.lms-course-player-immersive) main.lms-main {
+          width: 100% !important;
+          max-width: 100% !important;
+          min-width: 0 !important;
+          margin-left: 0 !important;
         }
 
-        .lms-mobile-dropdown-section:last-child {
-          border-bottom: 0;
+        body:not(.lms-course-player-immersive) .lms-topbar {
+          position: sticky;
+          top: 0;
+          z-index: 10010;
+          display: grid !important;
+          grid-template-columns: auto minmax(0, 1fr) auto;
+          align-items: center;
+          gap: 8px;
+          width: 100%;
+          min-height: 64px !important;
+          height: auto !important;
+          padding: 9px 12px !important;
         }
 
-        .lms-mobile-dropdown-label {
-          padding: 8px 10px 6px;
-          color: #748197;
-          font-size: 10px;
-          font-weight: 900;
-          letter-spacing: .08em;
-          text-transform: uppercase;
+        body:not(.lms-course-player-immersive) .lms-topbar-left,
+        body:not(.lms-course-player-immersive) .lms-topbar-right,
+        body:not(.lms-course-player-immersive) .lms-search-wrap {
+          min-width: 0;
         }
 
-        .lms-mobile-dropdown-link {
+        body:not(.lms-course-player-immersive) .lms-topbar-right {
           display: flex;
           align-items: center;
-          min-height: 42px;
-          padding: 0 10px;
-          border-radius: 8px;
-          color: #273348;
-          text-decoration: none;
-          font-size: 14px;
-          font-weight: 700;
+          justify-content: flex-end;
+          gap: 6px;
         }
 
-        .lms-mobile-dropdown-link:hover,
-        .lms-mobile-dropdown-link.active {
-          background: #f2f6fb;
-          color: #173d78;
+        body:not(.lms-course-player-immersive) .lms-menu-button,
+        body:not(.lms-course-player-immersive) .lms-icon-button,
+        body:not(.lms-course-player-immersive) .lms-user-button {
+          min-width: 44px !important;
+          min-height: 44px !important;
+          flex: 0 0 auto;
         }
 
-        [data-lms-menu-toggle][aria-expanded="true"] {
-          background: #f2f6fb;
+        body:not(.lms-course-player-immersive) .lms-menu-button {
+          display: inline-flex !important;
+          align-items: center;
+          justify-content: center;
+        }
+
+        body:not(.lms-course-player-immersive) .lms-search-wrap,
+        body:not(.lms-course-player-immersive) .lms-search {
+          width: 100% !important;
+        }
+
+        body:not(.lms-course-player-immersive) .lms-search input {
+          width: 100%;
+          min-width: 0;
+          font-size: 16px !important;
+        }
+
+        body:not(.lms-course-player-immersive) .lms-search-shortcut {
+          display: none !important;
+        }
+
+        body:not(.lms-course-player-immersive) .lms-user-name,
+        body:not(.lms-course-player-immersive) .lms-user-chevron {
+          display: none !important;
+        }
+
+        body:not(.lms-course-player-immersive) .lms-user-button {
+          padding: 4px !important;
+        }
+
+        .lms-user-menu {
+          position: fixed !important;
+          top: 70px !important;
+          right: 10px !important;
+          left: auto !important;
+          width: min(286px, calc(100vw - 20px)) !important;
+          max-width: calc(100vw - 20px) !important;
+          z-index: 10030 !important;
+        }
+
+        .lms-user-menu-link {
+          min-height: 44px;
+          display: flex !important;
+          align-items: center;
+        }
+
+        body:not(.lms-course-player-immersive) .lms-content {
+          width: 100% !important;
+          max-width: 100% !important;
+          min-width: 0 !important;
+          margin-left: 0 !important;
+          margin-right: 0 !important;
+          padding-left: 14px !important;
+          padding-right: 14px !important;
+        }
+
+        body:not(.lms-course-player-immersive) img,
+        body:not(.lms-course-player-immersive) video,
+        body:not(.lms-course-player-immersive) iframe,
+        body:not(.lms-course-player-immersive) canvas {
+          max-width: 100%;
+        }
+
+        body:not(.lms-course-player-immersive) input,
+        body:not(.lms-course-player-immersive) select,
+        body:not(.lms-course-player-immersive) textarea,
+        body:not(.lms-course-player-immersive) button {
+          max-width: 100%;
+        }
+
+        /* Common LMS multi-column page layouts collapse safely on phones/tablets. */
+        body:not(.lms-course-player-immersive) .home-stat-strip,
+        body:not(.lms-course-player-immersive) .home-main-grid,
+        body:not(.lms-course-player-immersive) .home-learning-grid,
+        body:not(.lms-course-player-immersive) .course-library-grid,
+        body:not(.lms-course-player-immersive) .courses-grid,
+        body:not(.lms-course-player-immersive) .my-courses-grid,
+        body:not(.lms-course-player-immersive) .course-details-layout,
+        body:not(.lms-course-player-immersive) .progress-grid,
+        body:not(.lms-course-player-immersive) .certificates-grid,
+        body:not(.lms-course-player-immersive) .account-layout,
+        body:not(.lms-course-player-immersive) .orders-layout,
+        body:not(.lms-course-player-immersive) .documents-grid,
+        body:not(.lms-course-player-immersive) .docs-workspace,
+        body:not(.lms-course-player-immersive) .appointments-grid,
+        body:not(.lms-course-player-immersive) .support-workspace-grid,
+        body:not(.lms-course-player-immersive) .quiz-layout,
+        body:not(.lms-course-player-immersive) .assessment-layout {
+          grid-template-columns: minmax(0, 1fr) !important;
+          width: 100% !important;
+          min-width: 0 !important;
+        }
+
+        body:not(.lms-course-player-immersive) .docs-table,
+        body:not(.lms-course-player-immersive) .orders-table,
+        body:not(.lms-course-player-immersive) .certificates-table {
+          display: block;
+          width: 100%;
+          max-width: 100%;
+          overflow-x: auto;
+          -webkit-overflow-scrolling: touch;
+        }
+
+        /* Hamburger becomes an X while the navigation drawer is open. */
+        [data-lms-menu-toggle] svg {
+          overflow: visible;
+        }
+
+        [data-lms-menu-toggle] svg path {
+          transform-box: fill-box;
+          transform-origin: center;
+          transition: transform .18s ease, opacity .18s ease;
+        }
+
+        body.lms-navigation-open [data-lms-menu-toggle] svg path:nth-child(1) {
+          transform: translateY(5px) rotate(45deg);
+        }
+
+        body.lms-navigation-open [data-lms-menu-toggle] svg path:nth-child(2) {
+          opacity: 0;
+        }
+
+        body.lms-navigation-open [data-lms-menu-toggle] svg path:nth-child(3) {
+          transform: translateY(-5px) rotate(-45deg);
         }
       }
 
+      @media (max-width: 620px) {
+        body:not(.lms-course-player-immersive) .lms-topbar {
+          grid-template-columns: auto minmax(0, 1fr) auto;
+        }
+
+        body:not(.lms-course-player-immersive) .lms-search-wrap {
+          display: none !important;
+        }
+
+        body:not(.lms-course-player-immersive) .s4u-page-title {
+          display: block !important;
+          max-width: 44vw;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          font-size: 13px;
+          font-weight: 800;
+        }
+
+        body:not(.lms-course-player-immersive) .lms-content {
+          padding-left: 12px !important;
+          padding-right: 12px !important;
+        }
+      }
 
       @media (min-width: ${DESKTOP_BREAKPOINT + 1}px) {
-        .lms-mobile-dropdown,
-        .lms-mobile-dropdown-backdrop {
+        .lms-sidebar-overlay,
+        #lms-sidebar-overlay {
           display: none !important;
         }
       }
@@ -858,7 +1043,6 @@
 
     document.head.appendChild(style);
   }
-
 
   function positionMobileDropdown(
     button,
@@ -907,280 +1091,160 @@
      ============================================================ */
 
   function initializeMobileNavigation() {
-    const button =
-      document.querySelector(
-        "[data-lms-menu-toggle]"
-      );
+    const button = document.querySelector("[data-lms-menu-toggle]");
+    const sidebar = document.getElementById("lms-sidebar");
+    const overlay = document.querySelector("[data-lms-sidebar-overlay]");
 
-    const dropdown =
-      document.getElementById(
-        "lms-mobile-dropdown"
-      );
+    if (!button || !sidebar) return;
+    if (button.dataset.lmsNavigationToggleBound === "1") return;
+    button.dataset.lmsNavigationToggleBound = "1";
 
-    const backdrop =
-      document.getElementById(
-        "lms-mobile-dropdown-backdrop"
-      );
-
-    if (!button) {
-      return;
+    function isMobile() {
+      return window.innerWidth <= DESKTOP_BREAKPOINT;
     }
 
-    // Desktop show/hide must work even if the mobile dropdown is unavailable.
-    if (window.innerWidth > DESKTOP_BREAKPOINT) {
+    function closeMobileMenu() {
+      document.body.classList.remove("lms-navigation-open");
+      button.setAttribute("aria-expanded", "false");
+      button.setAttribute("aria-label", "Open navigation");
+      if (overlay) overlay.setAttribute("aria-hidden", "true");
+    }
+
+    function openMobileMenu() {
+      document.body.classList.add("lms-navigation-open");
+      button.setAttribute("aria-expanded", "true");
+      button.setAttribute("aria-label", "Close navigation");
+      if (overlay) overlay.setAttribute("aria-hidden", "false");
+    }
+
+    function applyDesktopState() {
       let collapsed = false;
-      try { collapsed = localStorage.getItem("s4u-lms-sidebar-collapsed") === "1"; } catch (_) {}
+      try {
+        collapsed = localStorage.getItem("s4u-lms-sidebar-collapsed") === "1";
+      } catch (_) {}
+
+      document.body.classList.remove("lms-navigation-open");
       document.body.classList.toggle("lms-nav-collapsed", collapsed);
       button.setAttribute("aria-expanded", collapsed ? "false" : "true");
       button.setAttribute("aria-label", collapsed ? "Show navigation" : "Hide navigation");
+      if (overlay) overlay.setAttribute("aria-hidden", "true");
+    }
 
-      button.addEventListener("click", function (event) {
-        if (window.innerWidth <= DESKTOP_BREAKPOINT) return;
+    if (isMobile()) {
+      document.body.classList.remove("lms-nav-collapsed");
+      closeMobileMenu();
+    } else {
+      applyDesktopState();
+    }
+
+    button.addEventListener("click", function (event) {
+      event.preventDefault();
+      event.stopPropagation();
+
+      if (isMobile()) {
+        document.body.classList.remove("lms-nav-collapsed");
+        if (document.body.classList.contains("lms-navigation-open")) {
+          closeMobileMenu();
+        } else {
+          openMobileMenu();
+        }
+        return;
+      }
+
+      const collapsed = document.body.classList.toggle("lms-nav-collapsed");
+      button.setAttribute("aria-expanded", collapsed ? "false" : "true");
+      button.setAttribute("aria-label", collapsed ? "Show navigation" : "Hide navigation");
+      try {
+        localStorage.setItem("s4u-lms-sidebar-collapsed", collapsed ? "1" : "0");
+      } catch (_) {}
+    });
+
+    if (overlay) {
+      overlay.addEventListener("click", function (event) {
         event.preventDefault();
-        event.stopPropagation();
-        const next = document.body.classList.toggle("lms-nav-collapsed");
-        button.setAttribute("aria-expanded", next ? "false" : "true");
-        button.setAttribute("aria-label", next ? "Show navigation" : "Hide navigation");
-        try { localStorage.setItem("s4u-lms-sidebar-collapsed", next ? "1" : "0"); } catch (_) {}
+        closeMobileMenu();
       });
-
-      if (!dropdown) return;
     }
 
-    if (!dropdown) return;
+    sidebar.addEventListener("click", function (event) {
+      if (!isMobile()) return;
+      const link = event.target.closest("a");
+      if (link) closeMobileMenu();
+    });
 
-    button.setAttribute(
-      "aria-controls",
-      "lms-mobile-dropdown"
-    );
-
-    button.setAttribute(
-      "aria-expanded",
-      "false"
-    );
-
-
-    function closeMenu() {
-      dropdown.hidden = true;
-
-      if (backdrop) {
-        backdrop.hidden = true;
+    document.addEventListener("keydown", function (event) {
+      if (event.key === "Escape" && isMobile()) {
+        closeMobileMenu();
       }
+    });
 
-      button.setAttribute(
-        "aria-expanded",
-        "false"
-      );
+    let lastMobile = isMobile();
+    window.addEventListener("resize", function () {
+      const mobileNow = isMobile();
+      if (mobileNow === lastMobile) return;
+      lastMobile = mobileNow;
 
-      button.setAttribute(
-        "aria-label",
-        "Open navigation"
-      );
-    }
-
-
-    function openMenu() {
-      rebuildMobileDropdown();
-
-      positionMobileDropdown(
-        button,
-        dropdown
-      );
-
-      if (backdrop) {
-        backdrop.hidden = false;
+      if (mobileNow) {
+        document.body.classList.remove("lms-nav-collapsed");
+        closeMobileMenu();
+      } else {
+        applyDesktopState();
       }
-
-      dropdown.hidden = false;
-
-      button.setAttribute(
-        "aria-expanded",
-        "true"
-      );
-
-      button.setAttribute(
-        "aria-label",
-        "Close navigation"
-      );
-    }
-
-
-    button.addEventListener(
-      "click",
-      function (event) {
-        event.preventDefault();
-        event.stopPropagation();
-
-        if (window.innerWidth > DESKTOP_BREAKPOINT) return;
-
-        const isOpen = button.getAttribute("aria-expanded") === "true";
-        if (isOpen) closeMenu();
-        else openMenu();
-      }
-    );
-
-    dropdown.addEventListener(
-      "click",
-      function (event) {
-        event.stopPropagation();
-
-        const link =
-          event.target.closest("a");
-
-        if (link) {
-          closeMenu();
-        }
-      }
-    );
-
-
-    if (backdrop) {
-      backdrop.addEventListener(
-        "click",
-        closeMenu
-      );
-    }
-
-
-    document.addEventListener(
-      "click",
-      function (event) {
-        if (
-          window.innerWidth <=
-            DESKTOP_BREAKPOINT &&
-          !dropdown.contains(event.target) &&
-          !button.contains(event.target)
-        ) {
-          closeMenu();
-        }
-      }
-    );
-
-
-    document.addEventListener(
-      "keydown",
-      function (event) {
-        if (event.key === "Escape") {
-          closeMenu();
-        }
-      }
-    );
-
-
-    window.addEventListener(
-      "resize",
-      closeMenu
-    );
+    });
   }
 
 
-
   /* ============================================================
-     GLOBAL ACCOUNT MENU
-     Every authenticated LMS page loads lms-sidebar.js, so the
-     account dropdown is owned here instead of page-specific or
-     optional support-bar scripts. Event delegation keeps it
-     working even when the topbar is rendered before/after this file.
+     USER ACCOUNT MENU
+     Shared here because every LMS page already loads lms-sidebar.js.
+     Capture phase prevents older page bundles from double-toggling it.
      ============================================================ */
-
-  function initializeGlobalUserMenu() {
+  function initializeUserMenu() {
     if (document.documentElement.dataset.lmsUserMenuInitialized === "true") {
       return;
     }
-
     document.documentElement.dataset.lmsUserMenuInitialized = "true";
-    injectGlobalUserMenuStyles();
 
-    function closeAllUserMenus(exceptMenu) {
-      document.querySelectorAll("[data-lms-user-menu]").forEach(function (menu) {
-        if (menu === exceptMenu) return;
-        menu.classList.remove("is-open");
-
-        const wrap = menu.closest(".lms-user-wrap");
-        const button = wrap ? wrap.querySelector("[data-lms-user-button]") : null;
-        if (button) button.setAttribute("aria-expanded", "false");
-      });
-    }
-
-    // Capture the click before older page bundles can attach a second toggle.
-    // This prevents the common open-then-immediately-close double-toggle.
     document.addEventListener("click", function (event) {
       const button = event.target.closest("[data-lms-user-button]");
 
       if (button) {
-        const wrap = button.closest(".lms-user-wrap");
+        const wrap = button.closest(".lms-user-wrap") || button.parentElement;
         const menu = wrap ? wrap.querySelector("[data-lms-user-menu]") : null;
         if (!menu) return;
 
         event.preventDefault();
-        event.stopPropagation();
         event.stopImmediatePropagation();
 
-        const willOpen = !menu.classList.contains("is-open");
-        closeAllUserMenus(menu);
-        menu.classList.toggle("is-open", willOpen);
-        button.setAttribute("aria-expanded", willOpen ? "true" : "false");
+        document.querySelectorAll("[data-lms-user-menu].is-open").forEach(function (other) {
+          if (other !== menu) other.classList.remove("is-open");
+        });
+
+        const open = menu.classList.toggle("is-open");
+        button.setAttribute("aria-expanded", open ? "true" : "false");
         return;
       }
 
-      const menuLink = event.target.closest("[data-lms-user-menu] a, [data-lms-user-menu] button");
-      if (menuLink) {
-        closeAllUserMenus();
-        return;
-      }
+      const insideMenu = event.target.closest("[data-lms-user-menu]");
+      if (insideMenu) return;
 
-      if (!event.target.closest("[data-lms-user-menu]")) {
-        closeAllUserMenus();
-      }
+      document.querySelectorAll("[data-lms-user-menu].is-open").forEach(function (menu) {
+        menu.classList.remove("is-open");
+      });
+      document.querySelectorAll("[data-lms-user-button][aria-expanded=\"true\"]").forEach(function (btn) {
+        btn.setAttribute("aria-expanded", "false");
+      });
     }, true);
 
     document.addEventListener("keydown", function (event) {
       if (event.key !== "Escape") return;
-      closeAllUserMenus();
+      document.querySelectorAll("[data-lms-user-menu].is-open").forEach(function (menu) {
+        menu.classList.remove("is-open");
+      });
+      document.querySelectorAll("[data-lms-user-button][aria-expanded=\"true\"]").forEach(function (btn) {
+        btn.setAttribute("aria-expanded", "false");
+      });
     });
-  }
-
-  function injectGlobalUserMenuStyles() {
-    if (document.getElementById("lms-global-user-menu-styles")) return;
-
-    const style = document.createElement("style");
-    style.id = "lms-global-user-menu-styles";
-    style.textContent = `
-      .lms-user-wrap {
-        position: relative;
-      }
-
-      [data-lms-user-menu].is-open {
-        display: block !important;
-        visibility: visible !important;
-        opacity: 1 !important;
-        pointer-events: auto !important;
-        transform: translateY(0) !important;
-        z-index: 10050 !important;
-      }
-
-      .lms-user-menu-link,
-      .lms-user-menu a.lms-user-menu-link,
-      .lms-user-menu button.lms-user-menu-link {
-        color: #5f6f86 !important;
-        text-decoration: none !important;
-      }
-
-      .lms-user-menu-link:hover,
-      .lms-user-menu-link:focus-visible,
-      .lms-user-menu a.lms-user-menu-link:hover,
-      .lms-user-menu button.lms-user-menu-link:hover {
-        background: #f2f6fb !important;
-        color: #173d78 !important;
-      }
-
-      .lms-user-menu-link:focus-visible {
-        outline: 2px solid rgba(47, 87, 149, .28);
-        outline-offset: -2px;
-      }
-    `;
-
-    document.head.appendChild(style);
   }
 
   /* ============================================================
@@ -1191,6 +1255,7 @@
     const page = (location.pathname.split("/").pop() || "lms-dashboard.html").toLowerCase();
 
     if (page === "lms-welcome.html") {
+      document.body.classList.remove("lms-navigation-open");
       document.body.classList.add("lms-onboarding-mode");
       const app = document.querySelector(".lms-app");
       if (app && !document.querySelector(".onboard-brandbar")) {
