@@ -38,6 +38,7 @@
     initializeDesktopAccordion();
     initializeMobileNavigation();
     initializeShellEnhancements();
+    initializeGlobalUserMenu();
     window.dispatchEvent(new CustomEvent("lms:sidebar-ready"));
   }
 
@@ -115,6 +116,22 @@
 
               <nav class="lms-nav">
 
+                      <!-- WELCOME & POLICIES -->
+
+                <a
+                  href="lms-welcome.html"
+                  class="lms-nav-link"
+                  data-lms-page="lms-welcome.html"
+                >
+                  <span class="lms-nav-icon">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                      <rect x="4" y="4" width="16" height="16" rx="2"></rect>
+                      <path d="M8 9h8M8 13h8M8 17h5"></path>
+                    </svg>
+                  </span>
+                  <span class="lms-nav-text">Welcome &amp; Policies</span>
+                </a>
+
                 <!-- HOME -->
 
                 <a
@@ -133,23 +150,6 @@
                   <span class="lms-nav-text">
                     Home
                   </span>
-                </a>
-
-
-                <!-- WELCOME & POLICIES -->
-
-                <a
-                  href="lms-welcome.html"
-                  class="lms-nav-link"
-                  data-lms-page="lms-welcome.html"
-                >
-                  <span class="lms-nav-icon">
-                    <svg viewBox="0 0 24 24" aria-hidden="true">
-                      <rect x="4" y="4" width="16" height="16" rx="2"></rect>
-                      <path d="M8 9h8M8 13h8M8 17h5"></path>
-                    </svg>
-                  </span>
-                  <span class="lms-nav-text">Welcome &amp; Policies</span>
                 </a>
 
 
@@ -1073,6 +1073,115 @@
     );
   }
 
+
+
+  /* ============================================================
+     GLOBAL ACCOUNT MENU
+     Every authenticated LMS page loads lms-sidebar.js, so the
+     account dropdown is owned here instead of page-specific or
+     optional support-bar scripts. Event delegation keeps it
+     working even when the topbar is rendered before/after this file.
+     ============================================================ */
+
+  function initializeGlobalUserMenu() {
+    if (document.documentElement.dataset.lmsUserMenuInitialized === "true") {
+      return;
+    }
+
+    document.documentElement.dataset.lmsUserMenuInitialized = "true";
+    injectGlobalUserMenuStyles();
+
+    function closeAllUserMenus(exceptMenu) {
+      document.querySelectorAll("[data-lms-user-menu]").forEach(function (menu) {
+        if (menu === exceptMenu) return;
+        menu.classList.remove("is-open");
+
+        const wrap = menu.closest(".lms-user-wrap");
+        const button = wrap ? wrap.querySelector("[data-lms-user-button]") : null;
+        if (button) button.setAttribute("aria-expanded", "false");
+      });
+    }
+
+    // Capture the click before older page bundles can attach a second toggle.
+    // This prevents the common open-then-immediately-close double-toggle.
+    document.addEventListener("click", function (event) {
+      const button = event.target.closest("[data-lms-user-button]");
+
+      if (button) {
+        const wrap = button.closest(".lms-user-wrap");
+        const menu = wrap ? wrap.querySelector("[data-lms-user-menu]") : null;
+        if (!menu) return;
+
+        event.preventDefault();
+        event.stopPropagation();
+        event.stopImmediatePropagation();
+
+        const willOpen = !menu.classList.contains("is-open");
+        closeAllUserMenus(menu);
+        menu.classList.toggle("is-open", willOpen);
+        button.setAttribute("aria-expanded", willOpen ? "true" : "false");
+        return;
+      }
+
+      const menuLink = event.target.closest("[data-lms-user-menu] a, [data-lms-user-menu] button");
+      if (menuLink) {
+        closeAllUserMenus();
+        return;
+      }
+
+      if (!event.target.closest("[data-lms-user-menu]")) {
+        closeAllUserMenus();
+      }
+    }, true);
+
+    document.addEventListener("keydown", function (event) {
+      if (event.key !== "Escape") return;
+      closeAllUserMenus();
+    });
+  }
+
+  function injectGlobalUserMenuStyles() {
+    if (document.getElementById("lms-global-user-menu-styles")) return;
+
+    const style = document.createElement("style");
+    style.id = "lms-global-user-menu-styles";
+    style.textContent = `
+      .lms-user-wrap {
+        position: relative;
+      }
+
+      [data-lms-user-menu].is-open {
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        pointer-events: auto !important;
+        transform: translateY(0) !important;
+        z-index: 10050 !important;
+      }
+
+      .lms-user-menu-link,
+      .lms-user-menu a.lms-user-menu-link,
+      .lms-user-menu button.lms-user-menu-link {
+        color: #5f6f86 !important;
+        text-decoration: none !important;
+      }
+
+      .lms-user-menu-link:hover,
+      .lms-user-menu-link:focus-visible,
+      .lms-user-menu a.lms-user-menu-link:hover,
+      .lms-user-menu button.lms-user-menu-link:hover {
+        background: #f2f6fb !important;
+        color: #173d78 !important;
+      }
+
+      .lms-user-menu-link:focus-visible {
+        outline: 2px solid rgba(47, 87, 149, .28);
+        outline-offset: -2px;
+      }
+    `;
+
+    document.head.appendChild(style);
+  }
 
   /* ============================================================
      SHELL ENHANCEMENTS
