@@ -14,6 +14,50 @@
 <link rel="stylesheet" href="assets/css/lms-ui-modals.css">
   <link rel="stylesheet" href="assets/css/lms-shell-v2.css?v=20260915-2">
   <link rel="stylesheet" href="assets/css/lms-course-player-2026.css?v=20260915-5">
+
+<style>
+/* Course Player — Exit Course button only */
+.course-player-exit{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:7px;
+  min-height:36px;
+  padding:0 13px;
+  border:1px solid rgba(255,255,255,.28);
+  border-radius:9px;
+  background:rgba(255,255,255,.10);
+  color:#fff;
+  font-size:12px;
+  font-weight:800;
+  line-height:1;
+  text-decoration:none;
+  white-space:nowrap;
+  transition:background .18s ease,border-color .18s ease,transform .18s ease;
+}
+.course-player-exit:hover{
+  background:rgba(255,255,255,.18);
+  border-color:rgba(255,255,255,.42);
+  color:#fff;
+}
+.course-player-exit:focus-visible{
+  outline:3px solid rgba(255,107,0,.35);
+  outline-offset:2px;
+}
+.course-player-exit svg{
+  width:16px;
+  height:16px;
+  fill:none;
+  stroke:currentColor;
+  stroke-width:2;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+}
+@media(max-width:640px){
+  .course-player-exit span{display:none}
+  .course-player-exit{width:36px;padding:0}
+}
+</style>
 </head>
 
 <body class="lms-course-player-immersive">
@@ -238,6 +282,15 @@
                     <svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"></path></svg>
                     <span>Curriculum</span>
                   </button>
+
+                  <a class="course-player-exit" href="lms-dashboard.html" aria-label="Exit course player and return to Learning Center dashboard">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M10 17l5-5-5-5"></path>
+                      <path d="M15 12H3"></path>
+                      <path d="M14 4h5a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-5"></path>
+                    </svg>
+                    <span>Exit Course</span>
+                  </a>
                 </div>
 
                 <span
