@@ -1,1031 +1,225 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="theme-color" content="#325aa3" />
-
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Progress | screenings4u Learning Center</title>
-<link href="images/fav.png" rel="icon" type="image/png"/>
-
-<link rel="stylesheet" href="assets/css/lms.css">
-<link rel="stylesheet" href="assets/css/lms-refinement.css">
-<link rel="stylesheet" href="assets/css/lms-ui-modals.css">
-
-<style>
-:root{
-  --s4u-blue:#325aa3;
-  --s4u-dark-blue:#24467f;
-  --s4u-orange:#ff6b00;
-  --s4u-orange-hover:#e66000;
-  --s4u-page:#f5f7fa;
-  --s4u-card:#ffffff;
-  --s4u-border:#dfe5ec;
-  --s4u-text:#172033;
-  --s4u-muted:#687386;
-}
-
-.progress-page{
-  width:100%;
-  min-width:0;
-  padding-bottom:32px;
-}
-
-.progress-breadcrumb{
-  display:flex;
-  align-items:center;
-  gap:8px;
-  flex-wrap:wrap;
-  margin-bottom:22px;
-  color:var(--s4u-muted);
-  font-size:12px;
-  font-weight:700;
-}
-
-.progress-breadcrumb a{
-  color:var(--s4u-blue);
-  text-decoration:none;
-}
-
-.progress-breadcrumb svg{
-  width:14px;
-  height:14px;
-  fill:none;
-  stroke:currentColor;
-  stroke-width:2;
-  stroke-linecap:round;
-  stroke-linejoin:round;
-}
-
-.progress-page-header{
-  display:flex;
-  align-items:flex-end;
-  justify-content:space-between;
-  gap:24px;
-  margin-bottom:24px;
-}
-
-.progress-page-header h1{
-  margin:0;
-  color:var(--s4u-text);
-  font-size:32px;
-  font-weight:800;
-  letter-spacing:-.03em;
-}
-
-.progress-page-header p{
-  margin:8px 0 0;
-  color:var(--s4u-muted);
-  font-size:14px;
-  line-height:1.6;
-}
-
-.progress-date{
-  color:var(--s4u-muted);
-  font-size:11px;
-  font-weight:700;
-  white-space:nowrap;
-}
-
-/* Overview */
-
-.progress-overview{
-  display:grid;
-  grid-template-columns:minmax(0,1.55fr) repeat(3,minmax(150px,.7fr));
-  gap:18px;
-}
-
-.progress-main-card,
-.progress-stat-card,
-.progress-panel{
-  border:1px solid var(--s4u-border);
-  border-radius:16px;
-  background:var(--s4u-card);
-}
-
-.progress-main-card{
-  position:relative;
-  overflow:hidden;
-  padding:26px;
-  background:linear-gradient(135deg,var(--s4u-dark-blue),var(--s4u-blue));
-}
-
-.progress-main-card::after{
-  content:"";
-  position:absolute;
-  width:240px;
-  height:240px;
-  right:-105px;
-  top:-105px;
-  border:1px solid rgba(255,255,255,.13);
-  border-radius:50%;
-}
-
-.progress-main-content{
-  position:relative;
-  z-index:1;
-  display:flex;
-  align-items:center;
-  gap:24px;
-}
-
-.progress-ring{
-  width:116px;
-  height:116px;
-  flex:0 0 auto;
-  position:relative;
-  display:grid;
-  place-items:center;
-}
-
-.progress-ring svg{
-  width:116px;
-  height:116px;
-  transform:rotate(-90deg);
-}
-
-.progress-ring-bg{
-  fill:none;
-  stroke:rgba(255,255,255,.18);
-  stroke-width:8;
-}
-
-.progress-ring-value{
-  fill:none;
-  stroke:var(--s4u-orange);
-  stroke-width:8;
-  stroke-linecap:round;
-  stroke-dasharray:289;
-  stroke-dashoffset:98;
-}
-
-.progress-ring-label{
-  position:absolute;
-  text-align:center;
-}
-
-.progress-ring-label strong{
-  display:block;
-  color:#fff;
-  font-size:25px;
-  line-height:1;
-}
-
-.progress-ring-label span{
-  display:block;
-  margin-top:4px;
-  color:rgba(255,255,255,.65);
-  font-size:9px;
-  font-weight:800;
-  text-transform:uppercase;
-  letter-spacing:.08em;
-}
-
-.progress-main-copy h2{
-  margin:0;
-  color:#fff;
-  font-size:20px;
-  font-weight:800;
-}
-
-.progress-main-copy p{
-  margin:8px 0 0;
-  color:rgba(255,255,255,.76);
-  font-size:13px;
-  line-height:1.6;
-}
-
-.progress-main-copy strong{
-  display:block;
-  margin-top:14px;
-  color:#fff;
-  font-size:12px;
-}
-
-.progress-stat-card{
-  padding:21px;
-}
-
-.progress-stat-icon{
-  width:38px;
-  height:38px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  border-radius:10px;
-  background:var(--s4u-page);
-  color:var(--s4u-blue);
-}
-
-.progress-stat-icon svg{
-  width:20px;
-  height:20px;
-  fill:none;
-  stroke:currentColor;
-  stroke-width:1.9;
-  stroke-linecap:round;
-  stroke-linejoin:round;
-}
-
-.progress-stat-value{
-  display:block;
-  margin-top:18px;
-  color:var(--s4u-text);
-  font-size:27px;
-  font-weight:800;
-}
-
-.progress-stat-label{
-  display:block;
-  margin-top:3px;
-  color:var(--s4u-muted);
-  font-size:11px;
-  font-weight:700;
-}
-
-/* Layout */
-
-.progress-layout{
-  display:grid;
-  grid-template-columns:minmax(0,1fr) 300px;
-  gap:24px;
-  margin-top:24px;
-  align-items:start;
-}
-
-.progress-panel{
-  overflow:hidden;
-}
-
-.progress-panel-head{
-  display:flex;
-  align-items:flex-start;
-  justify-content:space-between;
-  gap:20px;
-  padding:23px 24px;
-  border-bottom:1px solid var(--s4u-border);
-}
-
-.progress-panel-head h2{
-  margin:0;
-  color:var(--s4u-text);
-  font-size:18px;
-  font-weight:800;
-}
-
-.progress-panel-head p{
-  margin:6px 0 0;
-  color:var(--s4u-muted);
-  font-size:12px;
-  line-height:1.5;
-}
-
-.progress-link{
-  color:var(--s4u-blue);
-  font-size:12px;
-  font-weight:800;
-  text-decoration:none;
-  white-space:nowrap;
-}
-
-/* Course progress */
-
-.course-progress-list{
-  display:grid;
-}
-
-.course-progress-item{
-  display:grid;
-  grid-template-columns:64px minmax(0,1fr);
-  gap:17px;
-  padding:21px 24px;
-  border-bottom:1px solid var(--s4u-border);
-}
-
-.course-progress-item:last-child{
-  border-bottom:0;
-}
-
-.course-progress-icon{
-  width:64px;
-  height:64px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  border-radius:13px;
-  background:var(--s4u-page);
-  color:var(--s4u-blue);
-}
-
-.course-progress-icon svg{
-  width:30px;
-  height:30px;
-  fill:none;
-  stroke:currentColor;
-  stroke-width:1.7;
-  stroke-linecap:round;
-  stroke-linejoin:round;
-}
-
-.course-progress-content{
-  min-width:0;
-}
-
-.course-progress-top{
-  display:flex;
-  justify-content:space-between;
-  gap:15px;
-}
-
-.course-progress-title{
-  margin:0;
-  color:var(--s4u-text);
-  font-size:15px;
-  font-weight:800;
-  line-height:1.4;
-}
-
-.course-progress-percent{
-  color:var(--s4u-blue);
-  font-size:13px;
-  font-weight:800;
-  white-space:nowrap;
-}
-
-.course-progress-meta{
-  margin-top:5px;
-  color:var(--s4u-muted);
-  font-size:11px;
-  line-height:1.45;
-}
-
-.course-progress-bar{
-  height:7px;
-  margin-top:14px;
-  overflow:hidden;
-  border-radius:999px;
-  background:var(--s4u-border);
-}
-
-.course-progress-fill{
-  height:100%;
-  border-radius:999px;
-  background:var(--s4u-blue);
-}
-
-.course-progress-fill.complete{
-  background:var(--s4u-orange);
-}
-
-.course-progress-footer{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:15px;
-  margin-top:11px;
-}
-
-.course-progress-status{
-  color:var(--s4u-muted);
-  font-size:11px;
-  font-weight:700;
-}
-
-.course-progress-action{
-  color:var(--s4u-blue);
-  font-size:11px;
-  font-weight:800;
-  text-decoration:none;
-}
-
-/* Activity */
-
-.activity-list{
-  padding:5px 0;
-}
-
-.activity-item{
-  position:relative;
-  display:flex;
-  gap:13px;
-  padding:17px 21px;
-}
-
-.activity-item:not(:last-child)::after{
-  content:"";
-  position:absolute;
-  left:34px;
-  top:49px;
-  bottom:-8px;
-  width:1px;
-  background:var(--s4u-border);
-}
-
-.activity-icon{
-  position:relative;
-  z-index:1;
-  width:27px;
-  height:27px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  flex:0 0 auto;
-  border-radius:50%;
-  background:var(--s4u-page);
-  color:var(--s4u-blue);
-}
-
-.activity-icon.complete{
-  background:rgba(50,90,163,.12);
-}
-
-.activity-icon.certificate{
-  background:rgba(255,107,0,.12);
-  color:var(--s4u-orange);
-}
-
-.activity-icon svg{
-  width:14px;
-  height:14px;
-  fill:none;
-  stroke:currentColor;
-  stroke-width:2;
-  stroke-linecap:round;
-  stroke-linejoin:round;
-}
-
-.activity-copy{
-  min-width:0;
-}
-
-.activity-copy strong{
-  display:block;
-  color:var(--s4u-text);
-  font-size:12px;
-  line-height:1.4;
-}
-
-.activity-copy span{
-  display:block;
-  margin-top:4px;
-  color:var(--s4u-muted);
-  font-size:11px;
-  line-height:1.45;
-}
-
-/* Right rail */
-
-.milestone-list{
-  padding:8px 0;
-}
-
-.milestone-item{
-  display:flex;
-  align-items:flex-start;
-  gap:12px;
-  padding:14px 20px;
-}
-
-.milestone-check{
-  width:25px;
-  height:25px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  flex:0 0 auto;
-  border:1px solid var(--s4u-border);
-  border-radius:50%;
-  color:var(--s4u-muted);
-}
-
-.milestone-check.complete{
-  border-color:var(--s4u-blue);
-  background:var(--s4u-blue);
-  color:#fff;
-}
-
-.milestone-check svg{
-  width:14px;
-  height:14px;
-  fill:none;
-  stroke:currentColor;
-  stroke-width:2.3;
-  stroke-linecap:round;
-  stroke-linejoin:round;
-}
-
-.milestone-copy strong{
-  display:block;
-  color:var(--s4u-text);
-  font-size:12px;
-  line-height:1.4;
-}
-
-.milestone-copy span{
-  display:block;
-  margin-top:3px;
-  color:var(--s4u-muted);
-  font-size:11px;
-  line-height:1.45;
-}
-
-.next-step{
-  padding:21px;
-}
-
-.next-step-badge{
-  display:inline-flex;
-  align-items:center;
-  gap:7px;
-  color:var(--s4u-orange);
-  font-size:10px;
-  font-weight:800;
-  letter-spacing:.08em;
-  text-transform:uppercase;
-}
-
-.next-step-badge i{
-  width:7px;
-  height:7px;
-  border-radius:50%;
-  background:var(--s4u-orange);
-}
-
-.next-step h3{
-  margin:10px 0 0;
-  color:var(--s4u-text);
-  font-size:16px;
-  line-height:1.4;
-}
-
-.next-step p{
-  margin:8px 0 17px;
-  color:var(--s4u-muted);
-  font-size:12px;
-  line-height:1.6;
-}
-
-.next-step-button{
-  width:100%;
-  min-height:42px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  border-radius:9px;
-  background:var(--s4u-orange);
-  color:#fff;
-  font-size:12px;
-  font-weight:800;
-  text-decoration:none;
-}
-
-.next-step-button:hover{
-  background:var(--s4u-orange-hover);
-}
-
-@media(max-width:1150px){
-  .progress-overview{
-    grid-template-columns:minmax(0,1fr) repeat(3,minmax(130px,.7fr));
-  }
-}
-
-@media(max-width:950px){
-  .progress-overview{
-    grid-template-columns:1fr 1fr;
-  }
-
-  .progress-main-card{
-    grid-column:1/-1;
-  }
-
-  .progress-layout{
-    grid-template-columns:1fr;
-  }
-}
-
-@media(max-width:650px){
-  .progress-page-header{
-    align-items:flex-start;
-    flex-direction:column;
-  }
-
-  .progress-date{
-    white-space:normal;
-  }
-
-  .progress-overview{
-    grid-template-columns:1fr;
-  }
-
-  .progress-main-content{
-    align-items:flex-start;
-    flex-direction:column;
-  }
-
-  .course-progress-item{
-    grid-template-columns:1fr;
-  }
-
-  .course-progress-icon{
-    width:52px;
-    height:52px;
-  }
-
-  .course-progress-top{
-    flex-direction:column;
-    gap:5px;
-  }
-}
-</style>
-<style id="training-mobile-progress-final">
-*,*::before,*::after{box-sizing:border-box}html,body{max-width:100%;overflow-x:hidden}
-@media(max-width:767px){html{font-size:16px}.lms-app,.lms-main{width:100%;min-width:0}.lms-main{margin-left:0!important}.lms-topbar{height:auto;min-height:64px;padding:10px 14px;gap:10px;display:grid;grid-template-columns:auto 1fr auto}.lms-menu-button{display:inline-flex!important;min-width:44px;min-height:44px}.lms-search-wrap{min-width:0}.lms-search{width:100%}.lms-search input{min-width:0;font-size:16px}.lms-search-shortcut,.lms-user-name,.lms-user-chevron{display:none!important}.lms-topbar-right{gap:6px}.lms-icon-button,.lms-user-button{min-width:44px;min-height:44px}.lms-user-button{padding:4px}.lms-content.progress-page{width:100%;min-width:0;padding:18px 14px 36px}.progress-breadcrumb{font-size:13px;margin-bottom:16px}.progress-page-header{display:grid;grid-template-columns:1fr;width:100%;gap:12px}.progress-page-header h1{font-size:29px;line-height:1.15;overflow-wrap:anywhere}.progress-page-header p{font-size:15px;line-height:1.6}.progress-overview,.progress-layout{display:grid;grid-template-columns:1fr!important;width:100%;min-width:0;gap:14px}.progress-stat-card,.progress-panel,.progress-main-card{width:100%;min-width:0;border-radius:13px}.progress-main-content,.progress-main-copy{display:grid;grid-template-columns:1fr;width:100%;min-width:0;gap:14px}.progress-panel-head{align-items:flex-start;flex-direction:column;gap:8px}.course-progress-list,.activity-list,.milestone-list{width:100%;min-width:0}.course-progress-list>*,.activity-list>*,.milestone-list>*{min-width:0;overflow-wrap:anywhere}.next-step{display:grid;grid-template-columns:1fr;gap:12px}.progress-link,.next-step a,.next-step button{width:100%;min-height:46px;justify-content:center;text-align:center}}
-@media(max-width:420px){.lms-search-wrap{display:none}.lms-topbar{grid-template-columns:1fr auto}.progress-page-header h1{font-size:26px}}
-</style>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="theme-color" content="#24467f"/>
+  <title>Progress | screenings4u Learning Center</title>
+  <link href="images/fav.png" rel="icon" type="image/png"/>
+
+  <link href="assets/css/lms.css" rel="stylesheet"/>
+  <link href="assets/css/lms-refinement.css" rel="stylesheet"/>
+  <link href="assets/css/lms-ui-modals.css" rel="stylesheet"/>
+  <link href="assets/css/lms-learning-center-2026-corrected.css?v=20260915-9" rel="stylesheet"/>
+  <link href="assets/css/lms-shell-v3.css?v=20260915-2" rel="stylesheet"/>
+  <link href="assets/css/lms-progress-redesign-2026.css?v=20260915-2" rel="stylesheet"/>
 </head>
 
-<body>
+<body class="lms-progress-page">
+  <div class="lms-app">
+    <div id="lms-sidebar-target"></div>
 
-<div class="lms-app">
-
-  <!-- Dynamic shared sidebar -->
-  <div id="lms-sidebar-target"></div>
-
-  <main class="lms-main">
-
-    <!-- Shared LMS shell topbar -->
-    <header class="lms-topbar">
-
-      <div class="lms-topbar-left">
-        <button
-          type="button"
-          class="lms-menu-button"
-          data-lms-menu-toggle
-          aria-label="Toggle navigation"
-        >
-          <svg viewBox="0 0 24 24">
-            <path d="M4 7h16"></path>
-            <path d="M4 12h16"></path>
-            <path d="M4 17h16"></path>
-          </svg>
-        </button>
-      </div>
-
-      <div class="lms-search-wrap">
-        <label class="lms-search">
-
-          <span class="lms-search-icon">
-            <svg viewBox="0 0 24 24">
-              <circle cx="11" cy="11" r="6"></circle>
-              <path d="m20 20-4-4"></path>
+    <main class="lms-main">
+      <header class="lms-topbar">
+        <div class="lms-topbar-left">
+          <button aria-label="Toggle navigation" class="lms-menu-button" data-lms-menu-toggle type="button">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M4 7h16"></path>
+              <path d="M4 12h16"></path>
+              <path d="M4 17h16"></path>
             </svg>
-          </span>
+          </button>
+        </div>
 
-          <input
-            type="search"
-            placeholder="Search courses, lessons, and resources..."
-            data-lms-search
-          >
-
-          <span class="lms-search-shortcut">Ctrl K</span>
-
-        </label>
-      </div>
-
-      <div class="lms-topbar-right">
-
-        <a href="lms-notifications.html"
-          class="lms-icon-button"
-          aria-label="Notifications"
-         title="Notifications">>
-          <svg viewBox="0 0 24 24">
-            <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"></path>
-            <path d="M10 21h4"></path>
-          </svg>
-
-          <span class="lms-notification-dot"></span>
-        </a>
-
-        <div class="lms-user-wrap">
-
-          <button
-            type="button"
-            class="lms-user-button"
-            data-lms-user-button
-            aria-expanded="false"
-          >
-
-            <span
-              class="lms-user-avatar"
-              data-lms-learner-initials
-            >--</span>
-
-            <span
-              class="lms-user-name"
-              data-lms-learner-name
-            >Learner</span>
-
-            <span class="lms-user-chevron">
-              <svg viewBox="0 0 24 24">
-                <path d="m7 10 5 5 5-5"></path>
+        <div class="lms-search-wrap">
+          <label class="lms-search">
+            <span class="lms-search-icon">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="11" cy="11" r="6"></circle>
+                <path d="m20 20-4-4"></path>
               </svg>
             </span>
+            <input data-lms-search placeholder="Search courses, lessons, and resources..." type="search"/>
+            <span class="lms-search-shortcut">Ctrl K</span>
+          </label>
+        </div>
 
-          </button>
+        <div class="lms-topbar-right">
+          <a aria-label="Notifications" class="lms-icon-button" href="lms-notifications.html" title="Notifications">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"></path>
+              <path d="M10 21h4"></path>
+            </svg>
+            <span class="lms-notification-dot"></span>
+          </a>
 
-          <div
-            class="lms-user-menu"
-            data-lms-user-menu
-          >
-
-            <div class="lms-user-menu-header">
-              <span class="lms-user-menu-name">
-                Learner
+          <div class="lms-user-wrap">
+            <button aria-expanded="false" class="lms-user-button" data-lms-user-button type="button">
+              <span class="lms-user-avatar" data-lms-learner-initials></span>
+              <span class="lms-user-name" data-lms-learner-name></span>
+              <span class="lms-user-chevron">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m7 10 5 5 5-5"></path></svg>
               </span>
-
-              <span class="lms-user-menu-email">
-                
-              </span>
-            </div>
-
-            <a
-              href="lms-account.html"
-              class="lms-user-menu-link"
-            >
-              My Account
-            </a>
-
-            <a
-              href="lms-certificates.html"
-              class="lms-user-menu-link"
-            >
-              My Certificates
-            </a>
-
-            <button
-              type="button"
-              class="lms-user-menu-link"
-              data-lms-sign-out
-            >
-              Sign Out
             </button>
 
+            <div class="lms-user-menu" data-lms-user-menu>
+              <div class="lms-user-menu-header">
+                <span class="lms-user-menu-name" data-lms-user-menu-name></span>
+                <span class="lms-user-menu-email" data-lms-user-menu-email></span>
+              </div>
+              <a class="lms-user-menu-link" href="lms-account.html">My Account</a>
+              <a class="lms-user-menu-link" href="lms-certificates.html">My Certificates</a>
+              <button class="lms-user-menu-link" data-lms-sign-out type="button">Sign Out</button>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <div class="lms-content progress-page">
+        <nav class="progress-breadcrumb" aria-label="Breadcrumb">
+          <a href="lms-dashboard.html">Home</a>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6"></path></svg>
+          <span>Progress</span>
+        </nav>
+
+        <section class="progress-hero">
+          <div class="progress-hero-copy">
+            <span class="progress-kicker">SCREENINGS4U LEARNING CENTER</span>
+            <h1>Learning Progress</h1>
+            <p>See exactly where you stand across active training, completed lessons, knowledge checks, and earned certificates.</p>
+
+            <div class="progress-hero-actions">
+              <a class="progress-primary-button" href="lms-my-courses.html">Continue Learning</a>
+              <a class="progress-secondary-button" href="lms-certificates.html">View Certificates</a>
+            </div>
+
+            <div class="progress-updated">Last updated <strong id="progressUpdated">—</strong></div>
           </div>
 
-        </div>
-
-      </div>
-
-    </header>
-
-    <div class="lms-content progress-page">
-
-      <nav
-        class="progress-breadcrumb"
-        aria-label="Breadcrumb"
-      >
-
-        <a href="lms-dashboard.html">Home</a>
-
-        <svg viewBox="0 0 24 24">
-          <path d="m9 18 6-6-6-6"></path>
-        </svg>
-
-        <span>Progress</span>
-
-      </nav>
-
-      <!-- PAGE HEADER -->
-
-      <section class="progress-page-header">
-
-        <div>
-
-          <h1>Learning Progress</h1>
-
-          <p>
-            Track your course activity, completed modules,
-            knowledge checks, and certification progress.
-          </p>
-
-        </div>
-
-        <div class="progress-date">
-          Last updated: <span id="progressUpdated">—</span>
-        </div>
-
-      </section>
-
-      <!-- OVERVIEW -->
-
-      <section class="progress-overview">
-
-        <article class="progress-main-card">
-
-          <div class="progress-main-content">
-
+          <div class="progress-hero-score" aria-label="Overall learning progress">
             <div class="progress-ring">
-
-              <svg viewBox="0 0 100 100">
-
-                <circle
-                  class="progress-ring-bg"
-                  cx="50"
-                  cy="50"
-                  r="46"
-                ></circle>
-
-                <circle
-                  class="progress-ring-value"
-                  cx="50"
-                  cy="50"
-                  r="46"
-                ></circle>
-
+              <svg viewBox="0 0 100 100" aria-hidden="true">
+                <circle class="progress-ring-bg" cx="50" cy="50" r="46"></circle>
+                <circle class="progress-ring-value" cx="50" cy="50" r="46"></circle>
               </svg>
-
               <div class="progress-ring-label">
                 <strong id="overallProgress">0%</strong>
-                <span>Complete</span>
+                <span>Overall</span>
               </div>
-
             </div>
-
-            <div class="progress-main-copy">
-
-              <h2>Overall Learning Progress</h2>
-
-              <p>
-                You are making steady progress through your assigned
-                training. Continue your active course to complete your
-                next learning milestone.
-              </p>
-
-              <strong>
-                <span id="learningGoals">0 learning goals completed</span>
-              </strong>
-
+            <div class="progress-hero-score-copy">
+              <span>YOUR COMPLETION</span>
+              <strong id="learningGoals">0 learning goals completed</strong>
+              <p>Calculated from all active and completed courses currently assigned to you.</p>
             </div>
-
           </div>
+        </section>
 
-        </article>
-
-        <article class="progress-stat-card">
-
-          <div class="progress-stat-icon">
-            <svg viewBox="0 0 24 24">
-              <path d="M4 19V9"></path>
-              <path d="M10 19V5"></path>
-              <path d="M16 19v-7"></path>
-              <path d="M22 19V3"></path>
-            </svg>
-          </div>
-
-          <span class="progress-stat-value" id="modulesCompleted">0</span>
-
-          <span class="progress-stat-label">
-            Modules Completed
-          </span>
-
-        </article>
-
-        <article class="progress-stat-card">
-
-          <div class="progress-stat-icon">
-            <svg viewBox="0 0 24 24">
-              <circle cx="12" cy="12" r="9"></circle>
-              <path d="m8 12 2.5 2.5L16 9"></path>
-            </svg>
-          </div>
-
-          <span class="progress-stat-value" id="quizzesPassed">0</span>
-
-          <span class="progress-stat-label">
-            Quizzes Passed
-          </span>
-
-        </article>
-
-        <article class="progress-stat-card">
-
-          <div class="progress-stat-icon">
-            <svg viewBox="0 0 24 24">
-              <circle cx="12" cy="8" r="5"></circle>
-              <path d="m8.5 12.5-1 8L12 18l4.5 2.5-1-8"></path>
-            </svg>
-          </div>
-
-          <span class="progress-stat-value" id="certificatesEarned">0</span>
-
-          <span class="progress-stat-label">
-            Certificate Earned
-          </span>
-
-        </article>
-
-      </section>
-
-      <div class="progress-layout">
-
-        <!-- MAIN COLUMN -->
-
-        <section class="progress-panel">
-
-          <div class="progress-panel-head">
-
+        <section class="progress-stat-strip" aria-label="Progress summary">
+          <article class="progress-stat-card">
+            <div class="progress-stat-icon">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v16H6.5A2.5 2.5 0 0 0 4 21.5z"></path>
+                <path d="M4 5.5v16"></path>
+              </svg>
+            </div>
             <div>
-
-              <h2>Course Progress</h2>
-
-              <p>
-                Review your progress across all active and completed
-                learning.
-              </p>
-
+              <strong id="modulesCompleted">0</strong>
+              <span>Lessons completed</span>
             </div>
+          </article>
 
-            <a
-              href="lms-my-courses.html"
-              class="progress-link"
-            >
-              My Learning
-            </a>
+          <article class="progress-stat-card">
+            <div class="progress-stat-icon">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="12" cy="12" r="9"></circle>
+                <path d="m8 12 2.5 2.5L16 9"></path>
+              </svg>
+            </div>
+            <div>
+              <strong id="quizzesPassed">0</strong>
+              <span>Knowledge checks passed</span>
+            </div>
+          </article>
 
-          </div>
+          <article class="progress-stat-card">
+            <div class="progress-stat-icon progress-stat-icon-orange">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="12" cy="8" r="5"></circle>
+                <path d="m8.5 12.5-1 8L12 18l4.5 2.5-1-8"></path>
+              </svg>
+            </div>
+            <div>
+              <strong id="certificatesEarned">0</strong>
+              <span>Certificates earned</span>
+            </div>
+          </article>
+        </section>
 
-          <div class="course-progress-list" id="courseProgressList"></div>
-</section>
-<!-- RIGHT COLUMN -->
-
-        <aside>
-
-          <!-- Milestones -->
-
-          <section class="progress-panel">
-
+        <div class="progress-dashboard-grid">
+          <section class="progress-panel progress-courses-panel">
             <div class="progress-panel-head">
-
               <div>
-
-                <h2>Learning Milestones</h2>
-
-                <p>
-                  Your current course journey.
-                </p>
-
+                <span class="progress-panel-kicker">YOUR LEARNING</span>
+                <h2>Course Progress</h2>
+                <p>Resume active training or review courses you have already completed.</p>
               </div>
-
+              <a class="progress-text-link" href="lms-my-courses.html">My Learning <span>→</span></a>
             </div>
+            <div class="course-progress-list" id="courseProgressList"></div>
+          </section>
 
-            <div class="milestone-list" id="milestoneList"></div>
-</section>
-<!-- Next step -->
-
-          <section
-            class="progress-panel"
-            style="margin-top:18px"
-          >
-
+          <section class="progress-panel progress-next-panel">
             <div class="next-step" id="nextStep"></div>
-</section>
-<!-- Recent activity -->
+          </section>
+        </div>
 
-          <section
-            class="progress-panel"
-            style="margin-top:18px"
-          >
-
-            <div class="progress-panel-head">
-
+        <div class="progress-insights-grid">
+          <section class="progress-panel progress-milestones-panel">
+            <div class="progress-panel-head progress-panel-head-compact">
               <div>
-
-                <h2>Recent Activity</h2>
-
+                <span class="progress-panel-kicker">CURRENT JOURNEY</span>
+                <h2>Learning Milestones</h2>
               </div>
-
             </div>
+            <div class="milestone-list" id="milestoneList"></div>
+          </section>
 
+          <section class="progress-panel progress-activity-panel">
+            <div class="progress-panel-head progress-panel-head-compact">
+              <div>
+                <span class="progress-panel-kicker">RECENT</span>
+                <h2>Learning Activity</h2>
+              </div>
+            </div>
             <div class="activity-list" id="activityList"></div>
-</section>
-</aside>
+          </section>
+        </div>
 
+        <section class="progress-tools" aria-label="Learning tools">
+          <div class="progress-tools-copy">
+            <span class="progress-panel-kicker">LEARNING CENTER</span>
+            <h2>Keep moving forward</h2>
+            <p>Jump directly to the training tools you use most.</p>
+          </div>
+          <div class="progress-tool-links">
+            <a href="lms-my-courses.html"><strong>My Learning</strong><span>Continue assigned training →</span></a>
+            <a href="lms-courses.html"><strong>Course Library</strong><span>Explore available courses →</span></a>
+            <a href="lms-certificates.html"><strong>Certificates</strong><span>View earned credentials →</span></a>
+          </div>
+        </section>
       </div>
+    </main>
+  </div>
 
-    </div>
-
-  </main>
-
-</div>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="assets/js/supabase-config.js"></script>
-<script src="assets/js/core-auth.js"></script>
-<script src="assets/js/ui.js"></script>
-<script src="assets/js/portal-auth-guard.js"></script>
-<script src="assets/js/training-auth-guard.js"></script>
-<script src="assets/js/lms-sidebar.js"></script>
-<script src="assets/js/lms.js?v=20260830-2405"></script>
-<script src="assets/js/lms-progress.js?v=20260830-2405"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="assets/js/supabase-config.js"></script>
+  <script src="assets/js/core-auth.js"></script>
+  <script src="assets/js/ui.js"></script>
+  <script src="assets/js/training-auth-guard.js"></script>
+  <script src="assets/js/lms-sidebar.js"></script>
+  <script src="assets/js/lms.js?v=20260830-2405"></script>
+  <script src="assets/js/lms-progress.js?v=20260830-2405"></script>
   <script src="assets/js/branded-popups.js?v=20260911-1"></script>
-
-</body></html>
+</body>
+</html>

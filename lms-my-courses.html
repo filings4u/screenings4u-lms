@@ -1,621 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#24467f" />
   <title>My Learning | screenings4u Learning Center</title>
-  <meta name="theme-color" content="#325aa3" />
-
-<link href="images/fav.png" rel="icon" type="image/png"/>
-
-  <!-- Established LMS master shell -->
-  <link rel="stylesheet" href="assets/css/lms.css">
-<link rel="stylesheet" href="assets/css/lms-refinement.css">
-<link rel="stylesheet" href="assets/css/lms-ui-modals.css">
-
-  <style>
-    /* ==========================================================
-       MY LEARNING PAGE
-       Screenings4u brand system only
-       Blue #325aa3 | Dark #24467f | Orange #ff6b00
-       ========================================================== */
-
-    .my-learning-page {
-      width: 100%;
-      min-width: 0;
-      padding-bottom: 30px;
-    }
-
-    .my-learning-header {
-      margin-bottom: 26px;
-    }
-
-    .my-learning-kicker {
-      margin-bottom: 8px;
-      color: #ff6b00;
-      font-size: 11px;
-      font-weight: 800;
-      letter-spacing: .12em;
-      text-transform: uppercase;
-    }
-
-    .my-learning-title {
-      margin: 0;
-      color: #172033;
-      font-size: clamp(30px, 3vw, 42px);
-      font-weight: 800;
-      line-height: 1.12;
-      letter-spacing: -.03em;
-    }
-
-    .my-learning-subtitle {
-      max-width: 720px;
-      margin: 10px 0 0;
-      color: #687386;
-      font-size: 14px;
-      line-height: 1.65;
-    }
-
-    /* Continue learning */
-
-    .my-learning-section {
-      margin-top: 28px;
-    }
-
-    .my-learning-section-head {
-      display: flex;
-      align-items: end;
-      justify-content: space-between;
-      gap: 20px;
-      margin-bottom: 16px;
-    }
-
-    .my-learning-section-title {
-      margin: 0;
-      color: #172033;
-      font-size: 21px;
-      font-weight: 800;
-      letter-spacing: -.015em;
-    }
-
-    .my-learning-section-copy {
-      margin: 5px 0 0;
-      color: #687386;
-      font-size: 13px;
-    }
-
-    .my-learning-browse-link {
-      color: #325aa3;
-      font-size: 13px;
-      font-weight: 800;
-      text-decoration: none;
-      white-space: nowrap;
-    }
-
-    .my-learning-browse-link:hover {
-      color: #24467f;
-    }
-
-    .continue-course-card {
-      display: grid;
-      grid-template-columns: minmax(220px, 33%) minmax(0, 1fr);
-      overflow: hidden;
-      border: 1px solid #dfe5ec;
-      border-radius: 16px;
-      background: #ffffff;
-    }
-
-    .continue-course-visual {
-      min-height: 270px;
-      position: relative;
-      display: flex;
-      align-items: flex-end;
-      padding: 24px;
-      background:
-        radial-gradient(circle at 82% 20%, rgba(255,107,0,.92) 0 7%, transparent 7.3%),
-        radial-gradient(circle at 70% 35%, rgba(255,255,255,.13) 0 20%, transparent 20.3%),
-        linear-gradient(145deg, #24467f, #325aa3);
-    }
-
-    .continue-course-visual::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(180deg, transparent, rgba(23,32,51,.25));
-    }
-
-    .continue-course-visual-content {
-      position: relative;
-      z-index: 1;
-    }
-
-    .continue-course-category {
-      color: #ffffff;
-      font-size: 10px;
-      font-weight: 800;
-      letter-spacing: .12em;
-      text-transform: uppercase;
-    }
-
-    .continue-course-visual-title {
-      max-width: 300px;
-      margin: 10px 0 0;
-      color: #ffffff;
-      font-size: 25px;
-      font-weight: 800;
-      line-height: 1.15;
-    }
-
-    .continue-course-body {
-      display: flex;
-      flex-direction: column;
-      padding: 28px 30px;
-    }
-
-    .continue-course-top {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: 20px;
-    }
-
-    .continue-course-status {
-      display: inline-flex;
-      align-items: center;
-      gap: 7px;
-      min-height: 28px;
-      padding: 0 10px;
-      border-radius: 999px;
-      background: rgba(50,90,163,.10);
-      color: #325aa3;
-      font-size: 10px;
-      font-weight: 800;
-      letter-spacing: .07em;
-      text-transform: uppercase;
-    }
-
-    .continue-course-status-dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      background: #ff6b00;
-    }
-
-    .continue-course-body h2 {
-      margin: 14px 0 0;
-      color: #172033;
-      font-size: clamp(22px, 2.2vw, 30px);
-      font-weight: 800;
-      line-height: 1.2;
-      letter-spacing: -.02em;
-    }
-
-    .continue-course-body p {
-      max-width: 650px;
-      margin: 10px 0 0;
-      color: #687386;
-      font-size: 14px;
-      line-height: 1.65;
-    }
-
-    .continue-course-meta {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 18px;
-      margin-top: 20px;
-      color: #687386;
-      font-size: 12px;
-      font-weight: 700;
-    }
-
-    .continue-course-meta-item {
-      display: inline-flex;
-      align-items: center;
-      gap: 7px;
-    }
-
-    .continue-course-meta-item svg {
-      width: 15px;
-      height: 15px;
-      fill: none;
-      stroke: #325aa3;
-      stroke-width: 1.9;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-    }
-
-    .continue-course-progress {
-      margin-top: auto;
-      padding-top: 26px;
-    }
-
-    .continue-course-progress-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 14px;
-      margin-bottom: 9px;
-      color: #687386;
-      font-size: 12px;
-      font-weight: 750;
-    }
-
-    .continue-course-progress-row strong {
-      color: #24467f;
-      font-size: 13px;
-    }
-
-    .continue-course-progress-track {
-      height: 8px;
-      overflow: hidden;
-      border-radius: 999px;
-      background: #f5f7fa;
-    }
-
-    .continue-course-progress-fill {
-      width: 42%;
-      height: 100%;
-      border-radius: inherit;
-      background: #ff6b00;
-    }
-
-    .continue-course-actions {
-      display: flex;
-      align-items: center;
-      justify-content: flex-end;
-      gap: 12px;
-      margin-top: 22px;
-    }
-
-    .course-action-secondary,
-    .course-action-primary {
-      min-height: 44px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      padding: 0 16px;
-      border-radius: 10px;
-      font-size: 13px;
-      font-weight: 800;
-      text-decoration: none;
-      transition: .2s ease;
-    }
-
-    .course-action-secondary {
-      border: 1px solid #dfe5ec;
-      background: #ffffff;
-      color: #24467f;
-    }
-
-    .course-action-secondary:hover {
-      border-color: #325aa3;
-      background: #f5f7fa;
-    }
-
-    .course-action-primary {
-      border: 1px solid #ff6b00;
-      background: #ff6b00;
-      color: #ffffff;
-    }
-
-    .course-action-primary:hover {
-      border-color: #e66000;
-      background: #e66000;
-    }
-
-    .course-action-primary svg {
-      width: 16px;
-      height: 16px;
-      fill: none;
-      stroke: currentColor;
-      stroke-width: 2;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-    }
-
-    /* Course grid */
-
-    .my-courses-grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 18px;
-    }
-
-    .my-course-card {
-      overflow: hidden;
-      border: 1px solid #dfe5ec;
-      border-radius: 14px;
-      background: #ffffff;
-      transition: transform .2s ease, box-shadow .2s ease;
-    }
-
-    .my-course-card:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 10px 26px rgba(23,32,51,.08);
-    }
-
-    .my-course-card-top {
-      min-height: 130px;
-      position: relative;
-      display: flex;
-      align-items: flex-end;
-      padding: 18px;
-      background: linear-gradient(145deg, #325aa3, #24467f);
-    }
-
-    .my-course-card-top.course-orange {
-      background: linear-gradient(145deg, #ff6b00, #e66000);
-    }
-
-    .my-course-card-top.course-light {
-      background:
-        linear-gradient(145deg, #f5f7fa, #dfe5ec);
-    }
-
-    .my-course-card-top.course-light .my-course-card-top-label {
-      color: #325aa3;
-    }
-
-    .my-course-card-top-label {
-      position: relative;
-      z-index: 1;
-      color: #ffffff;
-      font-size: 10px;
-      font-weight: 800;
-      letter-spacing: .11em;
-      text-transform: uppercase;
-    }
-
-    .my-course-card-body {
-      padding: 20px;
-    }
-
-    .my-course-card-status {
-      display: inline-flex;
-      align-items: center;
-      min-height: 24px;
-      margin-bottom: 12px;
-      padding: 0 9px;
-      border-radius: 999px;
-      background: #f5f7fa;
-      color: #687386;
-      font-size: 10px;
-      font-weight: 800;
-      letter-spacing: .07em;
-      text-transform: uppercase;
-    }
-
-    .my-course-card-status.in-progress {
-      background: rgba(50,90,163,.10);
-      color: #325aa3;
-    }
-
-    .my-course-card-status.completed {
-      background: rgba(50,90,163,.10);
-      color: #24467f;
-    }
-
-    .my-course-card h3 {
-      margin: 0;
-      color: #172033;
-      font-size: 17px;
-      font-weight: 800;
-      line-height: 1.35;
-    }
-
-    .my-course-card p {
-      margin: 8px 0 0;
-      color: #687386;
-      font-size: 12px;
-      line-height: 1.6;
-    }
-
-    .my-course-card-progress {
-      margin-top: 20px;
-    }
-
-    .my-course-card-progress-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      margin-bottom: 8px;
-      color: #687386;
-      font-size: 11px;
-      font-weight: 750;
-    }
-
-    .my-course-card-progress-row strong {
-      color: #24467f;
-    }
-
-    .my-course-card-track {
-      height: 6px;
-      overflow: hidden;
-      border-radius: 999px;
-      background: #f5f7fa;
-    }
-
-    .my-course-card-fill {
-      height: 100%;
-      border-radius: inherit;
-      background: #325aa3;
-    }
-
-    .my-course-card-footer {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 14px;
-      margin-top: 20px;
-      padding-top: 16px;
-      border-top: 1px solid #dfe5ec;
-    }
-
-    .my-course-card-meta {
-      color: #687386;
-      font-size: 11px;
-      font-weight: 700;
-    }
-
-    .my-course-card-link {
-      color: #325aa3;
-      font-size: 12px;
-      font-weight: 800;
-      text-decoration: none;
-    }
-
-    .my-course-card-link:hover {
-      color: #24467f;
-    }
-
-    /* Empty future courses */
-
-    .my-learning-empty {
-      display: grid;
-      grid-template-columns: 50px minmax(0, 1fr) auto;
-      align-items: center;
-      gap: 16px;
-      padding: 22px;
-      border: 1px dashed #dfe5ec;
-      border-radius: 14px;
-      background: #ffffff;
-    }
-
-    .my-learning-empty-icon {
-      width: 50px;
-      height: 50px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 13px;
-      background: #f5f7fa;
-      color: #325aa3;
-    }
-
-    .my-learning-empty-icon svg {
-      width: 23px;
-      height: 23px;
-      fill: none;
-      stroke: currentColor;
-      stroke-width: 1.8;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-    }
-
-    .my-learning-empty h3 {
-      margin: 0;
-      color: #172033;
-      font-size: 15px;
-      font-weight: 800;
-    }
-
-    .my-learning-empty p {
-      margin: 5px 0 0;
-      color: #687386;
-      font-size: 13px;
-      line-height: 1.5;
-    }
-
-    .my-learning-empty a {
-      min-height: 42px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      padding: 0 15px;
-      border-radius: 10px;
-      background: #325aa3;
-      color: #ffffff;
-      font-size: 12px;
-      font-weight: 800;
-      text-decoration: none;
-    }
-
-    .my-learning-empty a:hover {
-      background: #24467f;
-    }
-
-    @media (max-width: 1180px) {
-      .my-courses-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-    }
-
-    @media (max-width: 900px) {
-      .continue-course-card {
-        grid-template-columns: 1fr;
-      }
-
-      .continue-course-visual {
-        min-height: 190px;
-      }
-    }
-
-    @media (max-width: 640px) {
-      .my-learning-section-head {
-        align-items: flex-start;
-        flex-direction: column;
-      }
-
-      .my-courses-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .continue-course-body {
-        padding: 23px 20px;
-      }
-
-      .continue-course-top {
-        flex-direction: column;
-      }
-
-      .continue-course-actions {
-        align-items: stretch;
-        flex-direction: column-reverse;
-      }
-
-      .course-action-secondary,
-      .course-action-primary {
-        width: 100%;
-      }
-
-      .my-learning-empty {
-        grid-template-columns: 1fr;
-      }
-
-      .my-learning-empty a {
-        width: 100%;
-      }
-    }
-  </style>
-  <style id="training-mobile-my-learning">
-    *,*::before,*::after{box-sizing:border-box}html,body{max-width:100%;overflow-x:hidden}
-    @media(max-width:767px){html{font-size:16px}.lms-app,.lms-main{width:100%;min-width:0}.lms-main{margin-left:0!important}.lms-topbar{height:auto;min-height:64px;padding:10px 14px;gap:10px;display:grid;grid-template-columns:auto 1fr auto}.lms-menu-button{display:inline-flex!important;min-width:44px;min-height:44px}.lms-search-wrap{min-width:0}.lms-search{width:100%}.lms-search input{min-width:0;font-size:16px}.lms-search-shortcut,.lms-user-name,.lms-user-chevron{display:none!important}.lms-topbar-right{gap:6px}.lms-icon-button,.lms-user-button{min-width:44px;min-height:44px}.lms-user-button{padding:4px}.lms-content.my-learning-page{width:100%;min-width:0;padding:18px 14px 36px}.my-learning-header{width:100%;margin-bottom:22px}.my-learning-title{font-size:29px;line-height:1.15;overflow-wrap:anywhere}.my-learning-subtitle{font-size:15px;line-height:1.6}.my-learning-section{width:100%;min-width:0}.my-learning-section-head{display:grid;grid-template-columns:1fr;width:100%;gap:9px}.continue-course-card{display:flex;flex-direction:column;width:100%;min-width:0;border-radius:14px}.continue-course-visual{width:100%;min-height:180px}.continue-course-body{padding:21px 16px}.continue-course-title{font-size:22px;overflow-wrap:anywhere}.continue-course-top,.continue-course-actions{display:grid;grid-template-columns:1fr;width:100%;gap:10px}.course-action-secondary,.course-action-primary,.my-learning-browse-link{width:100%;min-height:46px;justify-content:center;text-align:center}.my-courses-grid{display:grid;grid-template-columns:1fr;width:100%;gap:14px}.my-course-card{width:100%;min-width:0}.my-course-card-body{padding:18px 15px}.my-course-card-footer{display:grid;grid-template-columns:1fr;gap:10px}.my-course-card-link{width:100%;min-height:44px;justify-content:center;text-align:center}.my-learning-empty{display:grid;grid-template-columns:1fr;width:100%;padding:20px 16px}.my-learning-empty a{width:100%;min-height:46px}}
-    @media(max-width:420px){.lms-search-wrap{display:none}.lms-topbar{grid-template-columns:1fr auto}.my-learning-title{font-size:26px}}
-  </style>
+  <link href="images/fav.png" rel="icon" type="image/png" />
+
+  <!-- Shared LMS shell -->
+  <link href="assets/css/lms.css" rel="stylesheet" />
+  <link href="assets/css/lms-refinement.css" rel="stylesheet" />
+  <link href="assets/css/lms-ui-modals.css" rel="stylesheet" />
+  <link href="assets/css/lms-shell-v3.css?v=20260915-2" rel="stylesheet" />
+
+  <!-- My Learning redesign -->
+  <link href="assets/css/lms-my-courses-redesign-2026.css?v=20260915-3" rel="stylesheet" />
 </head>
 
-<body>
-
+<body class="lms-my-courses-page">
   <div class="lms-app">
-
-    <!-- Dynamic sidebar target -->
     <div id="lms-sidebar-target"></div>
 
-    <!-- Main LMS shell -->
     <main class="lms-main">
-
       <header class="lms-topbar">
-
         <div class="lms-topbar-left">
           <button
-            type="button"
+            aria-label="Toggle navigation"
             class="lms-menu-button"
             data-lms-menu-toggle
-            aria-label="Toggle navigation"
+            type="button"
           >
-            <svg viewBox="0 0 24 24">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
               <path d="M4 7h16"></path>
               <path d="M4 12h16"></path>
               <path d="M4 17h16"></path>
@@ -625,30 +40,29 @@
 
         <div class="lms-search-wrap">
           <label class="lms-search">
-            <span class="lms-search-icon">
+            <span class="lms-search-icon" aria-hidden="true">
               <svg viewBox="0 0 24 24">
                 <circle cx="11" cy="11" r="6"></circle>
                 <path d="m20 20-4-4"></path>
               </svg>
             </span>
-
             <input
-              type="search"
-              placeholder="Search courses, lessons, and resources..."
               data-lms-search
-            >
-
+              placeholder="Search courses, lessons, and resources..."
+              type="search"
+            />
             <span class="lms-search-shortcut">Ctrl K</span>
           </label>
         </div>
 
         <div class="lms-topbar-right">
-
-          <a href="lms-notifications.html"
-            class="lms-icon-button"
+          <a
             aria-label="Notifications"
-           title="Notifications">>
-            <svg viewBox="0 0 24 24">
+            class="lms-icon-button"
+            href="lms-notifications.html"
+            title="Notifications"
+          >
+            <svg viewBox="0 0 24 24" aria-hidden="true">
               <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"></path>
               <path d="M10 21h4"></path>
             </svg>
@@ -656,20 +70,15 @@
           </a>
 
           <div class="lms-user-wrap">
-
             <button
-              type="button"
+              aria-expanded="false"
               class="lms-user-button"
               data-lms-user-button
-              aria-expanded="false"
+              type="button"
             >
               <span class="lms-user-avatar" data-lms-learner-initials>--</span>
-
-              <span class="lms-user-name" data-lms-learner-name>
-                Learner
-              </span>
-
-              <span class="lms-user-chevron">
+              <span class="lms-user-name" data-lms-learner-name>Learner</span>
+              <span class="lms-user-chevron" aria-hidden="true">
                 <svg viewBox="0 0 24 24">
                   <path d="m7 10 5 5 5-5"></path>
                 </svg>
@@ -678,447 +87,130 @@
 
             <div class="lms-user-menu" data-lms-user-menu>
               <div class="lms-user-menu-header">
-                <span class="lms-user-menu-name" data-lms-user-menu-name>
-                  Learner
-                </span>
-                <span class="lms-user-menu-email" data-lms-user-menu-email>
-                  
-                </span>
+                <span class="lms-user-menu-name" data-lms-user-menu-name>Learner</span>
+                <span class="lms-user-menu-email" data-lms-user-menu-email></span>
               </div>
-
-              <a href="lms-account.html" class="lms-user-menu-link">
-                My Account
-              </a>
-
-              <a href="lms-certificates.html" class="lms-user-menu-link">
-                My Certificates
-              </a>
-
-              <button
-                type="button"
-                class="lms-user-menu-link"
-                data-lms-sign-out
-              >
-                Sign Out
-              </button>
+              <a class="lms-user-menu-link" href="lms-account.html">My Account</a>
+              <a class="lms-user-menu-link" href="lms-certificates.html">My Certificates</a>
+              <button class="lms-user-menu-link" data-lms-sign-out type="button">Sign Out</button>
             </div>
-
           </div>
-
         </div>
-
       </header>
 
-      <!-- ======================================================
-           MY LEARNING CONTENT
-           ====================================================== -->
-
       <div class="lms-content my-learning-page">
+        <nav class="my-learning-breadcrumb" aria-label="Breadcrumb">
+          <a href="lms-dashboard.html">Home</a>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6"></path></svg>
+          <span>My Learning</span>
+        </nav>
 
-        <header class="my-learning-header">
-          <div class="my-learning-kicker">My Learning</div>
+        <section class="my-learning-hero">
+          <div class="my-learning-hero-copy">
+            <span class="my-learning-kicker">Screenings4u Learning Center</span>
+            <h1>My Learning</h1>
+            <p>
+              Continue assigned training, review your active courses, and keep your
+              progress moving toward completion.
+            </p>
+          </div>
 
-          <h1 class="my-learning-title">
-            Continue building your knowledge.
-          </h1>
+          <div class="my-learning-hero-mark" aria-hidden="true">
+            <svg viewBox="0 0 64 64">
+              <path d="M14 18.5 32 10l18 8.5L32 27z"></path>
+              <path d="M20 24v14c0 5 5.4 9 12 9s12-4 12-9V24"></path>
+              <path d="M50 20v16"></path>
+            </svg>
+          </div>
+        </section>
 
-          <p class="my-learning-subtitle">
-            Access the courses assigned to your account, continue where
-            you left off, and track your progress toward completion.
-          </p>
-        </header>
-
-        <!-- CONTINUE LEARNING -->
-
-        <section class="my-learning-section">
-
+        <section class="my-learning-section my-learning-continue-section">
           <div class="my-learning-section-head">
             <div>
-              <h2 class="my-learning-section-title">
-                Continue Learning
-              </h2>
-
-              <p class="my-learning-section-copy">
-                Pick up right where you left off.
-              </p>
+              <span class="my-learning-section-eyebrow">Resume training</span>
+              <h2 class="my-learning-section-title">Continue Learning</h2>
+              <p class="my-learning-section-copy">Pick up from your most recent active course.</p>
             </div>
           </div>
 
-          <article class="continue-course-card" id="my-learning-continue-card">
-
+          <article class="continue-course-card" id="my-learning-continue-card" aria-live="polite">
             <div class="continue-course-visual">
               <div class="continue-course-visual-content">
-                <div class="continue-course-category">
-                  DOT Compliance
-                </div>
-
-                <div class="continue-course-visual-title">
-                  DOT Supervisor Training
-                </div>
+                <div class="continue-course-category">Your training</div>
+                <div class="continue-course-visual-title">Loading your active course…</div>
               </div>
             </div>
-
             <div class="continue-course-body">
-
               <div class="continue-course-top">
-                <div>
-                  <span class="continue-course-status">
-                    <span class="continue-course-status-dot"></span>
-                    In Progress
-                  </span>
-
-                  <h2>
-                    DOT Supervisor Training:
-                    Reasonable Suspicion
-                  </h2>
-
-                  <p>
-                    Learn the responsibilities and procedures supervisors
-                    need to understand when responding to reasonable
-                    suspicion situations.
-                  </p>
-                </div>
-              </div>
-
-              <div class="continue-course-meta">
-
-                <span class="continue-course-meta-item">
-                  <svg viewBox="0 0 24 24">
-                    <circle cx="12" cy="12" r="8"></circle>
-                    <path d="M12 8v4l3 2"></path>
-                  </svg>
-                  About 60 minutes
+                <span class="continue-course-status">
+                  <span class="continue-course-status-dot"></span>
+                  Loading
                 </span>
-
-                <span class="continue-course-meta-item">
-                  <svg viewBox="0 0 24 24">
-                    <path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v16H6.5A2.5 2.5 0 0 0 4 21.5z"></path>
-                    <path d="M4 5.5v16"></path>
-                  </svg>
-                  12 lessons
-                </span>
-
-                <span class="continue-course-meta-item">
-                  <svg viewBox="0 0 24 24">
-                    <path d="M4 19V9"></path>
-                    <path d="M10 19V5"></path>
-                    <path d="M16 19v-7"></path>
-                    <path d="M22 19V3"></path>
-                  </svg>
-                  42% complete
-                </span>
-
               </div>
-
-              <div class="continue-course-progress">
-
-                <div class="continue-course-progress-row">
-                  <span>Your progress</span>
-                  <strong>42%</strong>
-                </div>
-
-                <div class="continue-course-progress-track">
-                  <div class="continue-course-progress-fill"></div>
-                </div>
-
-              </div>
-
-              <div class="continue-course-actions">
-
-                <a
-                  href="lms-course-details.html"
-                  class="course-action-secondary"
-                >
-                  Course Details
-                </a>
-
-                <a
-                  href="lms-course-player.html"
-                  class="course-action-primary"
-                >
-                  Continue Course
-
-                  <svg viewBox="0 0 24 24">
-                    <path d="M5 12h14"></path>
-                    <path d="m12 5 7 7-7 7"></path>
-                  </svg>
-                </a>
-
-              </div>
-
+              <h2>Your learning dashboard is loading.</h2>
+              <p>Your active course and progress will appear here automatically.</p>
             </div>
-
           </article>
-
         </section>
 
-        <!-- MY COURSES -->
-
         <section class="my-learning-section">
-
           <div class="my-learning-section-head">
-
             <div>
-              <h2 class="my-learning-section-title">
-                My Courses
-              </h2>
-
-              <p class="my-learning-section-copy">
-                Courses currently assigned to your learning account.
-              </p>
+              <span class="my-learning-section-eyebrow">Your library</span>
+              <h2 class="my-learning-section-title">My Courses</h2>
+              <p class="my-learning-section-copy">All courses currently assigned to this learner account.</p>
             </div>
-
-            <a
-              href="lms-courses.html"
-              class="my-learning-browse-link"
-            >
-              Browse More Courses
+            <a class="my-learning-browse-link" href="lms-courses.html">
+              Browse Course Library
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"></path><path d="m13 6 6 6-6 6"></path></svg>
             </a>
-
           </div>
 
-          <div class="my-courses-grid" id="my-learning-course-grid">
-
-            <!-- Course 1 -->
-
-            <article class="my-course-card">
-
+          <div class="my-courses-grid" id="my-learning-course-grid" aria-live="polite">
+            <article class="my-course-card my-course-card-loading">
               <div class="my-course-card-top">
-                <span class="my-course-card-top-label">
-                  DOT Compliance
-                </span>
+                <span class="my-course-card-top-label">Loading</span>
               </div>
-
               <div class="my-course-card-body">
-
-                <span class="my-course-card-status in-progress">
-                  In Progress
-                </span>
-
-                <h3>
-                  DOT Supervisor Training:
-                  Reasonable Suspicion
-                </h3>
-
-                <p>
-                  Supervisor responsibilities, observable indicators,
-                  documentation, and next steps.
-                </p>
-
-                <div class="my-course-card-progress">
-
-                  <div class="my-course-card-progress-row">
-                    <span>Progress</span>
-                    <strong>42%</strong>
-                  </div>
-
-                  <div class="my-course-card-track">
-                    <div
-                      class="my-course-card-fill"
-                      style="width: 42%;"
-                    ></div>
-                  </div>
-
-                </div>
-
-                <div class="my-course-card-footer">
-                  <span class="my-course-card-meta">
-                    5 of 12 lessons
-                  </span>
-
-                  <a
-                    href="lms-course-player.html"
-                    class="my-course-card-link"
-                  >
-                    Continue
-                  </a>
-                </div>
-
+                <span class="my-course-card-status">Loading course</span>
+                <h3>Your courses are loading…</h3>
+                <p>Course information will appear here in a moment.</p>
               </div>
-
             </article>
-
-            <!-- Course 2 -->
-
-            <article class="my-course-card">
-
-              <div class="my-course-card-top course-light">
-                <span class="my-course-card-top-label">
-                  Workplace Training
-                </span>
-              </div>
-
-              <div class="my-course-card-body">
-
-                <span class="my-course-card-status">
-                  Not Started
-                </span>
-
-                <h3>
-                  Drug-Free Workplace Awareness
-                </h3>
-
-                <p>
-                  A practical overview of workplace awareness,
-                  responsibilities, and prevention.
-                </p>
-
-                <div class="my-course-card-progress">
-
-                  <div class="my-course-card-progress-row">
-                    <span>Progress</span>
-                    <strong>0%</strong>
-                  </div>
-
-                  <div class="my-course-card-track">
-                    <div
-                      class="my-course-card-fill"
-                      style="width: 0%;"
-                    ></div>
-                  </div>
-
-                </div>
-
-                <div class="my-course-card-footer">
-                  <span class="my-course-card-meta">
-                    8 lessons
-                  </span>
-
-                  <a
-                    href="lms-course-details.html"
-                    class="my-course-card-link"
-                  >
-                    Start Course
-                  </a>
-                </div>
-
-              </div>
-
-            </article>
-
-            <!-- Course 3 -->
-
-            <article class="my-course-card">
-
-              <div class="my-course-card-top course-orange">
-                <span class="my-course-card-top-label">
-                  Compliance
-                </span>
-              </div>
-
-              <div class="my-course-card-body">
-
-                <span class="my-course-card-status completed">
-                  Completed
-                </span>
-
-                <h3>
-                  Workplace Screening Fundamentals
-                </h3>
-
-                <p>
-                  Foundational training covering the workplace screening
-                  process and key expectations.
-                </p>
-
-                <div class="my-course-card-progress">
-
-                  <div class="my-course-card-progress-row">
-                    <span>Progress</span>
-                    <strong>100%</strong>
-                  </div>
-
-                  <div class="my-course-card-track">
-                    <div
-                      class="my-course-card-fill"
-                      style="width: 100%;"
-                    ></div>
-                  </div>
-
-                </div>
-
-                <div class="my-course-card-footer">
-                  <span class="my-course-card-meta">
-                    Completed
-                  </span>
-
-                  <a
-                    href="lms-certificates.html"
-                    class="my-course-card-link"
-                  >
-                    Certificate
-                  </a>
-                </div>
-
-              </div>
-
-            </article>
-
           </div>
-
         </section>
 
-        <!-- ADDITIONAL TRAINING -->
-
         <section class="my-learning-section">
-
-          <div class="my-learning-section-head">
-            <div>
-              <h2 class="my-learning-section-title">
-                Looking for additional training?
-              </h2>
-
-              <p class="my-learning-section-copy">
-                Browse available courses and purchase additional training
-                for your learning account.
-              </p>
-            </div>
-          </div>
-
-          <div class="my-learning-empty">
-
-            <div class="my-learning-empty-icon">
+          <div class="training-library-cta">
+            <div class="training-library-icon" aria-hidden="true">
               <svg viewBox="0 0 24 24">
                 <path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v16H6.5A2.5 2.5 0 0 0 4 21.5z"></path>
                 <path d="M4 5.5v16"></path>
                 <path d="M8 7h8"></path>
               </svg>
             </div>
-
-            <div>
-              <h3>Explore the Course Library</h3>
-              <p>
-                Find additional Screenings4u training courses available
-                for purchase.
-              </p>
+            <div class="training-library-copy">
+              <span class="my-learning-section-eyebrow">Additional training</span>
+              <h2>Need another course?</h2>
+              <p>Browse available Screenings4u training and add new learning to your account.</p>
             </div>
-
-            <a href="lms-courses.html">
-              Browse Courses
-            </a>
-
+            <a class="training-library-button" href="lms-courses.html">Browse Courses</a>
           </div>
-
         </section>
-
       </div>
-
     </main>
-
   </div>
 
   <!-- Authenticated LMS stack -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="assets/js/supabase-config.js"></script>
-<script src="assets/js/core-auth.js"></script>
-<script src="assets/js/ui.js"></script>
-<script src="assets/js/portal-auth-guard.js"></script>
-<script src="assets/js/training-auth-guard.js"></script>
-<script src="assets/js/lms-sidebar.js"></script>
+  <script src="assets/js/supabase-config.js"></script>
+  <script src="assets/js/core-auth.js"></script>
+  <script src="assets/js/ui.js"></script>
+  <script src="assets/js/training-auth-guard.js"></script>
+  <script src="assets/js/lms-sidebar.js"></script>
   <script src="assets/js/lms.js?v=20260830-2030"></script>
   <script src="assets/js/lms-my-courses.js?v=20260830-2030"></script>
-
   <script src="assets/js/branded-popups.js?v=20260911-1"></script>
-
+<script src="assets/js/lms-global-support-bar.js?v=20260915-1"></script>
 </body>
 </html>

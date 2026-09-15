@@ -1,58 +1,337 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1.0">
-  <meta name="theme-color" content="#325aa3">
-  <title>Schedule Appointment | screenings4u Learning Center</title>
+<!DOCTYPE html>
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="#24467f" name="theme-color"/>
+<title>Schedule Appointment | screenings4u Learning Center</title>
 <link href="images/fav.png" rel="icon" type="image/png"/>
-  
-  
-  
-  <link rel="stylesheet" href="assets/css/lms.css">
-<link rel="stylesheet" href="assets/css/lms-refinement.css">
-<link rel="stylesheet" href="assets/css/lms-ui-modals.css"><link rel="stylesheet" href="assets/css/lms-schedule-appointment.css"></head><body data-scheduling-view="book"><div class="lms-app"><div id="lms-sidebar-target"></div>
+
+
+
+
+
+
+
+
+
+
+<link href="assets/css/lms-base-clean.css?v=20260915-clean3" rel="stylesheet"/><link href="assets/css/pages/lms-schedule-appointment.css?v=20260915-clean3" rel="stylesheet"/></head>
+<body class="lms-reference-redesign schedule-redesign s4u-lms-redesign" data-scheduling-view="book">
+<div class="lms-app">
+<div id="lms-sidebar-target"></div>
 <main class="lms-main">
 <header class="lms-topbar">
-  <div class="lms-topbar-left"><button type="button" class="lms-menu-button" data-lms-menu-toggle aria-label="Toggle navigation"><svg viewBox="0 0 24 24"><path d="M4 7h16"/><path d="M4 12h16"/><path d="M4 17h16"/></svg></button></div>
-  <div class="lms-search-wrap"><label class="lms-search"><span class="lms-search-icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6"/><path d="m20 20-4-4"/></svg></span><input type="search" placeholder="Search courses, lessons, and resources..." data-lms-search><span class="lms-search-shortcut">Ctrl K</span></label></div>
-  <div class="lms-topbar-right">
-    <a href="lms-notifications.html" class="lms-icon-button" aria-label="Notifications" title="Notifications">><svg viewBox="0 0 24 24"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/><path d="M10 21h4"/></svg><span class="lms-notification-dot"></span></a>
-    <div class="lms-user-wrap"><button type="button" class="lms-user-button" data-lms-user-button aria-expanded="false"><span class="lms-user-avatar" data-lms-learner-initials>JD</span><span class="lms-user-name" data-lms-learner-name>Learner</span><span class="lms-user-chevron"><svg viewBox="0 0 24 24"><path d="m7 10 5 5 5-5"/></svg></span></button>
-      <div class="lms-user-menu" data-lms-user-menu><div class="lms-user-menu-header"><span class="lms-user-menu-name" data-lms-user-menu-name>Learner</span><span class="lms-user-menu-email" data-lms-user-menu-email></span></div><a href="lms-account.html" class="lms-user-menu-link">My Account</a><a href="lms-certificates.html" class="lms-user-menu-link">My Certificates</a><button type="button" class="lms-user-menu-link" data-lms-sign-out>Sign Out</button></div>
-    </div>
-  </div>
-</header><div class="lms-content">
+<div class="lms-topbar-left">
+<button aria-label="Toggle navigation" class="lms-menu-button" data-lms-menu-toggle="" type="button">
+<svg aria-hidden="true" viewbox="0 0 24 24">
+<path d="M4 7h16"></path>
+<path d="M4 12h16"></path>
+<path d="M4 17h16"></path>
+</svg>
+</button>
+</div>
+<div class="lms-search-wrap">
+<label class="lms-search">
+<span aria-hidden="true" class="lms-search-icon">
+<svg viewbox="0 0 24 24">
+<circle cx="11" cy="11" r="6"></circle>
+<path d="m20 20-4-4"></path>
+</svg>
+</span>
+<input data-lms-search="" placeholder="Search courses, lessons, and resources..." type="search"/>
+<span class="lms-search-shortcut">Ctrl K</span>
+</label>
+</div>
+<div class="lms-topbar-right">
+<a aria-label="Notifications" class="lms-icon-button" href="lms-notifications.html" title="Notifications">
+<svg aria-hidden="true" viewbox="0 0 24 24">
+<path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"></path>
+<path d="M10 21h4"></path>
+</svg>
+<span class="lms-notification-dot"></span>
+</a>
+<div class="lms-user-wrap">
+<button aria-expanded="false" class="lms-user-button" data-lms-user-button="" type="button">
+<span class="lms-user-avatar" data-lms-learner-initials=""></span>
+<span class="lms-user-name" data-lms-learner-name=""></span>
+<span aria-hidden="true" class="lms-user-chevron">
+<svg viewbox="0 0 24 24"><path d="m7 10 5 5 5-5"></path></svg>
+</span>
+</button>
+<div class="lms-user-menu" data-lms-user-menu="">
+<div class="lms-user-menu-header">
+<span class="lms-user-menu-name" data-lms-user-menu-name=""></span>
+<span class="lms-user-menu-email" data-lms-user-menu-email=""></span>
+</div>
+<a class="lms-user-menu-link" href="lms-account.html">My Account</a>
+<a class="lms-user-menu-link" href="lms-certificates.html">My Certificates</a>
+<button class="lms-user-menu-link" data-lms-sign-out="" type="button">Sign Out</button>
+</div>
+</div>
+</div>
+</header>
+<div class="lms-content schedule-page">
+<nav aria-label="Breadcrumb" class="schedule-breadcrumb">
+<a href="lms-dashboard.html">Home</a>
+<svg aria-hidden="true" viewbox="0 0 24 24"><path d="m9 18 6-6-6-6"></path></svg>
+<span>Appointments</span>
+<svg aria-hidden="true" viewbox="0 0 24 24"><path d="m9 18 6-6-6-6"></path></svg>
+<span>Schedule</span>
+</nav>
 <div class="scheduler" id="customerScheduler">
-<div id="msg" class="scheduler-message" hidden aria-live="polite"></div>
+<div aria-live="polite" class="scheduler-message" hidden="" id="msg"></div>
 <section id="book">
-<header class="scheduler-page-head"><div><b class="eyebrow">APPOINTMENTS</b><h1>Schedule an Appointment</h1><p>Choose an appointment type, then select a live available date and time.</p></div><button id="myAppts" class="btn" type="button">My Appointments</button></header>
-<div class="steps"><span class="active">1 Appointment</span><span>2 Date &amp; Time</span><span>3 Information</span><span>4 Review</span></div>
+<section class="schedule-hero">
+<div class="schedule-hero-copy">
+<span class="schedule-kicker">Screenings4u Learning Center</span>
+<h1>Schedule an Appointment</h1>
+<p>Choose a training appointment, select a live available time, and confirm your booking in a few simple steps.</p>
+<div aria-label="Scheduling features" class="schedule-hero-meta">
+<span>
+<svg aria-hidden="true" viewbox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg>
+                    Live availability
+                  </span>
+<span>
+<svg aria-hidden="true" viewbox="0 0 24 24"><path d="M5 4h14v16H5z"></path><path d="M8 2v4M16 2v4M5 9h14"></path></svg>
+                    Online booking
+                  </span>
+<span>
+<svg aria-hidden="true" viewbox="0 0 24 24"><path d="m5 12 4 4L19 6"></path></svg>
+                    Manage anytime
+                  </span>
+</div>
+</div>
+<div class="schedule-hero-action">
+<div aria-hidden="true" class="schedule-hero-icon">
+<svg viewbox="0 0 24 24"><path d="M5 4h14v16H5z"></path><path d="M8 2v4M16 2v4M5 9h14"></path><path d="M9 14h6"></path></svg>
+</div>
+<strong>Already booked?</strong>
+<span>View, reschedule, or cancel an existing appointment.</span>
+<button class="btn hero-btn" id="myAppts" type="button">My Appointments</button>
+</div>
+</section>
+<div aria-label="Booking progress" class="steps">
+<span class="active"><i>1</i><b>Appointment</b><small>Choose a session</small></span>
+<span><i>2</i><b>Date &amp; Time</b><small>Pick availability</small></span>
+<span><i>3</i><b>Information</b><small>Confirm your details</small></span>
+<span><i>4</i><b>Review</b><small>Book appointment</small></span>
+</div>
 <div class="card booking-card">
-<div id="p1"><h2>Choose an appointment type</h2><p class="section-copy">Only appointment types made available by the administrator are shown here.</p><div id="services" class="service-grid"><div class="scheduler-loading">Loading appointment types…</div></div></div>
-<div id="p2" hidden><button class="back" data-back="1" type="button">← Back</button><h2>Select a date and time</h2><div class="calendar-wrap"><div class="calendar-panel"><div class="cal-head"><button id="prev" type="button">‹</button><strong id="month"></strong><button id="next" type="button">›</button></div><div class="week"><b>Sun</b><b>Mon</b><b>Tue</b><b>Wed</b><b>Thu</b><b>Fri</b><b>Sat</b></div><div id="calendar" class="calendar"></div></div><aside class="times-panel"><h3 id="dateLabel">Choose a date</h3><div id="times" class="times"></div></aside></div></div>
-<div id="p3" hidden><button class="back" data-back="2" type="button">← Back</button><h2>Your information</h2><div class="form"><label>Full name<input id="name" autocomplete="name"></label><label>Email<input id="email" type="email" autocomplete="email"></label><label>Phone<input id="phone" autocomplete="tel"></label><label>Party size<input id="party" type="number" min="1" value="1"></label></div><button id="review" class="btn primary" type="button">Continue</button></div>
-<div id="p4" hidden><button class="back" data-back="3" type="button">← Back</button><h2>Review your appointment</h2><div id="reviewBox" class="review"></div><button id="confirm" class="btn primary" type="button">Book Appointment</button></div>
-<div id="success" hidden class="success-panel"><div class="success-mark">✓</div><h2>You're scheduled.</h2><div id="successBox" class="review"></div><div class="success-actions"><button id="viewAppointments" class="btn primary" type="button">View My Appointments</button><button id="another" class="btn" type="button">Book Another</button></div></div>
-</div></section>
-<section id="listPanel" class="card appointments-panel" hidden><header class="list-head"><div><b class="eyebrow">MY APPOINTMENTS</b><h2>Upcoming &amp; Past Appointments</h2><p>Changes here update the same appointment shown to the administrator.</p></div><button id="newBook" class="btn primary" type="button">+ Schedule Appointment</button></header><div id="appointments"></div></section>
-<dialog id="resDialog" class="scheduler-dialog"><form method="dialog" class="dialog-shell" onsubmit="return false;"><button id="closeRes" class="x" type="button">×</button><b class="eyebrow">RESCHEDULE</b><h2>Choose a new time</h2><p id="resTitle"></p><div class="calendar-wrap"><div class="calendar-panel"><div class="cal-head"><button id="rprev" type="button">‹</button><strong id="rmonth"></strong><button id="rnext" type="button">›</button></div><div class="week"><b>Sun</b><b>Mon</b><b>Tue</b><b>Wed</b><b>Thu</b><b>Fri</b><b>Sat</b></div><div id="rcalendar" class="calendar"></div></div><aside class="times-panel"><h3 id="rdate">Choose a date</h3><div id="rtimes" class="times"></div></aside></div></form></dialog>
-
-<dialog id="cancelDialog" class="scheduler-dialog cancel-dialog">
-  <form id="cancelForm" class="dialog-shell">
-    <button id="closeCancel" class="x" type="button" aria-label="Close">×</button>
-    <b class="eyebrow danger-text">CANCEL APPOINTMENT</b>
-    <h2>Cancel this appointment?</h2>
-    <p id="cancelTitle"></p>
-    <label class="cancel-reason">Cancellation reason <span>(optional)</span>
-      <textarea id="cancelReason" rows="4" maxlength="1000" placeholder="Tell us why you need to cancel."></textarea>
-    </label>
-    <div class="dialog-actions">
-      <button id="keepAppointment" type="button" class="btn">Keep Appointment</button>
-      <button id="confirmCancel" type="submit" class="btn danger">Cancel Appointment</button>
-    </div>
-  </form>
+<div id="p1">
+<div class="booking-section-head">
+<div>
+<span class="section-eyebrow">Step 1 of 4</span>
+<h2>Choose an appointment type</h2>
+<p class="section-copy">Available appointment types are loaded directly from the screenings4u scheduling system.</p>
+</div>
+<div aria-hidden="true" class="booking-section-mark">
+<svg viewbox="0 0 24 24"><path d="M4 5h16v14H4z"></path><path d="M8 9h8M8 13h5"></path></svg>
+</div>
+</div>
+<div class="service-grid" id="services">
+<div class="scheduler-loading">
+<span aria-hidden="true" class="loading-spinner"></span>
+                    Loading appointment types…
+                  </div>
+</div>
+</div>
+<div hidden="" id="p2">
+<button class="back" data-back="1" type="button">
+<svg aria-hidden="true" viewbox="0 0 24 24"><path d="M19 12H5"></path><path d="m11 18-6-6 6-6"></path></svg>
+                  Back to appointment types
+                </button>
+<div class="booking-section-head compact">
+<div>
+<span class="section-eyebrow">Step 2 of 4</span>
+<h2>Select a date and time</h2>
+<p class="section-copy">Only dates with live availability can be selected.</p>
+</div>
+</div>
+<div class="calendar-wrap">
+<div class="calendar-panel">
+<div class="cal-head">
+<button aria-label="Previous month" id="prev" type="button">‹</button>
+<strong id="month"></strong>
+<button aria-label="Next month" id="next" type="button">›</button>
+</div>
+<div aria-hidden="true" class="week">
+<b>Sun</b><b>Mon</b><b>Tue</b><b>Wed</b><b>Thu</b><b>Fri</b><b>Sat</b>
+</div>
+<div class="calendar" id="calendar"></div>
+</div>
+<aside class="times-panel">
+<div class="times-panel-head">
+<span class="section-eyebrow">Available times</span>
+<h3 id="dateLabel">Choose a date</h3>
+</div>
+<div class="times" id="times">
+<div class="times-empty">Select an available date to see appointment times.</div>
+</div>
+</aside>
+</div>
+</div>
+<div hidden="" id="p3">
+<button class="back" data-back="2" type="button">
+<svg aria-hidden="true" viewbox="0 0 24 24"><path d="M19 12H5"></path><path d="m11 18-6-6 6-6"></path></svg>
+                  Back to date &amp; time
+                </button>
+<div class="booking-section-head compact">
+<div>
+<span class="section-eyebrow">Step 3 of 4</span>
+<h2>Your information</h2>
+<p class="section-copy">Confirm the contact information associated with this appointment.</p>
+</div>
+</div>
+<div class="form appointment-form">
+<label>
+<span>Full name</span>
+<input autocomplete="name" id="name" placeholder="Full name"/>
+</label>
+<label>
+<span>Email</span>
+<input autocomplete="email" id="email" placeholder="Email address" type="email"/>
+</label>
+<label>
+<span>Phone</span>
+<input autocomplete="tel" id="phone" placeholder="Phone number"/>
+</label>
+<label>
+<span>Party size</span>
+<input id="party" min="1" type="number" value="1"/>
+</label>
+</div>
+<div class="form-actions">
+<button class="btn primary" id="review" type="button">
+                    Continue to Review
+                    <svg aria-hidden="true" viewbox="0 0 24 24"><path d="M5 12h14"></path><path d="m13 6 6 6-6 6"></path></svg>
+</button>
+</div>
+</div>
+<div hidden="" id="p4">
+<button class="back" data-back="3" type="button">
+<svg aria-hidden="true" viewbox="0 0 24 24"><path d="M19 12H5"></path><path d="m11 18-6-6 6-6"></path></svg>
+                  Back to your information
+                </button>
+<div class="booking-section-head compact">
+<div>
+<span class="section-eyebrow">Step 4 of 4</span>
+<h2>Review your appointment</h2>
+<p class="section-copy">Make sure everything looks right before booking.</p>
+</div>
+</div>
+<div class="review" id="reviewBox"></div>
+<div class="form-actions">
+<button class="btn primary" id="confirm" type="button">
+                    Book Appointment
+                    <svg aria-hidden="true" viewbox="0 0 24 24"><path d="m5 12 4 4L19 6"></path></svg>
+</button>
+</div>
+</div>
+<div class="success-panel" hidden="" id="success">
+<div aria-hidden="true" class="success-mark">
+<svg viewbox="0 0 24 24"><path d="m5 12 4 4L19 6"></path></svg>
+</div>
+<span class="section-eyebrow success-eyebrow">Appointment confirmed</span>
+<h2>You're scheduled.</h2>
+<p>Your appointment has been added to your screenings4u Learning Center account.</p>
+<div class="review" id="successBox"></div>
+<div class="success-actions">
+<button class="btn primary" id="viewAppointments" type="button">View My Appointments</button>
+<button class="btn" id="another" type="button">Book Another</button>
+</div>
+</div>
+</div>
+<section aria-label="Appointment help" class="schedule-info-strip">
+<article>
+<span aria-hidden="true" class="schedule-info-icon">
+<svg viewbox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><path d="M12 8v4M12 16h.01"></path></svg>
+</span>
+<div><strong>Live availability</strong><span>Dates and times come directly from the current scheduling calendar.</span></div>
+</article>
+<article>
+<span aria-hidden="true" class="schedule-info-icon">
+<svg viewbox="0 0 24 24"><path d="M4 5h16v14H4z"></path><path d="m8 10 4 4 4-4"></path></svg>
+</span>
+<div><strong>Manage online</strong><span>Use My Appointments to review, reschedule, or cancel when permitted.</span></div>
+</article>
+<article>
+<span aria-hidden="true" class="schedule-info-icon">
+<svg viewbox="0 0 24 24"><path d="M12 3 4 7v5c0 5 3 8 8 9 5-1 8-4 8-9V7z"></path><path d="m9 12 2 2 4-4"></path></svg>
+</span>
+<div><strong>Connected to your account</strong><span>Your booking stays linked to your authenticated Learning Center profile.</span></div>
+</article>
+</section>
+</section>
+<section class="card appointments-panel" hidden="" id="listPanel">
+<header class="list-head">
+<div>
+<span class="section-eyebrow">My Appointments</span>
+<h2>Upcoming &amp; Past Appointments</h2>
+<p>Review your scheduling history and manage eligible upcoming appointments.</p>
+</div>
+<button class="btn primary" id="newBook" type="button">
+<svg aria-hidden="true" viewbox="0 0 24 24"><path d="M12 5v14M5 12h14"></path></svg>
+                Schedule Appointment
+              </button>
+</header>
+<div id="appointments"></div>
+</section>
+<dialog class="scheduler-dialog" id="resDialog">
+<form class="dialog-shell" method="dialog" onsubmit="return false;">
+<button aria-label="Close reschedule dialog" class="x" id="closeRes" type="button">×</button>
+<span class="section-eyebrow">Reschedule</span>
+<h2>Choose a new time</h2>
+<p id="resTitle"></p>
+<div class="calendar-wrap">
+<div class="calendar-panel">
+<div class="cal-head">
+<button aria-label="Previous month" id="rprev" type="button">‹</button>
+<strong id="rmonth"></strong>
+<button aria-label="Next month" id="rnext" type="button">›</button>
+</div>
+<div aria-hidden="true" class="week"><b>Sun</b><b>Mon</b><b>Tue</b><b>Wed</b><b>Thu</b><b>Fri</b><b>Sat</b></div>
+<div class="calendar" id="rcalendar"></div>
+</div>
+<aside class="times-panel">
+<span class="section-eyebrow">Available times</span>
+<h3 id="rdate">Choose a date</h3>
+<div class="times" id="rtimes"></div>
+</aside>
+</div>
+</form>
+</dialog>
+<dialog class="scheduler-dialog cancel-dialog" id="cancelDialog">
+<form class="dialog-shell" id="cancelForm">
+<button aria-label="Close" class="x" id="closeCancel" type="button">×</button>
+<span class="section-eyebrow danger-text">Cancel Appointment</span>
+<h2>Cancel this appointment?</h2>
+<p id="cancelTitle"></p>
+<label class="cancel-reason">
+<span class="cancel-label">Cancellation reason <em>(optional)</em></span>
+<textarea id="cancelReason" maxlength="1000" placeholder="Tell us why you need to cancel." rows="4"></textarea>
+</label>
+<div class="dialog-actions">
+<button class="btn" id="keepAppointment" type="button">Keep Appointment</button>
+<button class="btn danger" id="confirmCancel" type="submit">Cancel Appointment</button>
+</div>
+</form>
 </dialog>
 </div>
 </div>
-</main></div><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="assets/js/supabase-config.js"></script><script src="assets/js/core-auth.js"></script><script src="assets/js/ui.js"></script><script src="assets/js/portal-auth-guard.js"></script><script src="assets/js/training-auth-guard.js"></script><script src="assets/js/lms-sidebar.js"></script><script src="assets/js/lms.js?v=20260830-2000"></script><script src="assets/js/customer-scheduling.js?v=20260907-0100"></script>  <script src="assets/js/branded-popups.js?v=20260911-1"></script>
+</main>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-</body></html>
+
+
+
+
+
+
+
+<script src="assets/js/lms-core-clean.js?v=20260915-clean3"></script><script src="assets/js/pages/lms-schedule-appointment.js?v=20260915-clean3"></script><script src="assets/js/lms-global-support-bar.js?v=20260915-1"></script>
+</body>
+</html>

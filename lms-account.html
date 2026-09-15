@@ -1,383 +1,251 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>My Account | screenings4u Learning Center</title>
 <link href="images/fav.png" rel="icon" type="image/png"/>
-<meta name="theme-color" content="#325aa3" />
-
-
-<link rel="stylesheet" href="assets/css/lms.css">
-<link rel="stylesheet" href="assets/css/lms-refinement.css">
-<link rel="stylesheet" href="assets/css/lms-ui-modals.css">
-
-<style>
-:root{
-  --s4u-blue:#325aa3;
-  --s4u-dark-blue:#24467f;
-  --s4u-orange:#ff6b00;
-  --s4u-orange-hover:#e66000;
-  --s4u-page:#f5f7fa;
-  --s4u-card:#ffffff;
-  --s4u-border:#dfe5ec;
-  --s4u-text:#172033;
-  --s4u-muted:#687386;
-}
-
-.account-page{width:100%;min-width:0;padding-bottom:32px}
-.account-breadcrumb{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:22px;color:var(--s4u-muted);font-size:12px;font-weight:700}
-.account-breadcrumb a{color:var(--s4u-blue);text-decoration:none}
-.account-breadcrumb svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-
-.account-header{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;margin-bottom:24px}
-.account-header h1{margin:0;color:var(--s4u-text);font-size:32px;font-weight:800;letter-spacing:-.03em}
-.account-header p{margin:8px 0 0;color:var(--s4u-muted);font-size:14px;line-height:1.6}
-
-.account-layout{display:grid;grid-template-columns:270px minmax(0,1fr);gap:24px;align-items:start}
-
-.account-card,.account-nav{background:var(--s4u-card);border:1px solid var(--s4u-border);border-radius:16px}
-.account-profile-summary{padding:25px 20px;text-align:center}
-.account-avatar{width:84px;height:84px;margin:0 auto 14px;display:grid;place-items:center;border-radius:50%;background:var(--s4u-blue);color:#fff;font-size:26px;font-weight:800;border:5px solid var(--s4u-page)}
-.account-profile-summary h2{margin:0;color:var(--s4u-text);font-size:17px;font-weight:800}
-.account-profile-summary p{margin:5px 0 0;color:var(--s4u-muted);font-size:11px;line-height:1.5}
-.account-role{display:inline-flex;margin-top:13px;padding:5px 10px;border-radius:999px;background:rgba(50,90,163,.1);color:var(--s4u-blue);font-size:10px;font-weight:800}
-
-.account-nav{margin-top:18px;padding:8px}
-.account-nav a{display:flex;align-items:center;gap:11px;padding:11px 12px;border-radius:9px;color:var(--s4u-muted);text-decoration:none;font-size:12px;font-weight:750}
-.account-nav a:hover{background:var(--s4u-page);color:var(--s4u-blue)}
-.account-nav a.active{background:var(--s4u-blue);color:#fff}
-.account-nav svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
-
-.account-content{display:grid;gap:20px}
-.account-card-head{padding:22px 24px;border-bottom:1px solid var(--s4u-border)}
-.account-card-head h2{margin:0;color:var(--s4u-text);font-size:18px;font-weight:800}
-.account-card-head p{margin:6px 0 0;color:var(--s4u-muted);font-size:12px;line-height:1.5}
-
-.account-form{padding:24px}
-.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
-.form-group{min-width:0}
-.form-group.full{grid-column:1/-1}
-.form-group label{display:block;margin-bottom:7px;color:var(--s4u-text);font-size:11px;font-weight:800}
-.form-group input,.form-group select{width:100%;height:43px;padding:0 12px;border:1px solid var(--s4u-border);border-radius:9px;outline:none;background:#fff;color:var(--s4u-text);font:inherit;font-size:12px}
-.form-group input:focus,.form-group select:focus{border-color:var(--s4u-blue);box-shadow:0 0 0 3px rgba(50,90,163,.1)}
-.form-help{margin:6px 0 0;color:var(--s4u-muted);font-size:10px;line-height:1.5}
-
-.account-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:22px;padding-top:20px;border-top:1px solid var(--s4u-border)}
-.btn{min-height:41px;padding:0 16px;border-radius:9px;border:1px solid transparent;font-size:12px;font-weight:800;cursor:pointer}
-.btn-primary{background:var(--s4u-orange);color:#fff}
-.btn-primary:hover{background:var(--s4u-orange-hover)}
-.btn-secondary{background:#fff;border-color:var(--s4u-border);color:var(--s4u-text)}
-
-.account-section-body{padding:8px 24px}
-.preference-row{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:18px 0;border-bottom:1px solid var(--s4u-border)}
-.preference-row:last-child{border-bottom:0}
-.preference-copy strong{display:block;color:var(--s4u-text);font-size:12px}
-.preference-copy span{display:block;margin-top:4px;color:var(--s4u-muted);font-size:11px;line-height:1.5}
-
-.switch{position:relative;width:42px;height:23px;flex:0 0 auto}
-.switch input{position:absolute;opacity:0}
-.switch-slider{position:absolute;inset:0;border-radius:999px;background:var(--s4u-border);cursor:pointer;transition:.2s}
-.switch-slider:before{content:"";position:absolute;width:17px;height:17px;left:3px;top:3px;border-radius:50%;background:#fff;transition:.2s}
-.switch input:checked + .switch-slider{background:var(--s4u-blue)}
-.switch input:checked + .switch-slider:before{transform:translateX(19px)}
-
-.security-list{padding:8px 24px}
-.security-item{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:17px 0;border-bottom:1px solid var(--s4u-border)}
-.security-item:last-child{border-bottom:0}
-.security-left{display:flex;gap:12px;align-items:flex-start}
-.security-icon{width:36px;height:36px;display:grid;place-items:center;flex:0 0 auto;border-radius:9px;background:var(--s4u-page);color:var(--s4u-blue)}
-.security-icon svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
-.security-copy strong{display:block;color:var(--s4u-text);font-size:12px}
-.security-copy span{display:block;margin-top:4px;color:var(--s4u-muted);font-size:11px;line-height:1.5}
-.text-button{border:0;background:transparent;color:var(--s4u-blue);font-size:11px;font-weight:800;cursor:pointer;white-space:nowrap}
-
-.danger-card{border-color:rgba(255,107,0,.35)}
-.danger-copy{padding:22px 24px;display:flex;align-items:center;justify-content:space-between;gap:24px}
-.danger-copy h2{margin:0;color:var(--s4u-text);font-size:16px}
-.danger-copy p{margin:6px 0 0;color:var(--s4u-muted);font-size:11px;line-height:1.55}
-.btn-danger{background:#fff;border-color:var(--s4u-orange);color:var(--s4u-orange)}
-
-@media(max-width:900px){
-  .account-layout{grid-template-columns:1fr}
-  .account-sidebar{display:grid;grid-template-columns:220px 1fr;gap:18px}
-  .account-nav{margin-top:0}
-}
-@media(max-width:650px){
-  .account-header{align-items:flex-start;flex-direction:column}
-  .account-sidebar{grid-template-columns:1fr}
-  .form-grid{grid-template-columns:1fr}
-  .form-group.full{grid-column:auto}
-  .account-actions{justify-content:stretch;flex-direction:column}
-  .account-actions .btn{width:100%}
-  .preference-row,.security-item,.danger-copy{align-items:flex-start;flex-direction:column}
-}
-</style>
-<style id="training-mobile-account">
-*{box-sizing:border-box}html,body{max-width:100%;overflow-x:hidden}
-@media(max-width:767px){html{font-size:16px}.lms-content.account-page{width:100%;padding:18px 14px 36px}.account-breadcrumb{font-size:13px;margin-bottom:16px}.account-header{margin-bottom:18px}.account-header h1{font-size:29px}.account-header p{font-size:15px}.account-layout,.account-sidebar,.account-content{display:grid;grid-template-columns:1fr;width:100%;min-width:0;gap:14px}.account-card,.account-nav{width:100%;min-width:0;border-radius:13px}.account-nav{display:grid;grid-template-columns:1fr;gap:6px;padding:8px;margin:0}.account-nav a{width:100%;min-height:46px;font-size:14px}.account-card-head,.account-form{padding:18px 15px}.account-card-head h2{font-size:19px}.account-card-head p{font-size:14px}.form-grid{grid-template-columns:1fr;gap:15px}.form-group.full{grid-column:auto}.form-group label{font-size:13px}.form-group input,.form-group select{height:46px;font-size:16px}.form-help{font-size:12px}.account-actions{display:grid;grid-template-columns:1fr;gap:10px}.account-actions .btn{width:100%;min-height:46px}.account-section-body,.security-list{padding:8px 15px}.preference-row,.security-item,.danger-copy{align-items:flex-start;flex-direction:column;gap:14px}.preference-copy strong,.security-copy strong{font-size:14px}.preference-copy span,.security-copy span{font-size:13px}.text-button,.danger-copy .btn{width:100%;min-height:44px;padding:10px;text-align:center;border:1px solid var(--s4u-border);border-radius:9px}.danger-copy{padding:18px 15px}}
-</style>
+<meta content="#24467f" name="theme-color"/>
+<link href="assets/css/lms.css" rel="stylesheet"/>
+<link href="assets/css/lms-refinement.css" rel="stylesheet"/>
+<link href="assets/css/lms-ui-modals.css" rel="stylesheet"/>
+<link href="assets/css/lms-learning-center-2026-corrected.css?v=20260915-9" rel="stylesheet"/>
+<link href="assets/css/lms-shell-v2.css?v=20260915-2" rel="stylesheet"/>
+<link href="assets/css/lms-shell-v3.css?v=20260915-2" rel="stylesheet"/>
+<link href="assets/css/lms-rebuild-v1.css?v=20260915-1" rel="stylesheet"/>
+<link href="assets/css/pages/lms-account.css?v=20260915-avatar3" rel="stylesheet"/>
 </head>
-
-<body>
+<body class="lms-account-page s4u-lms-redesign">
 <div class="lms-app">
-
-  <div id="lms-sidebar-target"></div>
-
-  <main class="lms-main">
-
-    <header class="lms-topbar">
-      <div class="lms-topbar-left">
-        <button type="button" class="lms-menu-button" data-lms-menu-toggle aria-label="Toggle navigation">
-          <svg viewBox="0 0 24 24">
-            <path d="M4 7h16"></path><path d="M4 12h16"></path><path d="M4 17h16"></path>
-          </svg>
-        </button>
-      </div>
-
-      <div class="lms-search-wrap">
-        <label class="lms-search">
-          <span class="lms-search-icon">
-            <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6"></circle><path d="m20 20-4-4"></path></svg>
-          </span>
-          <input type="search" placeholder="Search courses, lessons, and resources..." data-lms-search>
-          <span class="lms-search-shortcut">Ctrl K</span>
-        </label>
-      </div>
-
-      <div class="lms-topbar-right">
-        <a href="lms-notifications.html" class="lms-icon-button" aria-label="Notifications" title="Notifications">>
-          <svg viewBox="0 0 24 24"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"></path><path d="M10 21h4"></path></svg>
-          <span class="lms-notification-dot"></span>
-        </a>
-
-        <div class="lms-user-wrap">
-          <button type="button" class="lms-user-button" data-lms-user-button aria-expanded="false">
-            <span class="lms-user-avatar" data-lms-learner-initials>--</span>
-            <span class="lms-user-name" data-lms-learner-name>Learner</span>
-            <span class="lms-user-chevron"><svg viewBox="0 0 24 24"><path d="m7 10 5 5 5-5"></path></svg></span>
-          </button>
-
-          <div class="lms-user-menu" data-lms-user-menu>
-            <div class="lms-user-menu-header">
-              <span class="lms-user-menu-name" data-lms-user-menu-name>Learner</span>
-              <span class="lms-user-menu-email" data-lms-user-menu-email></span>
-            </div>
-            <a href="lms-account.html" class="lms-user-menu-link">My Account</a>
-            <a href="lms-certificates.html" class="lms-user-menu-link">My Certificates</a>
-            <button type="button" class="lms-user-menu-link" data-lms-sign-out>Sign Out</button>
-          </div>
-        </div>
-      </div>
-    </header>
-
-    <div class="lms-content account-page">
-
-      <nav class="account-breadcrumb" aria-label="Breadcrumb">
-        <a href="lms-dashboard.html">Home</a>
-        <svg viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"></path></svg>
-        <span>My Account</span>
-      </nav>
-
-      <section class="account-header">
-        <div>
-          <h1>My Account</h1>
-          <p>Manage your learner profile, communication preferences, and account security.</p>
-        </div>
-      </section>
-
-      <div class="account-layout">
-
-        <aside class="account-sidebar">
-
-          <section class="account-card account-profile-summary">
-            <div class="account-avatar" data-account-avatar>--</div>
-            <h2 data-account-name>Learner</h2>
-            <p data-account-email></p>
-            <span class="account-role">Learner Account</span>
-          </section>
-
-          <nav class="account-nav" aria-label="Account navigation">
-            <a href="#profile" class="active">
-              <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"></circle><path d="M4 21c.8-4 3.4-6 8-6s7.2 2 8 6"></path></svg>
+<div id="lms-sidebar-target"></div>
+<main class="lms-main">
+<header class="lms-topbar">
+<div class="lms-topbar-left">
+<button aria-label="Toggle navigation" class="lms-menu-button" data-lms-menu-toggle="" type="button">
+<svg viewbox="0 0 24 24">
+<path d="M4 7h16"></path><path d="M4 12h16"></path><path d="M4 17h16"></path>
+</svg>
+</button>
+</div>
+<div class="lms-search-wrap">
+<label class="lms-search">
+<span class="lms-search-icon">
+<svg viewbox="0 0 24 24"><circle cx="11" cy="11" r="6"></circle><path d="m20 20-4-4"></path></svg>
+</span>
+<input data-lms-search="" placeholder="Search courses, lessons, and resources..." type="search"/>
+<span class="lms-search-shortcut">Ctrl K</span>
+</label>
+</div>
+<div class="lms-topbar-right">
+<a aria-label="Notifications" class="lms-icon-button" href="lms-notifications.html" title="Notifications">
+          <svg viewbox="0 0 24 24"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"></path><path d="M10 21h4"></path></svg>
+<span class="lms-notification-dot"></span>
+</a>
+<div class="lms-user-wrap">
+<button aria-expanded="false" class="lms-user-button" data-lms-user-button="" type="button">
+<span class="lms-user-avatar" data-lms-learner-initials="">--</span>
+<span class="lms-user-name" data-lms-learner-name="">Learner</span>
+<span class="lms-user-chevron"><svg viewbox="0 0 24 24"><path d="m7 10 5 5 5-5"></path></svg></span>
+</button>
+<div class="lms-user-menu" data-lms-user-menu="">
+<div class="lms-user-menu-header">
+<span class="lms-user-menu-name" data-lms-user-menu-name="">Learner</span>
+<span class="lms-user-menu-email" data-lms-user-menu-email=""></span>
+</div>
+<a class="lms-user-menu-link" href="lms-account.html">My Account</a>
+<a class="lms-user-menu-link" href="lms-certificates.html">My Certificates</a>
+<button class="lms-user-menu-link" data-lms-sign-out="" type="button">Sign Out</button>
+</div>
+</div>
+</div>
+</header>
+<div class="lms-content account-page">
+<nav aria-label="Breadcrumb" class="account-breadcrumb">
+<a href="lms-dashboard.html">Home</a>
+<svg viewbox="0 0 24 24"><path d="m9 18 6-6-6-6"></path></svg>
+<span>My Account</span>
+</nav>
+<section class="account-header">
+<div>
+<h1>My Account</h1>
+<p>Manage your learner profile, communication preferences, and account security.</p>
+</div>
+</section>
+<div class="account-layout">
+<aside class="account-sidebar">
+<section class="account-card account-profile-summary">
+<div class="account-avatar" data-account-avatar=""><img data-account-avatar-image alt="Profile photo" hidden/><span data-account-avatar-fallback>--</span></div>
+<h2 data-account-name="">Learner</h2>
+<p data-account-email=""></p>
+<span class="account-role">Learner Account</span>
+</section>
+<nav aria-label="Account navigation" class="account-nav">
+<a class="active" href="#profile">
+<svg viewbox="0 0 24 24"><circle cx="12" cy="8" r="4"></circle><path d="M4 21c.8-4 3.4-6 8-6s7.2 2 8 6"></path></svg>
               Profile Information
             </a>
-            <a href="#preferences">
-              <svg viewBox="0 0 24 24"><path d="M12 3v18"></path><path d="M3 12h18"></path><circle cx="12" cy="12" r="9"></circle></svg>
+<a href="#preferences">
+<svg viewbox="0 0 24 24"><path d="M12 3v18"></path><path d="M3 12h18"></path><circle cx="12" cy="12" r="9"></circle></svg>
               Preferences
             </a>
-            <a href="#security">
-              <svg viewBox="0 0 24 24"><rect x="5" y="10" width="14" height="10" rx="2"></rect><path d="M8 10V7a4 4 0 0 1 8 0v3"></path></svg>
+<a href="#security">
+<svg viewbox="0 0 24 24"><rect height="10" rx="2" width="14" x="5" y="10"></rect><path d="M8 10V7a4 4 0 0 1 8 0v3"></path></svg>
               Security
             </a>
-          </nav>
-
-        </aside>
-
-        <div class="account-content">
-
-          <!-- PROFILE -->
-
-          <section class="account-card" id="profile">
-            <div class="account-card-head">
-              <h2>Profile Information</h2>
-              <p>Keep your account information up to date. Your name may appear on completed training certificates.</p>
-            </div>
-
-            <form class="account-form">
-
-              <div class="form-grid">
-
-                <div class="form-group">
-                  <label for="firstName">First Name</label>
-                  <input id="firstName" type="text" autocomplete="given-name">
-                </div>
-
-                <div class="form-group">
-                  <label for="lastName">Last Name</label>
-                  <input id="lastName" type="text" autocomplete="family-name">
-                </div>
-
-                <div class="form-group">
-                  <label for="email">Email Address</label>
-                  <input id="email" type="email" readonly>
-                  <p class="form-help">Used for account notifications and training communications.</p>
-                </div>
-
-                <div class="form-group">
-                  <label for="phone">Phone Number</label>
-                  <input id="phone" type="tel" placeholder="Add phone number" autocomplete="tel">
-                </div>
-
-                <div class="form-group full">
-                  <label for="organization">Organization / Company</label>
-                  <input id="organization" type="text" placeholder="Add organization name" autocomplete="organization">
-                  <p class="form-help">This information may be used to help identify employer-provided training.</p>
-                </div>
-
-              </div>
-
-              <div id="accountMessage" class="form-help" role="status" aria-live="polite"></div>
-<div class="account-actions">
-                <button type="reset" class="btn btn-secondary">Cancel</button>
-                <button type="submit" class="btn btn-primary">Save Changes</button>
-              </div>
-
-            </form>
-          </section>
-
-          <!-- PREFERENCES -->
-
-          <section class="account-card" id="preferences">
-            <div class="account-card-head">
-              <h2>Learning Preferences</h2>
-              <p>Choose how you would like to receive updates about your training.</p>
-            </div>
-
-            <div class="account-section-body">
-
-              <div class="preference-row">
-                <div class="preference-copy">
-                  <strong>Course Progress Reminders</strong>
-                  <span>Receive reminders when you have an active course waiting to be completed.</span>
-                </div>
-                <label class="switch">
-                  <input type="checkbox" id="prefCourseReminders">
-                  <span class="switch-slider"></span>
-                </label>
-              </div>
-
-              <div class="preference-row">
-                <div class="preference-copy">
-                  <strong>Certificate Notifications</strong>
-                  <span>Receive an email when a certificate becomes available.</span>
-                </div>
-                <label class="switch">
-                  <input type="checkbox" id="prefCertificateNotifications">
-                  <span class="switch-slider"></span>
-                </label>
-              </div>
-
-              <div class="preference-row">
-                <div class="preference-copy">
-                  <strong>New Course Updates</strong>
-                  <span>Receive occasional updates about new Screenings4u training opportunities.</span>
-                </div>
-                <label class="switch">
-                  <input type="checkbox" id="prefNewCourseUpdates">
-                  <span class="switch-slider"></span>
-                </label>
-              </div>
-
-            </div>
-          </section>
-
-          <!-- SECURITY -->
-
-          <section class="account-card" id="security">
-            <div class="account-card-head">
-              <h2>Account Security</h2>
-              <p>Manage your password and account access settings.</p>
-            </div>
-
-            <div class="security-list">
-
-              <div class="security-item">
-                <div class="security-left">
-                  <div class="security-icon">
-                    <svg viewBox="0 0 24 24"><rect x="5" y="10" width="14" height="10" rx="2"></rect><path d="M8 10V7a4 4 0 0 1 8 0v3"></path></svg>
-                  </div>
-                  <div class="security-copy">
-                    <strong>Password</strong>
-                    <span>Update your password to keep your account secure.</span>
-                  </div>
-                </div>
-                <button type="button" class="text-button" id="changePasswordButton">Change Password</button>
-              </div>
-
-              <div class="security-item">
-                <div class="security-left">
-                  <div class="security-icon">
-                    <svg viewBox="0 0 24 24"><path d="M4 5h16v14H4z"></path><path d="m4 7 8 6 8-6"></path></svg>
-                  </div>
-                  <div class="security-copy">
-                    <strong>Email Address</strong>
-                    <span>Your current account email is <strong data-security-email>—</strong>.</span>
-                  </div>
-                </div>
-                <button type="button" class="text-button" id="updateEmailButton">Update Email</button>
-              </div>
-
-            </div>
-          </section>
-
-          <!-- ACCOUNT -->
-
-          <section class="account-card danger-card">
-            <div class="danger-copy">
-              <div>
-                <h2>Need help with your account?</h2>
-                <p>For course access, account questions, or training assistance, contact the Screenings4u support team.</p>
-              </div>
-              <a href="lms-support.html" class="btn btn-danger">Contact Support</a>
-            </div>
-          </section>
-
-        </div>
-      </div>
+</nav>
+</aside>
+<div class="account-content">
+<!-- PROFILE -->
+<section class="account-card" id="profile">
+<div class="account-card-head">
+<h2>Profile Information</h2>
+<p>Keep your account information up to date. Your name may appear on completed training certificates.</p>
+</div>
+<form class="account-form">
+<div class="account-photo-editor">
+  <div class="account-photo-preview" data-account-photo-preview>
+    <img data-account-photo-image alt="Profile photo" hidden/>
+    <span data-account-photo-fallback>--</span>
+  </div>
+  <div class="account-photo-copy">
+    <strong>Profile Picture</strong>
+    <p>Upload a JPG, PNG, or WebP image. Maximum file size: 5 MB.</p>
+    <div class="account-photo-actions">
+      <label class="btn btn-primary account-photo-upload" for="accountPhotoInput">Upload Photo</label>
+      <button class="btn btn-secondary" id="removeAccountPhoto" type="button" hidden>Remove Photo</button>
     </div>
-  </main>
+    <input id="accountPhotoInput" type="file" accept="image/jpeg,image/png,image/webp" hidden/>
+    <span class="account-photo-status" id="accountPhotoStatus" aria-live="polite"></span>
+  </div>
+</div>
+<div class="form-grid">
+<div class="form-group">
+<label for="firstName">First Name</label>
+<input autocomplete="given-name" id="firstName" type="text"/>
+</div>
+<div class="form-group">
+<label for="lastName">Last Name</label>
+<input autocomplete="family-name" id="lastName" type="text"/>
+</div>
+<div class="form-group">
+<label for="email">Email Address</label>
+<input id="email" readonly="" type="email"/>
+<p class="form-help">Used for account notifications and training communications.</p>
+</div>
+<div class="form-group">
+<label for="phone">Phone Number</label>
+<input autocomplete="tel" id="phone" placeholder="Add phone number" type="tel"/>
+</div>
+<div class="form-group full">
+<label for="organization">Organization / Company</label>
+<input autocomplete="organization" id="organization" placeholder="Add organization name" type="text"/>
+<p class="form-help">This information may be used to help identify employer-provided training.</p>
+</div>
+</div>
+<div aria-live="polite" class="form-help" id="accountMessage" role="status"></div>
+<div class="account-actions">
+<button class="btn btn-secondary" type="reset">Cancel</button>
+<button class="btn btn-primary" type="submit">Save Changes</button>
+</div>
+</form>
+</section>
+<!-- PREFERENCES -->
+<section class="account-card" id="preferences">
+<div class="account-card-head">
+<h2>Learning Preferences</h2>
+<p>Choose how you would like to receive updates about your training.</p>
+</div>
+<div class="account-section-body">
+<div class="preference-row">
+<div class="preference-copy">
+<strong>Course Progress Reminders</strong>
+<span>Receive reminders when you have an active course waiting to be completed.</span>
+</div>
+<label class="switch">
+<input id="prefCourseReminders" type="checkbox"/>
+<span class="switch-slider"></span>
+</label>
+</div>
+<div class="preference-row">
+<div class="preference-copy">
+<strong>Certificate Notifications</strong>
+<span>Receive an email when a certificate becomes available.</span>
+</div>
+<label class="switch">
+<input id="prefCertificateNotifications" type="checkbox"/>
+<span class="switch-slider"></span>
+</label>
+</div>
+<div class="preference-row">
+<div class="preference-copy">
+<strong>New Course Updates</strong>
+<span>Receive occasional updates about new Screenings4u training opportunities.</span>
+</div>
+<label class="switch">
+<input id="prefNewCourseUpdates" type="checkbox"/>
+<span class="switch-slider"></span>
+</label>
+</div>
+</div>
+</section>
+<!-- SECURITY -->
+<section class="account-card" id="security">
+<div class="account-card-head">
+<h2>Account Security</h2>
+<p>Manage your password and account access settings.</p>
+</div>
+<div class="security-list">
+<div class="security-item">
+<div class="security-left">
+<div class="security-icon">
+<svg viewbox="0 0 24 24"><rect height="10" rx="2" width="14" x="5" y="10"></rect><path d="M8 10V7a4 4 0 0 1 8 0v3"></path></svg>
+</div>
+<div class="security-copy">
+<strong>Password</strong>
+<span>Update your password to keep your account secure.</span>
+</div>
+</div>
+<button class="text-button" id="changePasswordButton" type="button">Change Password</button>
+</div>
+<div class="security-item">
+<div class="security-left">
+<div class="security-icon">
+<svg viewbox="0 0 24 24"><path d="M4 5h16v14H4z"></path><path d="m4 7 8 6 8-6"></path></svg>
+</div>
+<div class="security-copy">
+<strong>Email Address</strong>
+<span>Your current account email is <strong data-security-email="">—</strong></span>
+</div>
+</div>
+<button class="text-button" id="updateEmailButton" type="button">Update Email</button>
+</div>
+</div>
+</section>
+<!-- ACCOUNT -->
+<section class="account-card danger-card">
+<div class="danger-copy">
+<div>
+<h2>Need help with your account?</h2>
+<p>For course access, account questions, or training assistance, contact the Screenings4u support team.</p>
+</div>
+<a class="btn btn-danger" href="lms-support.html">Contact Support</a>
+</div>
+</section>
+</div>
+</div>
+</div>
+</main>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="assets/js/supabase-config.js"></script>
 <script src="assets/js/core-auth.js"></script>
 <script src="assets/js/ui.js"></script>
-<script src="assets/js/portal-auth-guard.js"></script>
 <script src="assets/js/training-auth-guard.js"></script>
 <script src="assets/js/lms-sidebar.js"></script>
-<script src="assets/js/lms.js?v=20260830-2145"></script>
-<script src="assets/js/lms-account.js?v=20260830-2145"></script>
-  <script src="assets/js/branded-popups.js?v=20260911-1"></script>
-
+<script src="assets/js/lms.js?v=20260830-2000"></script>
+<script src="assets/js/branded-popups.js?v=20260911-1"></script>
+<script src="assets/js/pages/lms-account.js?v=20260915-avatar3"></script>
+<script src="assets/js/lms-global-support-bar.js?v=20260915-1"></script>
 </body>
 </html>

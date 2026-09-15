@@ -1,0 +1,650 @@
+/* SOURCE: assets/css/lms-account-2026.css */
+
+:root{--acct-navy:#24467f;--acct-navy-deep:#17335f;--acct-blue:#325aa3;--acct-orange:#ff6b00;--acct-orange-hover:#e66000;--acct-page:#f4f7fc;--acct-card:#fff;--acct-text:#172033;--acct-muted:#687386;--acct-line:#d9e3f0;--acct-soft:#eef3f9;--acct-shadow:0 10px 30px rgba(36,70,127,.07)}
+body.lms-account-page{background:var(--acct-page);color:var(--acct-text)}
+body.lms-account-page .lms-content{max-width:1500px!important;margin:0 auto!important;padding:28px 38px 56px!important}
+.account-page{width:100%;min-width:0}
+.account-breadcrumb{display:flex;align-items:center;gap:8px;margin:0 0 14px;color:var(--acct-muted);font-size:11px;font-weight:800}.account-breadcrumb a{color:var(--acct-blue)}.account-breadcrumb svg{width:13px;height:13px;fill:none;stroke:currentColor;stroke-width:2}
+.account-header{position:relative;overflow:hidden;display:flex;align-items:center;justify-content:space-between;min-height:170px;margin:0 0 20px;padding:30px 34px;border-radius:20px;background:linear-gradient(125deg,var(--acct-navy-deep),var(--acct-navy) 65%,var(--acct-blue));color:#fff}.account-header:before{content:"";position:absolute;right:-90px;top:-130px;width:330px;height:330px;border:1px solid rgba(255,255,255,.14);border-radius:50%}.account-header:after{content:"";position:absolute;right:120px;bottom:-145px;width:230px;height:230px;border-radius:50%;background:rgba(255,107,0,.10)}.account-header>div{position:relative;z-index:1}.account-header>div:before{content:"SCREENINGS4U LEARNING CENTER";display:block;margin-bottom:8px;color:#ffb47d;font-size:10px;font-weight:900;letter-spacing:.12em}.account-header h1{margin:0;color:#fff;font-size:clamp(30px,3vw,42px);line-height:1.05;letter-spacing:-.035em}.account-header p{max-width:650px;margin:10px 0 0;color:rgba(255,255,255,.82);font-size:13px;line-height:1.6}
+.account-layout{display:grid;grid-template-columns:285px minmax(0,1fr);gap:20px;align-items:start}.account-sidebar{position:sticky;top:86px;display:grid;gap:14px}.account-card,.account-nav{background:var(--acct-card);border:1px solid var(--acct-line);border-radius:15px;box-shadow:none}.account-profile-summary{position:relative;overflow:hidden;padding:24px 20px;text-align:center;border-top:4px solid var(--acct-orange)}.account-profile-summary:after{content:"";position:absolute;right:-36px;top:-44px;width:100px;height:100px;border-radius:50%;background:rgba(50,90,163,.06)}.account-avatar{width:72px;height:72px;margin:0 auto 12px;display:grid;place-items:center;border-radius:50%;background:var(--acct-navy);color:#fff;font-size:22px;font-weight:900;box-shadow:0 0 0 6px var(--acct-soft)}.account-profile-summary h2{margin:0;color:var(--acct-navy-deep);font-size:17px}.account-profile-summary p{margin:5px 0 0;color:var(--acct-muted);font-size:11px;word-break:break-word}.account-role{display:inline-flex;margin-top:12px;padding:5px 9px;border-radius:999px;background:#fff3eb;color:var(--acct-orange);font-size:9px;font-weight:900;letter-spacing:.05em;text-transform:uppercase}
+.account-nav{padding:7px}.account-nav a{display:flex;align-items:center;gap:10px;min-height:43px;padding:0 11px;border-radius:9px;color:var(--acct-muted);font-size:11px;font-weight:800;transition:.18s ease}.account-nav a:hover{background:var(--acct-soft);color:var(--acct-navy)}.account-nav a.active{background:var(--acct-navy);color:#fff}.account-nav a.active:after{content:"→";margin-left:auto;color:#ffb47d}.account-nav svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.8}
+.account-content{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}.account-content>#profile{grid-column:1/-1}.account-content>#preferences,.account-content>#security{min-width:0}.account-content>.danger-card{grid-column:1/-1}.account-card{overflow:hidden}.account-card-head{padding:19px 21px 16px;border-bottom:1px solid var(--acct-line);background:linear-gradient(180deg,#fff,#fbfcfe)}.account-card-head:before{content:"ACCOUNT SETTINGS";display:block;margin-bottom:5px;color:var(--acct-orange);font-size:8px;font-weight:900;letter-spacing:.12em}.account-card-head h2{margin:0;color:var(--acct-navy-deep);font-size:17px;letter-spacing:-.015em}.account-card-head p{margin:5px 0 0;color:var(--acct-muted);font-size:11px;line-height:1.5}
+.account-form{padding:21px}.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:15px 16px}.form-group{min-width:0}.form-group.full{grid-column:1/-1}.form-group label{display:block;margin-bottom:6px;color:var(--acct-text);font-size:10px;font-weight:900}.form-group input,.form-group select{width:100%;height:42px;padding:0 12px;border:1px solid var(--acct-line);border-radius:8px;outline:0;background:#fff;color:var(--acct-text);font:inherit;font-size:12px;transition:.15s}.form-group input:hover{border-color:#c4d3e5}.form-group input:focus,.form-group select:focus{border-color:var(--acct-blue);box-shadow:0 0 0 3px rgba(50,90,163,.09)}.form-group input[readonly]{background:var(--acct-soft);color:var(--acct-muted)}.form-help{margin:5px 0 0;color:var(--acct-muted);font-size:9px;line-height:1.45}#accountMessage:not(:empty){margin-top:14px;padding:9px 11px;border-radius:8px;background:var(--acct-soft);color:var(--acct-navy);font-size:10px;font-weight:700}
+.account-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:18px;padding-top:16px;border-top:1px solid var(--acct-line)}.btn{display:inline-flex;align-items:center;justify-content:center;min-height:39px;padding:0 15px;border:1px solid transparent;border-radius:8px;font:inherit;font-size:10px;font-weight:900;cursor:pointer;transition:.18s ease}.btn:hover{transform:translateY(-1px)}.btn-primary{background:var(--acct-orange);color:#fff}.btn-primary:hover{background:var(--acct-orange-hover)}.btn-secondary{background:#fff;border-color:var(--acct-line);color:var(--acct-navy)}
+.account-section-body,.security-list{padding:5px 20px}.preference-row,.security-item{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:16px 0;border-bottom:1px solid var(--acct-line)}.preference-row:last-child,.security-item:last-child{border-bottom:0}.preference-copy strong,.security-copy strong{display:block;color:var(--acct-navy-deep);font-size:11px}.preference-copy span,.security-copy span{display:block;margin-top:3px;color:var(--acct-muted);font-size:10px;line-height:1.45}.switch{position:relative;width:39px;height:22px;flex:0 0 auto}.switch input{position:absolute;opacity:0}.switch-slider{position:absolute;inset:0;border-radius:999px;background:#d7e0eb;cursor:pointer;transition:.2s}.switch-slider:before{content:"";position:absolute;width:16px;height:16px;left:3px;top:3px;border-radius:50%;background:#fff;box-shadow:0 2px 5px rgba(0,0,0,.12);transition:.2s}.switch input:checked+.switch-slider{background:var(--acct-orange)}.switch input:checked+.switch-slider:before{transform:translateX(17px)}
+.security-left{display:flex;align-items:flex-start;gap:10px}.security-icon{width:34px;height:34px;display:grid;place-items:center;flex:0 0 auto;border-radius:8px;background:var(--acct-soft);color:var(--acct-blue)}.security-icon svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.8}.text-button{padding:0;border:0;background:transparent;color:var(--acct-orange);font:inherit;font-size:9px;font-weight:900;white-space:nowrap;cursor:pointer}.text-button:hover{text-decoration:underline;text-underline-offset:3px}
+.danger-card{border:0;background:var(--acct-navy);color:#fff}.danger-copy{display:flex;align-items:center;justify-content:space-between;gap:24px;padding:20px 22px}.danger-copy h2{margin:0;color:#fff;font-size:15px}.danger-copy p{margin:5px 0 0;color:rgba(255,255,255,.72);font-size:10px}.btn-danger{background:var(--acct-orange);border-color:var(--acct-orange);color:#fff}.btn-danger:hover{background:var(--acct-orange-hover)}
+@media(max-width:1100px){.account-content{grid-template-columns:1fr}.account-content>#profile,.account-content>#preferences,.account-content>#security,.account-content>.danger-card{grid-column:auto}}
+@media(max-width:900px){body.lms-account-page .lms-content{padding:22px 18px 44px!important}.account-layout{grid-template-columns:1fr}.account-sidebar{position:static;grid-template-columns:220px minmax(0,1fr)}.account-nav{align-self:stretch}.account-header{min-height:150px;padding:26px}}
+@media(max-width:620px){body.lms-account-page .lms-content{padding:16px 12px 36px!important}.account-header{min-height:145px;padding:22px 18px;border-radius:15px}.account-header h1{font-size:29px}.account-sidebar{grid-template-columns:1fr}.account-profile-summary{padding:20px}.account-nav{display:grid;grid-template-columns:repeat(3,1fr);gap:5px}.account-nav a{justify-content:center;padding:8px 6px;text-align:center;font-size:10px}.account-nav a svg,.account-nav a.active:after{display:none}.form-grid{grid-template-columns:1fr}.form-group.full{grid-column:auto}.account-card-head,.account-form{padding:17px 15px}.account-section-body,.security-list{padding:4px 15px}.account-actions{display:grid;grid-template-columns:1fr 1fr}.preference-row,.security-item{align-items:flex-start}.security-item{flex-direction:column}.text-button{width:100%;min-height:38px;border:1px solid var(--acct-line);border-radius:8px}.danger-copy{align-items:flex-start;flex-direction:column}.danger-copy .btn{width:100%}}
+
+body.lms-account-page .account-header h1,
+body.lms-account-page .account-header .lms-page-title{
+  color:#fff !important;
+  -webkit-text-fill-color:#fff !important;
+}
+body.lms-account-page .account-header p,
+body.lms-account-page .account-header .lms-page-description{
+  color:rgba(255,255,255,.86) !important;
+  -webkit-text-fill-color:rgba(255,255,255,.86) !important;
+}
+
+@media (min-width:1101px){
+  .account-layout{
+    display:grid !important;
+    grid-template-columns:285px minmax(0,1fr) !important;
+    grid-template-areas:
+      "left right"
+      "support support" !important;
+    gap:18px 20px !important;
+    align-items:start !important;
+  }
+
+  .account-sidebar{
+    grid-area:left !important;
+    position:static !important;
+    display:flex !important;
+    flex-direction:column !important;
+    gap:14px !important;
+    align-self:start !important;
+  }
+
+  .account-sidebar #preferences{
+    margin:0 !important;
+    width:100% !important;
+  }
+
+  .account-content{
+    grid-area:right !important;
+    display:flex !important;
+    flex-direction:column !important;
+    gap:18px !important;
+    min-width:0 !important;
+    align-self:start !important;
+  }
+
+  .account-content > #profile,
+  .account-content > #security{
+    width:100% !important;
+    margin:0 !important;
+  }
+
+  .account-layout > .danger-card{
+    grid-area:support !important;
+    margin:0 !important;
+    width:100% !important;
+  }
+}
+
+body.lms-account-page .lms-icon-button {
+    background: transparent !important;
+    border: none !important;
+    color: #ffffff !important;
+    box-shadow: none !important;
+}
+
+body.lms-account-page .lms-icon-button svg {
+    color: #ffffff !important;
+    stroke: #ffffff !important;
+}
+
+body.lms-account-page .lms-icon-button:hover,
+body.lms-account-page .lms-icon-button:focus,
+body.lms-account-page .lms-icon-button:focus-visible,
+body.lms-account-page .lms-icon-button:active {
+    background: transparent !important;
+    background-color: transparent !important;
+    border-color: transparent !important;
+    color: #ffffff !important;
+    box-shadow: none !important;
+    outline: none !important;
+}
+
+body.lms-account-page .lms-icon-button:hover svg {
+    stroke: #ffffff !important;
+}
+
+body.lms-account-page .lms-notification-dot {
+    background: #FF6B00 !important;
+    border: 2px solid #24467F !important;
+}
+
+body.lms-account-page .lms-user-name {
+    color: #ffffff !important;
+}
+
+body.lms-account-page .lms-user-chevron,
+body.lms-account-page .lms-user-chevron svg {
+    color: #ffffff !important;
+    stroke: #ffffff !important;
+}
+
+body.lms-account-page .lms-user-avatar {
+    background: #ffffff !important;
+    color: #24467F !important;
+    border: 2px solid #ffffff !important;
+}
+
+body.lms-account-page .lms-user-button,
+body.lms-account-page .lms-user-button:hover,
+body.lms-account-page .lms-user-button:focus,
+body.lms-account-page .lms-user-button:focus-visible,
+body.lms-account-page .lms-user-button:active,
+body.lms-account-page .lms-user-menu-trigger,
+body.lms-account-page .lms-user-menu-trigger:hover,
+body.lms-account-page .lms-user-menu-trigger:focus,
+body.lms-account-page .lms-user-menu-trigger:focus-visible,
+body.lms-account-page .lms-user-menu-trigger:active {
+    background: transparent !important;
+    background-color: transparent !important;
+    box-shadow: none !important;
+    outline: none !important;
+}
+
+body.lms-account-page .lms-icon-button::before,
+body.lms-account-page .lms-icon-button::after,
+body.lms-account-page .lms-user-button::before,
+body.lms-account-page .lms-user-button::after,
+body.lms-account-page .lms-user-menu-trigger::before,
+body.lms-account-page .lms-user-menu-trigger::after {
+    background: transparent !important;
+    box-shadow: none !important;
+}
+
+@media (min-width: 1101px) {
+
+    body.lms-account-page .lms-content {
+        max-width: 1380px !important;
+        padding-left: 32px !important;
+        padding-right: 32px !important;
+    }
+
+    body.lms-account-page .account-layout {
+        grid-template-columns: 305px minmax(0, 1fr) !important;
+        gap: 22px !important;
+    }
+
+    body.lms-account-page .account-profile-summary {
+        padding: 28px 22px !important;
+    }
+
+    body.lms-account-page .account-avatar {
+        width: 82px !important;
+        height: 82px !important;
+        font-size: 25px !important;
+    }
+
+    body.lms-account-page .account-profile-summary h2 {
+        font-size: 19px !important;
+    }
+
+    body.lms-account-page .account-profile-summary p {
+        font-size: 12px !important;
+    }
+
+    body.lms-account-page .account-nav {
+        padding: 8px !important;
+    }
+
+    body.lms-account-page .account-nav a {
+        min-height: 48px !important;
+        padding: 0 14px !important;
+        font-size: 12px !important;
+    }
+
+    body.lms-account-page .account-nav svg {
+        width: 18px !important;
+        height: 18px !important;
+    }
+
+    body.lms-account-page .account-card-head {
+        padding: 22px 24px 18px !important;
+    }
+
+    body.lms-account-page .account-card-head h2 {
+        font-size: 20px !important;
+    }
+
+    body.lms-account-page .account-card-head p {
+        font-size: 12px !important;
+    }
+
+    body.lms-account-page .account-card-head::before {
+        font-size: 9px !important;
+    }
+
+    body.lms-account-page .account-form {
+        padding: 24px !important;
+    }
+
+    body.lms-account-page .form-grid {
+        gap: 18px !important;
+    }
+
+    body.lms-account-page .form-group label {
+        font-size: 11px !important;
+        margin-bottom: 7px !important;
+    }
+
+    body.lms-account-page .form-group input,
+    body.lms-account-page .form-group select {
+        height: 47px !important;
+        padding: 0 14px !important;
+        font-size: 13px !important;
+    }
+
+    body.lms-account-page .form-help {
+        font-size: 10px !important;
+    }
+
+    body.lms-account-page .account-section-body,
+    body.lms-account-page .security-list {
+        padding-left: 22px !important;
+        padding-right: 22px !important;
+    }
+
+    body.lms-account-page .preference-row,
+    body.lms-account-page .security-item {
+        padding-top: 19px !important;
+        padding-bottom: 19px !important;
+    }
+
+    body.lms-account-page .preference-copy strong,
+    body.lms-account-page .security-copy strong {
+        font-size: 12px !important;
+    }
+
+    body.lms-account-page .preference-copy span,
+    body.lms-account-page .security-copy span {
+        font-size: 11px !important;
+    }
+
+    body.lms-account-page .security-icon {
+        width: 38px !important;
+        height: 38px !important;
+    }
+
+    body.lms-account-page .security-icon svg {
+        width: 18px !important;
+        height: 18px !important;
+    }
+
+    body.lms-account-page .btn {
+        min-height: 43px !important;
+        padding-left: 18px !important;
+        padding-right: 18px !important;
+        font-size: 11px !important;
+    }
+
+    body.lms-account-page .text-button {
+        font-size: 10px !important;
+    }
+}
+
+/* SOURCE: assets/css/lms-shell-v3.css */
+
+:root{--s4u-shell:#2b5593;--s4u-shell-dark:#23477f;--s4u-orange:#ff6b00;--s4u-page:#f4f7fb;--s4u-line:#d9e2ef;--s4u-text:#14213d;--s4u-muted:#60708f}
+html,body{background:var(--s4u-page)!important}
+.lms-topbar{height:64px!important;min-height:64px!important;background:var(--s4u-shell)!important;border-bottom:1px solid rgba(255,255,255,.15)!important;padding:0 20px!important;display:flex!important;align-items:center!important;gap:18px!important}
+.lms-topbar-left{display:flex!important;align-items:center!important;gap:16px!important;min-width:0!important}
+.s4u-page-title{color:#fff;font-size:14px;font-weight:800;white-space:nowrap}
+.lms-menu-button{flex:0 0 auto!important;border-color:rgba(255,255,255,.24)!important;background:rgba(255,255,255,.08)!important;color:#fff!important}
+.lms-menu-button svg{stroke:#fff!important}
+
+.lms-topbar-right{margin-left:auto!important}.lms-search-wrap{margin-left:auto!important}
+
+.lms-main{background:var(--s4u-page)!important}.lms-content{max-width:1320px!important}
+
+body.lms-onboarding-mode .onboard-brandbar{height:64px!important;background:var(--s4u-shell)!important;padding:0 max(20px,calc((100vw - 1320px)/2))!important;display:flex!important;align-items:center!important}
+body.lms-onboarding-mode .onboard-brandbar img{width:142px!important;max-height:34px!important;object-fit:contain!important}
+body.lms-onboarding-mode .onboard-brandbar .divider{height:27px!important;margin:0 16px!important;background:rgba(255,255,255,.28)!important}
+body.lms-onboarding-mode .onboard-brandbar span:not(.divider){color:#fff!important;font-size:14px!important;font-weight:800!important}
+body.lms-onboarding-mode .onboard-brandbar b{color:#fff!important;text-transform:none!important;letter-spacing:0!important;font-size:14px!important;font-weight:800!important;margin-left:0!important}
+body.lms-onboarding-mode .onboard-brandbar b:before{content:"";display:inline-block;width:1px;height:27px;background:rgba(255,255,255,.28);vertical-align:middle;margin:0 16px}
+
+.lms-section,.lms-widget,.lms-card,.course-card,.certificate-card,.progress-card,.account-card,.support-card,.orders-card,.appointment-card,.document-card{border-radius:16px!important;border-color:var(--s4u-line)!important}
+@media(min-width:861px){body.lms-nav-collapsed .lms-content{max-width:1400px!important} body.lms-nav-collapsed .lms-sidebar-brand{height:64px!important;overflow:hidden!important} body.lms-nav-collapsed .lms-brand-logo{opacity:0!important;width:0!important} body.lms-nav-collapsed .lms-sidebar-inner{background:var(--s4u-shell-dark)!important} body.lms-nav-collapsed .lms-nav-link{width:52px!important;margin:4px auto!important;border-radius:10px!important} body.lms-nav-collapsed .lms-nav-link.active{background:rgba(255,255,255,.14)!important} body.lms-nav-collapsed .lms-nav-link.active::before{background:var(--s4u-orange)!important}}
+@media(max-width:1100px){.lms-search-wrap{display:none!important}}
+@media(max-width:860px){.lms-topbar{padding:0 14px!important;gap:10px!important}.s4u-page-title{font-size:13px}.lms-topbar-right{gap:6px!important}body.lms-onboarding-mode .onboard-brandbar{padding:0 14px!important}body.lms-onboarding-mode .onboard-brandbar img{width:116px!important}body.lms-onboarding-mode .onboard-brandbar .divider{margin:0 9px!important}body.lms-onboarding-mode .onboard-brandbar b:before{margin:0 9px;height:24px}}
+
+/* SOURCE: assets/css/lms-unified-2026.css */
+
+body.s4u-lms-redesign {
+  --u-navy: #24467f;
+  --u-navy-deep: #17335f;
+  --u-blue: #325aa3;
+  --u-orange: #ff6b00;
+  --u-orange-hover: #e66000;
+  --u-page: #f4f7fc;
+  --u-card: #ffffff;
+  --u-text: #172033;
+  --u-muted: #687386;
+  --u-line: #d9e3f0;
+  --u-soft: #eef3f9;
+  --u-radius: 15px;
+  --u-radius-lg: 20px;
+  --u-shadow: 0 10px 30px rgba(36, 70, 127, 0.07);
+  margin: 0;
+  background: var(--u-page) !important;
+  color: var(--u-text) !important;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+body.s4u-lms-redesign .lms-app,
+body.s4u-lms-redesign .lms-main {
+  min-width: 0;
+  background: var(--u-page) !important;
+}
+
+body.s4u-lms-redesign .lms-content,
+body.s4u-lms-redesign .lms-notifications-content,
+body.s4u-lms-redesign .lms-support-content,
+body.s4u-lms-redesign .onboard-wrap {
+  width: min(1320px, calc(100% - 56px)) !important;
+  max-width: 1320px !important;
+  margin: 0 auto !important;
+  padding-top: 28px !important;
+  padding-bottom: 54px !important;
+}
+
+body.s4u-lms-redesign .lms-topbar {
+  min-height: 64px !important;
+  height: 64px !important;
+  padding: 0 22px !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 16px !important;
+  background: var(--u-navy) !important;
+  border-bottom: 0 !important;
+  box-shadow: none !important;
+}
+body.s4u-lms-redesign .lms-topbar-left,
+body.s4u-lms-redesign .lms-topbar-right {
+  display: flex !important;
+  align-items: center !important;
+}
+body.s4u-lms-redesign .lms-topbar-right { margin-left: auto !important; }
+body.s4u-lms-redesign .lms-search-wrap { margin-left: auto !important; }
+body.s4u-lms-redesign .lms-menu-button,
+body.s4u-lms-redesign .lms-icon-button,
+body.s4u-lms-redesign .lms-user-button {
+  color: #fff !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
+}
+body.s4u-lms-redesign .lms-menu-button svg,
+body.s4u-lms-redesign .lms-icon-button svg,
+body.s4u-lms-redesign .lms-user-button svg {
+  stroke: currentColor !important;
+}
+body.s4u-lms-redesign .lms-menu-button:hover,
+body.s4u-lms-redesign .lms-icon-button:hover,
+body.s4u-lms-redesign .lms-user-button:hover {
+  background: rgba(255,255,255,.09) !important;
+}
+body.s4u-lms-redesign .lms-search {
+  min-height: 40px !important;
+  border: 1px solid rgba(255,255,255,.18) !important;
+  border-radius: 10px !important;
+  background: #fff !important;
+  box-shadow: none !important;
+}
+body.s4u-lms-redesign .lms-search input { background: transparent !important; color: var(--u-text) !important; }
+body.s4u-lms-redesign .lms-user-name { color: #fff !important; }
+body.s4u-lms-redesign .lms-user-avatar {
+  border-color: #fff !important;
+  background: #fff !important;
+  color: var(--u-navy) !important;
+}
+body.s4u-lms-redesign .lms-notification-dot {
+  background: var(--u-orange) !important;
+  border-color: var(--u-navy) !important;
+}
+body.s4u-lms-redesign .lms-user-menu {
+  overflow: hidden;
+  border: 1px solid var(--u-line) !important;
+  border-radius: 12px !important;
+  box-shadow: 0 18px 45px rgba(23,51,95,.14) !important;
+}
+
+body.s4u-lms-redesign :is(
+  .account-breadcrumb,.assessment-breadcrumb,.certificates-breadcrumb,.course-details-breadcrumb,
+  .course-library-breadcrumb,.my-learning-breadcrumb,.progress-breadcrumb,.quiz-breadcrumb,
+  .appointments-breadcrumb,.schedule-breadcrumb
+) {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 14px !important;
+  color: var(--u-muted) !important;
+  font-size: 11px !important;
+  font-weight: 800 !important;
+}
+body.s4u-lms-redesign :is(
+  .account-breadcrumb,.assessment-breadcrumb,.certificates-breadcrumb,.course-details-breadcrumb,
+  .course-library-breadcrumb,.my-learning-breadcrumb,.progress-breadcrumb,.quiz-breadcrumb,
+  .appointments-breadcrumb,.schedule-breadcrumb
+) a { color: var(--u-blue) !important; }
+body.s4u-lms-redesign :is(
+  .account-breadcrumb,.assessment-breadcrumb,.certificates-breadcrumb,.course-details-breadcrumb,
+  .course-library-breadcrumb,.my-learning-breadcrumb,.progress-breadcrumb,.quiz-breadcrumb,
+  .appointments-breadcrumb,.schedule-breadcrumb
+) svg { width: 13px; height: 13px; fill: none; stroke: currentColor; stroke-width: 2; }
+
+body.s4u-lms-redesign :is(
+  .home-hero,.account-header,.assessment-hero,.certificates-hero,.course-details-hero,
+  .course-library-hero,.my-learning-hero,.progress-hero,.appointments-hero,
+  .orders-heading,.lms-notifications-intro,.lms-support-intro,.scheduler-page-head,
+  .schedule-hero,.onboard-page-head,.live-heading,.s4u-page-hero
+) {
+  position: relative;
+  overflow: hidden;
+  border: 0 !important;
+  border-radius: var(--u-radius-lg) !important;
+  background: linear-gradient(125deg, var(--u-navy-deep), var(--u-navy) 65%, var(--u-blue)) !important;
+  box-shadow: none !important;
+  color: #fff !important;
+}
+body.s4u-lms-redesign :is(
+  .home-hero,.account-header,.assessment-hero,.certificates-hero,.course-details-hero,
+  .course-library-hero,.my-learning-hero,.progress-hero,.appointments-hero,
+  .orders-heading,.lms-notifications-intro,.lms-support-intro,.scheduler-page-head,
+  .schedule-hero,.onboard-page-head,.live-heading,.s4u-page-hero
+)::before {
+  content: "";
+  position: absolute;
+  width: 330px;
+  height: 330px;
+  top: -150px;
+  right: -95px;
+  border: 1px solid rgba(255,255,255,.14);
+  border-radius: 50%;
+  pointer-events: none;
+}
+body.s4u-lms-redesign :is(
+  .home-hero,.account-header,.assessment-hero,.certificates-hero,.course-details-hero,
+  .course-library-hero,.my-learning-hero,.progress-hero,.appointments-hero,
+  .orders-heading,.lms-notifications-intro,.lms-support-intro,.scheduler-page-head,
+  .schedule-hero,.onboard-page-head,.live-heading,.s4u-page-hero
+)::after {
+  content: "";
+  position: absolute;
+  width: 225px;
+  height: 225px;
+  right: 115px;
+  bottom: -150px;
+  border-radius: 50%;
+  background: rgba(255,107,0,.10);
+  pointer-events: none;
+}
+body.s4u-lms-redesign :is(
+  .home-hero,.account-header,.assessment-hero,.certificates-hero,.course-details-hero,
+  .course-library-hero,.my-learning-hero,.progress-hero,.appointments-hero,
+  .orders-heading,.lms-notifications-intro,.lms-support-intro,.scheduler-page-head,
+  .schedule-hero,.onboard-page-head,.live-heading,.s4u-page-hero
+) :is(h1,.lms-page-title) {
+  position: relative;
+  z-index: 1;
+  margin-top: 0;
+  color: #fff !important;
+  font-size: clamp(30px, 3vw, 42px) !important;
+  line-height: 1.06 !important;
+  letter-spacing: -.035em !important;
+}
+body.s4u-lms-redesign :is(
+  .home-hero,.account-header,.assessment-hero,.certificates-hero,.course-details-hero,
+  .course-library-hero,.my-learning-hero,.progress-hero,.appointments-hero,
+  .orders-heading,.lms-notifications-intro,.lms-support-intro,.scheduler-page-head,
+  .schedule-hero,.onboard-page-head,.live-heading,.s4u-page-hero
+) p {
+  position: relative;
+  z-index: 1;
+  color: rgba(255,255,255,.80) !important;
+}
+body.s4u-lms-redesign :is(
+  .lms-eyebrow,.assessment-kicker,.certificates-kicker,.course-details-category,
+  .course-library-eyebrow,.course-library-section-kicker,.my-learning-kicker,
+  .progress-kicker,.appointments-kicker,.lms-notifications-eyebrow,
+  .lms-support-eyebrow,.onboard-eyebrow,.live-eyebrow,.s4u-page-kicker
+) { color: #ffb47d !important; }
+
+body.s4u-lms-redesign :is(
+  .lms-section,.lms-widget,.account-card,.account-nav,.assessment-main-card,.assessment-side-card,
+  .certificates-section-card,.certificate-preview-card,.certificates-help-card,.course-details-section,
+  .course-details-info-card,.course-enrollment-card,.course-support-card,.course-card,
+  .continue-course-card,.my-learning-section,.progress-main-card,.progress-stat-card,.progress-panel,
+  .quiz-card,.quiz-side,.appointments-card,.orders-list,.lms-notifications-panel,.lms-notifications-help,
+  .lms-support-summary,.lms-support-workspace,.live-card,.scheduled-card,.preview-card,.join-card,
+  .booking-card,.appointments-panel,.upload-panel,.consent,.document-card
+) {
+  border-color: var(--u-line) !important;
+  border-radius: var(--u-radius) !important;
+  box-shadow: none !important;
+}
+body.s4u-lms-redesign :is(
+  .lms-section,.lms-widget,.account-card,.account-nav,.assessment-main-card,.assessment-side-card,
+  .certificates-section-card,.certificate-preview-card,.course-details-section,.course-details-info-card,
+  .course-enrollment-card,.course-support-card,.course-card,.continue-course-card,.my-learning-section,
+  .progress-main-card,.progress-stat-card,.progress-panel,.quiz-card,.quiz-side,.appointments-card,
+  .orders-list,.lms-notifications-panel,.lms-notifications-help,.lms-support-workspace,.live-card,
+  .scheduled-card,.preview-card,.join-card,.booking-card,.appointments-panel,.upload-panel,.consent,.document-card
+) { background: var(--u-card) !important; }
+
+body.s4u-lms-redesign :is(
+  .account-card-head,.lms-widget-header,.lms-section-header,.certificate-info-header,
+  .progress-panel-header,.lms-notifications-panel-heading,.lms-support-thread-header,.consent-head,.list-head
+) { border-color: var(--u-line) !important; }
+
+body.s4u-lms-redesign h1,
+body.s4u-lms-redesign h2,
+body.s4u-lms-redesign h3 { color: var(--u-text); }
+body.s4u-lms-redesign :is(
+  .lms-page-description,.section-copy,.course-details-section-text,.course-support-text,
+  .certificate-info-copy p,.lms-notifications-help p,.lms-support-thread-empty p
+) { color: var(--u-muted) !important; }
+
+body.s4u-lms-redesign :is(
+  .home-stat-strip,.certificates-stat-strip,.certificates-stats,.progress-stat-strip,.progress-overview,
+  .catalog-overview,.lms-notifications-summary,.lms-support-summary
+) { gap: 12px !important; }
+body.s4u-lms-redesign :is(
+  .home-stat,.cert-stat,.progress-stat-card,.catalog-overview-card,.lms-notification-stat,.lms-support-summary article
+) {
+  border: 1px solid var(--u-line) !important;
+  border-radius: 14px !important;
+  background: #fff !important;
+  box-shadow: none !important;
+}
+
+body.s4u-lms-redesign :is(input,select,textarea) {
+  border-color: var(--u-line) !important;
+  border-radius: 9px !important;
+  background: #fff;
+  box-shadow: none !important;
+}
+body.s4u-lms-redesign :is(input,select,textarea):focus {
+  outline: 0 !important;
+  border-color: var(--u-blue) !important;
+  box-shadow: 0 0 0 3px rgba(50,90,163,.09) !important;
+}
+
+body.s4u-lms-redesign :is(
+  .lms-button-primary,.lms-primary-button,.btn-primary,.assessment-start,.course-primary-action,
+  .courses-featured-button,.course-action-primary,.course-card-action,.appointments-primary-action,
+  .lms-notifications-mark-all,.lms-support-primary,.lms-support-chat-start,.catalog-primary-button,
+  button[type="submit"]
+) {
+  border-color: var(--u-orange) !important;
+  background: var(--u-orange) !important;
+  color: #fff !important;
+  box-shadow: none !important;
+}
+body.s4u-lms-redesign :is(
+  .lms-button-primary,.lms-primary-button,.btn-primary,.assessment-start,.course-primary-action,
+  .courses-featured-button,.course-action-primary,.course-card-action,.appointments-primary-action,
+  .lms-notifications-mark-all,.lms-support-primary,.lms-support-chat-start,.catalog-primary-button,
+  button[type="submit"]
+):hover {
+  border-color: var(--u-orange-hover) !important;
+  background: var(--u-orange-hover) !important;
+}
+body.s4u-lms-redesign :is(
+  .lms-button-secondary,.btn-secondary,.assessment-back,.course-action-secondary,.catalog-secondary-button,
+  .courses-clear-button,.lms-notifications-refresh,.back,.course-support-link,.certificates-support-link,
+  .progress-link,.my-learning-browse-link,.live-back-link
+) {
+  border-color: var(--u-line) !important;
+  background: #fff !important;
+  color: var(--u-navy) !important;
+  box-shadow: none !important;
+}
+body.s4u-lms-redesign :is(.lms-text-link,.text-button,a[class*="text-link"]) { color: var(--u-orange) !important; }
+
+body.s4u-lms-redesign :is(
+  .assessment-completion-fill,.continue-course-progress-fill,.my-course-card-fill,.progress-ring-value,.quiz-fill,
+  .progress-fill,.lms-progress-fill,[class*="progress-fill"]
+) { background: var(--u-orange) !important; }
+body.s4u-lms-redesign :is(.continue-course-status-dot,.status-dot) { background: var(--u-orange) !important; }
+
+body.s4u-lms-redesign.lms-dashboard-home .home-hero,
+body.s4u-lms-redesign.lms-account-page .account-header { margin-bottom: 20px !important; }
+body.s4u-lms-redesign.lms-account-page .account-layout { gap: 20px !important; }
+body.s4u-lms-redesign.lms-account-page .account-profile-summary { border-top: 4px solid var(--u-orange) !important; }
+body.s4u-lms-redesign.lms-account-page .account-nav a.active { background: var(--u-navy) !important; color: #fff !important; }
+body.s4u-lms-redesign.lms-account-page .switch input:checked + .switch-slider { background: var(--u-orange) !important; }
+
+body.s4u-lms-redesign table { width: 100%; border-collapse: separate; border-spacing: 0; }
+body.s4u-lms-redesign :is(th,td) { border-color: var(--u-line) !important; }
+body.s4u-lms-redesign th { background: #f8fafd; color: var(--u-navy-deep); }
+
+@media (max-width: 1100px) {
+  body.s4u-lms-redesign .lms-search-wrap { display: none !important; }
+}
+@media (max-width: 860px) {
+  body.s4u-lms-redesign .lms-content,
+  body.s4u-lms-redesign .lms-notifications-content,
+  body.s4u-lms-redesign .lms-support-content,
+  body.s4u-lms-redesign .onboard-wrap {
+    width: calc(100% - 28px) !important;
+    padding-top: 20px !important;
+    padding-bottom: 40px !important;
+  }
+  body.s4u-lms-redesign .lms-topbar { padding: 0 14px !important; gap: 10px !important; }
+}
+@media (max-width: 620px) {
+  body.s4u-lms-redesign .lms-content,
+  body.s4u-lms-redesign .lms-notifications-content,
+  body.s4u-lms-redesign .lms-support-content,
+  body.s4u-lms-redesign .onboard-wrap {
+    width: calc(100% - 24px) !important;
+    padding-top: 16px !important;
+    padding-bottom: 34px !important;
+  }
+  body.s4u-lms-redesign :is(
+    .home-hero,.account-header,.assessment-hero,.certificates-hero,.course-details-hero,
+    .course-library-hero,.my-learning-hero,.progress-hero,.appointments-hero,.orders-heading,
+    .lms-notifications-intro,.lms-support-intro,.scheduler-page-head,.schedule-hero,.onboard-page-head,
+    .live-heading,.s4u-page-hero
+  ) { border-radius: 15px !important; }
+  body.s4u-lms-redesign .lms-search-shortcut { display: none !important; }
+}

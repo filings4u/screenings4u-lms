@@ -56,69 +56,33 @@
   }
 
   async function initializeAuthenticatedLearner() {
-    var trainingState = null;
-
-    if (
-      window.S4UTrainingAuth &&
-      typeof window.S4UTrainingAuth.protect === "function"
-    ) {
-      trainingState = await window.S4UTrainingAuth.protect();
-    } else if (
-      window.S4UAuth &&
-      typeof window.S4UAuth.requireAuth === "function"
-    ) {
-      trainingState = await window.S4UAuth.requireAuth({
-        portal: "training",
-        loginPage: "training-login.html"
-      });
+    if (!window.S4UTrainingReady) {
+      throw new Error("Training bootstrap is unavailable. Load training-auth-guard.js before lms.js.");
     }
 
-    if (!trainingState || !trainingState.user) {
-      throw new Error(
-        "Training authentication could not be completed. Check the auth guard console error."
-      );
+    var trainingState = await window.S4UTrainingReady;
+    if (!trainingState?.user) {
+      throw new Error("Training authentication could not be completed.");
     }
 
-    var client = await getSupabaseClient();
-    authState.client = client;
+    authState.client = await getSupabaseClient();
     authState.user = trainingState.user;
+    authState.profile = trainingState.profile || {
+      id: trainingState.user.id,
+      email: trainingState.user.email || ""
+    };
 
-    var profile = trainingState.profile || null;
-
-    if (!profile) {
-      var profileResult = await client
-        .from("user_profiles")
-        .select("id,first_name,last_name,display_name,email,phone,avatar_path,is_active")
-        .eq("id", trainingState.user.id)
-        .maybeSingle();
-
-      if (profileResult.error) {
-        console.warn("[LMS] Profile could not be loaded:", profileResult.error);
-      }
-
-      profile = profileResult.data || {
-        id: trainingState.user.id,
-        email: trainingState.user.email || ""
-      };
-    }
-
-    if (profile.is_active === false) {
-      try {
-        await window.S4UAuth?.signOutSilently?.();
-      } catch (_) {}
-
+    if (authState.profile.is_active === false) {
+      try { await window.S4UAuth?.signOutSilently?.(); } catch (_) {}
       window.location.replace("training-login.html");
       throw new Error("This account is inactive.");
     }
 
-    authState.profile = profile;
-
+    var profile = authState.profile;
     setLearnerProfile({
-      name:
-        profile.display_name ||
+      name: profile.display_name ||
         [profile.first_name, profile.last_name].filter(Boolean).join(" ") ||
-        trainingState.user.email ||
-        "Learner",
+        trainingState.user.email || "Learner",
       email: profile.email || trainingState.user.email || ""
     });
   }
@@ -179,11 +143,9 @@
 
     update();
 
-    var target = document.getElementById("lms-sidebar-target");
-    if (target) {
-      var observer = new MutationObserver(update);
-      observer.observe(target, { childList: true, subtree: true });
-    }
+    // Sidebar is injected deterministically by lms-sidebar.js.
+    // No document-wide MutationObserver is needed.
+    window.addEventListener("lms:sidebar-ready", update, { once: true });
   }
 
   function initializeNotificationBellNavigation() {

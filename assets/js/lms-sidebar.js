@@ -37,6 +37,8 @@
     setActiveNavigation();
     initializeDesktopAccordion();
     initializeMobileNavigation();
+    initializeShellEnhancements();
+    window.dispatchEvent(new CustomEvent("lms:sidebar-ready"));
   }
 
 
@@ -113,6 +115,22 @@
 
               <nav class="lms-nav">
 
+                      <!-- WELCOME & POLICIES -->
+
+                <a
+                  href="lms-welcome.html"
+                  class="lms-nav-link"
+                  data-lms-page="lms-welcome.html"
+                >
+                  <span class="lms-nav-icon">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                      <rect x="4" y="4" width="16" height="16" rx="2"></rect>
+                      <path d="M8 9h8M8 13h8M8 17h5"></path>
+                    </svg>
+                  </span>
+                  <span class="lms-nav-text">Welcome &amp; Policies</span>
+                </a>
+
                 <!-- HOME -->
 
                 <a
@@ -131,23 +149,6 @@
                   <span class="lms-nav-text">
                     Home
                   </span>
-                </a>
-
-
-                <!-- WELCOME & POLICIES -->
-
-                <a
-                  href="lms-welcome.html"
-                  class="lms-nav-link"
-                  data-lms-page="lms-welcome.html"
-                >
-                  <span class="lms-nav-icon">
-                    <svg viewBox="0 0 24 24" aria-hidden="true">
-                      <rect x="4" y="4" width="16" height="16" rx="2"></rect>
-                      <path d="M8 9h8M8 13h8M8 17h5"></path>
-                    </svg>
-                  </span>
-                  <span class="lms-nav-text">Welcome &amp; Policies</span>
                 </a>
 
 
@@ -1069,6 +1070,51 @@
       "resize",
       closeMenu
     );
+  }
+
+
+  /* ============================================================
+     SHELL ENHANCEMENTS
+     Replaces lms-shell-v2.js and lms-shell-v3.js without observers.
+     ============================================================ */
+  function initializeShellEnhancements() {
+    const page = (location.pathname.split("/").pop() || "lms-dashboard.html").toLowerCase();
+
+    if (page === "lms-welcome.html") {
+      document.body.classList.add("lms-onboarding-mode");
+      const app = document.querySelector(".lms-app");
+      if (app && !document.querySelector(".onboard-brandbar")) {
+        const bar = document.createElement("div");
+        bar.className = "onboard-brandbar";
+        bar.innerHTML = '<img src="images/logo2.png" alt="screenings4u"><span class="divider" aria-hidden="true"></span><span>Learning Center</span><b>New Learner Orientation</b>';
+        app.parentNode.insertBefore(bar, app);
+      }
+      return;
+    }
+
+    const button = document.querySelector("[data-lms-menu-toggle]");
+    if (button && window.innerWidth > DESKTOP_BREAKPOINT) {
+      let collapsed = false;
+      try { collapsed = localStorage.getItem("s4u-lms-sidebar-collapsed") === "1"; } catch (_) {}
+      document.body.classList.toggle("lms-nav-collapsed", collapsed);
+      button.setAttribute("aria-expanded", collapsed ? "false" : "true");
+    }
+
+    const titles = {
+      "lms-dashboard.html":"Home", "lms-my-courses.html":"My Learning", "lms-courses.html":"Course Library",
+      "lms-course-details.html":"Course Details", "lms-progress.html":"Progress", "lms-certificates.html":"Certificates",
+      "lms-documents.html":"Documents", "lms-orders.html":"Orders", "lms-live-training.html":"Live Training",
+      "lms-my-appointments.html":"My Appointments", "lms-schedule-appointment.html":"Schedule Appointment",
+      "lms-customer-scheduling.html":"Scheduling", "lms-support.html":"Training Support", "lms-notifications.html":"Notifications",
+      "lms-account.html":"Account", "lms-quiz.html":"Knowledge Check", "lms-assessment.html":"Assessment"
+    };
+    const left = document.querySelector(".lms-topbar-left");
+    if (left && !left.querySelector(".s4u-page-title")) {
+      const title = document.createElement("span");
+      title.className = "s4u-page-title";
+      title.textContent = titles[page] || document.title.split("|")[0].trim() || "Learning Center";
+      left.appendChild(title);
+    }
   }
 
 })();

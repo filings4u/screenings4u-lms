@@ -1,54 +1,155 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1.0">
-  <meta name="theme-color" content="#325aa3">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#24467f">
   <title>Orders | screenings4u Learning Center</title>
   <link href="images/fav.png" rel="icon" type="image/png">
-  <link rel="stylesheet" href="assets/css/lms.css">
-<link rel="stylesheet" href="assets/css/lms-refinement.css">
-<link rel="stylesheet" href="assets/css/lms-ui-modals.css">
-  <link rel="stylesheet" href="assets/css/lms-orders.css">
+
+  <link href="assets/css/lms.css" rel="stylesheet">
+  <link href="assets/css/lms-refinement.css" rel="stylesheet">
+  <link href="assets/css/lms-ui-modals.css" rel="stylesheet">
+  <link href="assets/css/lms-shell-v3.css?v=20260915-2" rel="stylesheet">
+  <link href="assets/css/lms-orders.css?v=20260915-5" rel="stylesheet">
 </head>
-<body>
-<div class="lms-app">
-  <div id="lms-sidebar-target"></div>
-  <main class="lms-main">
-    <header class="lms-topbar">
-      <div class="lms-topbar-left"><button type="button" class="lms-menu-button" data-lms-menu-toggle aria-label="Toggle navigation"><svg viewBox="0 0 24 24"><path d="M4 7h16"/><path d="M4 12h16"/><path d="M4 17h16"/></svg></button></div>
-      <div class="lms-search-wrap"><label class="lms-search"><span class="lms-search-icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6"/><path d="m20 20-4-4"/></svg></span><input type="search" placeholder="Search courses, lessons, and resources..." data-lms-search><span class="lms-search-shortcut">Ctrl K</span></label></div>
-      <div class="lms-topbar-right">
-        <a href="lms-notifications.html" class="lms-icon-button" aria-label="Notifications" title="Notifications"><svg viewBox="0 0 24 24"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/><path d="M10 21h4"/></svg><span class="lms-notification-dot"></span></a>
-        <div class="lms-user-wrap"><button type="button" class="lms-user-button" data-lms-user-button aria-expanded="false"><span class="lms-user-avatar" data-lms-learner-initials>JD</span><span class="lms-user-name" data-lms-learner-name>Learner</span><span class="lms-user-chevron"><svg viewBox="0 0 24 24"><path d="m7 10 5 5 5-5"/></svg></span></button><div class="lms-user-menu" data-lms-user-menu><div class="lms-user-menu-header"><span class="lms-user-menu-name" data-lms-user-menu-name>Learner</span><span class="lms-user-menu-email" data-lms-user-menu-email></span></div><a href="lms-account.html" class="lms-user-menu-link">My Account</a><a href="lms-certificates.html" class="lms-user-menu-link">My Certificates</a><button type="button" class="lms-user-menu-link" data-lms-sign-out>Sign Out</button></div></div>
-      </div>
-    </header>
+<body class="lms-orders-page">
+  <div class="lms-app">
+    <div id="lms-sidebar-target"></div>
 
-    <div class="lms-content orders-page">
-      <section class="orders-heading lms-page-heading">
-        <div>
-          <div class="lms-eyebrow">ORDER HISTORY</div>
-          <h1 class="lms-page-title">Training Orders</h1>
-          <p class="orders-lead">View your screenings4u training purchases, payment details, and receipts.</p>
+    <main class="lms-main">
+      <header class="lms-topbar">
+        <div class="lms-topbar-left">
+          <button type="button" class="lms-menu-button" data-lms-menu-toggle aria-label="Toggle navigation">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M4 7h16"></path>
+              <path d="M4 12h16"></path>
+              <path d="M4 17h16"></path>
+            </svg>
+          </button>
+          <span class="s4u-page-title">Orders</span>
         </div>
-        <span id="ordersCount" class="orders-count">—</span>
-      </section>
 
-      <div id="ordersMessage" class="orders-message" hidden aria-live="polite"></div>
-      <section id="ordersList" class="orders-list"><div class="orders-loading"><span class="orders-spinner"></span><p>Loading your training orders…</p></div></section>
-    </div>
-  </main>
-</div>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="assets/js/supabase-config.js"></script>
-<script src="assets/js/core-auth.js"></script>
-<script src="assets/js/ui.js"></script>
-<script src="assets/js/portal-auth-guard.js"></script>
-<script src="assets/js/training-auth-guard.js"></script>
-<script src="assets/js/lms-sidebar.js?v=20260912-orders1"></script>
-<script src="assets/js/lms.js?v=20260830-2000"></script>
-<script src="assets/js/lms-orders.js?v=20260912-1"></script>
-<script src="assets/js/branded-popups.js?v=20260911-1"></script>
+        <div class="lms-search-wrap">
+          <label class="lms-search">
+            <span class="lms-search-icon">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="11" cy="11" r="6"></circle>
+                <path d="m20 20-4-4"></path>
+              </svg>
+            </span>
+            <input data-lms-search placeholder="Search courses, lessons, and resources..." type="search">
+            <span class="lms-search-shortcut">Ctrl K</span>
+          </label>
+        </div>
 
+        <div class="lms-topbar-right">
+          <a class="lms-icon-button" href="lms-notifications.html" aria-label="Notifications" title="Notifications">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"></path>
+              <path d="M10 21h4"></path>
+            </svg>
+            <span class="lms-notification-dot"></span>
+          </a>
+
+          <div class="lms-user-wrap">
+            <button type="button" class="lms-user-button" data-lms-user-button aria-expanded="false">
+              <span class="lms-user-avatar" data-lms-learner-initials>--</span>
+              <span class="lms-user-name" data-lms-learner-name>Learner</span>
+              <span class="lms-user-chevron">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m7 10 5 5 5-5"></path></svg>
+              </span>
+            </button>
+
+            <div class="lms-user-menu" data-lms-user-menu>
+              <div class="lms-user-menu-header">
+                <span class="lms-user-menu-name" data-lms-user-menu-name>Learner</span>
+                <span class="lms-user-menu-email" data-lms-user-menu-email></span>
+              </div>
+              <a class="lms-user-menu-link" href="lms-account.html">My Account</a>
+              <a class="lms-user-menu-link" href="lms-certificates.html">My Certificates</a>
+              <button class="lms-user-menu-link" data-lms-sign-out type="button">Sign Out</button>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <div class="lms-content orders-page">
+        <nav class="orders-breadcrumb" aria-label="Breadcrumb">
+          <a href="lms-dashboard.html">Home</a>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6"></path></svg>
+          <span>Orders</span>
+        </nav>
+
+        <section class="orders-header">
+          <div class="orders-header-copy">
+            <h1>Training Orders</h1>
+            <p>View your screenings4u training purchases, payment details, course items, add-ons, and receipts in one place.</p>
+          </div>
+
+          <div class="orders-hero-summary" aria-label="Order summary">
+            <span class="orders-hero-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24">
+                <path d="M6 3h12v18l-3-2-3 2-3-2-3 2z"></path>
+                <path d="M9 8h6"></path>
+                <path d="M9 12h6"></path>
+              </svg>
+            </span>
+            <span>Orders on file</span>
+            <strong id="ordersHeroCount">—</strong>
+            <small>Training purchases tied to your learner account</small>
+          </div>
+        </section>
+
+        <section class="orders-card orders-content-card">
+          <div class="orders-card-head">
+            <div>
+              <h2>Purchase History</h2>
+              <p>Orders shown here are limited to Learning Center training purchases associated with your account.</p>
+            </div>
+
+            <label class="orders-filter-search">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="11" cy="11" r="6"></circle>
+                <path d="m20 20-4-4"></path>
+              </svg>
+              <input id="ordersSearch" type="search" placeholder="Search orders or courses..." aria-label="Search training orders">
+            </label>
+          </div>
+
+          <div id="ordersMessage" class="orders-message" aria-live="polite" role="status" hidden></div>
+
+          <div id="ordersList" class="orders-list" aria-live="polite">
+            <div class="orders-loading">
+              <span class="orders-spinner" aria-hidden="true"></span>
+              <div>
+                <strong>Loading purchase history</strong>
+                <p>Retrieving your Learning Center orders…</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="orders-support-card">
+          <div>
+            <h2>Need help with a training order?</h2>
+            <p>Contact Screenings4u support if you have a question about a charge, receipt, course access, or training purchase.</p>
+          </div>
+          <a href="lms-support.html">Contact Support</a>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="assets/js/supabase-config.js"></script>
+  <script src="assets/js/core-auth.js"></script>
+  <script src="assets/js/ui.js"></script>
+  <script src="assets/js/training-auth-guard.js"></script>
+  <script src="assets/js/lms-sidebar.js"></script>
+  <script src="assets/js/lms.js?v=20260830-2000"></script>
+  <script src="assets/js/branded-popups.js?v=20260911-1"></script>
+  <script src="assets/js/lms-orders.js?v=20260915-5"></script>
+<script src="assets/js/lms-global-support-bar.js?v=20260915-1"></script>
 </body>
 </html>

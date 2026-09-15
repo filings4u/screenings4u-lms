@@ -1,67 +1,59 @@
 <!DOCTYPE html>
+<!DOCTYPE html>
+
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>Knowledge Check | screenings4u Learning Center</title>
 <link href="images/fav.png" rel="icon" type="image/png"/>
-<link rel="stylesheet" href="assets/css/lms.css">
-<link rel="stylesheet" href="assets/css/lms-refinement.css">
-<link rel="stylesheet" href="assets/css/lms-ui-modals.css">
-<meta name="theme-color" content="#325aa3" />
 
-<style>
-:root{--blue:#325aa3;--dark:#24467f;--orange:#ff6b00;--orange-hover:#e66000;--bg:#f5f7fa;--card:#fff;--border:#dfe5ec;--text:#172033;--muted:#687386}
-.quiz-page{padding-bottom:32px}.quiz-breadcrumb{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:20px;font-size:12px;font-weight:700;color:var(--muted)}.quiz-breadcrumb a{color:var(--blue);text-decoration:none}.quiz-breadcrumb svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2}
-.quiz-layout{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:24px;align-items:start}.quiz-card,.quiz-side{background:var(--card);border:1px solid var(--border);border-radius:16px}.quiz-card{overflow:hidden}.quiz-header{padding:30px 32px;border-bottom:1px solid var(--border)}.quiz-kicker{display:flex;align-items:center;gap:8px;color:var(--orange);font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase}.quiz-kicker i{width:8px;height:8px;border-radius:50%;background:var(--orange)}.quiz-header h1{margin:12px 0 8px;color:var(--text);font-size:30px;letter-spacing:-.03em}.quiz-header p{margin:0;color:var(--muted);font-size:14px;line-height:1.6}
-.quiz-progress{padding:18px 32px;background:var(--bg);border-bottom:1px solid var(--border)}.quiz-progress-row{display:flex;justify-content:space-between;gap:12px;margin-bottom:9px;color:var(--muted);font-size:12px;font-weight:700}.quiz-progress-row strong{color:var(--dark)}.quiz-track{height:8px;border-radius:99px;background:var(--border);overflow:hidden}.quiz-fill{height:100%;width:20%;border-radius:99px;background:var(--blue)}
-.quiz-question{padding:32px}.question-number{color:var(--blue);font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.08em}.quiz-question h2{margin:12px 0 24px;color:var(--text);font-size:21px;line-height:1.45}.quiz-options{display:grid;gap:12px}.quiz-option{position:relative;display:flex;align-items:flex-start;gap:13px;width:100%;padding:17px;border:1px solid var(--border);border-radius:12px;background:#fff;color:var(--text);text-align:left;cursor:pointer;transition:.18s ease}.quiz-option:hover{border-color:var(--blue);background:var(--bg)}.quiz-option.selected{border-color:var(--blue);box-shadow:0 0 0 3px rgba(50,90,163,.10)}.option-letter{width:30px;height:30px;display:flex;align-items:center;justify-content:center;flex:0 0 auto;border:1px solid var(--border);border-radius:50%;color:var(--blue);font-size:12px;font-weight:800}.quiz-option.selected .option-letter{background:var(--blue);border-color:var(--blue);color:#fff}.option-copy{padding-top:6px;font-size:14px;line-height:1.45;font-weight:650}
-.quiz-actions{display:flex;align-items:center;justify-content:space-between;gap:15px;margin-top:28px;padding-top:24px;border-top:1px solid var(--border)}.quiz-btn{min-height:44px;padding:0 18px;border-radius:10px;font-size:13px;font-weight:800;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:8px}.quiz-btn-secondary{border:1px solid var(--border);background:#fff;color:var(--dark)}.quiz-btn-primary{border:1px solid var(--orange);background:var(--orange);color:#fff}.quiz-btn-primary:hover{background:var(--orange-hover);border-color:var(--orange-hover)}.quiz-btn[disabled]{opacity:.55;cursor:not-allowed}
-.quiz-side{overflow:hidden}.side-section{padding:21px;border-bottom:1px solid var(--border)}.side-section:last-child{border:0}.side-section h3{margin:0;color:var(--text);font-size:15px}.side-section p{margin:8px 0 0;color:var(--muted);font-size:12px;line-height:1.55}.side-stat{display:flex;justify-content:space-between;align-items:center;padding:14px 0;border-bottom:1px solid var(--border);font-size:12px}.side-stat:last-child{border:0}.side-stat span{color:var(--muted);font-weight:700}.side-stat strong{color:var(--text)}.question-list{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:15px}.question-dot{height:36px;border:1px solid var(--border);border-radius:9px;background:#fff;color:var(--muted);font-size:12px;font-weight:800;cursor:pointer}.question-dot.current{background:var(--blue);border-color:var(--blue);color:#fff}.question-dot.answered{border-color:var(--blue);color:var(--blue);background:rgba(50,90,163,.06)}
-.hint-box{margin-top:18px;padding:15px;border-left:4px solid var(--orange);border-radius:9px;background:var(--bg);color:var(--muted);font-size:12px;line-height:1.55}.hint-box strong{display:block;color:var(--text);margin-bottom:4px}
-.result-panel{text-align:center;padding:38px 32px}.result-icon{width:64px;height:64px;margin:0 auto 18px;display:flex;align-items:center;justify-content:center;border-radius:50%;background:rgba(50,90,163,.1);color:var(--blue)}.result-icon svg{width:31px;height:31px;fill:none;stroke:currentColor;stroke-width:2}.result-panel h2{margin:0;color:var(--text);font-size:26px}.result-score{margin:16px 0;color:var(--blue);font-size:46px;font-weight:850}.result-panel p{max-width:490px;margin:0 auto;color:var(--muted);font-size:14px;line-height:1.65}
-@media(max-width:1050px){.quiz-layout{grid-template-columns:1fr}}@media(max-width:650px){.quiz-header,.quiz-progress,.quiz-question{padding-left:20px;padding-right:20px}.quiz-header h1{font-size:25px}.quiz-actions{flex-direction:column-reverse;align-items:stretch}.quiz-btn{width:100%}}
-</style>
-<style id="training-mobile-quiz-final">
-*,*::before,*::after{box-sizing:border-box}html,body{max-width:100%;overflow-x:hidden}
-@media(max-width:767px){html{font-size:16px}.lms-app,.lms-main{width:100%;min-width:0}.lms-main{margin-left:0!important}.lms-topbar{height:auto;min-height:64px;padding:10px 14px;gap:10px;display:grid;grid-template-columns:auto 1fr auto}.lms-menu-button{display:inline-flex!important;min-width:44px;min-height:44px}.lms-search-wrap{min-width:0}.lms-search{width:100%}.lms-search input{min-width:0;font-size:16px}.lms-search-shortcut,.lms-user-name,.lms-user-chevron{display:none!important}.lms-topbar-right{gap:6px}.lms-icon-button,.lms-user-button{min-width:44px;min-height:44px}.lms-user-button{padding:4px}.lms-content.quiz-page{width:100%;min-width:0;padding:18px 14px 36px}.quiz-breadcrumb{font-size:13px;margin-bottom:16px}.quiz-layout{display:grid;grid-template-columns:1fr;width:100%;min-width:0;gap:14px}.quiz-card,.quiz-side{width:100%;min-width:0;border-radius:13px}.quiz-header,.quiz-progress,.quiz-question{padding-left:16px;padding-right:16px}.quiz-header h1{font-size:27px;line-height:1.15;overflow-wrap:anywhere}.quiz-header p,.quiz-question p{font-size:15px;line-height:1.6}.quiz-progress-row{align-items:flex-start;flex-direction:column;gap:6px}.question-list{display:grid;grid-template-columns:1fr;width:100%;gap:10px}.question-list label,.question-list button{width:100%;min-width:0;min-height:48px;overflow-wrap:anywhere}.quiz-actions{display:grid;grid-template-columns:1fr;width:100%;gap:10px}.quiz-btn{width:100%;min-height:46px}.side-section{width:100%;min-width:0}.side-stat{align-items:flex-start;flex-direction:column;gap:5px}.hint-box{font-size:14px;overflow-wrap:anywhere}}
-@media(max-width:420px){.lms-search-wrap{display:none}.lms-topbar{grid-template-columns:1fr auto}.quiz-header h1{font-size:24px}}
-</style>
-</head>
-<body>
+
+
+
+<meta content="#24467f" name="theme-color"/>
+
+
+
+
+
+
+
+<link href="assets/css/lms-base-clean.css?v=20260915-clean3" rel="stylesheet"/><link href="assets/css/pages/lms-quiz.css?v=20260915-clean3" rel="stylesheet"/></head>
+<body class="lms-reference-redesign s4u-lms-redesign">
 <div class="lms-app">
-  <div id="lms-sidebar-target"></div>
-  <main class="lms-main">
-    <header class="lms-topbar">
-      <div class="lms-topbar-left"><button type="button" class="lms-menu-button" data-lms-menu-toggle aria-label="Toggle navigation"><svg viewBox="0 0 24 24"><path d="M4 7h16"></path><path d="M4 12h16"></path><path d="M4 17h16"></path></svg></button></div>
-      <div class="lms-search-wrap"><label class="lms-search"><span class="lms-search-icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6"></circle><path d="m20 20-4-4"></path></svg></span><input type="search" placeholder="Search courses, lessons, and resources..." data-lms-search><span class="lms-search-shortcut">Ctrl K</span></label></div>
-      <div class="lms-topbar-right"><a href="lms-notifications.html" class="lms-icon-button" aria-label="Notifications" title="Notifications"><svg viewBox="0 0 24 24"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"></path><path d="M10 21h4"></path></svg><span class="lms-notification-dot" aria-hidden="true"></span></a><div class="lms-user-wrap"><button type="button" class="lms-user-button" data-lms-user-button aria-expanded="false"><span class="lms-user-avatar" data-lms-learner-initials>--</span><span class="lms-user-name" data-lms-learner-name>Learner</span><span class="lms-user-chevron"><svg viewBox="0 0 24 24"><path d="m7 10 5 5 5-5"></path></svg></span></button><div class="lms-user-menu" data-lms-user-menu><div class="lms-user-menu-header"><span class="lms-user-menu-name" data-lms-user-menu-name>Learner</span><span class="lms-user-menu-email" data-lms-user-menu-email></span></div><a href="lms-account.html" class="lms-user-menu-link">My Account</a><a href="lms-certificates.html" class="lms-user-menu-link">My Certificates</a><button type="button" class="lms-user-menu-link" data-lms-sign-out>Sign Out</button></div></div></div>
-    </header>
-    <div class="lms-content quiz-page">
-      <nav class="quiz-breadcrumb" aria-label="Breadcrumb"><a href="lms-my-courses.html">My Learning</a><svg viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"></path></svg><a href="lms-course-player.html" id="coursePlayerLink">Course Player</a><svg viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"></path></svg><span id="breadcrumbTitle">Knowledge Check</span></nav>
-      <div class="quiz-layout">
-        <section class="quiz-card" id="quizCard">
-          <div class="quiz-header"><div class="quiz-kicker"><i></i><span id="quizType">Module Knowledge Check</span></div><h1 id="quizTitle">Module Quiz</h1><p id="quizDescription">Complete this knowledge check before continuing to the next course module.</p></div>
-          <div class="quiz-progress"><div class="quiz-progress-row"><span id="progressLabel">Question 1 of 5</span><strong id="progressPercent">20%</strong></div><div class="quiz-track"><div class="quiz-fill" id="quizFill"></div></div></div>
-          <div class="quiz-question" id="questionPanel"></div>
-        </section>
-        <aside>
-          <section class="quiz-side"><div class="side-section"><h3 id="sideTitle">Module Quiz</h3><p id="sideDescription">Your answers are saved while you move between questions.</p></div><div class="side-section"><div class="side-stat"><span>Questions</span><strong id="questionCount">5</strong></div><div class="side-stat"><span id="passingLabel">Required Score</span><strong id="passingScore">80%</strong></div><div class="side-stat"><span>Attempts</span><strong id="attempts">—</strong></div></div><div class="side-section"><h3>Questions</h3><div class="question-list" id="questionList"></div></div></section>
-          <section class="quiz-side" style="margin-top:18px"><div class="side-section"><h3>Need to review?</h3><p>You can return to the course content before submitting your answers.</p><div class="hint-box"><strong>Remember</strong>Module quizzes check your understanding before you continue. The final assessment is completed after the entire course.</div></div></section>
-        </aside>
-      </div>
-    </div>
-  </main>
+<div id="lms-sidebar-target"></div>
+<main class="lms-main">
+<header class="lms-topbar">
+<div class="lms-topbar-left"><button aria-label="Toggle navigation" class="lms-menu-button" data-lms-menu-toggle="" type="button"><svg viewbox="0 0 24 24"><path d="M4 7h16"></path><path d="M4 12h16"></path><path d="M4 17h16"></path></svg></button></div>
+<div class="lms-search-wrap"><label class="lms-search"><span class="lms-search-icon"><svg viewbox="0 0 24 24"><circle cx="11" cy="11" r="6"></circle><path d="m20 20-4-4"></path></svg></span><input data-lms-search="" placeholder="Search courses, lessons, and resources..." type="search"/><span class="lms-search-shortcut">Ctrl K</span></label></div>
+<div class="lms-topbar-right"><a aria-label="Notifications" class="lms-icon-button" href="lms-notifications.html" title="Notifications"><svg viewbox="0 0 24 24"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"></path><path d="M10 21h4"></path></svg><span aria-hidden="true" class="lms-notification-dot"></span></a><div class="lms-user-wrap"><button aria-expanded="false" class="lms-user-button" data-lms-user-button="" type="button"><span class="lms-user-avatar" data-lms-learner-initials=""></span><span class="lms-user-name" data-lms-learner-name=""></span><span class="lms-user-chevron"><svg viewbox="0 0 24 24"><path d="m7 10 5 5 5-5"></path></svg></span></button><div class="lms-user-menu" data-lms-user-menu=""><div class="lms-user-menu-header"><span class="lms-user-menu-name" data-lms-user-menu-name=""></span><span class="lms-user-menu-email" data-lms-user-menu-email=""></span></div><a class="lms-user-menu-link" href="lms-account.html">My Account</a><a class="lms-user-menu-link" href="lms-certificates.html">My Certificates</a><button class="lms-user-menu-link" data-lms-sign-out="" type="button">Sign Out</button></div></div></div>
+</header>
+<div class="lms-content quiz-page">
+<nav aria-label="Breadcrumb" class="quiz-breadcrumb"><a href="lms-my-courses.html">My Learning</a><svg viewbox="0 0 24 24"><path d="m9 18 6-6-6-6"></path></svg><a href="lms-course-player.html" id="coursePlayerLink">Course Player</a><svg viewbox="0 0 24 24"><path d="m9 18 6-6-6-6"></path></svg><span id="breadcrumbTitle">Knowledge Check</span></nav>
+<div class="quiz-layout">
+<section class="quiz-card" id="quizCard">
+<div class="quiz-header"><div class="quiz-kicker"><i></i><span id="quizType">Module Knowledge Check</span></div><h1 id="quizTitle">Module Quiz</h1><p id="quizDescription">Complete this knowledge check before continuing to the next course module.</p></div>
+<div class="quiz-progress"><div class="quiz-progress-row"><span id="progressLabel">Question 1 of 5</span><strong id="progressPercent">20%</strong></div><div class="quiz-track"><div class="quiz-fill" id="quizFill"></div></div></div>
+<div class="quiz-question" id="questionPanel"></div>
+</section>
+<aside>
+<section class="quiz-side"><div class="side-section"><h3 id="sideTitle">Module Quiz</h3><p id="sideDescription">Your answers are saved while you move between questions.</p></div><div class="side-section"><div class="side-stat"><span>Questions</span><strong id="questionCount">5</strong></div><div class="side-stat"><span id="passingLabel">Required Score</span><strong id="passingScore">80%</strong></div><div class="side-stat"><span>Attempts</span><strong id="attempts">—</strong></div></div><div class="side-section"><h3>Questions</h3><div class="question-list" id="questionList"></div></div></section>
+<section class="quiz-side" style="margin-top:18px"><div class="side-section"><h3>Need to review?</h3><p>You can return to the course content before submitting your answers.</p><div class="hint-box"><strong>Remember</strong>Module quizzes check your understanding before you continue. The final assessment is completed after the entire course.</div></div></section>
+</aside>
+</div>
+</div>
+</main>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="assets/js/supabase-config.js?v=20260911-4"></script>
-<script src="assets/js/core-auth.js?v=20260911-4"></script>
-<script src="assets/js/ui.js?v=20260911-4"></script>
-<script src="assets/js/portal-auth-guard.js?v=20260911-4"></script>
-<script src="assets/js/training-auth-guard.js?v=20260911-4"></script>
-<script src="assets/js/lms-sidebar.js?v=20260911-4"></script>
-<script src="assets/js/lms.js?v=20260911-4"></script>
-<script src="assets/js/lms-quiz.js?v=20260911-8"></script>
-  <script src="assets/js/branded-popups.js?v=20260911-8"></script>
 
+
+
+
+
+
+
+
+
+<script src="assets/js/lms-core-clean.js?v=20260915-clean3"></script><script src="assets/js/pages/lms-quiz.js?v=20260915-clean3"></script><script src="assets/js/lms-global-support-bar.js?v=20260915-1"></script>
 </body></html>

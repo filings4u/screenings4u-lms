@@ -1,31 +1,19 @@
 <!DOCTYPE html>
+
 <html lang="en">
-
 <head>
-
-  <meta charset="UTF-8">
-
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  >
-  <meta name="theme-color" content="#325aa3" />
-
-
-  <title>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="#24467f" name="theme-color">
+<title>
     Learning Home | screenings4u Learning Center
   </title>
 <link href="images/fav.png" rel="icon" type="image/png"/>
-
-
-  <link
-    rel="stylesheet"
-    href="assets/css/lms.css"
-  >
-<link rel="stylesheet" href="assets/css/lms-refinement.css">
-<link rel="stylesheet" href="assets/css/lms-ui-modals.css">
-
-  <style>
+<link href="assets/css/lms.css" rel="stylesheet"/>
+<link href="assets/css/lms-refinement.css" rel="stylesheet"/>
+<link href="assets/css/lms-ui-modals.css" rel="stylesheet"/>
+<link href="assets/css/lms-learning-center-2026-corrected.css?v=20260915-9?v=20260915-2?v=20260915-3" rel="stylesheet"/>
+<style>
     /* Prevent placeholder/live-data flash while Supabase is loading. */
     .lms-dashboard-data-pending .lms-page-title,
     .lms-dashboard-data-pending [data-lms-learner-initials],
@@ -43,575 +31,206 @@
       background-position: center;
       background-repeat: no-repeat;
     }
+
+    .home-hero-orb { overflow: hidden; }
+    .home-hero-orb img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; display: block; }
+    .home-hero-orb img[hidden], .home-hero-orb [hidden] { display: none !important; }
   </style>
-
+<link href="assets/css/lms-shell-v2.css?v=20260915-2" rel="stylesheet"/>
+<link href="assets/css/lms-shell-v3.css?v=20260915-2" rel="stylesheet"/>
+<link href="assets/css/lms-rebuild-v1.css?v=20260915-1" rel="stylesheet"/>
+</meta><link rel="stylesheet" href="assets/css/lms-dashboard-2026.css?v=20260915-2">
 </head>
-
-
 <body class="lms-dashboard-data-pending lms-dashboard-home">
-
-
-  <!-- ========================================================
+<!-- ========================================================
        APPLICATION
        ======================================================== -->
-
-  <div class="lms-app">
-
-
- <!-- Dynamic LMS Sidebar Target -->
+<div class="lms-app">
+<!-- Dynamic LMS Sidebar Target -->
 <div id="lms-sidebar-target"></div>
-
-    <!-- ======================================================
+<!-- ======================================================
          MAIN
          ====================================================== -->
-
-    <main class="lms-main">
-
-
-      <!-- ====================================================
+<main class="lms-main">
+<!-- ====================================================
            TOP BAR
            ==================================================== -->
-
-      <header class="lms-topbar">
-
-
-        <!-- LEFT -->
-
-        <div class="lms-topbar-left">
-
-          <button
-            type="button"
-            class="lms-menu-button"
-            data-lms-menu-toggle
-            aria-label="Toggle navigation"
-          >
-
-            <svg viewBox="0 0 24 24">
-
-              <path d="M4 7h16" />
-
-              <path d="M4 12h16" />
-
-              <path d="M4 17h16" />
-
-            </svg>
-
-          </button>
-
-        </div>
-
-
-        <!-- SEARCH -->
-
-        <div class="lms-search-wrap">
-
-          <label class="lms-search">
-
-            <span class="lms-search-icon">
-
-              <svg viewBox="0 0 24 24">
-
-                <circle
-                  cx="11"
-                  cy="11"
-                  r="6"
-                />
-
-                <path d="m20 20-4-4" />
-
-              </svg>
-
-            </span>
-
-
-            <input
-              type="search"
-              placeholder="Search courses, lessons, and resources..."
-              data-lms-search
-            >
-
-
-            <span class="lms-search-shortcut">
+<header class="lms-topbar">
+<!-- LEFT -->
+<div class="lms-topbar-left">
+<button aria-label="Toggle navigation" class="lms-menu-button" data-lms-menu-toggle="" type="button">
+<svg viewbox="0 0 24 24">
+<path d="M4 7h16"></path>
+<path d="M4 12h16"></path>
+<path d="M4 17h16"></path>
+</svg>
+</button>
+</div>
+<!-- SEARCH -->
+<div class="lms-search-wrap">
+<label class="lms-search">
+<span class="lms-search-icon">
+<svg viewbox="0 0 24 24">
+<circle cx="11" cy="11" r="6"></circle>
+<path d="m20 20-4-4"></path>
+</svg>
+</span>
+<input data-lms-search="" placeholder="Search courses, lessons, and resources..." type="search"/>
+<span class="lms-search-shortcut">
               Ctrl K
             </span>
-
-          </label>
-
-        </div>
-
-
-        <!-- RIGHT -->
-
-        <div class="lms-topbar-right">
-
-
-          <!-- NOTIFICATIONS -->
-
-          <a href="lms-notifications.html"
-            class="lms-icon-button"
-            aria-label="Notifications"
-           title="Notifications">
-
-            <svg viewBox="0 0 24 24">
-
-              <path
-                d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"
-              />
-
-              <path d="M10 21h4" />
-
-            </svg>
-
-
-            <span class="lms-notification-dot"></span>
-
-          </a>
-
-
-          <!-- USER -->
-
-          <div class="lms-user-wrap">
-
-
-            <button
-              type="button"
-              class="lms-user-button"
-              data-lms-user-button
-              aria-expanded="false"
-            >
-
-              <span
-                class="lms-user-avatar"
-                data-lms-learner-initials
-              ></span>
-
-
-              <span
-                class="lms-user-name"
-                data-lms-learner-name
-              ></span>
-
-
-              <span class="lms-user-chevron">
-
-                <svg viewBox="0 0 24 24">
-
-                  <path d="m7 10 5 5 5-5" />
-
-                </svg>
-
-              </span>
-
-            </button>
-
-
-            <!-- USER DROPDOWN -->
-
-            <div
-              class="lms-user-menu"
-              data-lms-user-menu
-            >
-
-
-              <div class="lms-user-menu-header">
-
-                <span
-                  class="lms-user-menu-name"
-                  data-lms-user-menu-name
-                ></span>
-
-
-                <span
-                  class="lms-user-menu-email"
-                  data-lms-user-menu-email
-                >
-                  
-                </span>
-
-              </div>
-
-
-              <a
-                href="lms-account.html"
-                class="lms-user-menu-link"
-              >
+</label>
+</div>
+<!-- RIGHT -->
+<div class="lms-topbar-right">
+<!-- NOTIFICATIONS -->
+<a aria-label="Notifications" class="lms-icon-button" href="lms-notifications.html" title="Notifications">
+<svg viewbox="0 0 24 24">
+<path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"></path>
+<path d="M10 21h4"></path>
+</svg>
+<span class="lms-notification-dot"></span>
+</a>
+<!-- USER -->
+<div class="lms-user-wrap">
+<button aria-expanded="false" class="lms-user-button" data-lms-user-button="" type="button">
+<span class="lms-user-avatar" data-lms-learner-initials=""></span>
+<span class="lms-user-name" data-lms-learner-name=""></span>
+<span class="lms-user-chevron">
+<svg viewbox="0 0 24 24">
+<path d="m7 10 5 5 5-5"></path>
+</svg>
+</span>
+</button>
+<!-- USER DROPDOWN -->
+<div class="lms-user-menu" data-lms-user-menu="">
+<div class="lms-user-menu-header">
+<span class="lms-user-menu-name" data-lms-user-menu-name=""></span>
+<span class="lms-user-menu-email" data-lms-user-menu-email="">
+</span>
+</div>
+<a class="lms-user-menu-link" href="lms-account.html">
                 My Account
               </a>
-
-
-              <a
-                href="lms-certificates.html"
-                class="lms-user-menu-link"
-              >
+<a class="lms-user-menu-link" href="lms-certificates.html">
                 My Certificates
               </a>
-
-
-              <button
-                type="button"
-                class="lms-user-menu-link"
-                data-lms-sign-out
-              >
+<button class="lms-user-menu-link" data-lms-sign-out="" type="button">
                 Sign Out
               </button>
-
-
-            </div>
-
-          </div>
-
-
-        </div>
-
-
-      </header>
-
-
-      <!-- ====================================================
+</div>
+</div>
+</div>
+</header>
+<!-- ====================================================
            PAGE CONTENT
            ==================================================== -->
-
-      <div class="lms-content">
-
-
-        <!-- PAGE HEADER -->
-
-        <div class="lms-page-heading">
-
-          <div>
-
-            <div class="lms-eyebrow">
-              Screenings4u Learning Center
-            </div>
-
-
-            <h1 class="lms-page-title"></h1>
-
-
-            <p class="lms-page-description">
-              Pick up where you left off, track your progress,
-              and continue building the knowledge you need.
-            </p>
-
-          </div>
-
-
-          <a
-            href="lms-courses.html"
-            class="lms-button lms-button-secondary"
-          >
-            Explore Courses
-          </a>
-
-        </div>
-
-
-        <!-- ================================================
-             CONTINUE LEARNING
-             ================================================ -->
-
-        <section class="lms-continue-card">
-
-          <div class="lms-continue-content">
-
-            <span class="lms-card-label">
-              Continue Learning
-            </span>
-
-            <h2 class="lms-continue-title"></h2>
-
-            <p class="lms-continue-description"></p>
-
-            <div class="lms-course-progress">
-
-              <div class="lms-progress-meta">
-                <span>Course Progress</span>
-                <strong></strong>
-              </div>
-
-              <div class="lms-progress-track">
-                <div
-                  class="lms-progress-fill"
-                  style="width:0%;"
-                ></div>
-              </div>
-
-            </div>
-
-            <div class="lms-continue-actions">
-
-              <a href="#" class="lms-button">
-                Resume Course
-              </a>
-
-              <a href="#" class="lms-button lms-button-secondary">
-                View Details
-              </a>
-
-            </div>
-
-          </div>
-
-          <!-- Real course thumbnail is applied directly here. -->
-          <div
-            class="lms-course-visual"
-            role="img"
-          ></div>
-
-        </section>
-
-
-        <!-- ================================================
-             DASHBOARD GRID
-             ================================================ -->
-
-        <div class="lms-dashboard-grid">
-
-
-          <!-- LEFT COLUMN -->
-
-          <div>
-
-
-            <!-- MY LEARNING -->
-
-            <section class="lms-section">
-
-
-              <div class="lms-section-header">
-
-                <div>
-
-                  <h2 class="lms-section-title">
-                    Keep learning
-                  </h2>
-
-
-                  <p class="lms-section-subtitle">
-                    Courses currently in your learning plan.
-                  </p>
-
-                </div>
-
-
-                <a
-                  href="lms-my-courses.html"
-                  class="lms-text-link"
-                >
-                  View All
-                </a>
-
-
-              </div>
-
-
-              <!-- COURSE GRID — populated from real enrollments. -->
-
-              <div class="lms-course-grid"></div>
-
-            </section>
-
-
-          </div>
-
-
-          <!-- RIGHT COLUMN -->
-
-          <aside>
-
-
-            <!-- LEARNING OVERVIEW -->
-
-            <section class="lms-widget">
-
-
-              <div class="lms-widget-header">
-
-                <h2 class="lms-widget-title">
-                  Learning Overview
-                </h2>
-
-              </div>
-
-
-              <div class="lms-stat-list">
-
-
-                <!-- STAT -->
-
-                <div class="lms-stat-row">
-
-
-                  <div class="lms-stat-icon">
-
-                    <svg viewBox="0 0 24 24">
-
-                      <path
-                        d="M3 6.5 12 3l9 3.5L12 10 3 6.5Z"
-                      />
-
-                      <path d="M6 8v5" />
-
-                      <path
-                        d="M18 8v5c0 2-3 4-6 4s-6-2-6-4"
-                      />
-
-                    </svg>
-
-                  </div>
-
-
-                  <div class="lms-stat-copy">
-
-                    <span class="lms-stat-label">
-                      Courses in progress
-                    </span>
-
-
-                    <span class="lms-stat-value"></span>
-
-                  </div>
-
-                </div>
-
-
-                <!-- STAT -->
-
-                <div class="lms-stat-row">
-
-
-                  <div class="lms-stat-icon blue">
-
-                    <svg viewBox="0 0 24 24">
-
-                      <circle
-                        cx="12"
-                        cy="12"
-                        r="9"
-                      />
-
-                      <path d="M12 7v5l3 2" />
-
-                    </svg>
-
-                  </div>
-
-
-                  <div class="lms-stat-copy">
-
-                    <span class="lms-stat-label">
-                      Learning hours
-                    </span>
-
-
-                    <span class="lms-stat-value"></span>
-
-                  </div>
-
-                </div>
-
-
-                <!-- STAT -->
-
-                <div class="lms-stat-row">
-
-
-                  <div class="lms-stat-icon green">
-
-                    <svg viewBox="0 0 24 24">
-
-                      <circle
-                        cx="12"
-                        cy="8"
-                        r="4"
-                      />
-
-                      <path
-                        d="M6 21c1-4 3-6 6-6s5 2 6 6"
-                      />
-
-                    </svg>
-
-                  </div>
-
-
-                  <div class="lms-stat-copy">
-
-                    <span class="lms-stat-label">
-                      Certificates earned
-                    </span>
-
-
-                    <span class="lms-stat-value"></span>
-
-                  </div>
-
-                </div>
-
-
-              </div>
-
-
-            </section>
-
-
-            <!-- ACTIVITY -->
-
-            <section class="lms-widget">
-
-
-              <div class="lms-widget-header">
-
-                <h2 class="lms-widget-title">
-                  Recent Activity
-                </h2>
-
-
-                <a
-                  href="lms-progress.html"
-                  class="lms-text-link"
-                >
-                  View
-                </a>
-
-              </div>
-
-
-              <div class="lms-activity-list"></div>
-
-            </section>
-
-
-          </aside>
-
-
-        </div>
-
-
-      </div>
-
-
-    </main>
-
-
-  </div>
-
-
-  <!-- ========================================================
+<div class="lms-content">
+<section class="home-hero">
+<div class="home-hero-copy">
+<div class="lms-eyebrow">SCREENINGS4U LEARNING CENTER</div>
+<h1 class="lms-page-title"></h1>
+<p class="lms-page-description">Your training, progress, certificates, and next steps — all in one place.</p>
+<div class="home-hero-actions">
+<a class="lms-button home-primary" href="lms-my-courses.html">My Learning</a>
+<a class="lms-button lms-button-secondary home-secondary" href="lms-courses.html">Browse Courses</a>
+</div>
+</div>
+<div aria-hidden="true" class="home-hero-mark">
+<div class="home-hero-orb" data-lms-hero-avatar aria-label="Learner profile"><img data-lms-hero-avatar-image alt="" hidden><span data-lms-hero-avatar-fallback></span></div>
+
+</div>
+</section>
+<section aria-label="Learning overview" class="home-stat-strip">
+<div class="home-stat"><span class="home-stat-icon">▶</span><div><strong class="lms-stat-value"></strong><span>Courses in progress</span></div></div>
+<div class="home-stat"><span class="home-stat-icon">◷</span><div><strong class="lms-stat-value"></strong><span>Learning hours</span></div></div>
+<div class="home-stat"><span class="home-stat-icon">✓</span><div><strong class="lms-stat-value"></strong><span>Certificates earned</span></div></div>
+</section>
+<div class="home-dashboard-grid home-dashboard-grid-v8">
+  <section class="home-section home-learning-panel">
+    <div class="home-section-heading"><div><span class="home-kicker">YOUR LEARNING</span><h2>Courses in your plan</h2><p>Pick up active training or review completed courses.</p></div><a class="lms-text-link" href="lms-my-courses.html">View all →</a></div>
+    <div class="lms-course-grid"></div>
+  </section>
+
+  <section class="home-quick-panel home-action-panel">
+    <span class="home-kicker">QUICK ACTIONS</span><h2>Learning tools</h2>
+    <div class="home-quick-links">
+      <a href="lms-my-courses.html"><span>My Learning</span><b>→</b></a>
+      <a href="lms-certificates.html"><span>Certificate Center</span><b>→</b></a>
+      <a href="lms-progress.html"><span>Progress Report</span><b>→</b></a>
+      <a href="lms-my-appointments.html"><span>Appointments</span><b>→</b></a>
+    </div>
+  </section>
+
+  <section class="home-section home-resource-section">
+    <div class="home-section-heading"><div><span class="home-kicker">LEARNING CENTER</span><h2>Your training center</h2><p>Everything you need for training, records, scheduling, and support.</p></div></div>
+    <div class="home-resource-grid">
+      <a class="home-resource-card" href="lms-courses.html"><div class="home-resource-icon">▶</div><div><strong>Explore training</strong><span>Browse available courses and add new training.</span></div></a>
+      <a class="home-resource-card" href="lms-certificates.html"><div class="home-resource-icon">✓</div><div><strong>Certificates</strong><span>View and download earned training certificates.</span></div></a>
+      <a class="home-resource-card" href="lms-my-appointments.html"><div class="home-resource-icon">◷</div><div><strong>Appointments</strong><span>Manage scheduled training and appointments.</span></div></a>
+      <a class="home-resource-card" href="lms-documents.html"><div class="home-resource-icon">▤</div><div><strong>Documents</strong><span>Access policies, forms, and learning resources.</span></div></a>
+      <a class="home-resource-card" href="lms-progress.html"><div class="home-resource-icon">↗</div><div><strong>Progress report</strong><span>Review course completion and learning activity.</span></div></a>
+      <a class="home-resource-card" href="lms-support.html"><div class="home-resource-icon">?</div><div><strong>Training support</strong><span>Get help with courses, certificates, or your account.</span></div></a>
+    </div>
+  </section>
+
+  <section class="lms-widget home-activity-panel">
+    <div class="lms-widget-header"><div><span class="home-kicker">RECENT</span><h2 class="lms-widget-title">Activity</h2></div><a class="lms-text-link" href="lms-progress.html">View all</a></div>
+    <div class="lms-activity-list"></div>
+  </section>
+
+  <section class="home-help-card"><span class="home-kicker">NEED HELP?</span><h3>Training support</h3><p>Questions about a course, certificate, appointment, or your learning account?</p><a href="lms-support.html">Visit Support →</a></section>
+</div>
+</div>
+</div>
+</main>
+</div>
+<!-- ========================================================
        JAVASCRIPT
        ======================================================== -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="assets/js/supabase-config.js"></script>
 <script src="assets/js/core-auth.js"></script>
 <script src="assets/js/ui.js"></script>
-<script src="assets/js/portal-auth-guard.js"></script>
 <script src="assets/js/training-auth-guard.js"></script>
 <script src="assets/js/lms-sidebar.js"></script>
 <script src="assets/js/lms.js?v=20260830-2000"></script>
 <script src="assets/js/lms-dashboard.js?v=20260903-1"></script>
+<script src="assets/js/branded-popups.js?v=20260911-1"></script>
 
-  <script src="assets/js/branded-popups.js?v=20260911-1"></script>
-
+<script>
+(function(){
+  async function applyHeroAvatar(){
+    try{
+      if(!window.LMS || !window.LMS.ready) return;
+      const ctx=await window.LMS.ready;
+      let profile=ctx.profile||{};
+      try {
+        const fresh=await ctx.client.from("user_profiles").select("avatar_path").eq("id",ctx.user.id).maybeSingle();
+        if(!fresh.error && fresh.data) profile=Object.assign({},profile,fresh.data);
+      } catch(_) {}
+      const path=profile.avatar_path;
+      const fallback=document.querySelector('[data-lms-hero-avatar-fallback]');
+      if(!path){ if(fallback) fallback.hidden=false; return; }
+      let url=path;
+      if(!/^https?:\/\//i.test(path)){
+        const bucket=window.S4U_AVATAR_BUCKET||"avatars";
+        const result=ctx.client.storage.from(bucket).getPublicUrl(path);
+        url=result && result.data ? result.data.publicUrl : "";
+      }
+      if(!url) return;
+      const wrap=document.querySelector('[data-lms-hero-avatar]');
+      const img=document.querySelector('[data-lms-hero-avatar-image]');
+      if(!wrap||!img) return;
+      img.onload=function(){img.hidden=false;if(fallback)fallback.hidden=true;wrap.classList.add('has-photo');};
+      img.onerror=function(){img.hidden=true;if(fallback)fallback.hidden=false;wrap.classList.remove('has-photo');};
+      img.src=url+(url.includes('?')?'&':'?')+'v='+Date.now();
+    }catch(e){console.warn('[LMS Dashboard] Profile photo could not be loaded:',e);}
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',applyHeroAvatar,{once:true}); else applyHeroAvatar();
+})();
+</script>
+<script src="assets/js/lms-dashboard-2026.js?v=20260915-2"></script>
+<script src="assets/js/lms-global-support-bar.js?v=20260915-1"></script>
 </body>
-
 </html>

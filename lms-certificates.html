@@ -1,1102 +1,230 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Certificates | screenings4u Learning Center</title>
-<meta name="theme-color" content="#325aa3" />
-
-<link href="images/fav.png" rel="icon" type="image/png"/>
-<link rel="stylesheet" href="assets/css/lms.css">
-<link rel="stylesheet" href="assets/css/lms-refinement.css">
-<link rel="stylesheet" href="assets/css/lms-ui-modals.css">
-
-<style>
-:root {
-  --s4u-blue: #325aa3;
-  --s4u-dark-blue: #24467f;
-  --s4u-orange: #ff6b00;
-  --s4u-orange-hover: #e66000;
-  --s4u-page: #f5f7fa;
-  --s4u-card: #ffffff;
-  --s4u-border: #dfe5ec;
-  --s4u-text: #172033;
-  --s4u-muted: #687386;
-}
-
-.certificates-page {
-  width: 100%;
-  min-width: 0;
-  padding-bottom: 32px;
-}
-
-.certificates-breadcrumb {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex-wrap: wrap;
-  margin-bottom: 22px;
-  color: var(--s4u-muted);
-  font-size: 12px;
-  font-weight: 700;
-}
-
-.certificates-breadcrumb a {
-  color: var(--s4u-blue);
-  text-decoration: none;
-}
-
-.certificates-breadcrumb svg {
-  width: 14px;
-  height: 14px;
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 2;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-
-.certificates-hero {
-  position: relative;
-  overflow: hidden;
-  padding: 38px 40px;
-  border: 1px solid var(--s4u-border);
-  border-radius: 18px;
-  background: linear-gradient(135deg, var(--s4u-dark-blue), var(--s4u-blue));
-}
-
-.certificates-hero::before {
-  content: "";
-  position: absolute;
-  width: 360px;
-  height: 360px;
-  right: -150px;
-  top: -190px;
-  border: 1px solid rgba(255,255,255,.13);
-  border-radius: 50%;
-}
-
-.certificates-hero::after {
-  content: "";
-  position: absolute;
-  width: 170px;
-  height: 170px;
-  right: 95px;
-  bottom: -120px;
-  border: 1px solid rgba(255,255,255,.10);
-  border-radius: 50%;
-}
-
-.certificates-hero-content {
-  position: relative;
-  z-index: 1;
-  max-width: 720px;
-}
-
-.certificates-kicker {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  color: rgba(255,255,255,.85);
-  font-size: 11px;
-  font-weight: 800;
-  letter-spacing: .12em;
-  text-transform: uppercase;
-}
-
-.certificates-kicker-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: var(--s4u-orange);
-}
-
-.certificates-hero h1 {
-  margin: 13px 0 0;
-  color: #ffffff;
-  font-size: clamp(30px, 4vw, 46px);
-  line-height: 1.1;
-  letter-spacing: -.035em;
-  font-weight: 800;
-}
-
-.certificates-hero p {
-  max-width: 650px;
-  margin: 13px 0 0;
-  color: rgba(255,255,255,.80);
-  font-size: 14px;
-  line-height: 1.7;
-}
-
-.certificates-stats {
-  display: flex;
-  gap: 30px;
-  margin-top: 24px;
-}
-
-.cert-stat {
-  padding-right: 30px;
-  border-right: 1px solid rgba(255,255,255,.18);
-}
-
-.cert-stat:last-child {
-  padding-right: 0;
-  border-right: 0;
-}
-
-.cert-stat strong {
-  display: block;
-  color: #ffffff;
-  font-size: 22px;
-  font-weight: 800;
-}
-
-.cert-stat span {
-  display: block;
-  margin-top: 3px;
-  color: rgba(255,255,255,.68);
-  font-size: 11px;
-  font-weight: 700;
-}
-
-.certificates-layout {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 310px;
-  gap: 24px;
-  margin-top: 26px;
-  align-items: start;
-}
-
-.certificates-section-card,
-.certificates-help-card {
-  border: 1px solid var(--s4u-border);
-  border-radius: 16px;
-  background: var(--s4u-card);
-}
-
-.certificates-section-card {
-  padding: 28px;
-}
-
-.certificates-section-head {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 20px;
-  margin-bottom: 24px;
-}
-
-.certificates-section-head h2 {
-  margin: 0;
-  color: var(--s4u-text);
-  font-size: 20px;
-  font-weight: 800;
-  letter-spacing: -.015em;
-}
-
-.certificates-section-head p {
-  margin: 7px 0 0;
-  color: var(--s4u-muted);
-  font-size: 13px;
-  line-height: 1.55;
-}
-
-/* Certificate card */
-
-.certificate-item {
-  overflow: hidden;
-  border: 1px solid var(--s4u-border);
-  border-radius: 14px;
-  background: #ffffff;
-}
-
-.certificate-item-top {
-  display: grid;
-  grid-template-columns: 140px minmax(0, 1fr);
-  min-height: 188px;
-}
-
-.certificate-thumbnail {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 18px;
-  background: linear-gradient(135deg, var(--s4u-dark-blue), var(--s4u-blue));
-}
-
-.certificate-thumbnail::before {
-  content: "";
-  position: absolute;
-  inset: 13px;
-  border: 1px solid rgba(255,255,255,.45);
-}
-
-.certificate-thumbnail-inner {
-  position: relative;
-  z-index: 1;
-  text-align: center;
-}
-
-.certificate-thumbnail-mark {
-  width: 44px;
-  height: 44px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0 auto 12px;
-  border-radius: 50%;
-  border: 2px solid var(--s4u-orange);
-  color: #ffffff;
-}
-
-.certificate-thumbnail-mark svg {
-  width: 23px;
-  height: 23px;
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 1.9;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-
-.certificate-thumbnail-inner strong {
-  display: block;
-  color: #ffffff;
-  font-size: 10px;
-  letter-spacing: .08em;
-  text-transform: uppercase;
-}
-
-.certificate-thumbnail-inner span {
-  display: block;
-  margin-top: 5px;
-  color: rgba(255,255,255,.72);
-  font-size: 8px;
-}
-
-.certificate-item-content {
-  padding: 24px 25px;
-}
-
-.certificate-status {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  margin-bottom: 10px;
-  color: var(--s4u-blue);
-  font-size: 10px;
-  font-weight: 800;
-  letter-spacing: .08em;
-  text-transform: uppercase;
-}
-
-.certificate-status-dot {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: var(--s4u-orange);
-}
-
-.certificate-item h3 {
-  margin: 0;
-  color: var(--s4u-text);
-  font-size: 18px;
-  font-weight: 800;
-  line-height: 1.35;
-}
-
-.certificate-item-meta {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px 18px;
-  margin-top: 13px;
-}
-
-.certificate-meta {
-  color: var(--s4u-muted);
-  font-size: 12px;
-}
-
-.certificate-meta strong {
-  color: var(--s4u-text);
-  font-weight: 750;
-}
-
-.certificate-id {
-  margin-top: 14px;
-  color: var(--s4u-muted);
-  font-size: 11px;
-  font-weight: 700;
-}
-
-.certificate-id span {
-  color: var(--s4u-dark-blue);
-  font-family: monospace;
-  font-size: 11px;
-}
-
-.certificate-actions {
-  display: flex;
-  gap: 10px;
-  padding: 17px 20px;
-  border-top: 1px solid var(--s4u-border);
-  background: var(--s4u-page);
-}
-
-.cert-button {
-  min-height: 40px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  padding: 0 14px;
-  border-radius: 9px;
-  font-size: 12px;
-  font-weight: 800;
-  text-decoration: none;
-  cursor: pointer;
-}
-
-.cert-button svg {
-  width: 16px;
-  height: 16px;
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 2;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-
-.cert-button-primary {
-  border: 1px solid var(--s4u-orange);
-  background: var(--s4u-orange);
-  color: #ffffff;
-}
-
-.cert-button-primary:hover {
-  border-color: var(--s4u-orange-hover);
-  background: var(--s4u-orange-hover);
-}
-
-.cert-button-secondary {
-  border: 1px solid var(--s4u-border);
-  background: #ffffff;
-  color: var(--s4u-dark-blue);
-}
-
-.cert-button-secondary:hover {
-  border-color: var(--s4u-blue);
-}
-
-/* Preview panel */
-
-.certificate-preview-card {
-  margin-top: 24px;
-  padding: 24px;
-  border: 1px solid var(--s4u-border);
-  border-radius: 14px;
-  background: var(--s4u-page);
-}
-
-.certificate-preview-head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 15px;
-  margin-bottom: 18px;
-}
-
-.certificate-preview-head h3 {
-  margin: 0;
-  color: var(--s4u-text);
-  font-size: 15px;
-  font-weight: 800;
-}
-
-.certificate-preview-head span {
-  color: var(--s4u-muted);
-  font-size: 11px;
-  font-weight: 700;
-}
-
-/* Real certificate visual */
-
-.real-certificate {
-  position: relative;
-  aspect-ratio: 1.414 / 1;
-  overflow: hidden;
-  padding: 5.5%;
-  border: 1px solid var(--s4u-border);
-  background: #ffffff;
-  box-shadow: 0 8px 24px rgba(23,32,51,.08);
-}
-
-.real-certificate::before {
-  content: "";
-  position: absolute;
-  inset: 3%;
-  border: 2px solid var(--s4u-blue);
-}
-
-.real-certificate::after {
-  content: "";
-  position: absolute;
-  inset: 4.2%;
-  border: 1px solid var(--s4u-orange);
-}
-
-.real-certificate-content {
-  position: relative;
-  z-index: 1;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-}
-
-.real-certificate-logo {
-  width: 27%;
-  max-width: 170px;
-  margin-bottom: 4%;
-  object-fit: contain;
-}
-
-.real-certificate-kicker {
-  color: var(--s4u-blue);
-  font-size: clamp(6px, .75vw, 11px);
-  font-weight: 800;
-  letter-spacing: .18em;
-  text-transform: uppercase;
-}
-
-.real-certificate-title {
-  margin-top: 3%;
-  color: var(--s4u-dark-blue);
-  font-family: Georgia, "Times New Roman", serif;
-  font-size: clamp(19px, 3.2vw, 47px);
-  font-weight: 700;
-}
-
-.real-certificate-presented {
-  margin-top: 3.5%;
-  color: var(--s4u-muted);
-  font-size: clamp(7px, .85vw, 12px);
-}
-
-.real-certificate-name {
-  margin-top: 2%;
-  padding: 0 8%;
-  color: var(--s4u-text);
-  font-family: Georgia, "Times New Roman", serif;
-  font-size: clamp(15px, 2.6vw, 37px);
-  font-weight: 700;
-}
-
-.real-certificate-rule {
-  width: 34%;
-  margin-top: 2%;
-  border-top: 1px solid var(--s4u-orange);
-}
-
-.real-certificate-text {
-  max-width: 72%;
-  margin-top: 2.5%;
-  color: var(--s4u-muted);
-  font-size: clamp(6px, .78vw, 11px);
-  line-height: 1.55;
-}
-
-.real-certificate-course {
-  margin-top: 1.8%;
-  color: var(--s4u-dark-blue);
-  font-size: clamp(8px, 1vw, 15px);
-  font-weight: 800;
-}
-
-.real-certificate-footer {
-  position: absolute;
-  left: 9%;
-  right: 9%;
-  bottom: 7%;
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: 18px;
-}
-
-.certificate-signature {
-  min-width: 26%;
-  text-align: center;
-}
-
-.certificate-signature-line {
-  border-top: 1px solid var(--s4u-text);
-}
-
-.certificate-signature span {
-  display: block;
-  margin-top: 4px;
-  color: var(--s4u-muted);
-  font-size: clamp(5px, .65vw, 9px);
-}
-
-.certificate-seal {
-  width: clamp(35px, 5vw, 72px);
-  height: clamp(35px, 5vw, 72px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 2px solid var(--s4u-orange);
-  border-radius: 50%;
-  color: var(--s4u-orange);
-  font-size: clamp(5px, .58vw, 8px);
-  font-weight: 800;
-  line-height: 1.2;
-  text-align: center;
-  text-transform: uppercase;
-}
-
-.certificate-date {
-  min-width: 26%;
-  text-align: center;
-}
-
-/* Right rail */
-
-.certificates-help-card {
-  padding: 22px;
-}
-
-.certificates-help-card h3 {
-  margin: 0;
-  color: var(--s4u-text);
-  font-size: 16px;
-  font-weight: 800;
-}
-
-.certificates-help-card p {
-  margin: 9px 0 0;
-  color: var(--s4u-muted);
-  font-size: 12px;
-  line-height: 1.65;
-}
-
-.certificate-info-list {
-  margin-top: 18px;
-  padding: 0;
-  list-style: none;
-}
-
-.certificate-info-list li {
-  display: flex;
-  gap: 10px;
-  padding: 13px 0;
-  border-bottom: 1px solid var(--s4u-border);
-}
-
-.certificate-info-list li:last-child {
-  border-bottom: 0;
-}
-
-.certificate-info-icon {
-  width: 29px;
-  height: 29px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex: 0 0 auto;
-  border-radius: 8px;
-  background: var(--s4u-page);
-  color: var(--s4u-blue);
-}
-
-.certificate-info-icon svg {
-  width: 15px;
-  height: 15px;
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 1.9;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-
-.certificate-info-copy strong {
-  display: block;
-  color: var(--s4u-text);
-  font-size: 12px;
-  font-weight: 800;
-}
-
-.certificate-info-copy span {
-  display: block;
-  margin-top: 3px;
-  color: var(--s4u-muted);
-  font-size: 11px;
-  line-height: 1.45;
-}
-
-.certificates-support-link {
-  display: inline-flex;
-  margin-top: 15px;
-  color: var(--s4u-blue);
-  font-size: 12px;
-  font-weight: 800;
-  text-decoration: none;
-}
-
-/* Empty state */
-
-.empty-certificates {
-  display: none;
-  padding: 46px 24px;
-  text-align: center;
-}
-
-.empty-certificates.active {
-  display: block;
-}
-
-.empty-certificates-icon {
-  width: 56px;
-  height: 56px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0 auto 15px;
-  border-radius: 50%;
-  background: var(--s4u-page);
-  color: var(--s4u-blue);
-}
-
-.empty-certificates-icon svg {
-  width: 27px;
-  height: 27px;
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 1.8;
-}
-
-.empty-certificates h3 {
-  margin: 0;
-  color: var(--s4u-text);
-  font-size: 17px;
-}
-
-.empty-certificates p {
-  max-width: 420px;
-  margin: 8px auto 0;
-  color: var(--s4u-muted);
-  font-size: 13px;
-  line-height: 1.6;
-}
-
-@media (max-width: 1050px) {
-  .certificates-layout {
-    grid-template-columns: 1fr;
-  }
-}
-
-@media (max-width: 720px) {
-  .certificates-hero {
-    padding: 30px 24px;
-  }
-
-  .certificates-stats {
-    gap: 18px;
-  }
-
-  .cert-stat {
-    padding-right: 18px;
-  }
-
-  .certificates-section-card {
-    padding: 21px 16px;
-  }
-
-  .certificate-item-top {
-    grid-template-columns: 1fr;
-  }
-
-  .certificate-thumbnail {
-    min-height: 140px;
-  }
-
-  .certificate-actions {
-    flex-direction: column;
-  }
-
-  .cert-button {
-    width: 100%;
-  }
-
-  .certificate-preview-card {
-    padding: 12px;
-  }
-}
-
-@media print {
-  body * {
-    visibility: hidden !important;
-  }
-
-  #printCertificate,
-  #printCertificate * {
-    visibility: visible !important;
-  }
-
-  #printCertificate {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    padding: 0;
-    margin: 0;
-    background: #ffffff;
-  }
-
-  .real-certificate {
-    width: 100%;
-    height: 100vh;
-    aspect-ratio: auto;
-    box-shadow: none;
-    border: 0;
-  }
-}
-</style>
-<style id="training-mobile-certificates">
-*{box-sizing:border-box}html,body{max-width:100%;overflow-x:hidden}
-@media(max-width:767px){html{font-size:16px}.lms-content.certificates-page{width:100%;padding:18px 14px 36px}.certificates-breadcrumb{font-size:13px;margin-bottom:16px}.certificates-hero{min-height:0;padding:22px 18px;border-radius:14px}.certificates-hero-content{width:100%;max-width:none}.certificates-hero h1{font-size:29px;line-height:1.15}.certificates-hero p{font-size:15px;line-height:1.6}.certificates-stats{display:grid;grid-template-columns:1fr;gap:0;width:100%;margin-top:18px}.cert-stat{width:100%;padding:13px 0;border-right:0;border-bottom:1px solid rgba(255,255,255,.18)}.cert-stat:last-child{border-bottom:0}.certificates-layout{grid-template-columns:1fr;gap:14px;margin-top:14px}.certificates-section-card,.certificates-help-card{width:100%;min-width:0;border-radius:13px}.certificates-section-card{padding:18px 14px}.certificates-section-head,.certificate-preview-head{align-items:flex-start;flex-direction:column;gap:10px}.certificates-section-head h2{font-size:19px}.certificates-section-head p{font-size:14px}.certificate-item-top{grid-template-columns:1fr}.certificate-thumbnail{min-height:150px}.certificate-item-content{padding:18px 15px}.certificate-item h3{font-size:18px}.certificate-item-meta{display:grid;grid-template-columns:1fr;gap:8px}.certificate-actions{display:grid;grid-template-columns:1fr;padding:14px}.cert-button{width:100%;min-height:46px}.certificate-preview-card{padding:14px;margin-top:16px}.real-certificate{min-width:0;width:100%}.certificates-help-card{padding:18px 15px}.certificates-support-link{display:flex;width:100%;min-height:46px;align-items:center;justify-content:center}.empty-certificates{padding:24px 14px}}
-</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#24467f">
+  <title>Certificates | screenings4u Learning Center</title>
+  <link href="images/fav.png" rel="icon" type="image/png">
+  <link href="assets/css/lms.css" rel="stylesheet">
+  <link href="assets/css/lms-refinement.css" rel="stylesheet">
+  <link href="assets/css/lms-ui-modals.css" rel="stylesheet">
+  <link href="assets/css/lms-shell-v3.css?v=20260915-2" rel="stylesheet">
+  <link href="assets/css/lms-certificates-redesign-2026.css?v=20260915-3" rel="stylesheet">
 </head>
+<body class="lms-certificates-page">
+  <div class="lms-app">
+    <div id="lms-sidebar-target"></div>
 
-<body>
-
-<div class="lms-app">
-
-  <!-- Dynamic shared sidebar -->
-  <div id="lms-sidebar-target"></div>
-
-  <main class="lms-main">
-
-    <!-- Shared shell topbar -->
-    <header class="lms-topbar">
-
-      <div class="lms-topbar-left">
-        <button
-          type="button"
-          class="lms-menu-button"
-          data-lms-menu-toggle
-          aria-label="Toggle navigation"
-        >
-          <svg viewBox="0 0 24 24">
-            <path d="M4 7h16"></path>
-            <path d="M4 12h16"></path>
-            <path d="M4 17h16"></path>
-          </svg>
-        </button>
-      </div>
-
-      <div class="lms-search-wrap">
-        <label class="lms-search">
-          <span class="lms-search-icon">
-            <svg viewBox="0 0 24 24">
-              <circle cx="11" cy="11" r="6"></circle>
-              <path d="m20 20-4-4"></path>
-            </svg>
-          </span>
-
-          <input
-            type="search"
-            placeholder="Search courses, lessons, and resources..."
-            data-lms-search
-          >
-
-          <span class="lms-search-shortcut">Ctrl K</span>
-        </label>
-      </div>
-
-      <div class="lms-topbar-right">
-
-        <a href="lms-notifications.html"
-          class="lms-icon-button"
-          aria-label="Notifications"
-         title="Notifications">>
-          <svg viewBox="0 0 24 24">
-            <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"></path>
-            <path d="M10 21h4"></path>
-          </svg>
-          <span class="lms-notification-dot"></span>
-        </a>
-
-        <div class="lms-user-wrap">
-
-          <button
-            type="button"
-            class="lms-user-button"
-            data-lms-user-button
-            aria-expanded="false"
-          >
-            <span class="lms-user-avatar" data-lms-learner-initials>
-              --
-            </span>
-
-            <span class="lms-user-name" data-lms-learner-name>
-              Learner
-            </span>
-
-            <span class="lms-user-chevron">
-              <svg viewBox="0 0 24 24">
-                <path d="m7 10 5 5 5-5"></path>
-              </svg>
-            </span>
+    <main class="lms-main">
+      <header class="lms-topbar">
+        <div class="lms-topbar-left">
+          <button type="button" class="lms-menu-button" data-lms-menu-toggle aria-label="Toggle navigation">
+            <svg viewBox="0 0 24 24"><path d="M4 7h16"></path><path d="M4 12h16"></path><path d="M4 17h16"></path></svg>
           </button>
-
-          <div class="lms-user-menu" data-lms-user-menu>
-
-            <div class="lms-user-menu-header">
-              <span class="lms-user-menu-name" data-lms-user-menu-name>Learner</span>
-              <span class="lms-user-menu-email" data-lms-user-menu-email></span>
-            </div>
-
-            <a href="lms-account.html" class="lms-user-menu-link">
-              My Account
-            </a>
-
-            <a href="lms-certificates.html" class="lms-user-menu-link">
-              My Certificates
-            </a>
-
-            <button
-              type="button"
-              class="lms-user-menu-link"
-              data-lms-sign-out
-            >
-              Sign Out
-            </button>
-
-          </div>
-
         </div>
 
-      </div>
+        <div class="lms-search-wrap">
+          <label class="lms-search">
+            <span class="lms-search-icon">
+              <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6"></circle><path d="m20 20-4-4"></path></svg>
+            </span>
+            <input type="search" placeholder="Search courses, lessons, and resources..." data-lms-search>
+            <span class="lms-search-shortcut">Ctrl K</span>
+          </label>
+        </div>
 
-    </header>
+        <div class="lms-topbar-right">
+          <a href="lms-notifications.html" class="lms-icon-button" aria-label="Notifications" title="Notifications">
+            <svg viewBox="0 0 24 24"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"></path><path d="M10 21h4"></path></svg>
+            <span class="lms-notification-dot"></span>
+          </a>
 
-    <div class="lms-content certificates-page">
+          <div class="lms-user-wrap">
+            <button type="button" class="lms-user-button" data-lms-user-button aria-expanded="false">
+              <span class="lms-user-avatar" data-lms-learner-initials>--</span>
+              <span class="lms-user-name" data-lms-learner-name>Learner</span>
+              <span class="lms-user-chevron"><svg viewBox="0 0 24 24"><path d="m7 10 5 5 5-5"></path></svg></span>
+            </button>
 
-      <nav
-        class="certificates-breadcrumb"
-        aria-label="Breadcrumb"
-      >
-        <a href="lms-dashboard.html">Home</a>
+            <div class="lms-user-menu" data-lms-user-menu>
+              <div class="lms-user-menu-header">
+                <span class="lms-user-menu-name" data-lms-user-menu-name>Learner</span>
+                <span class="lms-user-menu-email" data-lms-user-menu-email></span>
+              </div>
+              <a class="lms-user-menu-link" href="lms-account.html">My Account</a>
+              <a class="lms-user-menu-link" href="lms-certificates.html">My Certificates</a>
+              <button class="lms-user-menu-link" data-lms-sign-out type="button">Sign Out</button>
+            </div>
+          </div>
+        </div>
+      </header>
 
-        <svg viewBox="0 0 24 24">
-          <path d="m9 18 6-6-6-6"></path>
-        </svg>
+      <div class="lms-content certificates-page">
+        <nav class="certificates-breadcrumb" aria-label="Breadcrumb">
+          <a href="lms-dashboard.html">Home</a>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6"></path></svg>
+          <span>Certificates</span>
+        </nav>
 
-        <span>Certificates</span>
-      </nav>
-
-      <!-- HERO -->
-
-      <section class="certificates-hero">
-
-        <div class="certificates-hero-content">
-
-          <div class="certificates-kicker">
-            <span class="certificates-kicker-dot"></span>
-            Training Credentials
+        <section class="certificates-hero">
+          <div class="certificates-hero-copy">
+            <span class="certificates-kicker">Screenings4u Learning Center</span>
+            <h1>Training Certificates</h1>
+            <p>View earned credentials, open a professional certificate preview, and print or download records from completed training.</p>
+            <div class="certificates-hero-actions">
+              <a class="certificates-button certificates-button-primary" href="#earned-certificates">View Certificates</a>
+              <a class="certificates-button certificates-button-secondary" href="lms-progress.html">View Progress</a>
+            </div>
           </div>
 
-          <h1>Your Certificates</h1>
+          <div class="certificates-hero-summary" aria-label="Certificate summary">
+            <div class="certificates-hero-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="5"></circle><path d="m8.5 12.5-1 8L12 18l4.5 2.5-1-8"></path></svg>
+            </div>
+            <span class="certificates-summary-label">Credentials earned</span>
+            <strong data-certificates-earned>0</strong>
+            <span class="certificates-summary-note">Verified training records available to your learner account</span>
+          </div>
+        </section>
 
-          <p>
-            Access your completed training certificates, review your
-            credentials, and download professional copies for your
-            records.
-          </p>
-
-          <div class="certificates-stats">
-
-            <div class="cert-stat">
+        <section class="certificates-stat-strip" aria-label="Credential overview">
+          <article class="certificates-stat-card">
+            <span class="certificates-stat-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M5 4h14v16H5z"></path><path d="m8 9 2 2 5-5"></path><path d="M8 15h8"></path></svg>
+            </span>
+            <div>
               <strong data-certificates-earned>0</strong>
               <span>Certificates Earned</span>
             </div>
+          </article>
 
-            <div class="cert-stat">
+          <article class="certificates-stat-card">
+            <span class="certificates-stat-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v16H6.5A2.5 2.5 0 0 0 4 21.5z"></path><path d="M4 5.5v16"></path><path d="m10 11 2 2 4-4"></path></svg>
+            </span>
+            <div>
               <strong data-courses-completed>0</strong>
               <span>Courses Completed</span>
             </div>
+          </article>
 
-          </div>
-
-        </div>
-
-      </section>
-
-      <div class="certificates-layout">
-
-        <!-- MAIN -->
-
-        <section class="certificates-section-card">
-
-          <div class="certificates-section-head">
-
+          <article class="certificates-stat-card certificates-stat-info">
+            <span class="certificates-stat-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M6 3h12v5H6z"></path><path d="M6 17H4a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2"></path><path d="M6 14h12v7H6z"></path></svg>
+            </span>
             <div>
-              <h2>Earned Certificates</h2>
-
-              <p>
-                Certificates become available automatically after all
-                course requirements and the final assessment have been
-                successfully completed.
-              </p>
+              <strong>Print Ready</strong>
+              <span>Professional certificate layout</span>
             </div>
-
-          </div>
-
-          <!-- Live certificates -->
-          <div id="certificatesList"></div>
-
-          <!-- Live certificate preview -->
-          <section class="certificate-preview-card" id="certificatePreview" hidden>
-            <div class="certificate-preview-head">
-              <h3>Certificate Preview</h3>
-              <span>Professional print layout</span>
-            </div>
-            <div id="printCertificate"></div>
-          </section>
-
-          <!-- Future empty state -->
-
-          <section
-            class="empty-certificates"
-            id="emptyCertificates"
-          >
-
-            <div class="empty-certificates-icon">
-              <svg viewBox="0 0 24 24">
-                <circle cx="12" cy="8" r="5"></circle>
-                <path d="m8.5 12.5-1 8L12 18l4.5 2.5-1-8"></path>
-              </svg>
-            </div>
-
-            <h3>No certificates yet</h3>
-
-            <p>
-              Complete your assigned course requirements and pass the
-              final assessment to earn your first certificate.
-            </p>
-
-          </section>
-
+          </article>
         </section>
 
-        <!-- RIGHT SIDEBAR -->
+        <div class="certificates-workspace">
+          <section class="certificates-panel certificates-list-panel" id="earned-certificates">
+            <div class="certificates-panel-head">
+              <div>
+                <span class="certificates-eyebrow">Your credentials</span>
+                <h2>Earned Certificates</h2>
+                <p>Certificates are issued automatically after all course and assessment requirements are successfully completed.</p>
+              </div>
+              <a class="certificates-text-link" href="lms-my-courses.html">My Learning</a>
+            </div>
 
-        <aside>
+            <div id="certificatesList" class="certificates-live-list" aria-live="polite"></div>
 
-          <section class="certificates-help-card">
-
-            <h3>Your Credentials</h3>
-
-            <p>
-              Your certificates are securely connected to your completed
-              learning records.
-            </p>
-
-            <ul class="certificate-info-list">
-
-              <li>
-
-                <span class="certificate-info-icon">
-                  <svg viewBox="0 0 24 24">
-                    <path d="M12 3v18"></path>
-                    <path d="M7 8h8"></path>
-                  </svg>
-                </span>
-
-                <div class="certificate-info-copy">
-                  <strong>Automatically Issued</strong>
-
-                  <span>
-                    Available after successful completion.
-                  </span>
-                </div>
-
-              </li>
-
-              <li>
-
-                <span class="certificate-info-icon">
-                  <svg viewBox="0 0 24 24">
-                    <path d="M6 3h12v5H6z"></path>
-                    <path d="M6 17H4a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2"></path>
-                    <path d="M6 14h12v7H6z"></path>
-                  </svg>
-                </span>
-
-                <div class="certificate-info-copy">
-                  <strong>Print Ready</strong>
-
-                  <span>
-                    Designed for professional printing and framing.
-                  </span>
-                </div>
-
-              </li>
-
-              <li>
-
-                <span class="certificate-info-icon">
-                  <svg viewBox="0 0 24 24">
-                    <path d="M4 5h16v14H4z"></path>
-                    <path d="m8 10 4 4 4-4"></path>
-                  </svg>
-                </span>
-
-                <div class="certificate-info-copy">
-                  <strong>Unique Certificate ID</strong>
-
-                  <span>
-                    Each issued certificate can be individually verified.
-                  </span>
-                </div>
-
-              </li>
-
-            </ul>
-
-            <a
-              href="lms-account.html"
-              class="certificates-support-link"
-            >
-              Update your account information
-            </a>
-
+            <section class="empty-certificates" id="emptyCertificates">
+              <div class="empty-certificates-icon">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="5"></circle><path d="m8.5 12.5-1 8L12 18l4.5 2.5-1-8"></path></svg>
+              </div>
+              <h3>No certificates yet</h3>
+              <p>Complete your assigned course requirements and pass the final assessment to earn your first certificate.</p>
+              <a href="lms-my-courses.html" class="certificates-button certificates-button-primary">Continue Learning</a>
+            </section>
           </section>
 
-        </aside>
+          <aside class="certificates-side-stack">
+            <section class="certificates-panel credential-guide">
+              <div class="certificates-panel-head compact">
+                <div>
+                  <span class="certificates-eyebrow">Credential center</span>
+                  <h2>About Your Certificates</h2>
+                </div>
+              </div>
 
+              <div class="credential-guide-list">
+                <div class="credential-guide-item">
+                  <span class="credential-guide-icon">
+                    <svg viewBox="0 0 24 24"><path d="M12 3v18"></path><path d="M7 8h8"></path></svg>
+                  </span>
+                  <div><strong>Issued Automatically</strong><span>Credentials appear after successful course completion.</span></div>
+                </div>
+                <div class="credential-guide-item">
+                  <span class="credential-guide-icon">
+                    <svg viewBox="0 0 24 24"><path d="M4 5h16v14H4z"></path><path d="m8 10 4 4 4-4"></path></svg>
+                  </span>
+                  <div><strong>Unique Certificate ID</strong><span>Each certificate is tied to its own verification record.</span></div>
+                </div>
+                <div class="credential-guide-item">
+                  <span class="credential-guide-icon">
+                    <svg viewBox="0 0 24 24"><path d="M6 3h12v5H6z"></path><path d="M6 17H4a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2"></path><path d="M6 14h12v7H6z"></path></svg>
+                  </span>
+                  <div><strong>Download or Print</strong><span>Open a certificate and save a professional copy for your records.</span></div>
+                </div>
+              </div>
+            </section>
+
+            <section class="certificates-panel certificates-account-card">
+              <span class="certificates-account-icon">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"></circle><path d="M4 21c.8-4 3.4-6 8-6s7.2 2 8 6"></path></svg>
+              </span>
+              <div>
+                <span class="certificates-eyebrow">Certificate name</span>
+                <h3>Keep your profile current</h3>
+                <p>Your learner name may appear on issued certificates. Update your account if anything needs to be corrected.</p>
+                <a href="lms-account.html" class="certificates-text-link">Update Account</a>
+              </div>
+            </section>
+          </aside>
+        </div>
+
+        <section class="certificates-panel certificate-preview-card" hidden id="certificatePreview">
+          <div class="certificates-panel-head preview-head">
+            <div>
+              <span class="certificates-eyebrow">Certificate viewer</span>
+              <h2>Certificate Preview</h2>
+              <p>Review the selected credential before printing or saving a copy.</p>
+            </div>
+            <span class="certificate-preview-note">Professional print layout</span>
+          </div>
+          <div class="certificate-preview-stage">
+            <div id="printCertificate"></div>
+          </div>
+        </section>
+
+        <section class="certificates-footer-cta">
+          <div>
+            <span class="certificates-eyebrow">Keep learning</span>
+            <h2>Earn your next certificate.</h2>
+            <p>Continue active training or browse the full course library for additional learning opportunities.</p>
+          </div>
+          <div class="certificates-footer-actions">
+            <a class="certificates-button certificates-button-secondary-light" href="lms-my-courses.html">My Learning</a>
+            <a class="certificates-button certificates-button-primary" href="lms-courses.html">Course Library</a>
+          </div>
+        </section>
       </div>
+    </main>
+  </div>
 
-    </div>
-
-  </main>
-
-</div>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="assets/js/supabase-config.js"></script>
-<script src="assets/js/core-auth.js"></script>
-<script src="assets/js/ui.js"></script>
-<script src="assets/js/portal-auth-guard.js"></script>
-<script src="assets/js/training-auth-guard.js"></script>
-<script src="assets/js/lms-sidebar.js"></script>
-<script src="assets/js/lms.js?v=20260830-2300"></script>
-<script src="assets/js/lms-certificates.js?v=20260830-2300"></script>
-
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="assets/js/supabase-config.js"></script>
+  <script src="assets/js/core-auth.js"></script>
+  <script src="assets/js/ui.js"></script>
+  <script src="assets/js/training-auth-guard.js"></script>
+  <script src="assets/js/lms-sidebar.js"></script>
+  <script src="assets/js/lms.js?v=20260830-2300"></script>
+  <script src="assets/js/lms-certificates.js?v=20260830-2300"></script>
   <script src="assets/js/branded-popups.js?v=20260911-1"></script>
-
 </body>
 </html>

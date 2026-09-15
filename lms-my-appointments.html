@@ -1,62 +1,124 @@
 <!DOCTYPE html>
+<!DOCTYPE html>
+
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1.0">
-  <meta name="theme-color" content="#325aa3">
-  <title>My Appointments | screenings4u Learning Center</title>
-  <link href="images/fav.png" rel="icon" type="image/png">
-  <link rel="stylesheet" href="assets/css/lms.css">
-<link rel="stylesheet" href="assets/css/lms-refinement.css">
-<link rel="stylesheet" href="assets/css/lms-ui-modals.css">
-  <link rel="stylesheet" href="assets/css/lms-my-appointments.css">
-</head>
-<body>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1.0" name="viewport"/>
+<meta content="#24467f" name="theme-color"/>
+<title>My Appointments | screenings4u Learning Center</title>
+<link href="images/fav.png" rel="icon" type="image/png"/>
+<!-- Shared LMS shell -->
+
+
+
+
+<!-- This page only -->
+
+
+<link href="assets/css/lms-base-clean.css?v=20260915-clean3" rel="stylesheet"/><link href="assets/css/pages/lms-my-appointments.css?v=20260915-clean3" rel="stylesheet"/></head>
+<body class="lms-my-appointments-page s4u-lms-redesign">
 <div class="lms-app">
-  <div id="lms-sidebar-target"></div>
-  <main class="lms-main">
-    <header class="lms-topbar">
-      <div class="lms-topbar-left"><button type="button" class="lms-menu-button" data-lms-menu-toggle aria-label="Toggle navigation"><svg viewBox="0 0 24 24"><path d="M4 7h16"/><path d="M4 12h16"/><path d="M4 17h16"/></svg></button></div>
-      <div class="lms-search-wrap"><label class="lms-search"><span class="lms-search-icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6"/><path d="m20 20-4-4"/></svg></span><input type="search" placeholder="Search courses, lessons, and resources..." data-lms-search><span class="lms-search-shortcut">Ctrl K</span></label></div>
-      <div class="lms-topbar-right">
-        <a href="lms-notifications.html" class="lms-icon-button" aria-label="Notifications" title="Notifications"><svg viewBox="0 0 24 24"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/><path d="M10 21h4"/></svg><span class="lms-notification-dot"></span></a>
-        <div class="lms-user-wrap"><button type="button" class="lms-user-button" data-lms-user-button aria-expanded="false"><span class="lms-user-avatar" data-lms-learner-initials>JD</span><span class="lms-user-name" data-lms-learner-name>Learner</span><span class="lms-user-chevron"><svg viewBox="0 0 24 24"><path d="m7 10 5 5 5-5"/></svg></span></button><div class="lms-user-menu" data-lms-user-menu><div class="lms-user-menu-header"><span class="lms-user-menu-name" data-lms-user-menu-name>Learner</span><span class="lms-user-menu-email" data-lms-user-menu-email></span></div><a href="lms-account.html" class="lms-user-menu-link">My Account</a><a href="lms-certificates.html" class="lms-user-menu-link">My Certificates</a><button type="button" class="lms-user-menu-link" data-lms-sign-out>Sign Out</button></div></div>
-      </div>
-    </header>
-
-    <div class="lms-content appointments-page">
-      <section class="appointments-heading lms-page-heading">
-        <div>
-          <div class="lms-eyebrow">APPOINTMENTS</div>
-          <h1 class="lms-page-title">My Appointments</h1>
-          <p class="appointments-lead">Manage your scheduled Microsoft Teams training sessions.</p>
-        </div>
-        <a class="appointments-primary-action" href="lms-schedule-appointment.html">+ Schedule Appointment</a>
-      </section>
-
-      <div id="appointmentsMessage" class="appointments-message" hidden aria-live="polite"></div>
-
-      <section class="appointments-card">
-        <div class="appointments-card-head">
-          <div><h2>Training Sessions</h2><p>Every live appointment is hosted through Microsoft Teams inside Screenings4u.</p></div>
-          <span id="appointmentsCount" class="appointments-count">—</span>
-        </div>
-        <div id="appointmentsList" class="appointments-list"><div class="appointments-loading"><span class="appointments-spinner"></span><p>Loading your appointments…</p></div></div>
-      </section>
-    </div>
-  </main>
+<div id="lms-sidebar-target"></div>
+<main class="lms-main">
+<header class="lms-topbar">
+<div class="lms-topbar-left">
+<button aria-label="Toggle navigation" class="lms-menu-button" data-lms-menu-toggle="" type="button">
+<svg aria-hidden="true" viewbox="0 0 24 24">
+<path d="M4 7h16"></path>
+<path d="M4 12h16"></path>
+<path d="M4 17h16"></path>
+</svg>
+</button>
 </div>
-
+<div class="lms-search-wrap">
+<label class="lms-search">
+<span class="lms-search-icon">
+<svg aria-hidden="true" viewbox="0 0 24 24">
+<circle cx="11" cy="11" r="6"></circle>
+<path d="m20 20-4-4"></path>
+</svg>
+</span>
+<input data-lms-search="" placeholder="Search courses, lessons, and resources..." type="search"/>
+<span class="lms-search-shortcut">Ctrl K</span>
+</label>
+</div>
+<div class="lms-topbar-right">
+<a aria-label="Notifications" class="lms-icon-button" href="lms-notifications.html" title="Notifications">
+<svg aria-hidden="true" viewbox="0 0 24 24">
+<path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"></path>
+<path d="M10 21h4"></path>
+</svg>
+<span class="lms-notification-dot"></span>
+</a>
+<div class="lms-user-wrap">
+<button aria-expanded="false" class="lms-user-button" data-lms-user-button="" type="button">
+<span class="lms-user-avatar" data-lms-learner-initials=""></span>
+<span class="lms-user-name" data-lms-learner-name=""></span>
+<span class="lms-user-chevron">
+<svg aria-hidden="true" viewbox="0 0 24 24">
+<path d="m7 10 5 5 5-5"></path>
+</svg>
+</span>
+</button>
+<div class="lms-user-menu" data-lms-user-menu="">
+<div class="lms-user-menu-header">
+<span class="lms-user-menu-name" data-lms-user-menu-name=""></span>
+<span class="lms-user-menu-email" data-lms-user-menu-email=""></span>
+</div>
+<a class="lms-user-menu-link" href="lms-account.html">My Account</a>
+<a class="lms-user-menu-link" href="lms-certificates.html">My Certificates</a>
+<button class="lms-user-menu-link" data-lms-sign-out="" type="button">Sign Out</button>
+</div>
+</div>
+</div>
+</header>
+<div class="lms-content appointments-page">
+<nav aria-label="Breadcrumb" class="appointments-breadcrumb">
+<a href="lms-dashboard.html">Home</a>
+<span aria-hidden="true">›</span>
+<span>Appointments</span>
+</nav>
+<section class="appointments-hero">
+<div class="appointments-hero-copy">
+<span class="appointments-kicker">SCREENINGS4U LEARNING CENTER</span>
+<h1>My Appointments</h1>
+<p>Manage your scheduled Microsoft Teams training sessions.</p>
+</div>
+<a class="appointments-primary-action" href="lms-schedule-appointment.html">
+            + Schedule Appointment
+          </a>
+</section>
+<div aria-live="polite" class="appointments-message" hidden="" id="appointmentsMessage"></div>
+<section class="appointments-card">
+<div class="appointments-card-head">
+<div>
+<span class="appointments-section-kicker">APPOINTMENTS</span>
+<h2>Training Sessions</h2>
+<p>Every live appointment is hosted through Microsoft Teams inside Screenings4u.</p>
+</div>
+<span class="appointments-count" id="appointmentsCount">—</span>
+</div>
+<div class="appointments-list" id="appointmentsList">
+<div class="appointments-loading">
+<span class="appointments-spinner"></span>
+<p>Loading your appointments…</p>
+</div>
+</div>
+</section>
+</div>
+</main>
+</div>
+<!-- Functional LMS stack -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="assets/js/supabase-config.js"></script>
-<script src="assets/js/core-auth.js"></script>
-<script src="assets/js/ui.js"></script>
-<script src="assets/js/portal-auth-guard.js"></script>
-<script src="assets/js/training-auth-guard.js"></script>
-<script src="assets/js/lms-sidebar.js"></script>
-<script src="assets/js/lms.js?v=20260830-2000"></script>
-<script src="assets/js/lms-my-appointments.js?v=20260912-2"></script>
-<script src="assets/js/branded-popups.js?v=20260911-1"></script>
 
+
+
+
+
+
+
+
+<script src="assets/js/lms-core-clean.js?v=20260915-clean3"></script><script src="assets/js/pages/lms-my-appointments.js?v=20260915-clean3"></script><script src="assets/js/lms-global-support-bar.js?v=20260915-1"></script>
 </body>
 </html>

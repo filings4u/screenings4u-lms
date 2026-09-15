@@ -1,7 +1,7 @@
 (() => {
   "use strict";
 
-  const DASHBOARD_PAGE = "lms-dashboard.html";
+  const DASHBOARD_PAGE = "lms-welcome.html";
   const RESET_PAGE = "reset-password.html";
 
   const BLOCKED_RETURN_PAGES = new Set([

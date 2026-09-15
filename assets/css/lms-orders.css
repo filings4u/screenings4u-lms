@@ -1,3 +1,235 @@
-.orders-page{color:var(--lms-text,#172b45)}
-.orders-heading{align-items:flex-end}.orders-lead{margin:8px 0 0;color:var(--lms-text-soft,#66758a);font-size:16px}.orders-count{display:grid;place-items:center;min-width:44px;height:44px;padding:0 13px;border-radius:999px;background:#eef4fb;color:#244e8c;font-weight:800}.orders-message{margin-bottom:18px;padding:13px 16px;border:1px solid #f4c7a5;border-radius:10px;background:#fff4ea;color:#8a4209}.orders-list{display:grid;gap:18px}.order-card{background:#fff;border:1px solid var(--lms-border,#e1e7ef);border-radius:18px;box-shadow:0 14px 34px rgba(20,48,83,.05);overflow:hidden}.order-head{display:flex;align-items:flex-start;justify-content:space-between;gap:20px;padding:22px 24px;border-bottom:1px solid #e8edf3}.order-number{font-size:12px;font-weight:900;letter-spacing:.08em;color:#e45d0b}.order-head h2{margin:5px 0 5px;font-size:20px;color:#102a43}.order-date{margin:0;color:#6b7a8e;font-size:13px}.order-status{display:inline-flex;padding:7px 11px;border-radius:999px;background:#edf7f1;color:#24734b;font-size:12px;font-weight:800;text-transform:capitalize}.order-body{padding:20px 24px}.order-items{display:grid;gap:12px}.order-item{display:flex;justify-content:space-between;gap:18px;padding-bottom:12px;border-bottom:1px solid #edf1f5}.order-item:last-child{border-bottom:0;padding-bottom:0}.order-item strong{display:block;color:#17324f}.order-item small{display:block;margin-top:4px;color:#748296}.order-price{font-weight:800;color:#17324f;white-space:nowrap}.order-summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:20px;padding-top:18px;border-top:1px solid #e8edf3}.order-summary div{padding:13px 14px;border-radius:10px;background:#f7f9fc}.order-summary span{display:block;font-size:11px;font-weight:800;letter-spacing:.06em;color:#78879a;text-transform:uppercase}.order-summary strong{display:block;margin-top:5px;color:#17324f}.order-actions{display:flex;justify-content:flex-end;padding:0 24px 22px}.receipt-button{min-height:42px;padding:0 16px;border:1px solid #173d78;border-radius:9px;background:#173d78;color:#fff;font-weight:800;cursor:pointer}.receipt-button:disabled{opacity:.6;cursor:wait}.orders-loading,.orders-empty{min-height:280px;background:#fff;border:1px solid #e1e7ef;border-radius:18px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:28px;color:#69798d}.orders-empty h3{margin:10px 0 6px;color:#17324f}.orders-empty p{margin:0}.orders-empty-icon{width:56px;height:56px;display:grid;place-items:center;border-radius:50%;background:#eef4fb;color:#244e8c;font-size:25px}.orders-spinner{width:30px;height:30px;border:3px solid #dbe4ef;border-top-color:#2d5da7;border-radius:50%;animation:orders-spin .8s linear infinite}@keyframes orders-spin{to{transform:rotate(360deg)}}
-@media(max-width:700px){.orders-heading{align-items:flex-start}.order-head,.order-item{flex-direction:column}.order-summary{grid-template-columns:1fr}.order-actions{justify-content:stretch}.receipt-button{width:100%}}
+/* screenings4u Learning Center — Training Orders
+   Visual system aligned with the LMS dashboard/account pages. */
+
+:root{
+  --orders-navy:#24467f;
+  --orders-navy-deep:#17335f;
+  --orders-blue:#325aa3;
+  --orders-orange:#ff6b00;
+  --orders-orange-hover:#e66000;
+  --orders-page:#f4f7fc;
+  --orders-card:#fff;
+  --orders-text:#172033;
+  --orders-muted:#687386;
+  --orders-line:#d9e3f0;
+  --orders-soft:#eef3f9;
+}
+
+body.lms-orders-page{background:var(--orders-page)!important;color:var(--orders-text)}
+body.lms-orders-page .lms-main{background:var(--orders-page)!important}
+body.lms-orders-page .lms-content{width:min(1380px,calc(100% - 64px))!important;max-width:1380px!important;margin:0 auto!important;padding:28px 0 56px!important}
+.orders-page{min-width:0}
+
+/* Top bar */
+body.lms-orders-page .lms-topbar{background:var(--orders-navy)!important;border-bottom-color:rgba(255,255,255,.08)!important}
+body.lms-orders-page .lms-topbar-left,
+body.lms-orders-page .lms-topbar-right{color:#fff!important}
+body.lms-orders-page .s4u-page-title{color:#fff;font-size:14px;font-weight:800;white-space:nowrap}
+body.lms-orders-page .lms-menu-button{background:rgba(255,255,255,.08)!important;border-color:rgba(255,255,255,.12)!important;color:#fff!important}
+body.lms-orders-page .lms-menu-button svg{stroke:#fff!important}
+body.lms-orders-page .lms-search{min-height:40px!important;background:#fff!important;border-color:#fff!important;border-radius:10px!important;box-shadow:none!important}
+body.lms-orders-page .lms-search input{background:transparent!important;color:var(--orders-text)!important}
+body.lms-orders-page .lms-search input::placeholder{color:#7d8797!important}
+body.lms-orders-page .lms-search-icon{color:#708099!important}
+body.lms-orders-page .lms-search-shortcut{color:#708099!important;background:#f3f6fa!important;border-color:#dce4ee!important}
+body.lms-orders-page .lms-icon-button{background:transparent!important;border:none!important;color:#fff!important;box-shadow:none!important}
+body.lms-orders-page .lms-icon-button svg{stroke:#fff!important}
+body.lms-orders-page .lms-icon-button:hover,
+body.lms-orders-page .lms-icon-button:focus,
+body.lms-orders-page .lms-icon-button:active{background:rgba(255,255,255,.08)!important;border-color:transparent!important;color:#fff!important;box-shadow:none!important}
+body.lms-orders-page .lms-notification-dot{background:var(--orders-orange)!important;border:2px solid var(--orders-navy)!important}
+body.lms-orders-page .lms-user-name{color:#fff!important}
+body.lms-orders-page .lms-user-chevron,
+body.lms-orders-page .lms-user-chevron svg{color:#fff!important;stroke:#fff!important}
+body.lms-orders-page .lms-user-avatar{background:#fff!important;color:var(--orders-navy)!important;border:2px solid #fff!important}
+body.lms-orders-page .lms-user-button,
+body.lms-orders-page .lms-user-button:hover,
+body.lms-orders-page .lms-user-button:focus,
+body.lms-orders-page .lms-user-button:active{background:transparent!important;box-shadow:none!important;outline:none!important}
+
+/* Breadcrumb */
+.orders-breadcrumb{display:flex;align-items:center;gap:8px;margin:0 0 14px;color:var(--orders-muted);font-size:11px;font-weight:800}
+.orders-breadcrumb a{color:var(--orders-blue);text-decoration:none}
+.orders-breadcrumb a:hover{text-decoration:underline}
+.orders-breadcrumb svg{width:13px;height:13px;fill:none;stroke:currentColor;stroke-width:2}
+
+/* Compact hero */
+.orders-header{position:relative;overflow:hidden;display:grid;grid-template-columns:minmax(0,1fr) 220px;align-items:center;gap:30px;min-height:174px;margin:0 0 20px;padding:30px 34px;border-radius:20px;background:linear-gradient(125deg,var(--orders-navy-deep),var(--orders-navy) 65%,var(--orders-blue));color:#fff}
+.orders-header:before{content:"";position:absolute;right:-90px;top:-130px;width:330px;height:330px;border:1px solid rgba(255,255,255,.14);border-radius:50%}
+.orders-header:after{content:"";position:absolute;right:130px;bottom:-150px;width:235px;height:235px;border-radius:50%;background:rgba(255,107,0,.11)}
+.orders-header-copy,.orders-hero-summary{position:relative;z-index:1}
+.orders-header-copy:before{content:"SCREENINGS4U LEARNING CENTER";display:block;margin-bottom:8px;color:#ffb47d;font-size:10px;font-weight:900;letter-spacing:.12em}
+.orders-header h1{margin:0;color:#fff!important;-webkit-text-fill-color:#fff!important;font-size:clamp(30px,3vw,42px);line-height:1.05;letter-spacing:-.035em}
+.orders-header p{max-width:720px;margin:10px 0 0;color:rgba(255,255,255,.86)!important;-webkit-text-fill-color:rgba(255,255,255,.86)!important;font-size:13px;line-height:1.6}
+.orders-hero-summary{display:grid;grid-template-columns:42px 1fr;grid-template-rows:auto auto auto;column-gap:11px;align-items:center;padding:14px 16px;border:1px solid rgba(255,255,255,.5);border-bottom:3px solid var(--orders-orange);border-radius:13px;background:#fff;color:var(--orders-navy);box-shadow:0 12px 30px rgba(16,40,75,.18)}
+.orders-hero-icon{grid-row:1/4;display:grid;place-items:center;width:42px;height:42px;border-radius:10px;background:var(--orders-soft);color:var(--orders-navy)}
+.orders-hero-icon svg{width:21px;height:21px;fill:none;stroke:currentColor;stroke-width:1.8}
+.orders-hero-summary>span:not(.orders-hero-icon){color:#6c7890;font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.06em}
+.orders-hero-summary strong{color:var(--orders-navy-deep);font-size:25px;line-height:1}
+.orders-hero-summary small{color:#788498;font-size:9px;line-height:1.35}
+
+/* Two-column workspace */
+.orders-layout{display:grid;grid-template-columns:305px minmax(0,1fr);gap:22px;align-items:start}
+.orders-sidebar{display:flex;flex-direction:column;gap:14px;min-width:0}
+.orders-card,.orders-filter-nav,.orders-browse-card{background:var(--orders-card);border:1px solid var(--orders-line);border-radius:15px;box-shadow:none}
+
+.orders-summary-card{position:relative;overflow:hidden;padding:25px 22px;text-align:center;border-top:4px solid var(--orders-orange)}
+.orders-summary-card:after{content:"";position:absolute;right:-36px;top:-44px;width:100px;height:100px;border-radius:50%;background:rgba(50,90,163,.06)}
+.orders-summary-icon{width:72px;height:72px;margin:0 auto 12px;display:grid;place-items:center;border-radius:50%;background:var(--orders-navy);color:#fff;box-shadow:0 0 0 6px var(--orders-soft)}
+.orders-summary-icon svg{width:27px;height:27px;fill:none;stroke:currentColor;stroke-width:1.8}
+.orders-summary-card h2{margin:0;color:var(--orders-navy-deep);font-size:19px;letter-spacing:-.02em}
+.orders-summary-card p{margin:6px auto 0;max-width:225px;color:var(--orders-muted);font-size:11px;line-height:1.5}
+.orders-summary-role{display:inline-flex;margin-top:12px;padding:5px 9px;border-radius:999px;background:#fff3eb;color:var(--orders-orange);font-size:9px;font-weight:900;letter-spacing:.05em;text-transform:uppercase}
+
+.orders-filter-nav{padding:8px}
+.orders-filter{width:100%;display:grid;grid-template-columns:26px minmax(0,1fr) auto;align-items:center;gap:10px;min-height:48px;padding:0 14px;border:0;border-radius:9px;background:transparent;color:var(--orders-muted);font:inherit;font-size:12px;font-weight:800;text-align:left;cursor:pointer;transition:.18s ease}
+.orders-filter:hover{background:var(--orders-soft);color:var(--orders-navy)}
+.orders-filter.is-active{background:var(--orders-navy);color:#fff}
+.orders-filter-icon{display:grid;place-items:center}
+.orders-filter-icon svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.8}
+.orders-filter strong{min-width:24px;height:24px;display:grid;place-items:center;padding:0 6px;border-radius:999px;background:var(--orders-soft);color:var(--orders-navy);font-size:10px;font-weight:900}
+.orders-filter.is-active strong{background:rgba(255,255,255,.15);color:#fff}
+
+.orders-browse-card{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:16px 18px;text-decoration:none;color:var(--orders-navy);transition:.18s ease}
+.orders-browse-card:hover{border-color:#c6d3e4;background:#fbfcfe;transform:translateY(-1px)}
+.orders-browse-card small{display:block;margin-bottom:4px;color:var(--orders-orange);font-size:8px;font-weight:900;letter-spacing:.12em}
+.orders-browse-card strong{font-size:12px}
+.orders-browse-card>span:last-child{color:var(--orders-orange);font-size:18px;font-weight:900}
+
+/* Order history card */
+.orders-content-card{overflow:hidden;min-width:0}
+.orders-card-head{display:flex;align-items:flex-end;justify-content:space-between;gap:18px;padding:22px 24px 18px;border-bottom:1px solid var(--orders-line);background:linear-gradient(180deg,#fff,#fbfcfe)}
+.orders-card-head>div:first-child:before{content:"ORDER HISTORY";display:block;margin-bottom:5px;color:var(--orders-orange);font-size:9px;font-weight:900;letter-spacing:.12em}
+.orders-card-head h2{margin:0;color:var(--orders-navy-deep);font-size:20px;letter-spacing:-.015em}
+.orders-card-head p{max-width:650px;margin:5px 0 0;color:var(--orders-muted);font-size:12px;line-height:1.5}
+
+.orders-filter-search{width:245px;height:42px;display:flex;align-items:center;gap:8px;flex:0 0 auto;padding:0 12px;border:1px solid var(--orders-line);border-radius:8px;background:#fff}
+.orders-filter-search:focus-within{border-color:var(--orders-blue);box-shadow:0 0 0 3px rgba(50,90,163,.09)}
+.orders-filter-search svg{width:16px;height:16px;fill:none;stroke:#7c8798;stroke-width:1.8;flex:none}
+.orders-filter-search input{width:100%;min-width:0;border:0!important;outline:0!important;box-shadow:none!important;background:transparent!important;color:var(--orders-text);font:inherit;font-size:11px}
+.orders-filter-search input::placeholder{color:#919bab}
+
+.orders-message{margin:16px 22px 0;padding:10px 12px;border:1px solid #efc9c9;border-radius:8px;background:#fff5f5;color:#a33b3b;font-size:11px;font-weight:700}
+.orders-list{display:grid;gap:0}
+.orders-loading,.orders-empty{min-height:230px;display:flex;align-items:center;justify-content:center;gap:14px;padding:34px;color:var(--orders-muted)}
+.orders-loading strong,.orders-empty h3{display:block;margin:0;color:var(--orders-navy-deep);font-size:14px}
+.orders-loading p,.orders-empty p{margin:4px 0 0;font-size:11px;line-height:1.5}
+.orders-spinner{width:28px;height:28px;border:3px solid #e4eaf2;border-top-color:var(--orders-orange);border-radius:50%;animation:ordersSpin .8s linear infinite;flex:none}
+@keyframes ordersSpin{to{transform:rotate(360deg)}}
+.orders-empty{flex-direction:column;text-align:center}
+.orders-empty-icon{width:48px;height:48px;display:grid;place-items:center;border-radius:12px;background:var(--orders-soft);color:var(--orders-blue);font-size:20px;font-weight:900}
+.orders-empty a{display:inline-flex;align-items:center;justify-content:center;min-height:39px;margin-top:5px;padding:0 15px;border-radius:8px;background:var(--orders-orange);color:#fff;text-decoration:none;font-size:10px;font-weight:900}
+
+/* Individual order rows */
+.order-card{padding:0 24px;border-bottom:1px solid var(--orders-line);background:#fff}
+.order-card:last-child{border-bottom:0}
+.order-summary-row{display:grid;grid-template-columns:minmax(0,1fr) 250px;gap:24px;padding:21px 0}
+.order-main{min-width:0}
+.order-meta-line{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:7px}
+.order-number{color:var(--orders-blue);font-size:9px;font-weight:900;letter-spacing:.08em;text-transform:uppercase}
+.order-date{color:#8792a2;font-size:10px}
+.order-status{display:inline-flex;align-items:center;min-height:22px;padding:0 8px;border-radius:999px;background:#eaf8f1;color:#14704f;font-size:8px;font-weight:900;letter-spacing:.06em;text-transform:uppercase}
+.order-status.pending,.order-status.processing,.order-status.unpaid{background:#fff4e8;color:#ad5a15}
+.order-status.refunded,.order-status.partially-refunded{background:#eef2fb;color:#36578e}
+.order-status.failed,.order-status.cancelled,.order-status.canceled{background:#fff0f0;color:#a43d3d}
+.order-card h3{margin:0;color:var(--orders-navy-deep);font-size:16px;line-height:1.3;letter-spacing:-.02em}
+.order-card-subtitle{margin:4px 0 0;color:var(--orders-muted);font-size:10px}
+
+.order-items{display:grid;gap:7px;margin-top:13px}
+.order-item{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:10px 11px;border:1px solid var(--orders-line);border-radius:9px;background:var(--orders-soft)}
+.order-item-copy{display:flex;align-items:center;gap:10px;min-width:0}
+.order-item-type{width:32px;height:32px;display:grid;place-items:center;flex:0 0 32px;border-radius:8px;background:#fff0e5;color:var(--orders-orange);font-size:11px;font-weight:900}
+.order-item-type.other{background:#eaf1fb;color:var(--orders-blue)}
+.order-item-copy strong{display:block;overflow:hidden;text-overflow:ellipsis;color:var(--orders-text);font-size:11px;white-space:nowrap}
+.order-item-copy small{display:block;margin-top:2px;color:#7b8797;font-size:9px}
+.order-price{flex:none;color:var(--orders-text);font-size:11px;font-weight:900}
+
+.order-side{display:flex;flex-direction:column;justify-content:space-between;padding-left:22px;border-left:1px solid var(--orders-line)}
+.order-financials{display:grid;gap:9px}
+.order-financials>div{display:flex;align-items:center;justify-content:space-between;gap:12px;color:var(--orders-muted);font-size:10px}
+.order-financials strong{color:var(--orders-text);font-size:11px;text-transform:capitalize;text-align:right;word-break:break-word}
+.order-financials .order-total{padding-top:9px;border-top:1px solid var(--orders-line)}
+.order-financials .order-total span{color:var(--orders-text);font-weight:800}
+.order-financials .order-total strong{font-size:17px;letter-spacing:-.03em}
+.order-actions{display:flex;justify-content:flex-end;gap:7px;margin-top:17px}
+.receipt-button,.learning-button{min-height:36px;display:inline-flex;align-items:center;justify-content:center;padding:0 12px;border-radius:8px;font:inherit;font-size:9px;font-weight:900;cursor:pointer;text-decoration:none;transition:.18s ease}
+.receipt-button{border:1px solid var(--orders-line);background:#fff;color:var(--orders-navy)}
+.receipt-button:hover{background:var(--orders-soft);border-color:#c4d3e5}
+.receipt-button:disabled{opacity:.55;cursor:wait}
+.learning-button{border:1px solid var(--orders-orange);background:var(--orders-orange);color:#fff}
+.learning-button:hover{background:var(--orders-orange-hover);border-color:var(--orders-orange-hover)}
+.orders-no-match{padding:36px 24px;text-align:center;color:var(--orders-muted);font-size:11px}
+
+.orders-support-card{display:flex;align-items:center;justify-content:space-between;gap:24px;margin-top:18px;padding:20px 22px;border-radius:15px;background:var(--orders-navy);color:#fff}
+.orders-support-card h2{margin:0;color:#fff;font-size:15px}
+.orders-support-card p{margin:5px 0 0;color:rgba(255,255,255,.72);font-size:10px;line-height:1.5}
+.orders-support-card a{display:inline-flex;align-items:center;justify-content:center;min-height:39px;padding:0 15px;border-radius:8px;background:var(--orders-orange);color:#fff;text-decoration:none;font-size:10px;font-weight:900;white-space:nowrap}
+.orders-support-card a:hover{background:var(--orders-orange-hover)}
+
+@media(max-width:1100px){
+  body.lms-orders-page .lms-content{width:calc(100% - 36px)!important;padding:22px 0 44px!important}
+  .orders-layout{grid-template-columns:240px minmax(0,1fr);gap:18px}
+  .order-summary-row{grid-template-columns:1fr}
+  .order-side{padding:16px 0 0;border-left:0;border-top:1px solid var(--orders-line)}
+}
+
+@media(max-width:900px){
+  .orders-header{grid-template-columns:minmax(0,1fr) 190px}
+  .orders-layout{grid-template-columns:1fr}
+  .orders-sidebar{display:grid;grid-template-columns:220px minmax(0,1fr);align-items:stretch}
+  .orders-browse-card{grid-column:1/-1}
+  .orders-card-head{align-items:flex-start;flex-direction:column}
+  .orders-filter-search{width:100%}
+}
+
+@media(max-width:700px){
+  .orders-header{grid-template-columns:1fr;gap:18px}
+  .orders-hero-summary{max-width:260px}
+}
+
+@media(max-width:620px){
+  body.lms-orders-page .lms-content{width:calc(100% - 24px)!important;padding:16px 0 36px!important}
+  body.lms-orders-page .s4u-page-title{display:none}
+  .orders-header{min-height:145px;padding:22px 18px;border-radius:15px}
+  .orders-header h1{font-size:29px}
+  .orders-hero-summary{width:100%;max-width:none}
+  .orders-sidebar{grid-template-columns:1fr}
+  .orders-browse-card{grid-column:auto}
+  .orders-summary-card{padding:20px}
+  .orders-summary-icon{width:66px;height:66px}
+  .orders-card-head{padding:17px 15px}
+  .order-card{padding:0 15px}
+  .order-summary-row{padding:17px 0}
+  .order-item{align-items:flex-start;flex-direction:column}
+  .order-item-copy strong{white-space:normal}
+  .order-price{padding-left:42px}
+  .order-actions{display:grid;grid-template-columns:1fr 1fr}
+  .orders-support-card{align-items:flex-start;flex-direction:column}
+  .orders-support-card a{width:100%}
+}
+
+/* 2026-09-15 Orders layout correction
+   The Orders page is a full-width purchase history. The left purchase-center,
+   filter, and browse cards were intentionally removed. */
+.orders-content-card{
+  width:100%;
+  margin:0;
+}
+
+/* Keep each purchase laid out horizontally on normal desktop/tablet widths so
+   subsequent purchases stack directly underneath it. */
+.order-summary-row{
+  grid-template-columns:minmax(0,1fr) minmax(240px,280px);
+  align-items:stretch;
+}
+
+@media(max-width:900px){
+  .order-summary-row{
+    grid-template-columns:1fr;
+  }
+  .order-side{
+    padding:16px 0 0;
+    border-left:0;
+    border-top:1px solid var(--orders-line);
+  }
+}

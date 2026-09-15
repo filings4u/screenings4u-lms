@@ -1,1512 +1,407 @@
 <!DOCTYPE html>
+<!DOCTYPE html>
+
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8">
-
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  >
-  <meta name="theme-color" content="#325aa3" />
-
-
-  <title>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="#24467f" name="theme-color"/>
+<title>
     Course Details | screenings4u Learning Center
   </title>
 <link href="images/fav.png" rel="icon" type="image/png"/>
-
-  <!-- ========================================================
+<!-- ========================================================
        SHARED LMS MASTER FILE
        ======================================================== -->
 
-  <link
-    rel="stylesheet"
-    href="assets/css/lms.css"
-  >
-<link rel="stylesheet" href="assets/css/lms-refinement.css">
-<link rel="stylesheet" href="assets/css/lms-ui-modals.css">
 
 
-  <style>
 
-    /* ==========================================================
-       COURSE DETAILS PAGE ONLY
-       The shared LMS shell remains controlled by assets/css/lms.css
-       ========================================================== */
 
-    .lms-course-details-page {
-      width: 100%;
-    }
 
-    /* ==========================================================
-       BREADCRUMB
-       ========================================================== */
 
-    .course-details-breadcrumb {
-      display: flex;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-bottom: 22px;
-      color: #687386;
-      font-size: 13px;
-      font-weight: 650;
-    }
 
-    .course-details-breadcrumb a {
-      color: #325aa3;
-      text-decoration: none;
-    }
 
-    .course-details-breadcrumb a:hover {
-      color: #24467f;
-    }
 
-    .course-details-breadcrumb svg {
-      width: 15px;
-      height: 15px;
-      fill: none;
-      stroke: currentColor;
-      stroke-width: 1.8;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-    }
 
-    /* ==========================================================
-       COURSE HERO
-       ========================================================== */
-
-    .course-details-hero {
-      position: relative;
-      overflow: hidden;
-      display: grid;
-      grid-template-columns: minmax(0, 1.45fr) minmax(260px, .55fr);
-      min-height: 355px;
-      border-radius: 16px;
-      background: #24467f;
-    }
-
-    .course-details-hero::before {
-      content: "";
-      position: absolute;
-      width: 400px;
-      height: 400px;
-      top: -250px;
-      right: -110px;
-      border-radius: 50%;
-      background: #325aa3;
-    }
-
-    .course-details-hero::after {
-      content: "";
-      position: absolute;
-      width: 255px;
-      height: 255px;
-      right: 105px;
-      bottom: -190px;
-      border: 34px solid #ff6b00;
-      border-radius: 50%;
-      opacity: .18;
-    }
-
-    .course-details-hero-content,
-    .course-details-hero-art {
-      position: relative;
-      z-index: 1;
-    }
-
-    .course-details-hero-content {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      justify-content: center;
-      padding: 46px 48px;
-    }
-
-    .course-details-category {
-      margin-bottom: 14px;
-      color: #ff6b00;
-      font-size: 11px;
-      font-weight: 800;
-      letter-spacing: .12em;
-      text-transform: uppercase;
-    }
-
-    .course-details-title {
-      max-width: 760px;
-      margin: 0;
-      color: #ffffff;
-      font-size: clamp(32px, 3.6vw, 48px);
-      font-weight: 800;
-      line-height: 1.1;
-      letter-spacing: -.03em;
-    }
-
-    .course-details-description {
-      max-width: 720px;
-      margin: 17px 0 0;
-      color: rgba(255,255,255,.82);
-      font-size: 15px;
-      line-height: 1.7;
-    }
-
-    .course-details-meta {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 13px 22px;
-      margin-top: 24px;
-    }
-
-    .course-details-meta-item {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      color: rgba(255,255,255,.9);
-      font-size: 13px;
-      font-weight: 700;
-    }
-
-    .course-details-meta-item svg {
-      width: 17px;
-      height: 17px;
-      flex: 0 0 auto;
-      fill: none;
-      stroke: currentColor;
-      stroke-width: 1.8;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-    }
-
-    .course-details-hero-art {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 35px;
-    }
-
-    .course-details-icon-card {
-      width: 195px;
-      height: 195px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 16px;
-      border: 1px solid rgba(255,255,255,.28);
-      border-radius: 26px;
-      background: rgba(255,255,255,.10);
-      color: #ffffff;
-    }
-
-    .course-details-icon-card svg {
-      width: 60px;
-      height: 60px;
-      fill: none;
-      stroke: currentColor;
-      stroke-width: 1.5;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-    }
-
-    .course-details-icon-card span {
-      color: rgba(255,255,255,.72);
-      font-size: 10px;
-      font-weight: 800;
-      letter-spacing: .1em;
-      text-transform: uppercase;
-    }
-
-    /* ==========================================================
-       PAGE BODY
-       ========================================================== */
-
-    .course-details-layout {
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) 330px;
-      gap: 28px;
-      margin-top: 30px;
-      align-items: start;
-    }
-
-    .course-details-main {
-      min-width: 0;
-    }
-
-    .course-details-side {
-      min-width: 0;
-      position: sticky;
-      top: 22px;
-    }
-
-    .course-details-section {
-      margin-bottom: 30px;
-    }
-
-    .course-details-kicker {
-      margin: 0 0 7px;
-      color: #ff6b00;
-      font-size: 10px;
-      font-weight: 800;
-      letter-spacing: .12em;
-      text-transform: uppercase;
-    }
-
-    .course-details-section-title {
-      margin: 0;
-      color: #172033;
-      font-size: 23px;
-      font-weight: 800;
-      line-height: 1.25;
-    }
-
-    .course-details-section-text {
-      margin: 13px 0 0;
-      color: #687386;
-      font-size: 14px;
-      line-height: 1.75;
-    }
-
-    /* ==========================================================
-       LEARNING OUTCOMES
-       ========================================================== */
-
-    .course-details-outcomes {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 12px;
-      margin-top: 18px;
-    }
-
-    .course-details-outcome {
-      display: flex;
-      align-items: flex-start;
-      gap: 12px;
-      min-height: 76px;
-      padding: 17px;
-      border: 1px solid #dfe5ec;
-      border-radius: 11px;
-      background: #ffffff;
-    }
-
-    .course-details-outcome-icon {
-      width: 30px;
-      height: 30px;
-      flex: 0 0 auto;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 8px;
-      background: #f5f7fa;
-      color: #325aa3;
-    }
-
-    .course-details-outcome-icon svg {
-      width: 17px;
-      height: 17px;
-      fill: none;
-      stroke: currentColor;
-      stroke-width: 2;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-    }
-
-    .course-details-outcome span:last-child {
-      color: #172033;
-      font-size: 13px;
-      font-weight: 700;
-      line-height: 1.55;
-    }
-
-    /* ==========================================================
-       CURRICULUM
-       ========================================================== */
-
-    .course-curriculum {
-      margin-top: 18px;
-      border: 1px solid #dfe5ec;
-      border-radius: 13px;
-      overflow: hidden;
-      background: #ffffff;
-    }
-
-    .course-curriculum-module {
-      border-bottom: 1px solid #dfe5ec;
-    }
-
-    .course-curriculum-module:last-child {
-      border-bottom: 0;
-    }
-
-    .course-curriculum-module-button {
-      width: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 18px;
-      padding: 18px 20px;
-      border: 0;
-      background: #ffffff;
-      color: #172033;
-      text-align: left;
-      cursor: pointer;
-      font: inherit;
-    }
-
-    .course-curriculum-module-button:hover {
-      background: #f5f7fa;
-    }
-
-    .course-curriculum-module-left {
-      min-width: 0;
-      display: flex;
-      align-items: center;
-      gap: 13px;
-    }
-
-    .course-curriculum-module-number {
-      width: 31px;
-      height: 31px;
-      flex: 0 0 auto;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 50%;
-      background: #325aa3;
-      color: #ffffff;
-      font-size: 11px;
-      font-weight: 800;
-    }
-
-    .course-curriculum-module-name {
-      color: #172033;
-      font-size: 14px;
-      font-weight: 800;
-    }
-
-    .course-curriculum-module-meta {
-      margin-top: 3px;
-      color: #687386;
-      font-size: 11px;
-      font-weight: 650;
-    }
-
-    .course-curriculum-chevron {
-      width: 18px;
-      height: 18px;
-      flex: 0 0 auto;
-      fill: none;
-      stroke: #687386;
-      stroke-width: 2;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-      transition: transform .2s ease;
-    }
-
-    .course-curriculum-module.is-open
-    .course-curriculum-chevron {
-      transform: rotate(180deg);
-    }
-
-    .course-curriculum-lessons {
-      display: none;
-      padding: 0 20px 18px 64px;
-    }
-
-    .course-curriculum-module.is-open
-    .course-curriculum-lessons {
-      display: block;
-    }
-
-    .course-curriculum-lesson {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 14px;
-      padding: 11px 0;
-      border-top: 1px solid #dfe5ec;
-    }
-
-    .course-curriculum-lesson:first-child {
-      border-top: 0;
-    }
-
-    .course-curriculum-lesson-left {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      min-width: 0;
-    }
-
-    .course-curriculum-lesson-icon {
-      width: 24px;
-      height: 24px;
-      flex: 0 0 auto;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 6px;
-      background: #f5f7fa;
-      color: #687386;
-    }
-
-    .course-curriculum-lesson-icon svg {
-      width: 14px;
-      height: 14px;
-      fill: none;
-      stroke: currentColor;
-      stroke-width: 1.8;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-    }
-
-    .course-curriculum-lesson-name {
-      min-width: 0;
-      color: #172033;
-      font-size: 12px;
-      font-weight: 700;
-      line-height: 1.45;
-    }
-
-    .course-curriculum-lesson-time {
-      flex: 0 0 auto;
-      color: #687386;
-      font-size: 11px;
-      font-weight: 650;
-    }
-
-    /* ==========================================================
-       COURSE INFORMATION
-       ========================================================== */
-
-    .course-details-info-card {
-      padding: 22px;
-      border: 1px solid #dfe5ec;
-      border-radius: 13px;
-      background: #ffffff;
-    }
-
-    .course-details-info-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 0;
-      margin-top: 17px;
-      border-top: 1px solid #dfe5ec;
-      border-left: 1px solid #dfe5ec;
-    }
-
-    .course-details-info-item {
-      padding: 15px;
-      border-right: 1px solid #dfe5ec;
-      border-bottom: 1px solid #dfe5ec;
-      background: #ffffff;
-    }
-
-    .course-details-info-label {
-      display: block;
-      margin-bottom: 5px;
-      color: #687386;
-      font-size: 10px;
-      font-weight: 800;
-      letter-spacing: .08em;
-      text-transform: uppercase;
-    }
-
-    .course-details-info-value {
-      color: #172033;
-      font-size: 13px;
-      font-weight: 750;
-    }
-
-    /* ==========================================================
-       ENROLLMENT CARD
-       ========================================================== */
-
-    .course-enrollment-card {
-      overflow: hidden;
-      border: 1px solid #dfe5ec;
-      border-radius: 14px;
-      background: #ffffff;
-    }
-
-    .course-enrollment-card-top {
-      padding: 23px;
-      border-bottom: 1px solid #dfe5ec;
-    }
-
-    .course-enrollment-label {
-      margin: 0 0 7px;
-      color: #ff6b00;
-      font-size: 10px;
-      font-weight: 800;
-      letter-spacing: .12em;
-      text-transform: uppercase;
-    }
-
-    .course-enrollment-title {
-      margin: 0;
-      color: #172033;
-      font-size: 20px;
-      font-weight: 800;
-      line-height: 1.3;
-    }
-
-    .course-enrollment-text {
-      margin: 10px 0 0;
-      color: #687386;
-      font-size: 13px;
-      line-height: 1.6;
-    }
-
-    .course-enrollment-details {
-      padding: 4px 23px;
-    }
-
-    .course-enrollment-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 14px;
-      padding: 15px 0;
-      border-bottom: 1px solid #dfe5ec;
-    }
-
-    .course-enrollment-row:last-child {
-      border-bottom: 0;
-    }
-
-    .course-enrollment-row-label {
-      color: #687386;
-      font-size: 12px;
-      font-weight: 650;
-    }
-
-    .course-enrollment-row-value {
-      color: #172033;
-      font-size: 12px;
-      font-weight: 800;
-      text-align: right;
-    }
-
-    .course-enrollment-actions {
-      padding: 20px 23px 23px;
-    }
-
-    .course-primary-action {
-      width: 100%;
-      min-height: 48px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 9px;
-      border: 0;
-      border-radius: 9px;
-      background: #ff6b00;
-      color: #ffffff;
-      text-decoration: none;
-      font-size: 13px;
-      font-weight: 800;
-    }
-
-    .course-primary-action:hover {
-      background: #e66000;
-    }
-
-    .course-primary-action svg {
-      width: 18px;
-      height: 18px;
-      fill: none;
-      stroke: currentColor;
-      stroke-width: 2;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-    }
-
-    .course-enrollment-note {
-      margin: 12px 0 0;
-      color: #687386;
-      font-size: 11px;
-      line-height: 1.55;
-      text-align: center;
-    }
-
-    /* ==========================================================
-       SIDEBAR SUPPORT CARD
-       ========================================================== */
-
-    .course-support-card {
-      margin-top: 18px;
-      padding: 20px;
-      border: 1px solid #dfe5ec;
-      border-radius: 13px;
-      background: #ffffff;
-    }
-
-    .course-support-title {
-      margin: 0;
-      color: #172033;
-      font-size: 15px;
-      font-weight: 800;
-    }
-
-    .course-support-text {
-      margin: 8px 0 14px;
-      color: #687386;
-      font-size: 12px;
-      line-height: 1.6;
-    }
-
-    .course-support-link {
-      color: #325aa3;
-      font-size: 12px;
-      font-weight: 800;
-      text-decoration: none;
-    }
-
-    .course-support-link:hover {
-      color: #24467f;
-    }
-
-
-    /* ==========================================================
-       PURCHASE / PREVIEW STATE
-       ========================================================== */
-
-    .course-preview-notice {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-top: 16px;
-      padding: 13px 15px;
-      border: 1px solid #dfe5ec;
-      border-left: 4px solid #ff6b00;
-      border-radius: 10px;
-      background: #ffffff;
-      color: #687386;
-      font-size: 12px;
-      line-height: 1.6;
-    }
-
-    .course-preview-notice-icon {
-      flex: 0 0 auto;
-      padding: 4px 7px;
-      border-radius: 999px;
-      background: #f5f7fa;
-      color: #325aa3;
-      font-size: 9px;
-      font-weight: 800;
-      letter-spacing: .08em;
-      text-transform: uppercase;
-    }
-
-    /* ==========================================================
-       RESPONSIVE
-       ========================================================== */
-
-    @media (max-width: 1080px) {
-
-      .course-details-layout {
-        grid-template-columns: minmax(0, 1fr) 300px;
-      }
-
-    }
-
-    @media (max-width: 920px) {
-
-      .course-details-hero {
-        grid-template-columns: 1fr;
-      }
-
-      .course-details-hero-art {
-        display: none;
-      }
-
-      .course-details-layout {
-        grid-template-columns: 1fr;
-      }
-
-      .course-details-side {
-        position: static;
-      }
-
-    }
-
-    @media (max-width: 640px) {
-
-      .course-details-hero-content {
-        padding: 32px 24px;
-      }
-
-      .course-details-outcomes {
-        grid-template-columns: 1fr;
-      }
-
-      .course-details-info-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .course-curriculum-lessons {
-        padding-left: 20px;
-      }
-
-      .course-curriculum-lesson {
-        align-items: flex-start;
-        flex-direction: column;
-      }
-
-    }
-
-  </style>
-  <style id="training-mobile-course-details">
-    *,*::before,*::after{box-sizing:border-box}html,body{max-width:100%;overflow-x:hidden}
-    @media(max-width:767px){
-      html{font-size:16px}.lms-app,.lms-main{width:100%;min-width:0}.lms-main{margin-left:0!important}
-      .lms-topbar{height:auto;min-height:64px;padding:10px 14px;gap:10px;display:grid;grid-template-columns:auto 1fr auto}
-      .lms-menu-button{display:inline-flex!important;min-width:44px;min-height:44px}.lms-search-wrap{min-width:0}.lms-search{width:100%}.lms-search input{min-width:0;font-size:16px}.lms-search-shortcut,.lms-user-name,.lms-user-chevron{display:none!important}
-      .lms-topbar-right{gap:6px}.lms-icon-button,.lms-user-button{min-width:44px;min-height:44px}.lms-user-button{padding:4px}
-      .lms-content.lms-course-details-page{width:100%;min-width:0;padding:18px 14px 36px}
-      .course-details-breadcrumb{margin-bottom:16px;font-size:13px;overflow-wrap:anywhere}
-      .course-details-hero{display:flex;flex-direction:column;width:100%;border-radius:14px}.course-details-hero-content{padding:25px 18px}.course-details-title{font-size:30px;line-height:1.12;overflow-wrap:anywhere}.course-details-description{font-size:15px;line-height:1.6}
-      .course-details-meta{display:grid;grid-template-columns:1fr;gap:10px}.course-details-meta-item{width:100%}
-      .course-details-layout,.course-details-main,.course-details-side{display:grid;grid-template-columns:1fr;width:100%;min-width:0;gap:14px}.course-details-side{position:static!important}
-      .course-details-section,.course-details-info-card{width:100%;min-width:0;padding:20px 16px;border-radius:13px}.course-details-section-title{font-size:22px}.course-details-section-text{font-size:15px;overflow-wrap:anywhere}
-      .course-details-outcomes,.course-details-info-grid{display:grid;grid-template-columns:1fr;gap:10px}.course-details-outcome,.course-details-info-item{width:100%;min-width:0}
-      .course-curriculum-lessons{padding-left:12px}.course-curriculum-lesson{align-items:flex-start;flex-direction:column;gap:6px}
-      .course-details-side a,.course-details-side button,[class*="course-details-action"],[class*="course-preview-button"]{width:100%;min-height:46px;justify-content:center;text-align:center}
-    }
-    @media(max-width:420px){.lms-search-wrap{display:none}.lms-topbar{grid-template-columns:1fr auto}.course-details-title{font-size:27px}}
-  </style>
-
-</head>
-
-
-<body>
-
-
-  <!-- ========================================================
+<link href="assets/css/lms-base-clean.css?v=20260915-clean3" rel="stylesheet"/><link href="assets/css/pages/lms-course-details.css?v=20260915-course7" rel="stylesheet"/></head>
+<body class="lms-reference-redesign s4u-lms-redesign">
+<!-- ========================================================
        APPLICATION
        SAME LMS SHELL AS THE OTHER LMS PAGES
        ======================================================== -->
-
-  <div class="lms-app">
-
-
-    <!-- Dynamic LMS Sidebar -->
-
-    <div id="lms-sidebar-target"></div>
-
-
-    <!-- ======================================================
+<div class="lms-app">
+<!-- Dynamic LMS Sidebar -->
+<div id="lms-sidebar-target"></div>
+<!-- ======================================================
          MAIN
          ====================================================== -->
-
-    <main class="lms-main">
-
-
-      <!-- ====================================================
+<main class="lms-main">
+<!-- ====================================================
            TOP BAR
            ==================================================== -->
-
-      <header class="lms-topbar">
-
-
-        <div class="lms-topbar-left">
-
-          <button
-            type="button"
-            class="lms-menu-button"
-            data-lms-menu-toggle
-            aria-label="Toggle navigation"
-          >
-
-            <svg viewBox="0 0 24 24">
-              <path d="M4 7h16"></path>
-              <path d="M4 12h16"></path>
-              <path d="M4 17h16"></path>
-            </svg>
-
-          </button>
-
-        </div>
-
-
-        <div class="lms-search-wrap">
-
-          <label class="lms-search">
-
-            <span class="lms-search-icon">
-
-              <svg viewBox="0 0 24 24">
-                <circle cx="11" cy="11" r="6"></circle>
-                <path d="m20 20-4-4"></path>
-              </svg>
-
-            </span>
-
-
-            <input
-              type="search"
-              placeholder="Search courses, lessons, and resources..."
-              data-lms-search
-            >
-
-
-            <span class="lms-search-shortcut">
+<header class="lms-topbar">
+<div class="lms-topbar-left">
+<button aria-label="Toggle navigation" class="lms-menu-button" data-lms-menu-toggle="" type="button">
+<svg viewbox="0 0 24 24">
+<path d="M4 7h16"></path>
+<path d="M4 12h16"></path>
+<path d="M4 17h16"></path>
+</svg>
+</button>
+</div>
+<div class="lms-search-wrap">
+<label class="lms-search">
+<span class="lms-search-icon">
+<svg viewbox="0 0 24 24">
+<circle cx="11" cy="11" r="6"></circle>
+<path d="m20 20-4-4"></path>
+</svg>
+</span>
+<input data-lms-search="" placeholder="Search courses, lessons, and resources..." type="search"/>
+<span class="lms-search-shortcut">
               Ctrl K
             </span>
-
-          </label>
-
-        </div>
-
-
-        <div class="lms-topbar-right">
-
-
-          <a
-            href="lms-notifications.html"
-            class="lms-icon-button"
-            aria-label="Notifications"
-          >
-
-            <svg viewBox="0 0 24 24">
-              <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"></path>
-              <path d="M10 21h4"></path>
-            </svg>
-
-            <span class="lms-notification-dot"></span>
-
-          </a>
-
-
-          <div class="lms-user-wrap">
-
-
-            <button
-              type="button"
-              class="lms-user-button"
-              data-lms-user-button
-              aria-expanded="false"
-            >
-
-              <span
-                class="lms-user-avatar"
-                data-lms-learner-initials
-              >
-                JD
-              </span>
-
-
-              <span
-                class="lms-user-name"
-                data-lms-learner-name
-              >
-                John Doe
-              </span>
-
-
-              <span class="lms-user-chevron">
-
-                <svg viewBox="0 0 24 24">
-                  <path d="m7 10 5 5 5-5"></path>
-                </svg>
-
-              </span>
-
-            </button>
-
-
-            <div
-              class="lms-user-menu"
-              data-lms-user-menu
-            >
-
-              <div class="lms-user-menu-header">
-
-                <span
-                  class="lms-user-menu-name"
-                  data-lms-user-menu-name
-                >
-                  John Doe
-                </span>
-
-                <span
-                  class="lms-user-menu-email"
-                  data-lms-user-menu-email
-                >
+</label>
+</div>
+<div class="lms-topbar-right">
+<a aria-label="Notifications" class="lms-icon-button" href="lms-notifications.html">
+<svg viewbox="0 0 24 24">
+<path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"></path>
+<path d="M10 21h4"></path>
+</svg>
+<span class="lms-notification-dot"></span>
+</a>
+<div class="lms-user-wrap">
+<button aria-expanded="false" class="lms-user-button" data-lms-user-button="" type="button">
+<span class="lms-user-avatar" data-lms-learner-initials=""></span>
+<span class="lms-user-name" data-lms-learner-name=""></span>
+<span class="lms-user-chevron">
+<svg viewbox="0 0 24 24">
+<path d="m7 10 5 5 5-5"></path>
+</svg>
+</span>
+</button>
+<div class="lms-user-menu" data-lms-user-menu="">
+<div class="lms-user-menu-header">
+<span class="lms-user-menu-name" data-lms-user-menu-name=""></span>
+<span class="lms-user-menu-email" data-lms-user-menu-email="">
                   learner@screenings4u.com
                 </span>
-
-              </div>
-
-
-              <a
-                href="lms-account.html"
-                class="lms-user-menu-link"
-              >
+</div>
+<a class="lms-user-menu-link" href="lms-account.html">
                 My Account
               </a>
-
-
-              <a
-                href="lms-certificates.html"
-                class="lms-user-menu-link"
-              >
+<a class="lms-user-menu-link" href="lms-certificates.html">
                 My Certificates
               </a>
-
-
-              <button
-                type="button"
-                class="lms-user-menu-link"
-                data-lms-sign-out
-              >
+<button class="lms-user-menu-link" data-lms-sign-out="" type="button">
                 Sign Out
               </button>
-
-            </div>
-
-
-          </div>
-
-        </div>
-
-
-      </header>
-
-
-      <!-- ====================================================
+</div>
+</div>
+</div>
+</header>
+<!-- ====================================================
            COURSE DETAILS CONTENT
            ==================================================== -->
-
-      <div class="lms-content lms-course-details-page">
-
-
-        <!-- BREADCRUMB -->
-
-        <nav
-          class="course-details-breadcrumb"
-          aria-label="Breadcrumb"
-        >
-
-          <a href="lms-dashboard.html">
+<div class="lms-content lms-course-details-page">
+<!-- BREADCRUMB -->
+<nav aria-label="Breadcrumb" class="course-details-breadcrumb">
+<a href="lms-dashboard.html">
             Learning Center
           </a>
-
-          <svg viewBox="0 0 24 24">
-            <path d="m9 18 6-6-6-6"></path>
-          </svg>
-
-          <a href="lms-courses.html">
+<svg viewbox="0 0 24 24">
+<path d="m9 18 6-6-6-6"></path>
+</svg>
+<a href="lms-courses.html">
             Course Library
           </a>
-
-          <svg viewBox="0 0 24 24">
-            <path d="m9 18 6-6-6-6"></path>
-          </svg>
-
-          <span>
-            DOT Supervisor Training
-          </span>
-
-        </nav>
-
-
-        <!-- COURSE HERO -->
-
-        <section class="course-details-hero">
-
-
-          <div class="course-details-hero-content">
-
-
-            <div class="course-details-category">
-              DOT Compliance
-            </div>
-
-
-            <h1 class="course-details-title" data-course-title>Course</h1>
-
-
-            <p class="course-details-description" data-course-description></p>
-
-
-            <div class="course-details-meta">
-
-
-              <span class="course-details-meta-item">
-
-                <svg viewBox="0 0 24 24">
-                  <circle cx="12" cy="12" r="8"></circle>
-                  <path d="M12 8v4l3 2"></path>
-                </svg>
+<svg viewbox="0 0 24 24">
+<path d="m9 18 6-6-6-6"></path>
+</svg>
+<span data-course-breadcrumb>Course Details</span>
+</nav>
+<!-- COURSE HERO -->
+<section class="course-details-hero">
+<div class="course-details-hero-content">
+<div class="course-details-category" data-course-category>Training</div>
+<h1 class="course-details-title" data-course-title="">Course</h1>
+<p class="course-details-description" data-course-description=""></p>
+<div class="course-details-meta">
+<span class="course-details-meta-item">
+<svg viewbox="0 0 24 24">
+<circle cx="12" cy="12" r="8"></circle>
+<path d="M12 8v4l3 2"></path>
+</svg>
 
                 Self-paced
 
               </span>
-
-
-              <span class="course-details-meta-item">
-
-                <svg viewBox="0 0 24 24">
-                  <path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v16H6.5A2.5 2.5 0 0 0 4 21.5z"></path>
-                  <path d="M4 5.5v16"></path>
-                </svg>
+<span class="course-details-meta-item">
+<svg viewbox="0 0 24 24">
+<path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v16H6.5A2.5 2.5 0 0 0 4 21.5z"></path>
+<path d="M4 5.5v16"></path>
+</svg>
 
                 12 lessons
 
               </span>
-
-
-              <span class="course-details-meta-item">
-
-                <svg viewBox="0 0 24 24">
-                  <path d="M4 19V9"></path>
-                  <path d="M10 19V5"></path>
-                  <path d="M16 19v-7"></path>
-                  <path d="M22 19V3"></path>
-                </svg>
+<span class="course-details-meta-item">
+<svg viewbox="0 0 24 24">
+<path d="M4 19V9"></path>
+<path d="M10 19V5"></path>
+<path d="M16 19v-7"></path>
+<path d="M22 19V3"></path>
+</svg>
 
                 Beginner friendly
 
               </span>
-
-
-            </div>
-
-
-          </div>
-
-
-          <div class="course-details-hero-art">
-
-
-            <div class="course-details-icon-card">
-
-              <svg viewBox="0 0 24 24">
-                <path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v16H6.5A2.5 2.5 0 0 0 4 21.5z"></path>
-                <path d="M4 5.5v16"></path>
-                <path d="M8 8h8"></path>
-                <path d="M8 12h6"></path>
-              </svg>
-
-              <span>
+</div>
+</div>
+<div class="course-details-hero-art">
+<div class="course-details-icon-card">
+<svg viewbox="0 0 24 24">
+<path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v16H6.5A2.5 2.5 0 0 0 4 21.5z"></path>
+<path d="M4 5.5v16"></path>
+<path d="M8 8h8"></path>
+<path d="M8 12h6"></path>
+</svg>
+<span>
                 Screenings4u
               </span>
-
-            </div>
-
-
-          </div>
-
-
-        </section>
-
-
-        <!-- PAGE BODY -->
-
-        <div class="course-details-layout">
-
-
-          <!-- ==================================================
+</div>
+</div>
+</section>
+<!-- PAGE BODY -->
+<div class="course-details-layout">
+<!-- ==================================================
                MAIN CONTENT
                ================================================== -->
-
-          <div class="course-details-main">
-
-
-            <!-- ABOUT -->
-
-            <section class="course-details-section">
-
-
-              <div class="course-details-kicker">
+<div class="course-details-main">
+<!-- ABOUT -->
+<section class="course-details-section">
+<div class="course-details-kicker">
                 About This Course
               </div>
-
-
-              <h2 class="course-details-section-title">
+<h2 class="course-details-section-title">
                 Build Confidence in Your Responsibilities
               </h2>
-
-
-              <p class="course-details-section-text">
+<p class="course-details-section-text">
                 This training is designed to help supervisors understand
                 the responsibilities associated with reasonable suspicion
                 testing. The course focuses on recognizing observable
                 indicators, documenting concerns, and following appropriate
                 workplace procedures.
               </p>
-
-
-              <p class="course-details-section-text">
+<p class="course-details-section-text">
                 Complete the course at your own pace and return whenever
                 you need to continue your training.
               </p>
-
-
-            </section>
-
-
-            <!-- WHAT YOU WILL LEARN -->
-
-            <section class="course-details-section">
-
-
-              <div class="course-details-kicker">
+</section>
+<!-- WHAT YOU WILL LEARN -->
+<section class="course-details-section">
+<div class="course-details-kicker">
                 Learning Outcomes
               </div>
-
-
-              <h2 class="course-details-section-title">
+<h2 class="course-details-section-title">
                 What You Will Learn
               </h2>
-
-
-              <div class="course-details-outcomes">
-
-
-                <div class="course-details-outcome">
-
-                  <span class="course-details-outcome-icon">
-
-                    <svg viewBox="0 0 24 24">
-                      <path d="m5 12 4 4L19 6"></path>
-                    </svg>
-
-                  </span>
-
-                  <span>
+<div class="course-details-outcomes">
+<div class="course-details-outcome">
+<span class="course-details-outcome-icon">
+<svg viewbox="0 0 24 24">
+<path d="m5 12 4 4L19 6"></path>
+</svg>
+</span>
+<span>
                     Recognize observable signs and indicators that
                     may require further action.
                   </span>
-
-                </div>
-
-
-                <div class="course-details-outcome">
-
-                  <span class="course-details-outcome-icon">
-
-                    <svg viewBox="0 0 24 24">
-                      <path d="m5 12 4 4L19 6"></path>
-                    </svg>
-
-                  </span>
-
-                  <span>
+</div>
+<div class="course-details-outcome">
+<span class="course-details-outcome-icon">
+<svg viewbox="0 0 24 24">
+<path d="m5 12 4 4L19 6"></path>
+</svg>
+</span>
+<span>
                     Understand the supervisor's role in the reasonable
                     suspicion process.
                   </span>
-
-                </div>
-
-
-                <div class="course-details-outcome">
-
-                  <span class="course-details-outcome-icon">
-
-                    <svg viewBox="0 0 24 24">
-                      <path d="m5 12 4 4L19 6"></path>
-                    </svg>
-
-                  </span>
-
-                  <span>
+</div>
+<div class="course-details-outcome">
+<span class="course-details-outcome-icon">
+<svg viewbox="0 0 24 24">
+<path d="m5 12 4 4L19 6"></path>
+</svg>
+</span>
+<span>
                     Identify appropriate documentation and communication
                     practices.
                   </span>
-
-                </div>
-
-
-                <div class="course-details-outcome">
-
-                  <span class="course-details-outcome-icon">
-
-                    <svg viewBox="0 0 24 24">
-                      <path d="m5 12 4 4L19 6"></path>
-                    </svg>
-
-                  </span>
-
-                  <span>
+</div>
+<div class="course-details-outcome">
+<span class="course-details-outcome-icon">
+<svg viewbox="0 0 24 24">
+<path d="m5 12 4 4L19 6"></path>
+</svg>
+</span>
+<span>
                     Apply course concepts to common workplace
                     situations.
                   </span>
-
-                </div>
-
-
-              </div>
-
-
-            </section>
-
-
-            <!-- CURRICULUM -->
-
-            <section class="course-details-section">
-
-
-              <div class="course-details-kicker">
+</div>
+</div>
+</section>
+<!-- CURRICULUM -->
+<section class="course-details-section">
+<div class="course-details-kicker">
                 Course Content
               </div>
-
-
-              <h2 class="course-details-section-title">
+<h2 class="course-details-section-title">
                 Course Curriculum
               </h2>
-
-
-              <p class="course-details-section-text">
+<p class="course-details-section-text">
                 The course includes 12 lessons organized into focused
                 learning modules.
               </p>
-
-
-              <div class="course-preview-notice">
-                <span class="course-preview-notice-icon">Preview</span>
-                <span>Review the full course outline below. Lesson content, quizzes, and the final assessment unlock after purchase.</span>
-              </div>
-
-              <div class="course-curriculum" id="courseCurriculum"></div>
-
-
-            </section>
-
-
-            <!-- COURSE INFORMATION -->
-
-            <section class="course-details-section">
-
-
-              <div class="course-details-info-card">
-
-
-                <div class="course-details-kicker">
+<div class="course-preview-notice">
+<span class="course-preview-notice-icon">Preview</span>
+<span>Review the full course outline below. Lesson content, quizzes, and the final assessment unlock after purchase.</span>
+</div>
+<div class="course-curriculum" id="courseCurriculum"></div>
+</section>
+<!-- COURSE INFORMATION -->
+<section class="course-details-section">
+<div class="course-details-info-card">
+<div class="course-details-kicker">
                   Course Information
                 </div>
-
-
-                <h2 class="course-details-section-title">
+<h2 class="course-details-section-title">
                   Before You Begin
                 </h2>
-
-
-                <div class="course-details-info-grid">
-
-
-                  <div class="course-details-info-item">
-
-                    <span class="course-details-info-label">
+<div class="course-details-info-grid">
+<div class="course-details-info-item">
+<span class="course-details-info-label">
                       Duration
                     </span>
-
-                    <span class="course-details-info-value">
+<span class="course-details-info-value">
                       Approximately 2 hours
                     </span>
-
-                  </div>
-
-
-                  <div class="course-details-info-item">
-
-                    <span class="course-details-info-label">
+</div>
+<div class="course-details-info-item">
+<span class="course-details-info-label">
                       Lessons
                     </span>
-
-                    <span class="course-details-info-value">
+<span class="course-details-info-value">
                       12 lessons
                     </span>
-
-                  </div>
-
-
-                  <div class="course-details-info-item">
-
-                    <span class="course-details-info-label">
+</div>
+<div class="course-details-info-item">
+<span class="course-details-info-label">
                       Format
                     </span>
-
-                    <span class="course-details-info-value">
+<span class="course-details-info-value">
                       Self-paced online training
                     </span>
-
-                  </div>
-
-
-                  <div class="course-details-info-item">
-
-                    <span class="course-details-info-label">
+</div>
+<div class="course-details-info-item">
+<span class="course-details-info-label">
                       Completion
                     </span>
-
-                    <span class="course-details-info-value">
+<span class="course-details-info-value">
                       Final assessment + certificate
                     </span>
-
-                  </div>
-
-
-                </div>
-
-
-              </div>
-
-
-            </section>
-
-
-          </div>
-
-
-          <!-- ==================================================
+</div>
+</div>
+</div>
+</section>
+</div>
+<!-- ==================================================
                RIGHT SIDEBAR
                ================================================== -->
-
-          <aside class="course-details-side">
-
-
-            <div class="course-enrollment-card">
-
-
-              <div class="course-enrollment-card-top">
-
-                <div class="course-enrollment-label">
-                  Review & Purchase
+<aside class="course-details-side">
+<div class="course-enrollment-card">
+<div class="course-enrollment-card-top">
+<div class="course-enrollment-label">
+                  Review &amp; Purchase
                 </div>
-
-                <h2 class="course-enrollment-title">
+<h2 class="course-enrollment-title">
                   Get Full Course Access
                 </h2>
-
-                <p class="course-enrollment-text">
+<p class="course-enrollment-text">
                   Review the course content above, then purchase to unlock every lesson, quiz, assessment, and certificate.
                 </p>
-
-              </div>
-
-
-              <div class="course-enrollment-details">
-
-
-                <div class="course-enrollment-row">
-
-                  <span class="course-enrollment-row-label">
+</div>
+<div class="course-enrollment-details">
+<div class="course-enrollment-row">
+<span class="course-enrollment-row-label">
                     Course Access
                   </span>
-
-                  <span class="course-enrollment-row-value">
+<span class="course-enrollment-row-value">
                     Purchase required
                   </span>
-
-                </div>
-
-
-                <div class="course-enrollment-row">
-
-                  <span class="course-enrollment-row-label">
+</div>
+<div class="course-enrollment-row">
+<span class="course-enrollment-row-label">
                     Progress
                   </span>
-
-                  <span class="course-enrollment-row-value">
+<span class="course-enrollment-row-value">
                     Preview only
                   </span>
-
-                </div>
-
-
-                <div class="course-enrollment-row">
-
-                  <span class="course-enrollment-row-label">
+</div>
+<div class="course-enrollment-row">
+<span class="course-enrollment-row-label">
                     Estimated Time
                   </span>
-
-                  <span class="course-enrollment-row-value">
+<span class="course-enrollment-row-value">
                     2 hours
                   </span>
-
-                </div>
-
-
-              </div>
-
-
-              <div class="course-enrollment-actions">
-
-
-                <a
-                  href="index.html#pricing"
-                  class="course-primary-action"
-                >
+</div>
+</div>
+<div class="course-enrollment-actions">
+<a class="course-primary-action" href="lms-checkout.html">
 
                   Purchase Full Access
 
-                  <svg viewBox="0 0 24 24">
-                    <path d="M5 12h14"></path>
-                    <path d="m13 6 6 6-6 6"></path>
-                  </svg>
-
-                </a>
-
-
-                <p class="course-enrollment-note">
+                  <svg viewbox="0 0 24 24">
+<path d="M5 12h14"></path>
+<path d="m13 6 6 6-6 6"></path>
+</svg>
+</a>
+<p class="course-enrollment-note">
                   Secure checkout will complete your purchase. After enrollment, this course will appear in My Learning.
                 </p>
-
-
-              </div>
-
-
-            </div>
-
-
-            <div class="course-support-card">
-
-              <h3 class="course-support-title">
+</div>
+</div>
+<div class="course-support-card">
+<h3 class="course-support-title">
                 Need Help?
               </h3>
-
-              <p class="course-support-text">
+<p class="course-support-text">
                 Have a question about this training or need assistance
                 accessing your course?
               </p>
-
-              <a
-                href="lms-account.html"
-                class="course-support-link"
-              >
+<a class="course-support-link" href="lms-support.html">
                 Contact Support
               </a>
-
-            </div>
-
-
-          </aside>
-
-
-        </div>
-
-
-      </div>
+</div>
+</aside>
+</div>
+</div>
+</main>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 
-    </main>
 
 
-  </div>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="assets/js/supabase-config.js"></script>
-<script src="assets/js/core-auth.js"></script>
-<script src="assets/js/ui.js"></script>
-<script src="assets/js/portal-auth-guard.js"></script>
-<script src="assets/js/training-auth-guard.js"></script>
-<script src="assets/js/lms-sidebar.js"></script>
-  <script src="assets/js/lms.js?v=20260911-5"></script>
-  <script src="assets/js/lms-course-details.js?v=20260830-2330"></script>
 
-  <script src="assets/js/branded-popups.js?v=20260911-1"></script>
 
-</body>
+
+
+
+<script src="assets/js/lms-core-clean.js?v=20260915-clean3"></script><script src="assets/js/pages/lms-course-details.js?v=20260915-preview1"></script></body>
 </html>

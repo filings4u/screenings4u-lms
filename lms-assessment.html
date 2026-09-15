@@ -1,1202 +1,394 @@
 <!DOCTYPE html>
+<!DOCTYPE html>
+
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Final Assessment | screenings4u Learning Center</title>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Final Assessment | screenings4u Learning Center</title>
 <link href="images/fav.png" rel="icon" type="image/png"/>
-  <meta name="theme-color" content="#325aa3" />
-
-  
-  <!-- Established LMS master shell -->
-  <link rel="stylesheet" href="assets/css/lms.css">
-<link rel="stylesheet" href="assets/css/lms-refinement.css">
-<link rel="stylesheet" href="assets/css/lms-ui-modals.css">
-
-  <style>
-    /* ==========================================================
-       FINAL ASSESSMENT PAGE
-       Screenings4u brand system only
-       Primary Blue: #325aa3
-       Dark Blue:    #24467f
-       Orange:       #ff6b00
-       Orange Hover: #e66000
-       ========================================================== */
-
-    .assessment-page {
-      width: 100%;
-      min-width: 0;
-      padding-bottom: 32px;
-    }
-
-    .assessment-breadcrumb {
-      display: flex;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-bottom: 22px;
-      color: #687386;
-      font-size: 12px;
-      font-weight: 700;
-    }
-
-    .assessment-breadcrumb a {
-      color: #325aa3;
-      text-decoration: none;
-    }
-
-    .assessment-breadcrumb a:hover {
-      color: #24467f;
-    }
-
-    .assessment-breadcrumb svg {
-      width: 14px;
-      height: 14px;
-      fill: none;
-      stroke: #687386;
-      stroke-width: 2;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-    }
-
-    .assessment-hero {
-      overflow: hidden;
-      position: relative;
-      padding: 42px;
-      border: 1px solid #dfe5ec;
-      border-radius: 18px;
-      background:
-        radial-gradient(circle at 88% 12%, rgba(255,107,0,.95) 0 4%, transparent 4.3%),
-        radial-gradient(circle at 76% 20%, rgba(255,255,255,.08) 0 17%, transparent 17.3%),
-        linear-gradient(135deg, #24467f, #325aa3);
-    }
-
-    .assessment-hero::after {
-      content: "";
-      position: absolute;
-      right: -80px;
-      bottom: -130px;
-      width: 310px;
-      height: 310px;
-      border: 1px solid rgba(255,255,255,.12);
-      border-radius: 50%;
-    }
-
-    .assessment-hero-content {
-      position: relative;
-      z-index: 1;
-      max-width: 760px;
-    }
-
-    .assessment-kicker {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      margin-bottom: 14px;
-      color: #ffffff;
-      font-size: 11px;
-      font-weight: 800;
-      letter-spacing: .12em;
-      text-transform: uppercase;
-    }
-
-    .assessment-kicker-dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: #ff6b00;
-    }
-
-    .assessment-hero h1 {
-      margin: 0;
-      color: #ffffff;
-      font-size: clamp(31px, 4vw, 48px);
-      font-weight: 800;
-      line-height: 1.08;
-      letter-spacing: -.035em;
-    }
-
-    .assessment-hero p {
-      max-width: 680px;
-      margin: 14px 0 0;
-      color: rgba(255,255,255,.82);
-      font-size: 15px;
-      line-height: 1.7;
-    }
-
-    .assessment-course {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-top: 25px;
-      color: #ffffff;
-      font-size: 13px;
-      font-weight: 750;
-    }
-
-    .assessment-course-icon {
-      width: 38px;
-      height: 38px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex: 0 0 auto;
-      border-radius: 10px;
-      background: rgba(255,255,255,.12);
-    }
-
-    .assessment-course-icon svg {
-      width: 19px;
-      height: 19px;
-      fill: none;
-      stroke: #ffffff;
-      stroke-width: 1.8;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-    }
-
-    .assessment-layout {
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) 330px;
-      gap: 24px;
-      margin-top: 26px;
-      align-items: start;
-    }
-
-    .assessment-main-card,
-    .assessment-side-card {
-      border: 1px solid #dfe5ec;
-      border-radius: 16px;
-      background: #ffffff;
-    }
-
-    .assessment-main-card {
-      padding: 30px;
-    }
-
-    .assessment-main-card h2,
-    .assessment-side-card h2 {
-      margin: 0;
-      color: #172033;
-      font-size: 20px;
-      font-weight: 800;
-      letter-spacing: -.015em;
-    }
-
-    .assessment-main-card > p {
-      margin: 10px 0 0;
-      color: #687386;
-      font-size: 14px;
-      line-height: 1.65;
-    }
-
-    .assessment-requirements {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 14px;
-      margin-top: 24px;
-    }
-
-    .assessment-requirement {
-      min-height: 104px;
-      padding: 18px;
-      border: 1px solid #dfe5ec;
-      border-radius: 12px;
-      background: #f5f7fa;
-    }
-
-    .assessment-requirement-icon {
-      width: 32px;
-      height: 32px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 12px;
-      border-radius: 9px;
-      background: #ffffff;
-      color: #325aa3;
-      border: 1px solid #dfe5ec;
-    }
-
-    .assessment-requirement-icon svg {
-      width: 17px;
-      height: 17px;
-      fill: none;
-      stroke: currentColor;
-      stroke-width: 1.9;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-    }
-
-    .assessment-requirement strong {
-      display: block;
-      color: #172033;
-      font-size: 13px;
-      font-weight: 800;
-    }
-
-    .assessment-requirement span {
-      display: block;
-      margin-top: 4px;
-      color: #687386;
-      font-size: 12px;
-      line-height: 1.45;
-    }
-
-    .assessment-instructions {
-      margin-top: 28px;
-      padding-top: 26px;
-      border-top: 1px solid #dfe5ec;
-    }
-
-    .assessment-instructions h3 {
-      margin: 0;
-      color: #172033;
-      font-size: 16px;
-      font-weight: 800;
-    }
-
-    .assessment-checklist {
-      display: grid;
-      gap: 13px;
-      margin: 18px 0 0;
-      padding: 0;
-      list-style: none;
-    }
-
-    .assessment-checklist li {
-      display: flex;
-      align-items: flex-start;
-      gap: 11px;
-      color: #687386;
-      font-size: 13px;
-      line-height: 1.55;
-    }
-
-    .assessment-check {
-      width: 20px;
-      height: 20px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex: 0 0 auto;
-      margin-top: 1px;
-      border-radius: 50%;
-      background: rgba(50,90,163,.10);
-      color: #325aa3;
-    }
-
-    .assessment-check svg {
-      width: 12px;
-      height: 12px;
-      fill: none;
-      stroke: currentColor;
-      stroke-width: 2.4;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-    }
-
-    .assessment-readiness {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-top: 26px;
-      padding: 17px 18px;
-      border-left: 4px solid #ff6b00;
-      border-radius: 10px;
-      background: #f5f7fa;
-    }
-
-    .assessment-readiness-icon {
-      width: 34px;
-      height: 34px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex: 0 0 auto;
-      border-radius: 9px;
-      background: #ffffff;
-      color: #ff6b00;
-    }
-
-    .assessment-readiness-icon svg {
-      width: 18px;
-      height: 18px;
-      fill: none;
-      stroke: currentColor;
-      stroke-width: 2;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-    }
-
-    .assessment-readiness strong {
-      display: block;
-      color: #172033;
-      font-size: 13px;
-      font-weight: 800;
-    }
-
-    .assessment-readiness span {
-      display: block;
-      margin-top: 3px;
-      color: #687386;
-      font-size: 12px;
-      line-height: 1.45;
-    }
-
-    .assessment-actions {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-      margin-top: 28px;
-      padding-top: 24px;
-      border-top: 1px solid #dfe5ec;
-    }
-
-    .assessment-back {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      color: #325aa3;
-      font-size: 13px;
-      font-weight: 800;
-      text-decoration: none;
-    }
-
-    .assessment-back:hover {
-      color: #24467f;
-    }
-
-    .assessment-back svg {
-      width: 17px;
-      height: 17px;
-      fill: none;
-      stroke: currentColor;
-      stroke-width: 2;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-    }
-
-    .assessment-start {
-      min-height: 46px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 9px;
-      padding: 0 20px;
-      border: 1px solid #ff6b00;
-      border-radius: 10px;
-      background: #ff6b00;
-      color: #ffffff;
-      font-size: 13px;
-      font-weight: 800;
-      text-decoration: none;
-      cursor: pointer;
-      transition: .2s ease;
-    }
-
-    .assessment-start:hover {
-      border-color: #e66000;
-      background: #e66000;
-    }
-
-    .assessment-start svg {
-      width: 17px;
-      height: 17px;
-      fill: none;
-      stroke: currentColor;
-      stroke-width: 2;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-    }
-
-    /* Right side */
-
-    .assessment-side-card {
-      overflow: hidden;
-    }
-
-    .assessment-side-card-header {
-      padding: 22px 22px 18px;
-      border-bottom: 1px solid #dfe5ec;
-    }
-
-    .assessment-side-card-header p {
-      margin: 7px 0 0;
-      color: #687386;
-      font-size: 12px;
-      line-height: 1.55;
-    }
-
-    .assessment-summary-list {
-      margin: 0;
-      padding: 6px 22px;
-    }
-
-    .assessment-summary-item {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 14px;
-      padding: 16px 0;
-      border-bottom: 1px solid #dfe5ec;
-    }
-
-    .assessment-summary-item:last-child {
-      border-bottom: 0;
-    }
-
-    .assessment-summary-label {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      color: #687386;
-      font-size: 12px;
-      font-weight: 700;
-    }
-
-    .assessment-summary-icon {
-      width: 30px;
-      height: 30px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 8px;
-      background: #f5f7fa;
-      color: #325aa3;
-    }
-
-    .assessment-summary-icon svg {
-      width: 15px;
-      height: 15px;
-      fill: none;
-      stroke: currentColor;
-      stroke-width: 1.8;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-    }
-
-    .assessment-summary-value {
-      color: #172033;
-      font-size: 12px;
-      font-weight: 800;
-      text-align: right;
-    }
-
-    .assessment-completion {
-      margin: 0 22px 22px;
-      padding: 18px;
-      border-radius: 12px;
-      background: #f5f7fa;
-    }
-
-    .assessment-completion-top {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      margin-bottom: 10px;
-    }
-
-    .assessment-completion-top span {
-      color: #687386;
-      font-size: 11px;
-      font-weight: 800;
-    }
-
-    .assessment-completion-top strong {
-      color: #24467f;
-      font-size: 13px;
-      font-weight: 800;
-    }
-
-    .assessment-completion-track {
-      height: 7px;
-      overflow: hidden;
-      border-radius: 999px;
-      background: #dfe5ec;
-    }
-
-    .assessment-completion-fill {
-      width: 100%;
-      height: 100%;
-      border-radius: inherit;
-      background: #325aa3;
-    }
-
-    .assessment-completion-note {
-      margin-top: 10px;
-      color: #687386;
-      font-size: 11px;
-      line-height: 1.5;
-    }
-
-    .assessment-help {
-      margin-top: 18px;
-      padding: 20px;
-      border: 1px solid #dfe5ec;
-      border-radius: 14px;
-      background: #ffffff;
-    }
-
-    .assessment-help h3 {
-      margin: 0;
-      color: #172033;
-      font-size: 14px;
-      font-weight: 800;
-    }
-
-    .assessment-help p {
-      margin: 7px 0 0;
-      color: #687386;
-      font-size: 12px;
-      line-height: 1.6;
-    }
-
-    .assessment-help a {
-      display: inline-flex;
-      margin-top: 12px;
-      color: #325aa3;
-      font-size: 12px;
-      font-weight: 800;
-      text-decoration: none;
-    }
-
-    .assessment-help a:hover {
-      color: #24467f;
-    }
-
-    /* Completion modal */
-
-    .assessment-modal[hidden] {
-      display: none;
-    }
-
-    .assessment-modal {
-      position: fixed;
-      inset: 0;
-      z-index: 9999;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-      background: rgba(23,32,51,.52);
-    }
-
-    .assessment-modal-card {
-      width: min(100%, 470px);
-      padding: 30px;
-      border-radius: 16px;
-      background: #ffffff;
-      box-shadow: 0 22px 60px rgba(23,32,51,.24);
-    }
-
-    .assessment-modal-card h2 {
-      margin: 0;
-      color: #172033;
-      font-size: 22px;
-      font-weight: 800;
-    }
-
-    .assessment-modal-card p {
-      margin: 10px 0 0;
-      color: #687386;
-      font-size: 13px;
-      line-height: 1.65;
-    }
-
-    .assessment-modal-actions {
-      display: flex;
-      justify-content: flex-end;
-      gap: 10px;
-      margin-top: 24px;
-    }
-
-    .assessment-modal-cancel,
-    .assessment-modal-confirm {
-      min-height: 42px;
-      padding: 0 15px;
-      border-radius: 9px;
-      font-size: 12px;
-      font-weight: 800;
-      cursor: pointer;
-    }
-
-    .assessment-modal-cancel {
-      border: 1px solid #dfe5ec;
-      background: #ffffff;
-      color: #24467f;
-    }
-
-    .assessment-modal-confirm {
-      border: 1px solid #ff6b00;
-      background: #ff6b00;
-      color: #ffffff;
-    }
-
-    @media (max-width: 1100px) {
-      .assessment-layout {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    @media (max-width: 720px) {
-      .assessment-hero {
-        padding: 30px 24px;
-      }
-
-      .assessment-main-card {
-        padding: 24px 20px;
-      }
-
-      .assessment-requirements {
-        grid-template-columns: 1fr;
-      }
-
-      .assessment-actions {
-        align-items: stretch;
-        flex-direction: column-reverse;
-      }
-
-      .assessment-back,
-      .assessment-start {
-        justify-content: center;
-      }
-    }
-  </style>
-<style id="training-mobile-assessment">
-*{box-sizing:border-box}html,body{max-width:100%;overflow-x:hidden}
-@media(max-width:767px){html{font-size:16px}.lms-content.assessment-page{width:100%;padding:18px 14px 36px}.assessment-breadcrumb{font-size:13px;margin-bottom:16px}.assessment-hero{min-height:0;padding:22px 18px;border-radius:14px}.assessment-hero-content{width:100%;max-width:none}.assessment-hero h1{font-size:29px;line-height:1.15}.assessment-hero p{font-size:15px;line-height:1.6}.assessment-course{align-items:flex-start;width:100%;padding:13px}.assessment-layout{grid-template-columns:1fr;gap:14px;margin-top:14px}.assessment-main-card,.assessment-side-card{width:100%;min-width:0;border-radius:13px}.assessment-main-card{padding:20px 15px}.assessment-main-card h2,.assessment-side-card h2{font-size:19px}.assessment-main-card>p{font-size:14px}.assessment-requirements{grid-template-columns:1fr;gap:10px}.assessment-requirement{width:100%;min-height:0;padding:16px}.assessment-checklist li{font-size:14px}.assessment-readiness{align-items:flex-start;padding:15px}.assessment-actions{align-items:stretch;flex-direction:column}.assessment-back,.assessment-start{width:100%;min-height:46px;justify-content:center}.assessment-side-card-header,.assessment-summary-list{padding-left:15px;padding-right:15px}.assessment-summary-item{align-items:flex-start;flex-direction:column}.assessment-help{padding:18px 15px}.assessment-modal{padding:12px}.assessment-modal-card{width:100%;max-width:none;max-height:calc(100vh - 24px);overflow-y:auto;padding:24px 16px}.assessment-modal-actions{display:grid;grid-template-columns:1fr;gap:10px}.assessment-modal-actions button{width:100%;min-height:46px}}
-</style>
-</head>
-
-<body>
-
-  <div class="lms-app">
-
-    <!-- Dynamic sidebar target -->
-    <div id="lms-sidebar-target"></div>
-
-    <main class="lms-main">
-
-      <!-- Established LMS topbar -->
-      <header class="lms-topbar">
-
-        <div class="lms-topbar-left">
-          <button
-            type="button"
-            class="lms-menu-button"
-            data-lms-menu-toggle
-            aria-label="Toggle navigation"
-          >
-            <svg viewBox="0 0 24 24">
-              <path d="M4 7h16"></path>
-              <path d="M4 12h16"></path>
-              <path d="M4 17h16"></path>
-            </svg>
-          </button>
-        </div>
-
-        <div class="lms-search-wrap">
-          <label class="lms-search">
-            <span class="lms-search-icon">
-              <svg viewBox="0 0 24 24">
-                <circle cx="11" cy="11" r="6"></circle>
-                <path d="m20 20-4-4"></path>
-              </svg>
-            </span>
-
-            <input
-              type="search"
-              placeholder="Search courses, lessons, and resources..."
-              data-lms-search
-            >
-
-            <span class="lms-search-shortcut">Ctrl K</span>
-          </label>
-        </div>
-
-        <div class="lms-topbar-right">
-
-          <a href="lms-notifications.html"
-            class="lms-icon-button"
-            aria-label="Notifications"
-           title="Notifications">>
-            <svg viewBox="0 0 24 24">
-              <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"></path>
-              <path d="M10 21h4"></path>
-            </svg>
-            <span class="lms-notification-dot"></span>
-          </a>
-
-          <div class="lms-user-wrap">
-
-            <button
-              type="button"
-              class="lms-user-button"
-              data-lms-user-button
-              aria-expanded="false"
-            >
-              <span class="lms-user-avatar" data-lms-learner-initials>
-                --
-              </span>
-
-              <span class="lms-user-name" data-lms-learner-name>
-                Learner
-              </span>
-
-              <span class="lms-user-chevron">
-                <svg viewBox="0 0 24 24">
-                  <path d="m7 10 5 5 5-5"></path>
-                </svg>
-              </span>
-            </button>
-
-            <div class="lms-user-menu" data-lms-user-menu>
-              <div class="lms-user-menu-header">
-                <span class="lms-user-menu-name" data-lms-user-menu-name>Learner</span>
-                <span class="lms-user-menu-email" data-lms-user-menu-email></span>
-              </div>
-
-              <a href="lms-account.html" class="lms-user-menu-link">
+<meta content="#24467f" name="theme-color"/>
+<!-- Established LMS master shell -->
+
+
+
+
+
+
+
+
+
+
+
+<link href="assets/css/lms-base-clean.css?v=20260915-clean3" rel="stylesheet"/><link href="assets/css/pages/lms-assessment.css?v=20260915-clean3" rel="stylesheet"/></head>
+<body class="lms-reference-redesign s4u-lms-redesign">
+<div class="lms-app">
+<!-- Dynamic sidebar target -->
+<div id="lms-sidebar-target"></div>
+<main class="lms-main">
+<!-- Established LMS topbar -->
+<header class="lms-topbar">
+<div class="lms-topbar-left">
+<button aria-label="Toggle navigation" class="lms-menu-button" data-lms-menu-toggle="" type="button">
+<svg viewbox="0 0 24 24">
+<path d="M4 7h16"></path>
+<path d="M4 12h16"></path>
+<path d="M4 17h16"></path>
+</svg>
+</button>
+</div>
+<div class="lms-search-wrap">
+<label class="lms-search">
+<span class="lms-search-icon">
+<svg viewbox="0 0 24 24">
+<circle cx="11" cy="11" r="6"></circle>
+<path d="m20 20-4-4"></path>
+</svg>
+</span>
+<input data-lms-search="" placeholder="Search courses, lessons, and resources..." type="search"/>
+<span class="lms-search-shortcut">Ctrl K</span>
+</label>
+</div>
+<div class="lms-topbar-right">
+<a aria-label="Notifications" class="lms-icon-button" href="lms-notifications.html" title="Notifications">&gt;
+            <svg viewbox="0 0 24 24">
+<path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"></path>
+<path d="M10 21h4"></path>
+</svg>
+<span class="lms-notification-dot"></span>
+</a>
+<div class="lms-user-wrap">
+<button aria-expanded="false" class="lms-user-button" data-lms-user-button="" type="button">
+<span class="lms-user-avatar" data-lms-learner-initials=""></span>
+<span class="lms-user-name" data-lms-learner-name=""></span>
+<span class="lms-user-chevron">
+<svg viewbox="0 0 24 24">
+<path d="m7 10 5 5 5-5"></path>
+</svg>
+</span>
+</button>
+<div class="lms-user-menu" data-lms-user-menu="">
+<div class="lms-user-menu-header">
+<span class="lms-user-menu-name" data-lms-user-menu-name=""></span>
+<span class="lms-user-menu-email" data-lms-user-menu-email=""></span>
+</div>
+<a class="lms-user-menu-link" href="lms-account.html">
                 My Account
               </a>
-
-              <a href="lms-certificates.html" class="lms-user-menu-link">
+<a class="lms-user-menu-link" href="lms-certificates.html">
                 My Certificates
               </a>
-
-              <button
-                type="button"
-                class="lms-user-menu-link"
-                data-lms-sign-out
-              >
+<button class="lms-user-menu-link" data-lms-sign-out="" type="button">
                 Sign Out
               </button>
-            </div>
-
-          </div>
-
-        </div>
-
-      </header>
-
-      <!-- ======================================================
+</div>
+</div>
+</div>
+</header>
+<!-- ======================================================
            FINAL ASSESSMENT
            ====================================================== -->
-
-      <div class="lms-content assessment-page">
-
-        <nav class="assessment-breadcrumb" aria-label="Breadcrumb">
-          <a href="lms-my-courses.html">My Learning</a>
-
-          <svg viewBox="0 0 24 24">
-            <path d="m9 18 6-6-6-6"></path>
-          </svg>
-
-          <a href="lms-course-details.html">Course Details</a>
-
-          <svg viewBox="0 0 24 24">
-            <path d="m9 18 6-6-6-6"></path>
-          </svg>
-
-          <span>Final Assessment</span>
-        </nav>
-
-        <!-- HERO -->
-
-        <section class="assessment-hero">
-
-          <div class="assessment-hero-content">
-
-            <div class="assessment-kicker">
-              <span class="assessment-kicker-dot"></span>
+<div class="lms-content assessment-page">
+<nav aria-label="Breadcrumb" class="assessment-breadcrumb">
+<a href="lms-my-courses.html">My Learning</a>
+<svg viewbox="0 0 24 24">
+<path d="m9 18 6-6-6-6"></path>
+</svg>
+<a href="lms-course-details.html">Course Details</a>
+<svg viewbox="0 0 24 24">
+<path d="m9 18 6-6-6-6"></path>
+</svg>
+<span>Final Assessment</span>
+</nav>
+<!-- HERO -->
+<section class="assessment-hero">
+<div class="assessment-hero-content">
+<div class="assessment-kicker">
+<span class="assessment-kicker-dot"></span>
               Final Course Requirement
             </div>
-
-            <h1 data-assessment-title>Final Assessment</h1>
-
-            <p>
+<h1 data-assessment-title="">Final Assessment</h1>
+<p>
               You have completed the required course modules. The final
               assessment evaluates your understanding of the material
               covered throughout the entire course.
             </p>
-
-            <div class="assessment-course">
-              <span class="assessment-course-icon">
-                <svg viewBox="0 0 24 24">
-                  <path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v16H6.5A2.5 2.5 0 0 0 4 21.5z"></path>
-                  <path d="M4 5.5v16"></path>
-                  <path d="M8 7h8"></path>
-                </svg>
-              </span>
-
-              <span data-assessment-course>Training Course</span>
-            </div>
-
-          </div>
-
-        </section>
-
-        <div class="assessment-layout">
-
-          <!-- MAIN CONTENT -->
-
-          <section class="assessment-main-card">
-
-            <h2>Before You Begin</h2>
-
-            <p>
+<div class="assessment-course">
+<span class="assessment-course-icon">
+<svg viewbox="0 0 24 24">
+<path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v16H6.5A2.5 2.5 0 0 0 4 21.5z"></path>
+<path d="M4 5.5v16"></path>
+<path d="M8 7h8"></path>
+</svg>
+</span>
+<span data-assessment-course="">Training Course</span>
+</div>
+</div>
+</section>
+<div class="assessment-layout">
+<!-- MAIN CONTENT -->
+<section class="assessment-main-card">
+<h2>Before You Begin</h2>
+<p>
               Please review the assessment requirements below. Once you
               begin, your knowledge will be tested across the material
               covered in all completed course modules.
             </p>
-
-            <div class="assessment-requirements">
-
-              <div class="assessment-requirement">
-                <div class="assessment-requirement-icon">
-                  <svg viewBox="0 0 24 24">
-                    <circle cx="12" cy="12" r="8"></circle>
-                    <path d="M12 8v4l3 2"></path>
-                  </svg>
-                </div>
-
-                <strong>Estimated Time</strong>
-                <span data-assessment-time>—</span>
-              </div>
-
-              <div class="assessment-requirement">
-                <div class="assessment-requirement-icon">
-                  <svg viewBox="0 0 24 24">
-                    <path d="M4 19V9"></path>
-                    <path d="M10 19V5"></path>
-                    <path d="M16 19v-7"></path>
-                    <path d="M22 19V3"></path>
-                  </svg>
-                </div>
-
-                <strong>Passing Score</strong>
-                <span data-assessment-passing>—</span>
-              </div>
-
-              <div class="assessment-requirement">
-                <div class="assessment-requirement-icon">
-                  <svg viewBox="0 0 24 24">
-                    <circle cx="12" cy="12" r="8"></circle>
-                    <path d="M12 8v4l3 2"></path>
-                  </svg>
-                </div>
-
-                <strong>Assessment Length</strong>
-                <span data-assessment-length>—</span>
-              </div>
-
-              <div class="assessment-requirement">
-                <div class="assessment-requirement-icon">
-                  <svg viewBox="0 0 24 24">
-                    <path d="M12 3v5"></path>
-                    <path d="M12 16v5"></path>
-                    <path d="M5.64 5.64l3.54 3.54"></path>
-                    <path d="m14.82 14.82 3.54 3.54"></path>
-                    <path d="M3 12h5"></path>
-                    <path d="M16 12h5"></path>
-                  </svg>
-                </div>
-
-                <strong>Attempts</strong>
-                <span data-assessment-attempts>—</span>
-              </div>
-
-            </div>
-
-            <div class="assessment-instructions">
-
-              <h3>Assessment Instructions</h3>
-
-              <ul class="assessment-checklist">
-
-                <li>
-                  <span class="assessment-check">
-                    <svg viewBox="0 0 24 24">
-                      <path d="m5 12 4 4L19 6"></path>
-                    </svg>
-                  </span>
+<div class="assessment-requirements">
+<div class="assessment-requirement">
+<div class="assessment-requirement-icon">
+<svg viewbox="0 0 24 24">
+<circle cx="12" cy="12" r="8"></circle>
+<path d="M12 8v4l3 2"></path>
+</svg>
+</div>
+<strong>Estimated Time</strong>
+<span data-assessment-time="">—</span>
+</div>
+<div class="assessment-requirement">
+<div class="assessment-requirement-icon">
+<svg viewbox="0 0 24 24">
+<path d="M4 19V9"></path>
+<path d="M10 19V5"></path>
+<path d="M16 19v-7"></path>
+<path d="M22 19V3"></path>
+</svg>
+</div>
+<strong>Passing Score</strong>
+<span data-assessment-passing="">—</span>
+</div>
+<div class="assessment-requirement">
+<div class="assessment-requirement-icon">
+<svg viewbox="0 0 24 24">
+<circle cx="12" cy="12" r="8"></circle>
+<path d="M12 8v4l3 2"></path>
+</svg>
+</div>
+<strong>Assessment Length</strong>
+<span data-assessment-length="">—</span>
+</div>
+<div class="assessment-requirement">
+<div class="assessment-requirement-icon">
+<svg viewbox="0 0 24 24">
+<path d="M12 3v5"></path>
+<path d="M12 16v5"></path>
+<path d="M5.64 5.64l3.54 3.54"></path>
+<path d="m14.82 14.82 3.54 3.54"></path>
+<path d="M3 12h5"></path>
+<path d="M16 12h5"></path>
+</svg>
+</div>
+<strong>Attempts</strong>
+<span data-assessment-attempts="">—</span>
+</div>
+</div>
+<div class="assessment-instructions">
+<h3>Assessment Instructions</h3>
+<ul class="assessment-checklist">
+<li>
+<span class="assessment-check">
+<svg viewbox="0 0 24 24">
+<path d="m5 12 4 4L19 6"></path>
+</svg>
+</span>
 
                   Answer each question based on the knowledge gained
                   throughout the complete training course.
                 </li>
-
-                <li>
-                  <span class="assessment-check">
-                    <svg viewBox="0 0 24 24">
-                      <path d="m5 12 4 4L19 6"></path>
-                    </svg>
-                  </span>
+<li>
+<span class="assessment-check">
+<svg viewbox="0 0 24 24">
+<path d="m5 12 4 4L19 6"></path>
+</svg>
+</span>
 
                   Read every question carefully before selecting your
                   answer.
                 </li>
-
-                <li>
-                  <span class="assessment-check">
-                    <svg viewBox="0 0 24 24">
-                      <path d="m5 12 4 4L19 6"></path>
-                    </svg>
-                  </span>
+<li>
+<span class="assessment-check">
+<svg viewbox="0 0 24 24">
+<path d="m5 12 4 4L19 6"></path>
+</svg>
+</span>
 
                   Your assessment result will determine whether you have
                   successfully completed the course requirements.
                 </li>
-
-                <li>
-                  <span class="assessment-check">
-                    <svg viewBox="0 0 24 24">
-                      <path d="m5 12 4 4L19 6"></path>
-                    </svg>
-                  </span>
+<li>
+<span class="assessment-check">
+<svg viewbox="0 0 24 24">
+<path d="m5 12 4 4L19 6"></path>
+</svg>
+</span>
 
                   After successfully passing, your course completion and
                   certificate will become available.
                 </li>
-
-              </ul>
-
-            </div>
-
-            <div class="assessment-readiness">
-
-              <span class="assessment-readiness-icon">
-                <svg viewBox="0 0 24 24">
-                  <path d="M12 2v4"></path>
-                  <path d="M12 18v4"></path>
-                  <path d="M4.93 4.93l2.83 2.83"></path>
-                  <path d="m16.24 16.24 2.83 2.83"></path>
-                  <path d="M2 12h4"></path>
-                  <path d="M18 12h4"></path>
-                </svg>
-              </span>
-
-              <div>
-                <strong>Ready for the final step?</strong>
-                <span>
+</ul>
+</div>
+<div class="assessment-readiness">
+<span class="assessment-readiness-icon">
+<svg viewbox="0 0 24 24">
+<path d="M12 2v4"></path>
+<path d="M12 18v4"></path>
+<path d="M4.93 4.93l2.83 2.83"></path>
+<path d="m16.24 16.24 2.83 2.83"></path>
+<path d="M2 12h4"></path>
+<path d="M18 12h4"></path>
+</svg>
+</span>
+<div>
+<strong>Ready for the final step?</strong>
+<span>
                   Passing this assessment completes the training
                   requirements for this course.
                 </span>
-              </div>
-
-            </div>
-
-            <div class="assessment-actions">
-
-              <a
-                href="lms-course-player.html" class="assessment-back" data-course-review-link
-              >
-                <svg viewBox="0 0 24 24">
-                  <path d="M19 12H5"></path>
-                  <path d="m12 19-7-7 7-7"></path>
-                </svg>
+</div>
+</div>
+<div class="assessment-actions">
+<a class="assessment-back" data-course-review-link="" href="lms-course-player.html">
+<svg viewbox="0 0 24 24">
+<path d="M19 12H5"></path>
+<path d="m12 19-7-7 7-7"></path>
+</svg>
 
                 Review Course Content
               </a>
-
-              <button
-                type="button"
-                class="assessment-start"
-                data-begin-assessment
-              >
+<button class="assessment-start" data-begin-assessment="" type="button">
                 Begin Final Assessment
 
-                <svg viewBox="0 0 24 24">
-                  <path d="M5 12h14"></path>
-                  <path d="m12 5 7 7-7 7"></path>
-                </svg>
-              </button>
-
-            </div>
-
-          </section>
-
-          <!-- SIDEBAR -->
-
-          <aside>
-
-            <section class="assessment-side-card">
-
-              <div class="assessment-side-card-header">
-                <h2>Assessment Summary</h2>
-
-                <p>
+                <svg viewbox="0 0 24 24">
+<path d="M5 12h14"></path>
+<path d="m12 5 7 7-7 7"></path>
+</svg>
+</button>
+</div>
+</section>
+<!-- SIDEBAR -->
+<aside>
+<section class="assessment-side-card">
+<div class="assessment-side-card-header">
+<h2>Assessment Summary</h2>
+<p>
                   Your final requirement before course certification.
                 </p>
-              </div>
-
-              <div class="assessment-summary-list">
-
-                <div class="assessment-summary-item">
-                  <div class="assessment-summary-label">
-                    <span class="assessment-summary-icon">
-                      <svg viewBox="0 0 24 24">
-                        <path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v16H6.5A2.5 2.5 0 0 0 4 21.5z"></path>
-                        <path d="M4 5.5v16"></path>
-                      </svg>
-                    </span>
+</div>
+<div class="assessment-summary-list">
+<div class="assessment-summary-item">
+<div class="assessment-summary-label">
+<span class="assessment-summary-icon">
+<svg viewbox="0 0 24 24">
+<path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v16H6.5A2.5 2.5 0 0 0 4 21.5z"></path>
+<path d="M4 5.5v16"></path>
+</svg>
+</span>
 
                     Course Modules
                   </div>
-
-                  <span class="assessment-summary-value" data-summary-modules>Checking…</span>
-                </div>
-
-                <div class="assessment-summary-item">
-                  <div class="assessment-summary-label">
-                    <span class="assessment-summary-icon">
-                      <svg viewBox="0 0 24 24">
-                        <path d="M4 19V9"></path>
-                        <path d="M10 19V5"></path>
-                        <path d="M16 19v-7"></path>
-                      </svg>
-                    </span>
+<span class="assessment-summary-value" data-summary-modules="">Checking…</span>
+</div>
+<div class="assessment-summary-item">
+<div class="assessment-summary-label">
+<span class="assessment-summary-icon">
+<svg viewbox="0 0 24 24">
+<path d="M4 19V9"></path>
+<path d="M10 19V5"></path>
+<path d="M16 19v-7"></path>
+</svg>
+</span>
 
                     Passing Score
                   </div>
-
-                  <span class="assessment-summary-value" data-summary-passing>—</span>
-                </div>
-
-                <div class="assessment-summary-item">
-                  <div class="assessment-summary-label">
-                    <span class="assessment-summary-icon">
-                      <svg viewBox="0 0 24 24">
-                        <circle cx="12" cy="12" r="8"></circle>
-                        <path d="M12 8v4l3 2"></path>
-                      </svg>
-                    </span>
+<span class="assessment-summary-value" data-summary-passing="">—</span>
+</div>
+<div class="assessment-summary-item">
+<div class="assessment-summary-label">
+<span class="assessment-summary-icon">
+<svg viewbox="0 0 24 24">
+<circle cx="12" cy="12" r="8"></circle>
+<path d="M12 8v4l3 2"></path>
+</svg>
+</span>
 
                     Time Estimate
                   </div>
-
-                  <span class="assessment-summary-value" data-summary-time>—</span>
-                </div>
-
-                <div class="assessment-summary-item">
-                  <div class="assessment-summary-label">
-                    <span class="assessment-summary-icon">
-                      <svg viewBox="0 0 24 24">
-                        <path d="M12 3v5"></path>
-                        <path d="M12 16v5"></path>
-                        <path d="M5.64 5.64l3.54 3.54"></path>
-                        <path d="m14.82 14.82 3.54 3.54"></path>
-                      </svg>
-                    </span>
+<span class="assessment-summary-value" data-summary-time="">—</span>
+</div>
+<div class="assessment-summary-item">
+<div class="assessment-summary-label">
+<span class="assessment-summary-icon">
+<svg viewbox="0 0 24 24">
+<path d="M12 3v5"></path>
+<path d="M12 16v5"></path>
+<path d="M5.64 5.64l3.54 3.54"></path>
+<path d="m14.82 14.82 3.54 3.54"></path>
+</svg>
+</span>
 
                     Attempts Remaining
                   </div>
-
-                  <span class="assessment-summary-value" data-summary-attempts>—</span>
-                </div>
-
-              </div>
-
-              <div class="assessment-completion">
-
-                <div class="assessment-completion-top">
-                  <span>Course Content</span>
-                  <strong data-content-progress>0%</strong>
-                </div>
-
-                <div class="assessment-completion-track">
-                  <div class="assessment-completion-fill" data-content-progress-fill style="width:0%"></div>
-                </div>
-
-                <div class="assessment-completion-note">
-                  <span data-content-progress-note>Checking course progress…</span>
-                </div>
-
-              </div>
-
-            </section>
-
-            <section class="assessment-help">
-
-              <h3>Need to review?</h3>
-
-              <p>
+<span class="assessment-summary-value" data-summary-attempts="">—</span>
+</div>
+</div>
+<div class="assessment-completion">
+<div class="assessment-completion-top">
+<span>Course Content</span>
+<strong data-content-progress="">0%</strong>
+</div>
+<div class="assessment-completion-track">
+<div class="assessment-completion-fill" data-content-progress-fill="" style="width:0%"></div>
+</div>
+<div class="assessment-completion-note">
+<span data-content-progress-note="">Checking course progress…</span>
+</div>
+</div>
+</section>
+<section class="assessment-help">
+<h3>Need to review?</h3>
+<p>
                 You can return to the course player and review completed
                 lessons before starting your final assessment.
               </p>
-
-              <a href="lms-course-player.html" data-course-review-link>
+<a data-course-review-link="" href="lms-course-player.html">
                 Return to Course Content
               </a>
-
-            </section>
-
-          </aside>
-
-        </div>
-
-      </div>
-
-    </main>
-
-  </div>
-
-  <!-- Assessment confirmation -->
-  <div
-    class="assessment-modal"
-    data-assessment-modal
-    hidden
-    role="dialog"
-    aria-modal="true"
-    aria-labelledby="assessment-modal-title"
-  >
-
-    <div class="assessment-modal-card">
-
-      <h2 id="assessment-modal-title">
+</section>
+</aside>
+</div>
+</div>
+</main>
+</div>
+<!-- Assessment confirmation -->
+<div aria-labelledby="assessment-modal-title" aria-modal="true" class="assessment-modal" data-assessment-modal="" hidden="" role="dialog">
+<div class="assessment-modal-card">
+<h2 id="assessment-modal-title">
         Ready to begin?
       </h2>
-
-      <p>
+<p>
         The final assessment covers the complete course. Make sure you
         are ready before continuing.
       </p>
-
-      <div class="assessment-modal-actions">
-
-        <button
-          type="button"
-          class="assessment-modal-cancel"
-          data-close-assessment-modal
-        >
+<div class="assessment-modal-actions">
+<button class="assessment-modal-cancel" data-close-assessment-modal="" type="button">
           Not Yet
         </button>
-
-        <button
-          type="button"
-          class="assessment-modal-confirm"
-          data-confirm-assessment
-        >
+<button class="assessment-modal-confirm" data-confirm-assessment="" type="button">
           Begin Assessment
         </button>
+</div>
+</div>
+</div> <!-- Authenticated LMS scripts -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-      </div>
 
-    </div>
 
-  </div>  <!-- Authenticated LMS scripts -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="assets/js/supabase-config.js"></script>
-<script src="assets/js/core-auth.js"></script>
-<script src="assets/js/ui.js"></script>
-<script src="assets/js/portal-auth-guard.js"></script>
-<script src="assets/js/training-auth-guard.js"></script>
-<script src="assets/js/lms-sidebar.js"></script>
-  <script src="assets/js/lms.js?v=20260830-2200"></script>
-  <script src="assets/js/lms-assessment.js?v=20260830-2200"></script>
-  <script src="assets/js/branded-popups.js?v=20260911-1"></script>
 
+
+
+
+
+
+<script src="assets/js/lms-core-clean.js?v=20260915-clean3"></script><script src="assets/js/pages/lms-assessment.js?v=20260915-clean3"></script><script src="assets/js/lms-global-support-bar.js?v=20260915-1"></script>
 </body>
 </html>

@@ -1041,6 +1041,19 @@
         lesson
       );
 
+      // Video lessons use a distraction-free player: the stage contains
+      // the video only. Text lesson headings/intro return automatically
+      // for lessons that do not contain video blocks.
+      var currentBlocks =
+        state.blocksByLesson.get(lesson.id) || [];
+      var isVideoLesson = currentBlocks.some(function (block) {
+        return String(block.block_type || "").trim().toLowerCase() === "video";
+      });
+      var lessonPanel = document.querySelector(".course-player-lesson-panel");
+      if (lessonPanel) {
+        lessonPanel.classList.toggle("is-video-lesson", isVideoLesson);
+      }
+
       var prev =
         document.querySelector(
           "[data-course-prev]"
@@ -1473,7 +1486,6 @@
     ) {
       return `
         <section class="course-player-block" data-lms-block-id="${escapeAttribute(block.id)}" data-lms-block-type="video">
-          ${title}
           <div class="course-player-video-frame">
             <iframe
               src="${escapeAttribute(source)}"
@@ -1493,7 +1505,6 @@
     ) {
       return `
         <section class="course-player-block" data-lms-block-id="${escapeAttribute(block.id)}" data-lms-block-type="video">
-          ${title}
           <video
             class="course-player-video-element"
             controls

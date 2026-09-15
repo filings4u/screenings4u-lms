@@ -1,0 +1,1121 @@
+/* ============================================================
+   SCREENINGS4U LEARNING CENTER
+   DYNAMIC LMS SIDEBAR
+   Mimics the Customer Portal sidebar shell behavior while
+   preserving Learning Center navigation and LMS class names.
+   ============================================================ */
+
+(function () {
+  "use strict";
+
+  const DESKTOP_BREAKPOINT = 860;
+
+  // This navigation file may be loaded normally or injected by the portal shell.
+  // If DOMContentLoaded has already fired, waiting for it again leaves the
+  // mobile toggle unbound. Initialize immediately in that case.
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initializeLmsSidebar, {
+      once: true
+    });
+  } else {
+    initializeLmsSidebar();
+  }
+
+  /* ============================================================
+     INITIALIZE
+     ============================================================ */
+
+  function initializeLmsSidebar() {
+    if (document.documentElement.dataset.lmsNavigationInitialized === "true") {
+      return;
+    }
+
+    document.documentElement.dataset.lmsNavigationInitialized = "true";
+
+    injectLmsSidebar();
+    injectMobileDropdownNavigation();
+    setActiveNavigation();
+    initializeDesktopAccordion();
+    initializeMobileNavigation();
+    initializeShellEnhancements();
+    window.dispatchEvent(new CustomEvent("lms:sidebar-ready"));
+  }
+
+
+  /* ============================================================
+     SIDEBAR
+     ============================================================ */
+
+  function injectLmsSidebar() {
+    const sidebarTarget = document.getElementById(
+      "lms-sidebar-target"
+    );
+
+    if (!sidebarTarget) {
+      return;
+    }
+
+    sidebarTarget.innerHTML = getSidebarMarkup();
+  }
+
+
+  /* ============================================================
+     SIDEBAR MARKUP
+     ============================================================ */
+
+  function getSidebarMarkup() {
+    return `
+      <aside
+        class="lms-sidebar"
+        id="lms-sidebar"
+        aria-label="Learning navigation"
+      >
+        <div class="lms-sidebar-inner">
+
+          <!-- =================================================
+               BRAND
+               ================================================= -->
+
+          <div class="lms-sidebar-brand">
+
+            <a
+              href="lms-dashboard.html"
+              class="lms-brand"
+              aria-label="Screenings4u Learning Center"
+            >
+              <img
+                src="images/logo2.png"
+                alt="screenings4u"
+                class="lms-brand-logo"
+              />
+
+              <div class="lms-brand-copy">
+                <span class="lms-brand-subtitle">
+                  Learning Center
+                </span>
+              </div>
+            </a>
+          </div>
+
+
+          <!-- =================================================
+               NAVIGATION
+               ================================================= -->
+
+          <div class="lms-sidebar-scroll">
+
+
+            <!-- LEARNING -->
+
+            <div class="lms-nav-group">
+
+              <button type="button" class="lms-nav-label" aria-expanded="false">
+                <span>Learning</span>
+              </button>
+
+              <nav class="lms-nav">
+
+                <!-- HOME -->
+
+                <a
+                  href="lms-dashboard.html"
+                  class="lms-nav-link"
+                  data-lms-page="lms-dashboard.html"
+                >
+                  <span class="lms-nav-icon">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M3 10.5 12 3l9 7.5"></path>
+                      <path d="M5 9.5V21h14V9.5"></path>
+                      <path d="M9 21v-6h6v6"></path>
+                    </svg>
+                  </span>
+
+                  <span class="lms-nav-text">
+                    Home
+                  </span>
+                </a>
+
+
+                <!-- WELCOME & POLICIES -->
+
+                <a
+                  href="lms-welcome.html"
+                  class="lms-nav-link"
+                  data-lms-page="lms-welcome.html"
+                >
+                  <span class="lms-nav-icon">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                      <rect x="4" y="4" width="16" height="16" rx="2"></rect>
+                      <path d="M8 9h8M8 13h8M8 17h5"></path>
+                    </svg>
+                  </span>
+                  <span class="lms-nav-text">Welcome &amp; Policies</span>
+                </a>
+
+
+                <!-- MY LEARNING -->
+
+                <a
+                  href="lms-my-courses.html"
+                  class="lms-nav-link"
+                  data-lms-page="lms-my-courses.html"
+                >
+                  <span class="lms-nav-icon">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                      <rect
+                        x="3"
+                        y="4"
+                        width="18"
+                        height="16"
+                        rx="2"
+                      ></rect>
+                      <path d="M7 8h10"></path>
+                      <path d="M7 12h7"></path>
+                      <path d="M7 16h5"></path>
+                    </svg>
+                  </span>
+
+                  <span class="lms-nav-text">
+                    My Learning
+                  </span>
+                </a>
+
+
+                <!-- COURSE LIBRARY -->
+
+                <a
+                  href="lms-courses.html"
+                  class="lms-nav-link"
+                  data-lms-page="lms-courses.html"
+                >
+                  <span class="lms-nav-icon">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v16H6.5A2.5 2.5 0 0 0 4 21.5z"></path>
+                      <path d="M4 5.5v16"></path>
+                      <path d="M8 7h8"></path>
+                    </svg>
+                  </span>
+
+                  <span class="lms-nav-text">
+                    Course Library
+                  </span>
+                </a>
+
+              </nav>
+
+            </div>
+
+
+            <!-- TRACK -->
+
+            <div class="lms-nav-group">
+
+              <button type="button" class="lms-nav-label" aria-expanded="false">
+                <span>Track</span>
+              </button>
+
+              <nav class="lms-nav">
+
+                <!-- PROGRESS -->
+
+                <a
+                  href="lms-progress.html"
+                  class="lms-nav-link"
+                  data-lms-page="lms-progress.html"
+                >
+                  <span class="lms-nav-icon">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M4 19V9"></path>
+                      <path d="M10 19V5"></path>
+                      <path d="M16 19v-7"></path>
+                      <path d="M22 19V3"></path>
+                    </svg>
+                  </span>
+
+                  <span class="lms-nav-text">
+                    Progress
+                  </span>
+                </a>
+
+
+                <!-- CERTIFICATES -->
+
+                <a
+                  href="lms-certificates.html"
+                  class="lms-nav-link"
+                  data-lms-page="lms-certificates.html"
+                >
+                  <span class="lms-nav-icon">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                      <circle
+                        cx="12"
+                        cy="8"
+                        r="5"
+                      ></circle>
+                      <path d="m8.5 12.5-1 8L12 18l4.5 2.5-1-8"></path>
+                    </svg>
+                  </span>
+
+                  <span class="lms-nav-text">
+                    Certificates
+                  </span>
+                </a>
+
+              </nav>
+
+            </div>
+
+
+            <!-- APPOINTMENTS -->
+
+            <div class="lms-nav-group">
+
+              <button type="button" class="lms-nav-label" aria-expanded="false">
+                <span>Appointments</span>
+              </button>
+
+              <nav class="lms-nav">
+
+                <a href="lms-schedule-appointment.html" class="lms-nav-link" data-lms-page="lms-schedule-appointment.html">
+                  <span class="lms-nav-icon">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"></rect><path d="M16 3v4M8 3v4M3 10h18M12 13v5M9.5 15.5h5"></path></svg>
+                  </span>
+                  <span class="lms-nav-text">Schedule Appointment</span>
+                </a>
+
+                <a href="lms-my-appointments.html" class="lms-nav-link" data-lms-page="lms-my-appointments.html">
+                  <span class="lms-nav-icon">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"></rect><path d="M16 3v4M8 3v4M3 10h18M8 15l2.5 2.5L16 12"></path></svg>
+                  </span>
+                  <span class="lms-nav-text">My Appointments</span>
+                </a>
+
+                <a href="lms-live-training.html" class="lms-nav-link" data-lms-page="lms-live-training.html">
+                  <span class="lms-nav-icon">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"></rect><path d="m10 9 5 3-5 3V9z"></path></svg>
+                  </span>
+                  <span class="lms-nav-text">Live Training</span>
+                </a>
+
+              </nav>
+
+            </div>
+
+
+            <!-- ACCOUNT -->
+
+            <div class="lms-nav-group">
+
+              <button type="button" class="lms-nav-label" aria-expanded="false">
+                <span>Account</span>
+              </button>
+
+              <nav class="lms-nav">
+
+                <!-- ORDERS -->
+
+                <a
+                  href="lms-orders.html"
+                  class="lms-nav-link"
+                  data-lms-page="lms-orders.html"
+                >
+                  <span class="lms-nav-icon">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M6 3h12v18l-3-2-3 2-3-2-3 2V3z"></path>
+                      <path d="M9 8h6M9 12h6"></path>
+                    </svg>
+                  </span>
+                  <span class="lms-nav-text">Orders</span>
+                </a>
+
+
+                <!-- DOCUMENTS -->
+
+                <a
+                  href="lms-documents.html"
+                  class="lms-nav-link"
+                  data-lms-page="lms-documents.html"
+                >
+                  <span class="lms-nav-icon">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M6 3h8l4 4v14H6z"></path>
+                      <path d="M14 3v5h5"></path>
+                      <path d="M9 13h6M9 17h6"></path>
+                    </svg>
+                  </span>
+                  <span class="lms-nav-text">Documents</span>
+                </a>
+
+
+                <!-- MY ACCOUNT -->
+
+                <a
+                  href="lms-account.html"
+                  class="lms-nav-link"
+                  data-lms-page="lms-account.html"
+                >
+                  <span class="lms-nav-icon">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                      <circle
+                        cx="12"
+                        cy="8"
+                        r="4"
+                      ></circle>
+                      <path d="M4 21c.8-4 3.4-6 8-6s7.2 2 8 6"></path>
+                    </svg>
+                  </span>
+
+                  <span class="lms-nav-text">
+                    My Account
+                  </span>
+                </a>
+
+
+                <!-- TRAINING SUPPORT -->
+
+                <a
+                  href="lms-support.html"
+                  class="lms-nav-link"
+                  data-lms-page="lms-support.html"
+                >
+                  <span class="lms-nav-icon">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                      <circle cx="12" cy="12" r="9"></circle>
+                      <path d="M9.5 9a2.7 2.7 0 0 1 5.2 1c0 2-2.7 2.3-2.7 4"></path>
+                      <path d="M12 18h.01"></path>
+                    </svg>
+                  </span>
+
+                  <span class="lms-nav-text">
+                    Support
+                  </span>
+                </a>
+
+              </nav>
+
+            </div>
+
+          </div>
+
+
+          <!-- =================================================
+               SIDEBAR FOOTER
+               ================================================= -->
+
+          <div class="lms-sidebar-footer">
+
+            <div class="lms-sidebar-footer-links">
+
+              <!-- BACK TO MAIN WEBSITE -->
+
+              <a
+                href="https://screenings4u.com"
+                class="lms-return-link"
+              >
+                <span class="lms-nav-icon">
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M19 12H5"></path>
+                    <path d="m12 19-7-7 7-7"></path>
+                  </svg>
+                </span>
+
+                <span class="lms-return-text">
+                  Back to Screenings4u
+                </span>
+              </a>
+            </div>
+
+          </div>
+
+        </div>
+      </aside>
+
+
+      <!-- MOBILE OVERLAY -->
+
+      <div
+        class="lms-sidebar-overlay"
+        id="lms-sidebar-overlay"
+        data-lms-sidebar-overlay
+        aria-hidden="true"
+      ></div>
+    `;
+  }
+
+
+
+
+  /* ============================================================
+     PAGE + DESKTOP ACCORDION
+     ============================================================ */
+
+  function currentPageName() {
+    let page = window.location.pathname.split("/").pop() || "lms-dashboard.html";
+    page = page.split("?")[0].split("#")[0];
+
+    if (page === "lms-customer-scheduling.html") {
+      page = "lms-schedule-appointment.html";
+    }
+
+    return page;
+  }
+
+  function initializeDesktopAccordion() {
+    const sidebar = document.getElementById("lms-sidebar");
+    if (!sidebar) return;
+
+    const groups = Array.from(sidebar.querySelectorAll(".lms-nav-group"));
+    if (!groups.length) return;
+
+    function setGroupState(group, open) {
+      group.classList.toggle("is-open", open);
+      const button = group.querySelector(".lms-nav-label");
+      if (button) button.setAttribute("aria-expanded", open ? "true" : "false");
+    }
+
+    function openOnly(target) {
+      groups.forEach(function (group) {
+        setGroupState(group, group === target);
+      });
+    }
+
+    groups.forEach(function (group) {
+      const button = group.querySelector(".lms-nav-label");
+      if (!button) return;
+
+      button.addEventListener("click", function () {
+        if (window.innerWidth <= 1100) return;
+        const willOpen = !group.classList.contains("is-open");
+        groups.forEach(function (item) {
+          setGroupState(item, willOpen && item === group);
+        });
+      });
+    });
+
+    const activeLink = sidebar.querySelector(".lms-nav-link.active");
+    const activeGroup = activeLink ? activeLink.closest(".lms-nav-group") : null;
+    openOnly(activeGroup || groups[0]);
+
+    window.addEventListener("resize", function () {
+      if (window.innerWidth <= 1100) {
+        groups.forEach(function (group) { setGroupState(group, true); });
+      } else {
+        const currentOpen = groups.find(function (group) { return group.classList.contains("is-open"); });
+        openOnly(activeGroup || currentOpen || groups[0]);
+      }
+    });
+  }
+
+
+  /* ============================================================
+     ACTIVE NAVIGATION
+     ============================================================ */
+
+  function setActiveNavigation() {
+    const current = currentPageName();
+
+    document
+      .querySelectorAll("[data-lms-page]")
+      .forEach(function (link) {
+        const page =
+          String(link.dataset.lmsPage || "")
+            .split("?")[0]
+            .split("#")[0];
+
+        const isActive = page === current;
+
+        link.classList.toggle("active", isActive);
+
+        if (isActive) {
+          link.setAttribute("aria-current", "page");
+        } else {
+          link.removeAttribute("aria-current");
+        }
+      });
+
+  }
+
+  /* ============================================================
+     MOBILE DROPDOWN NAVIGATION
+     ============================================================ */
+
+  function injectMobileDropdownNavigation() {
+    if (
+      document.getElementById(
+        "lms-mobile-dropdown"
+      )
+    ) {
+      return;
+    }
+
+    if (!document.body) {
+      return;
+    }
+
+    const backdrop =
+      document.createElement("div");
+
+    backdrop.id =
+      "lms-mobile-dropdown-backdrop";
+
+    backdrop.className =
+      "lms-mobile-dropdown-backdrop";
+
+    backdrop.hidden = true;
+
+
+    const dropdown =
+      document.createElement("div");
+
+    dropdown.id =
+      "lms-mobile-dropdown";
+
+    dropdown.className =
+      "lms-mobile-dropdown";
+
+    dropdown.hidden = true;
+
+    dropdown.setAttribute(
+      "role",
+      "navigation"
+    );
+
+    dropdown.setAttribute(
+      "aria-label",
+      "Learning Center navigation"
+    );
+
+
+    document.body.append(
+      backdrop,
+      dropdown
+    );
+
+    injectMobileStyles();
+  }
+
+
+  function rebuildMobileDropdown() {
+    const sidebar =
+      document.getElementById(
+        "lms-sidebar"
+      );
+
+    const dropdown =
+      document.getElementById(
+        "lms-mobile-dropdown"
+      );
+
+    if (!sidebar || !dropdown) {
+      return;
+    }
+
+    dropdown.innerHTML = "";
+
+    const groups =
+      sidebar.querySelectorAll(
+        ".lms-nav-group"
+      );
+
+    groups.forEach(function (group) {
+      const links =
+        group.querySelectorAll(
+          ".lms-nav-link"
+        );
+
+      if (!links.length) {
+        return;
+      }
+
+      const section =
+        document.createElement("section");
+
+      section.className =
+        "lms-mobile-dropdown-section";
+
+      const sourceLabel =
+        group.querySelector(
+          ".lms-nav-label"
+        );
+
+      if (sourceLabel) {
+        const heading =
+          document.createElement("div");
+
+        heading.className =
+          "lms-mobile-dropdown-label";
+
+        heading.textContent =
+          sourceLabel.textContent.trim();
+
+        section.appendChild(heading);
+      }
+
+      links.forEach(function (sourceLink) {
+        const link =
+          document.createElement("a");
+
+        link.href =
+          sourceLink.getAttribute("href") || "#";
+
+        link.className =
+          "lms-mobile-dropdown-link";
+
+        const text =
+          sourceLink.querySelector(
+            ".lms-nav-text"
+          );
+
+        link.textContent =
+          text
+            ? text.textContent.trim()
+            : sourceLink.textContent
+                .replace(/\s+/g, " ")
+                .trim();
+
+        if (
+          sourceLink.classList.contains(
+            "active"
+          )
+        ) {
+          link.classList.add("active");
+
+          link.setAttribute(
+            "aria-current",
+            "page"
+          );
+        }
+
+        section.appendChild(link);
+      });
+
+      dropdown.appendChild(section);
+    });
+
+
+    const footer =
+      sidebar.querySelector(
+        ".lms-sidebar-footer"
+      );
+
+    const returnLink =
+      footer
+        ? footer.querySelector(
+            ".lms-return-link"
+          )
+        : null;
+
+    if (returnLink) {
+      const section =
+        document.createElement("section");
+
+      section.className =
+        "lms-mobile-dropdown-section lms-mobile-dropdown-return";
+
+      const link =
+        document.createElement("a");
+
+      link.href =
+        returnLink.getAttribute("href") || "#";
+
+      link.className =
+        "lms-mobile-dropdown-link";
+
+      const text =
+        returnLink.querySelector(
+          ".lms-return-text"
+        );
+
+      link.textContent =
+        text
+          ? text.textContent.trim()
+          : "Back to Screenings4u";
+
+      section.appendChild(link);
+      dropdown.appendChild(section);
+    }
+  }
+
+
+  function injectMobileStyles() {
+    if (
+      document.getElementById(
+        "lms-mobile-dropdown-styles"
+      )
+    ) {
+      return;
+    }
+
+    const style =
+      document.createElement("style");
+
+    style.id =
+      "lms-mobile-dropdown-styles";
+
+    style.textContent = `
+      @media (max-width: ${DESKTOP_BREAKPOINT}px) {
+
+        /*
+         * Mobile uses the dropdown only.
+         * The desktop Learning Center sidebar is completely hidden.
+         */
+        .lms-sidebar,
+        #lms-sidebar,
+        .lms-sidebar-overlay,
+        #lms-sidebar-overlay {
+          display: none !important;
+        }
+
+        body.sidebar-open {
+          overflow: auto !important;
+        }
+
+        .lms-main,
+        .lms-content,
+        main {
+          width: 100% !important;
+          max-width: 100% !important;
+          margin-left: 0 !important;
+        }
+
+        .lms-mobile-dropdown-backdrop {
+          position: fixed;
+          inset: 0;
+          z-index: 9998;
+          background: rgba(17, 36, 67, .18);
+        }
+
+        .lms-mobile-dropdown {
+          position: fixed;
+          left: 12px;
+          right: 12px;
+          top: 76px;
+          z-index: 9999;
+
+          overflow-y: auto;
+          overscroll-behavior: contain;
+
+          background: #ffffff;
+          border: 1px solid #d8e0ec;
+          border-radius: 12px;
+          box-shadow: 0 18px 42px rgba(18, 45, 82, .18);
+        }
+
+        .lms-mobile-dropdown[hidden],
+        .lms-mobile-dropdown-backdrop[hidden] {
+          display: none !important;
+        }
+
+        .lms-mobile-dropdown-section {
+          padding: 8px;
+          border-bottom: 1px solid #edf1f5;
+        }
+
+        .lms-mobile-dropdown-section:last-child {
+          border-bottom: 0;
+        }
+
+        .lms-mobile-dropdown-label {
+          padding: 8px 10px 6px;
+          color: #748197;
+          font-size: 10px;
+          font-weight: 900;
+          letter-spacing: .08em;
+          text-transform: uppercase;
+        }
+
+        .lms-mobile-dropdown-link {
+          display: flex;
+          align-items: center;
+          min-height: 42px;
+          padding: 0 10px;
+          border-radius: 8px;
+          color: #273348;
+          text-decoration: none;
+          font-size: 14px;
+          font-weight: 700;
+        }
+
+        .lms-mobile-dropdown-link:hover,
+        .lms-mobile-dropdown-link.active {
+          background: #f2f6fb;
+          color: #173d78;
+        }
+
+        [data-lms-menu-toggle][aria-expanded="true"] {
+          background: #f2f6fb;
+        }
+      }
+
+
+      @media (min-width: ${DESKTOP_BREAKPOINT + 1}px) {
+        .lms-mobile-dropdown,
+        .lms-mobile-dropdown-backdrop {
+          display: none !important;
+        }
+      }
+    `;
+
+    document.head.appendChild(style);
+  }
+
+
+  function positionMobileDropdown(
+    button,
+    dropdown
+  ) {
+    const header =
+      button.closest(
+        ".lms-topbar, .lms-header, header"
+      );
+
+    const referenceRect =
+      header
+        ? header.getBoundingClientRect()
+        : button.getBoundingClientRect();
+
+    const top =
+      Math.max(
+        8,
+        Math.round(
+          referenceRect.bottom + 8
+        )
+      );
+
+    dropdown.style.top =
+      top + "px";
+
+    dropdown.style.maxHeight =
+      "calc(100vh - " +
+      (top + 12) +
+      "px)";
+  }
+
+
+  /* ============================================================
+     DESKTOP SIDEBAR
+     ============================================================
+
+     The Learning Center stylesheet already owns the desktop sidebar
+     presentation. Do not inject Customer Portal collapse/reopen controls
+     here because those controls use different CSS classes.
+  */
+
+
+  /* ============================================================
+     MOBILE NAVIGATION
+     ============================================================ */
+
+  function initializeMobileNavigation() {
+    const button =
+      document.querySelector(
+        "[data-lms-menu-toggle]"
+      );
+
+    const dropdown =
+      document.getElementById(
+        "lms-mobile-dropdown"
+      );
+
+    const backdrop =
+      document.getElementById(
+        "lms-mobile-dropdown-backdrop"
+      );
+
+    if (!button) {
+      return;
+    }
+
+    // Desktop show/hide must work even if the mobile dropdown is unavailable.
+    if (window.innerWidth > DESKTOP_BREAKPOINT) {
+      let collapsed = false;
+      try { collapsed = localStorage.getItem("s4u-lms-sidebar-collapsed") === "1"; } catch (_) {}
+      document.body.classList.toggle("lms-nav-collapsed", collapsed);
+      button.setAttribute("aria-expanded", collapsed ? "false" : "true");
+      button.setAttribute("aria-label", collapsed ? "Show navigation" : "Hide navigation");
+
+      button.addEventListener("click", function (event) {
+        if (window.innerWidth <= DESKTOP_BREAKPOINT) return;
+        event.preventDefault();
+        event.stopPropagation();
+        const next = document.body.classList.toggle("lms-nav-collapsed");
+        button.setAttribute("aria-expanded", next ? "false" : "true");
+        button.setAttribute("aria-label", next ? "Show navigation" : "Hide navigation");
+        try { localStorage.setItem("s4u-lms-sidebar-collapsed", next ? "1" : "0"); } catch (_) {}
+      });
+
+      if (!dropdown) return;
+    }
+
+    if (!dropdown) return;
+
+    button.setAttribute(
+      "aria-controls",
+      "lms-mobile-dropdown"
+    );
+
+    button.setAttribute(
+      "aria-expanded",
+      "false"
+    );
+
+
+    function closeMenu() {
+      dropdown.hidden = true;
+
+      if (backdrop) {
+        backdrop.hidden = true;
+      }
+
+      button.setAttribute(
+        "aria-expanded",
+        "false"
+      );
+
+      button.setAttribute(
+        "aria-label",
+        "Open navigation"
+      );
+    }
+
+
+    function openMenu() {
+      rebuildMobileDropdown();
+
+      positionMobileDropdown(
+        button,
+        dropdown
+      );
+
+      if (backdrop) {
+        backdrop.hidden = false;
+      }
+
+      dropdown.hidden = false;
+
+      button.setAttribute(
+        "aria-expanded",
+        "true"
+      );
+
+      button.setAttribute(
+        "aria-label",
+        "Close navigation"
+      );
+    }
+
+
+    button.addEventListener(
+      "click",
+      function (event) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        if (window.innerWidth > DESKTOP_BREAKPOINT) return;
+
+        const isOpen = button.getAttribute("aria-expanded") === "true";
+        if (isOpen) closeMenu();
+        else openMenu();
+      }
+    );
+
+    dropdown.addEventListener(
+      "click",
+      function (event) {
+        event.stopPropagation();
+
+        const link =
+          event.target.closest("a");
+
+        if (link) {
+          closeMenu();
+        }
+      }
+    );
+
+
+    if (backdrop) {
+      backdrop.addEventListener(
+        "click",
+        closeMenu
+      );
+    }
+
+
+    document.addEventListener(
+      "click",
+      function (event) {
+        if (
+          window.innerWidth <=
+            DESKTOP_BREAKPOINT &&
+          !dropdown.contains(event.target) &&
+          !button.contains(event.target)
+        ) {
+          closeMenu();
+        }
+      }
+    );
+
+
+    document.addEventListener(
+      "keydown",
+      function (event) {
+        if (event.key === "Escape") {
+          closeMenu();
+        }
+      }
+    );
+
+
+    window.addEventListener(
+      "resize",
+      closeMenu
+    );
+  }
+
+
+  /* ============================================================
+     SHELL ENHANCEMENTS
+     Replaces lms-shell-v2.js and lms-shell-v3.js without observers.
+     ============================================================ */
+  function initializeShellEnhancements() {
+    const page = (location.pathname.split("/").pop() || "lms-dashboard.html").toLowerCase();
+
+    if (page === "lms-welcome.html") {
+      document.body.classList.add("lms-onboarding-mode");
+      const app = document.querySelector(".lms-app");
+      if (app && !document.querySelector(".onboard-brandbar")) {
+        const bar = document.createElement("div");
+        bar.className = "onboard-brandbar";
+        bar.innerHTML = '<img src="images/logo2.png" alt="screenings4u"><span class="divider" aria-hidden="true"></span><span>Learning Center</span><b>New Learner Orientation</b>';
+        app.parentNode.insertBefore(bar, app);
+      }
+      return;
+    }
+
+    const button = document.querySelector("[data-lms-menu-toggle]");
+    if (button && window.innerWidth > DESKTOP_BREAKPOINT) {
+      let collapsed = false;
+      try { collapsed = localStorage.getItem("s4u-lms-sidebar-collapsed") === "1"; } catch (_) {}
+      document.body.classList.toggle("lms-nav-collapsed", collapsed);
+      button.setAttribute("aria-expanded", collapsed ? "false" : "true");
+    }
+
+    const titles = {
+      "lms-dashboard.html":"Home", "lms-my-courses.html":"My Learning", "lms-courses.html":"Course Library",
+      "lms-course-details.html":"Course Details", "lms-progress.html":"Progress", "lms-certificates.html":"Certificates",
+      "lms-documents.html":"Documents", "lms-orders.html":"Orders", "lms-live-training.html":"Live Training",
+      "lms-my-appointments.html":"My Appointments", "lms-schedule-appointment.html":"Schedule Appointment",
+      "lms-customer-scheduling.html":"Scheduling", "lms-support.html":"Training Support", "lms-notifications.html":"Notifications",
+      "lms-account.html":"Account", "lms-quiz.html":"Knowledge Check", "lms-assessment.html":"Assessment"
+    };
+    const left = document.querySelector(".lms-topbar-left");
+    if (left && !left.querySelector(".s4u-page-title")) {
+      const title = document.createElement("span");
+      title.className = "s4u-page-title";
+      title.textContent = titles[page] || document.title.split("|")[0].trim() || "Learning Center";
+      left.appendChild(title);
+    }
+  }
+
+})();

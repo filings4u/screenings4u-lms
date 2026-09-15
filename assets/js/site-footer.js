@@ -44,7 +44,7 @@ function initS4UFooter() {
         <div class="footer-brand-area">
           <a class="footer-brand" href="${TRAINING}/" aria-label="screenings4u Learning Center home">
             <img
-              src="https://rgsrubdtljyxmnihwlah.supabase.co/storage/v1/object/public/branding/logo.png"
+              src="images/logo2.png"
               alt="screenings4u"
               class="footer-logo"
               width="1261"

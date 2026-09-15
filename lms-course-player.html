@@ -12,6 +12,7 @@
   <link rel="stylesheet" href="assets/css/lms.css">
 <link rel="stylesheet" href="assets/css/lms-refinement.css">
 <link rel="stylesheet" href="assets/css/lms-ui-modals.css">
+<link rel="stylesheet" href="assets/css/lms-course-player-2026.css?v=20260915-4">
 
   <style>
     /* ==========================================================
@@ -615,9 +616,10 @@
     }
     @media(max-width:420px){.lms-search-wrap{display:none}.lms-topbar{grid-template-columns:1fr auto}.course-player-header h1,.course-player-title{font-size:25px}}
   </style>
+  <link rel="stylesheet" href="assets/css/lms-shell-v2.css?v=20260915-2">
 </head>
 
-<body>
+<body class="lms-course-player-immersive">
 
   <div class="lms-app">
 
@@ -779,8 +781,10 @@
         <section class="course-player-header">
 
           <div>
-            <div class="course-player-kicker">
-              DOT Compliance Training
+            <div class="course-player-brandline">
+              <img src="images/logo2.png" alt="screenings4u" class="course-player-brand-logo">
+              <span class="course-player-brand-divider" aria-hidden="true"></span>
+              <span class="course-player-brand-center">Learning Center</span>
             </div>
 
             <h1 class="course-player-title">
@@ -830,6 +834,13 @@
                   <span data-current-lesson-label>
                     Lesson 1 · Getting Started
                   </span>
+                </div>
+
+                <div class="course-player-player-tools">
+                  <button type="button" class="course-player-tool curriculum-toggle" data-curriculum-toggle aria-expanded="false" aria-controls="course-curriculum-panel">
+                    <svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                    <span>Curriculum</span>
+                  </button>
                 </div>
 
                 <span
@@ -914,6 +925,7 @@
 
           <aside
             class="course-player-sidebar"
+            id="course-curriculum-panel"
             aria-label="Course curriculum"
           >
 
@@ -1302,13 +1314,12 @@
 <script src="assets/js/supabase-config.js"></script>
 <script src="assets/js/core-auth.js"></script>
 <script src="assets/js/ui.js"></script>
-<script src="assets/js/portal-auth-guard.js"></script>
 <script src="assets/js/training-auth-guard.js"></script>
 <script src="assets/js/lms-sidebar.js"></script>
   <script src="assets/js/lms.js?v=20260830-2110"></script>
-  <script src="assets/js/lms-course-player.js?v=20260830-2110"></script>
+  <script src="assets/js/lms-course-player.js?v=20260915-2"></script>
+  <script src="assets/js/lms-course-player-2026.js?v=20260915-2"></script>
 
   <script src="assets/js/branded-popups.js?v=20260911-1"></script>
-
 </body>
 </html>

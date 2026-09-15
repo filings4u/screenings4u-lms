@@ -394,16 +394,10 @@
       session.user;
 
 
-    const [
-      profile,
-      roles
-    ] = await Promise.all([
-
-      getProfile(user.id),
-
-      getRoles(user.id)
-
-    ]);
+    // Training authorization is handled by can_access_training_portal().
+    // Do not fetch role assignments on every LMS page navigation.
+    const profile = await getProfile(user.id);
+    const roles = [];
 
 
     state = {
@@ -627,35 +621,17 @@
       PORTALS.training.login;
 
 
-    const session =
-      await getSession();
-
-
     /* ----------------------------------------------------------
-       NO SESSION
+       LOAD AUTH STATE ONCE
+       initialize() performs the single session lookup.
        ---------------------------------------------------------- */
 
-    if (!session?.user) {
+    const authState = await initialize({ force: true });
 
-      window.location.replace(
-        buildLoginRedirect(
-          resolvedLoginPage
-        )
-      );
-
+    if (!authState?.session?.user) {
+      window.location.replace(buildLoginRedirect(resolvedLoginPage));
       return null;
-
     }
-
-
-    /* ----------------------------------------------------------
-       LOAD FRESH AUTH STATE
-       ---------------------------------------------------------- */
-
-    const authState =
-      await initialize({
-        force: true
-      });
 
 
     /* ----------------------------------------------------------
