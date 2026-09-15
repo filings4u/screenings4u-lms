@@ -15,6 +15,46 @@
     );
   }
 
+  function findEnrollButton() {
+    const candidates = Array.from(
+      header.querySelectorAll("a, button")
+    );
+
+    return candidates.find(function (element) {
+      const text = String(element.textContent || "")
+        .replace(/\s+/g, " ")
+        .trim()
+        .toLowerCase();
+
+      return text === "enroll now";
+    }) || null;
+  }
+
+  function placeMobileHeaderActions() {
+    if (!toggle) return;
+
+    const inner = header.querySelector(
+      ".training-nav-inner, .training-site-nav-inner, .training-header-inner, .nav-inner, .container"
+    ) || header;
+
+    let actions = header.querySelector(".training-mobile-actions");
+
+    if (!actions) {
+      actions = document.createElement("div");
+      actions.className = "training-mobile-actions";
+      inner.appendChild(actions);
+    }
+
+    const enroll = findEnrollButton();
+
+    if (enroll) {
+      enroll.classList.add("training-mobile-enroll");
+      actions.appendChild(enroll);
+    }
+
+    actions.appendChild(toggle);
+  }
+
   function closeMenu() {
     header.classList.remove("training-mobile-open");
     document.body.classList.remove("training-nav-open");
@@ -71,6 +111,8 @@
       (inner || header).appendChild(toggle);
     }
 
+    placeMobileHeaderActions();
+
     toggle.setAttribute("aria-controls", nav.id);
     toggle.setAttribute("aria-expanded", "false");
     toggle.setAttribute("aria-label", "Open training navigation");
@@ -102,6 +144,7 @@
 
     window.addEventListener("resize", function () {
       if (window.innerWidth > BREAKPOINT) closeMenu();
+      placeMobileHeaderActions();
     });
 
     ensureBackdrop();

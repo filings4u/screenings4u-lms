@@ -781,7 +781,7 @@
           display: flex !important;
           position: fixed !important;
           inset: 0 auto 0 0 !important;
-          width: min(320px, 86vw) !important;
+          width: min(300px, 86vw) !important;
           height: 100dvh !important;
           max-height: 100dvh !important;
           margin: 0 !important;
@@ -808,13 +808,115 @@
           width: 100%;
           min-width: 0;
           height: 100%;
+          overflow: hidden !important;
+        }
+
+        /*
+           The base LMS stylesheet intentionally collapses the sidebar at
+           <=1100px for small desktop screens. Mobile sits inside that same
+           breakpoint, so the drawer must explicitly restore all navigation
+           labels when it opens.
+        */
+        body:not(.lms-onboarding-mode) .lms-brand-copy,
+        body:not(.lms-onboarding-mode) .lms-nav-text,
+        body:not(.lms-onboarding-mode) .lms-nav-label,
+        body:not(.lms-onboarding-mode) .lms-nav-badge,
+        body:not(.lms-onboarding-mode) .lms-return-text,
+        body.lms-nav-collapsed:not(.lms-onboarding-mode) .lms-brand-copy,
+        body.lms-nav-collapsed:not(.lms-onboarding-mode) .lms-nav-text,
+        body.lms-nav-collapsed:not(.lms-onboarding-mode) .lms-nav-label,
+        body.lms-nav-collapsed:not(.lms-onboarding-mode) .lms-nav-badge,
+        body.lms-nav-collapsed:not(.lms-onboarding-mode) .lms-return-text {
+          opacity: 1 !important;
+          visibility: visible !important;
+          pointer-events: auto !important;
+          width: auto !important;
+          max-width: none !important;
+          overflow: visible !important;
+        }
+
+        body:not(.lms-onboarding-mode) .lms-sidebar-brand {
+          flex: 0 0 auto;
+        }
+
+        body:not(.lms-onboarding-mode) .lms-brand {
+          min-height: 96px !important;
+          height: auto !important;
+          padding: 16px 18px !important;
+        }
+
+        body:not(.lms-onboarding-mode) .lms-brand-logo {
+          width: 145px !important;
+          max-width: 145px !important;
+          max-height: 48px !important;
+          opacity: 1 !important;
+        }
+
+        body:not(.lms-onboarding-mode) .lms-brand-copy {
+          display: block !important;
+          margin-top: 5px !important;
+        }
+
+        body:not(.lms-onboarding-mode) .lms-brand-subtitle {
+          display: block !important;
+          font-size: 10px !important;
+          letter-spacing: .11em !important;
+          text-transform: uppercase !important;
+          color: rgba(255,255,255,.62) !important;
         }
 
         .lms-sidebar-scroll {
+          flex: 1 1 auto !important;
           min-height: 0;
+          padding: 18px 14px !important;
           overflow-y: auto !important;
           overscroll-behavior: contain;
           -webkit-overflow-scrolling: touch;
+        }
+
+        body:not(.lms-onboarding-mode) .lms-nav-group + .lms-nav-group {
+          margin-top: 20px !important;
+        }
+
+        body:not(.lms-onboarding-mode) .lms-nav-label {
+          display: block !important;
+          margin: 0 0 8px 12px !important;
+          padding: 0 !important;
+          min-height: 0 !important;
+          background: transparent !important;
+          color: rgba(255,255,255,.46) !important;
+          font-size: 10px !important;
+          font-weight: 800 !important;
+          letter-spacing: .12em !important;
+          text-transform: uppercase !important;
+          text-align: left !important;
+        }
+
+        body:not(.lms-onboarding-mode) .lms-nav-link,
+        body:not(.lms-onboarding-mode) .lms-return-link,
+        body.lms-nav-collapsed:not(.lms-onboarding-mode) .lms-nav-link,
+        body.lms-nav-collapsed:not(.lms-onboarding-mode) .lms-return-link {
+          justify-content: flex-start !important;
+          width: 100% !important;
+          min-height: 46px !important;
+          padding: 0 13px !important;
+        }
+
+        body:not(.lms-onboarding-mode) .lms-nav-icon {
+          flex: 0 0 22px !important;
+        }
+
+        body:not(.lms-onboarding-mode) .lms-nav-text,
+        body:not(.lms-onboarding-mode) .lms-return-text {
+          display: block !important;
+          margin-left: 12px !important;
+          white-space: normal !important;
+          line-height: 1.3 !important;
+        }
+
+        body:not(.lms-onboarding-mode) .lms-sidebar-footer {
+          flex: 0 0 auto;
+          padding: 12px 14px 16px !important;
         }
 
         .lms-sidebar-overlay,
