@@ -1,7 +1,7 @@
 (function(){
 'use strict';
-const STRIPE_KEY='pk_live_51U8CQJEHE8bc4Otur9RVR1HsajJbmSbmRr5z0jGw1v5jgrKrzmnaaRTIV5v5CbEZIwFJLujrU0AI3lOZFDaNg4CG005XAPqkx3';
-let stripe,elements,orderId,courseId,productSlug,enrollmentId;
+const STRIPE_KEY=window.SCREENINGS4U_STRIPE_PUBLISHABLE_KEY||'pk_live_51U8CQJEHE8bc4Otur9RVR1HsajJbmSbmRr5z0jGw1v5jgrKrzmnaaRTIV5v5CbEZIwFJLujrU0AI3lOZFDaNg4CG005XAPqkx3';
+let stripe,elements,paymentElement,orderId,courseId,productSlug,enrollmentId;
 let appliedDiscountCode="";
 const $=id=>document.getElementById(id);
 const COURSE_DETAILS={
@@ -57,17 +57,26 @@ async function initialize(auth){
   const headers={'Content-Type':'application/json','apikey':window.SCREENINGS4U_SUPABASE_ANON_KEY};
   if(auth.session?.access_token)headers.Authorization='Bearer '+auth.session.access_token;
   const required=[['firstName','first name'],['lastName','last name'],['email','email address'],['address','billing address'],['city','city'],['state','state'],['zip','ZIP code']];for(const [id,label] of required){if(!$(id)?.value.trim())throw new Error('Enter your '+label+' to continue.');}const r=await fetch(window.SCREENINGS4U_SUPABASE_URL+'/functions/v1/lms-create-payment-intent',{method:'POST',headers,body:JSON.stringify({courseId,product:productSlug,enrollmentId,discountCode:appliedDiscountCode||(($('discountCode')?.value||'').trim().toUpperCase()),customer:{firstName:$('firstName').value.trim(),lastName:$('lastName').value.trim(),email:$('email').value.trim(),phone:$('phone').value.trim()},billing:{line1:$('address').value.trim(),line2:$('address2').value.trim(),city:$('city').value.trim(),state:$('state').value.trim(),postalCode:$('zip').value.trim()}})});
-  const data=await r.json();
-  if(!r.ok){if(data.alreadyEnrolled){location.href='lms-my-courses.html';return;}throw new Error(data.error||'Unable to start checkout.');}
+  const data=await r.json().catch(()=>({}));
+  if(!r.ok){if(data.alreadyEnrolled){location.href='lms-my-courses.html';return;}const detail=data.stage?(' ['+data.stage+']'):'';console.error('lms-create-payment-intent failed',data);throw new Error((data.error||'Unable to start checkout.')+detail);}
   orderId=data.orderId;renderTotals(data);if(data.discountCode){appliedDiscountCode=data.discountCode;$('discountCode').value=data.discountCode;setDiscountMessage(data.discountCode+' applied.','ok');}$('courseName').textContent=data.product?.name||'Training Purchase';$('coursePrice').textContent=money(data.total,data.currency);renderDetails(data);if(data.customerEmail){$('email').value=data.customerEmail;$('email').readOnly=true;}
-  stripe=Stripe(STRIPE_KEY);elements=stripe.elements({clientSecret:data.clientSecret,appearance:{theme:'stripe',variables:{colorPrimary:'#ff6500',borderRadius:'9px'}}});elements.create('payment').mount('#payment-element');
+  if(!window.Stripe)throw new Error('Stripe.js did not load. Refresh the page and try again.');
+  if(!data.clientSecret)throw new Error('Stripe did not return a payment client secret.');
+  stripe=Stripe(STRIPE_KEY);
+  if(paymentElement){try{paymentElement.destroy();}catch{}}
+  elements=stripe.elements({clientSecret:data.clientSecret,appearance:{theme:'stripe',variables:{colorPrimary:'#ff6500',borderRadius:'9px'}}});
+  paymentElement=elements.create('payment');
+  paymentElement.mount('#payment-element');
   $('payButton').disabled=false;$('payButton').textContent='Pay '+money(data.total,data.currency)+' & Enroll';$('payButton').onclick=pay;$('status').className='checkout-error';$('status').textContent='';
  }catch(e){console.error(e);status(e.message||'Unable to load checkout.');$('payButton').disabled=false;}
 }
 async function pay(){
+ if(!stripe||!elements){status('Secure payment is not ready yet.');return;}
  $('payButton').disabled=true;status('Processing payment...','ok');
- const result=await stripe.confirmPayment({elements,confirmParams:{return_url:new URL('success.html?order='+encodeURIComponent(orderId),location.origin+'/').href}});
- if(result.error){status(result.error.message||'Payment could not be completed.');$('payButton').disabled=false;}
+ try{
+  const result=await stripe.confirmPayment({elements,confirmParams:{return_url:new URL('success.html?order='+encodeURIComponent(orderId),location.origin+'/').href}});
+  if(result.error){console.error('Stripe confirmPayment error',result.error);status(result.error.message||'Payment could not be completed.');$('payButton').disabled=false;}
+ }catch(e){console.error('Stripe payment confirmation failed',e);status(e?.message||'Payment could not be completed.');$('payButton').disabled=false;}
 }
 document.addEventListener('DOMContentLoaded',start);
 })();
