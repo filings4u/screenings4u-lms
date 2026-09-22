@@ -67,8 +67,9 @@ async function initialize(auth){
   elements=stripe.elements({clientSecret:data.clientSecret,appearance:{theme:'stripe',variables:{colorPrimary:'#ff6500',borderRadius:'9px'}}});
   paymentElement=elements.create('payment');
   paymentElement.mount('#payment-element');
+  const paymentSection=$('stripePaymentSection');if(paymentSection){paymentSection.classList.remove('hidden');paymentSection.setAttribute('aria-hidden','false');}
   $('payButton').disabled=false;$('payButton').textContent='Pay '+money(data.total,data.currency)+' & Enroll';$('payButton').onclick=pay;$('status').className='checkout-error';$('status').textContent='';
- }catch(e){console.error(e);status(e.message||'Unable to load checkout.');$('payButton').disabled=false;}
+ }catch(e){console.error(e);const paymentSection=$('stripePaymentSection');if(paymentSection){paymentSection.classList.add('hidden');paymentSection.setAttribute('aria-hidden','true');}status(e.message||'Unable to load checkout.');$('payButton').disabled=false;$('payButton').textContent='Continue to Payment';}
 }
 async function pay(){
  if(!stripe||!elements){status('Secure payment is not ready yet.');return;}
