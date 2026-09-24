@@ -1984,7 +1984,7 @@
         "id,user_id,course_id,status,progress_percent,enrolled_at,started_at,completed_at,last_activity_at,expires_at,extension_days_total"
       )
       .eq("user_id", state.user.id)
-      .in("status", ["active", "completed"])
+      .in("status", ["active", "completed", "expired"])
       .order("last_activity_at", {
         ascending: false,
         nullsFirst: false
@@ -2254,7 +2254,8 @@
       .map(function (enrollment, index) {
         var course = state.courses.get(enrollment.course_id);
         var progress = percent(enrollment.progress_percent);
-        var completed = enrollment.status === "completed" || progress >= 100;
+        var expired = enrollment.status === "expired" || (enrollment.expires_at && new Date(enrollment.expires_at).getTime() <= Date.now());
+        var completed = !expired && (enrollment.status === "completed" || progress >= 100);
         var lessonCount = lessonsForCourse(course.id).length;
         var certificate = certificateForEnrollment(enrollment.id);
 
@@ -2265,17 +2266,20 @@
               ? "course-orange"
               : "";
 
-        var statusClass = completed ? "completed" : "in-progress";
-        var statusLabel = completed
+        var statusClass = expired ? "expired" : (completed ? "completed" : "in-progress");
+        var statusLabel = expired ? "Expired" : (completed
           ? "Completed"
           : progress > 0
             ? "In Progress"
-            : "Not Started";
+            : "Not Started");
 
         var actionHref;
         var actionLabel;
 
-        if (completed && certificate && certificate.status === "issued") {
+        if (expired) {
+          actionHref = extensionCheckoutUrl(enrollment.id);
+          actionLabel = "Extend 30 Days";
+        } else if (completed && certificate && certificate.status === "issued") {
           actionHref =
             "lms-certificates.html?certificate=" +
             encodeURIComponent(certificate.id);
@@ -2333,12 +2337,12 @@
 
                 <div class="my-course-card-access">Access through ${escapeHtml(formatDate(enrollment.expires_at))}${Number(enrollment.extension_days_total||0)>0 ? " · Extended "+Number(enrollment.extension_days_total||0)+" days" : ""}</div>
                 <div class="my-course-card-actions">
-                  <a
+                  ${expired ? "" : `<a
                     href="${extensionCheckoutUrl(enrollment.id)}"
                     class="my-course-card-link my-course-card-extend"
                   >
                     Extend · $100
-                  </a>
+                  </a>`}
 
                   <a
                     href="${actionHref}"
