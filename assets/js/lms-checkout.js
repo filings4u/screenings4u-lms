@@ -38,6 +38,46 @@ async function session(){try{const c=await window.getScreenings4uSupabase?.();if
 function setDiscountMessage(message,type=''){const el=$('discountMessage');if(!el)return;el.textContent=message||'';el.className='discount-message'+(type?' '+type:'');}
 function renderTotals(data){const box=$('checkoutTotals');if(!box)return;const subtotal=Number(data?.subtotal ?? data?.total ?? 0),discount=Number(data?.discountAmount||0),total=Number(data?.total ?? subtotal-discount),currency=data?.currency||'usd';$('subtotalDisplay').textContent=money(subtotal,currency);$('totalDisplay').textContent=money(total,currency);const row=$('discountTotalRow');if(discount>0){row.style.display='flex';$('discountDisplay').textContent='−'+money(discount,currency)}else{row.style.display='none'}box.style.display='block';}
 async function validateDiscountCode(){const code=($('discountCode')?.value||'').trim().toUpperCase();if(!code){appliedDiscountCode='';setDiscountMessage('Enter a discount code.','err');return false;}try{const auth=await session(),headers={'Content-Type':'application/json','apikey':window.SCREENINGS4U_SUPABASE_ANON_KEY};if(auth.session?.access_token)headers.Authorization='Bearer '+auth.session.access_token;setDiscountMessage('Checking code…');$('applyDiscount').disabled=true;const r=await fetch(window.SCREENINGS4U_SUPABASE_URL+'/functions/v1/validate-discount-code',{method:'POST',headers,body:JSON.stringify({code,courseId,trainingProduct:productSlug,customerEmail:$('email').value.trim(),channel:'training'})});const d=await r.json();if(!r.ok||!d.valid)throw new Error(d.message||d.error||'That discount code is not valid.');appliedDiscountCode=code;setDiscountMessage((d.name||code)+' applied: '+money(d.discountAmount,d.currency||'usd')+' off.','ok');return true;}catch(e){appliedDiscountCode='';setDiscountMessage(e.message||'Unable to validate discount code.','err');return false;}finally{$('applyDiscount').disabled=false;}}
+function fillIfEmpty(id,value){const el=$(id);if(el&&!String(el.value||'').trim()&&value!=null)el.value=String(value);}
+async function prefillCustomer(auth){
+ if(!auth?.session?.user)return;
+ const user=auth.session.user;
+ fillIfEmpty('email',user.email||'');
+ if($('email'))$('email').readOnly=true;
+ const meta=user.user_metadata||{};
+ fillIfEmpty('firstName',meta.first_name||meta.firstName||'');
+ fillIfEmpty('lastName',meta.last_name||meta.lastName||'');
+ fillIfEmpty('phone',meta.phone||'');
+ if(!auth.client)return;
+ try{
+  const r=await auth.client.from('user_profiles').select('first_name,last_name,email,phone,address_line_1,address_line_2,city,state,postal_code').eq('id',user.id).maybeSingle();
+  if(r.error)throw r.error;
+  const p=r.data||{};
+  fillIfEmpty('firstName',p.first_name||'');
+  fillIfEmpty('lastName',p.last_name||'');
+  fillIfEmpty('email',p.email||user.email||'');
+  fillIfEmpty('phone',p.phone||'');
+  fillIfEmpty('address',p.address_line_1||'');
+  fillIfEmpty('address2',p.address_line_2||'');
+  fillIfEmpty('city',p.city||'');
+  fillIfEmpty('state',p.state||'');
+  fillIfEmpty('zip',p.postal_code||'');
+ }catch(e){console.warn('Unable to prefill Learning Center checkout profile.',e);}
+}
+function firstMissingRequired(){
+ const required=[['firstName','first name'],['lastName','last name'],['email','email address'],['address','billing address'],['city','city'],['state','state'],['zip','ZIP code']];
+ for(const [id,label] of required){const el=$(id);if(!el||!String(el.value||'').trim())return {id,label,el};}
+ return null;
+}
+async function continueToPayment(){
+ const auth=await session();
+ if(productSlug==='training_course_extension_30_days'&&!auth.session){location.href='training-login.html?return='+encodeURIComponent(location.pathname+location.search);return;}
+ await prefillCustomer(auth);
+ const missing=firstMissingRequired();
+ if(missing){status('Enter your '+missing.label+' to continue.');missing.el?.focus();return;}
+ $('payButton').disabled=true;
+ await initialize(auth);
+}
 async function start(){
  const params=new URLSearchParams(location.search);courseId=params.get('course')||'';productSlug=params.get('product')||params.get('service')||'';enrollmentId=params.get('enrollment')||params.get('enrollment_id')||'';window.trainingServiceId=productSlug;if($('applyDiscount'))$('applyDiscount').onclick=validateDiscountCode;
  if(!courseId&&!productSlug){status('No training course or product was selected.');return;}
@@ -45,18 +85,18 @@ async function start(){
  preloadDetails();
  const auth=await session();
  if(productSlug==='training_course_extension_30_days'&&!auth.session){location.href='training-login.html?return='+encodeURIComponent(location.pathname+location.search);return;}
- if(auth.session?.user){$('email').value=auth.session.user.email||'';$('email').readOnly=true;}
- const email=$('email').value.trim();
- if(!auth.session && !email){$('payButton').disabled=false;$('payButton').textContent='Continue to Payment';$('payButton').onclick=initializeGuest;return;}
- await initialize(auth);
+ await prefillCustomer(auth);
+ $('payButton').disabled=false;
+ $('payButton').textContent='Continue to Payment';
+ $('payButton').onclick=continueToPayment;
+ status('');
 }
-async function initializeGuest(){if(!$('email').value.trim()){status('Enter your email address to continue.');return;}$('payButton').disabled=true;await initialize(await session());}
 async function initialize(auth){
  try{
   status('Preparing secure checkout...','ok');
   const headers={'Content-Type':'application/json','apikey':window.SCREENINGS4U_SUPABASE_ANON_KEY};
   if(auth.session?.access_token)headers.Authorization='Bearer '+auth.session.access_token;
-  const required=[['firstName','first name'],['lastName','last name'],['email','email address'],['address','billing address'],['city','city'],['state','state'],['zip','ZIP code']];for(const [id,label] of required){if(!$(id)?.value.trim())throw new Error('Enter your '+label+' to continue.');}const r=await fetch(window.SCREENINGS4U_SUPABASE_URL+'/functions/v1/lms-create-payment-intent',{method:'POST',headers,body:JSON.stringify({courseId,product:productSlug,enrollmentId,discountCode:appliedDiscountCode||(($('discountCode')?.value||'').trim().toUpperCase()),customer:{firstName:$('firstName').value.trim(),lastName:$('lastName').value.trim(),email:$('email').value.trim(),phone:$('phone').value.trim()},billing:{line1:$('address').value.trim(),line2:$('address2').value.trim(),city:$('city').value.trim(),state:$('state').value.trim(),postalCode:$('zip').value.trim()}})});
+  const missing=firstMissingRequired();if(missing){missing.el?.focus();throw new Error('Enter your '+missing.label+' to continue.');}const r=await fetch(window.SCREENINGS4U_SUPABASE_URL+'/functions/v1/lms-create-payment-intent',{method:'POST',headers,body:JSON.stringify({courseId,product:productSlug,enrollmentId,discountCode:appliedDiscountCode||(($('discountCode')?.value||'').trim().toUpperCase()),customer:{firstName:$('firstName').value.trim(),lastName:$('lastName').value.trim(),email:$('email').value.trim(),phone:$('phone').value.trim()},billing:{line1:$('address').value.trim(),line2:$('address2').value.trim(),city:$('city').value.trim(),state:$('state').value.trim(),postalCode:$('zip').value.trim()}})});
   const data=await r.json().catch(()=>({}));
   if(!r.ok){if(data.alreadyEnrolled){location.href='lms-my-courses.html';return;}const detail=data.stage?(' ['+data.stage+']'):'';console.error('lms-create-payment-intent failed',data);throw new Error((data.error||'Unable to start checkout.')+detail);}
   orderId=data.orderId;renderTotals(data);if(data.discountCode){appliedDiscountCode=data.discountCode;$('discountCode').value=data.discountCode;setDiscountMessage(data.discountCode+' applied.','ok');}$('courseName').textContent=data.product?.name||'Training Purchase';$('coursePrice').textContent=money(data.total,data.currency);renderDetails(data);if(data.customerEmail){$('email').value=data.customerEmail;$('email').readOnly=true;}
@@ -68,7 +108,7 @@ async function initialize(auth){
   paymentElement=elements.create('payment');
   paymentElement.mount('#payment-element');
   const paymentSection=$('stripePaymentSection');if(paymentSection){paymentSection.classList.remove('hidden');paymentSection.setAttribute('aria-hidden','false');}
-  $('payButton').disabled=false;$('payButton').textContent='Pay '+money(data.total,data.currency)+' & Enroll';$('payButton').onclick=pay;$('status').className='checkout-error';$('status').textContent='';
+  const actionLabel=productSlug==='training_course_extension_30_days'?'Extend Course':(data.product?.kind==='supplies'?'Complete Order':(data.product?.kind==='group'?'Purchase Seats':'Enroll'));$('payButton').disabled=false;$('payButton').textContent='Pay '+money(data.total,data.currency)+' & '+actionLabel;$('payButton').onclick=pay;$('status').className='checkout-error';$('status').textContent='';
  }catch(e){console.error(e);const paymentSection=$('stripePaymentSection');if(paymentSection){paymentSection.classList.add('hidden');paymentSection.setAttribute('aria-hidden','true');}status(e.message||'Unable to load checkout.');$('payButton').disabled=false;$('payButton').textContent='Continue to Payment';}
 }
 async function pay(){
