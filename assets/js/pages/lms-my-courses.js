@@ -2084,7 +2084,7 @@
   }
 
   function extensionCheckoutUrl(enrollmentId) {
-    return "checkout.html?product=training_course_extension_30_days&enrollment=" +
+    return "lms-checkout.html?product=training_course_extension_30_days&enrollment=" +
       encodeURIComponent(enrollmentId);
   }
 

@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Opening Secure Checkout | screenings4u Learning Center</title>
+  <script>
+    (function () {
+      var target = "lms-checkout.html" + window.location.search + window.location.hash;
+      window.location.replace(target);
+    })();
+  </script>
+</head>
+<body>
+  <p>Opening secure checkout… <a id="checkoutFallback" href="lms-checkout.html">Continue to checkout</a></p>
+  <script>document.getElementById("checkoutFallback").href="lms-checkout.html"+location.search+location.hash;</script>
+</body>
+</html>
