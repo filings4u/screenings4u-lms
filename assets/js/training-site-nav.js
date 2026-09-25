@@ -15,7 +15,6 @@
           <a href="index.html#pricing">Pricing</a>
           <a href="group-training.html">Group Training</a>
           <a href="collector-training-supplies.html">Training Supplies</a>
-          <a href="course-extension.html">Extend Training</a>
           <a href="index.html#faq">FAQ</a>
         </nav>
         <div class="training-header-actions">

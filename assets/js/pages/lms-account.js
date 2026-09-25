@@ -18,7 +18,7 @@ async function init(){
   s.db=a.client;
   s.user=a.user;
   var r=await s.db.from("user_profiles")
-    .select("id,first_name,last_name,display_name,email,phone,company_name,avatar_path,is_active")
+    .select("id,first_name,last_name,display_name,email,phone,status,avatar_path,metadata")
     .eq("id",s.user.id)
     .single();
   if(r.error) throw r.error;
@@ -31,19 +31,20 @@ async function init(){
   bind();
 }
 
-function avatarUrl(path){
+async function avatarUrl(path){
   if(!path) return "";
   if(/^https?:\/\//i.test(path)) return path;
-  var result=s.db.storage.from(AVATAR_BUCKET).getPublicUrl(path);
-  return result&&result.data?result.data.publicUrl:"";
+  var result=await s.db.storage.from(AVATAR_BUCKET).createSignedUrl(path,3600);
+  if(result.error) throw result.error;
+  return result&&result.data?result.data.signedUrl:"";
 }
 
-function paintAvatar(containerSelector,imageSelector,fallbackSelector,initials){
+async function paintAvatar(containerSelector,imageSelector,fallbackSelector,initials){
   var container=document.querySelector(containerSelector);
   var img=document.querySelector(imageSelector);
   var fallback=document.querySelector(fallbackSelector);
   if(!container||!img||!fallback) return;
-  var url=avatarUrl(s.profile.avatar_path);
+  var url=await avatarUrl(s.profile.avatar_path);
   fallback.textContent=initials;
   if(!url){
     img.hidden=true;
@@ -78,7 +79,7 @@ function render(){
   val("lastName",s.profile.last_name||"");
   val("email",e);
   val("phone",s.profile.phone||"");
-  val("organization",s.profile.company_name||"");
+  val("organization",s.profile.metadata?.company_name||"");
   check("prefCourseReminders",s.prefs.course_progress_reminders);
   check("prefCertificateNotifications",s.prefs.certificate_notifications);
   check("prefNewCourseUpdates",s.prefs.new_course_updates);
@@ -125,7 +126,7 @@ async function uploadAvatar(file){
     var update=await s.db.from("user_profiles")
       .update({avatar_path:path,updated_at:new Date().toISOString()})
       .eq("id",s.user.id)
-      .select("id,first_name,last_name,display_name,email,phone,company_name,avatar_path,is_active")
+      .select("id,first_name,last_name,display_name,email,phone,status,avatar_path,metadata")
       .single();
     if(update.error) throw update.error;
     s.profile=update.data;
@@ -153,7 +154,7 @@ async function removeAvatar(){
     var update=await s.db.from("user_profiles")
       .update({avatar_path:null,updated_at:new Date().toISOString()})
       .eq("id",s.user.id)
-      .select("id,first_name,last_name,display_name,email,phone,company_name,avatar_path,is_active")
+      .select("id,first_name,last_name,display_name,email,phone,status,avatar_path,metadata")
       .single();
     if(update.error) throw update.error;
     s.profile=update.data;
@@ -184,9 +185,9 @@ async function save(ev){
   try{
     var fn=get("firstName").trim(),ln=get("lastName").trim();
     var r=await s.db.from("user_profiles")
-      .update({first_name:fn||null,last_name:ln||null,display_name:[fn,ln].filter(Boolean).join(" ")||null,phone:get("phone").trim()||null,company_name:get("organization").trim()||null,updated_at:new Date().toISOString()})
+      .update({first_name:fn||null,last_name:ln||null,display_name:[fn,ln].filter(Boolean).join(" ")||null,phone:get("phone").trim()||null,metadata:{...(s.profile.metadata||{}),company_name:get("organization").trim()||null},updated_at:new Date().toISOString()})
       .eq("id",s.user.id)
-      .select("id,first_name,last_name,display_name,email,phone,company_name,avatar_path,is_active")
+      .select("id,first_name,last_name,display_name,email,phone,status,avatar_path,metadata")
       .single();
     if(r.error) throw r.error;
     s.profile=r.data;

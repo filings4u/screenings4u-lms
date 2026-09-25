@@ -1,6 +1,6 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
+<html lang="en" class="s4u-auth-pending">
+<head><style id="s4u-preauth-style">html.s4u-auth-pending body,html.s4u-onboarding-pending body{visibility:hidden!important}html.s4u-authenticated body{visibility:visible!important}</style>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#24467f">
@@ -13,7 +13,7 @@
   <link href="assets/css/lms-shell-v3.css?v=20260915-2" rel="stylesheet">
   <link href="assets/css/lms-orders.css?v=20260915-5" rel="stylesheet">
 </head>
-<body class="lms-orders-page">
+<body class="lms-orders-page" data-s4u-portal="training">
   <div class="lms-app">
     <div id="lms-sidebar-target"></div>
 
@@ -145,7 +145,8 @@
   <script src="assets/js/supabase-config.js"></script>
   <script src="assets/js/core-auth.js"></script>
   <script src="assets/js/ui.js"></script>
-  <script src="assets/js/training-auth-guard.js"></script>
+  <script src="assets/js/session-security.js?v=20260925-lockdown"></script>
+<script src="assets/js/training-auth-guard.js"></script>
   <script src="assets/js/lms-sidebar.js"></script>
   <script src="assets/js/lms.js?v=20260830-2000"></script>
   <script src="assets/js/branded-popups.js?v=20260911-1"></script>

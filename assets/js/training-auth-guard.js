@@ -158,6 +158,11 @@
 
       if (!(await verifyOnboarding(state))) return null;
 
+      if (window.S4USessionSecurity?.preflight) {
+        const allowed = await window.S4USessionSecurity.preflight(state);
+        if (!allowed) return null;
+      }
+
       document.documentElement.classList.remove("s4u-auth-pending", "s4u-onboarding-pending");
       document.documentElement.classList.add("s4u-authenticated");
 

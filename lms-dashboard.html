@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 
-<html lang="en">
-<head>
+<html lang="en" class="s4u-auth-pending">
+<head><style id="s4u-preauth-style">html.s4u-auth-pending body,html.s4u-onboarding-pending body{visibility:hidden!important}html.s4u-authenticated body{visibility:visible!important}</style>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <meta content="#24467f" name="theme-color">
@@ -41,7 +41,7 @@
 <link href="assets/css/lms-rebuild-v1.css?v=20260915-1" rel="stylesheet"/>
 </meta><link rel="stylesheet" href="assets/css/lms-dashboard-2026.css?v=20260915-2">
 </head>
-<body class="lms-dashboard-data-pending lms-dashboard-home">
+<body class="lms-dashboard-data-pending lms-dashboard-home" data-s4u-portal="training">
 <!-- ========================================================
        APPLICATION
        ======================================================== -->
@@ -192,6 +192,7 @@
 <script src="assets/js/supabase-config.js"></script>
 <script src="assets/js/core-auth.js"></script>
 <script src="assets/js/ui.js"></script>
+<script src="assets/js/session-security.js?v=20260925-lockdown"></script>
 <script src="assets/js/training-auth-guard.js"></script>
 <script src="assets/js/lms-sidebar.js"></script>
 <script src="assets/js/lms.js?v=20260830-2000"></script>
@@ -215,8 +216,9 @@
       let url=path;
       if(!/^https?:\/\//i.test(path)){
         const bucket=window.S4U_AVATAR_BUCKET||"avatars";
-        const result=ctx.client.storage.from(bucket).getPublicUrl(path);
-        url=result && result.data ? result.data.publicUrl : "";
+        const result=await ctx.client.storage.from(bucket).createSignedUrl(path,3600);
+        if(result.error) throw result.error;
+        url=result && result.data ? result.data.signedUrl : "";
       }
       if(!url) return;
       const wrap=document.querySelector('[data-lms-hero-avatar]');

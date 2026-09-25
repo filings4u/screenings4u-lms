@@ -17,7 +17,7 @@ function render(){const r=receipt;$('orderNumber').textContent=r.orderNumber||r.
 // If the logo cannot be embedded for any reason, the PDF still downloads normally.
 async function logoData(){
  try{
-  const response=await fetch('https://rgsrubdtljyxmnihwlah.supabase.co/storage/v1/object/public/branding/logo.png',{mode:'cors',cache:'force-cache'});
+  const response=await fetch('https://elpbnytpciqnbexiaebp.supabase.co/storage/v1/object/public/branding/logo.png',{mode:'cors',cache:'force-cache'});
   if(!response.ok)return null;
   const blob=await response.blob();
   return await new Promise(resolve=>{

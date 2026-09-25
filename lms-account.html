@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 
-<html lang="en">
-<head>
+<html lang="en" class="s4u-auth-pending">
+<head><style id="s4u-preauth-style">html.s4u-auth-pending body,html.s4u-onboarding-pending body{visibility:hidden!important}html.s4u-authenticated body{visibility:visible!important}</style>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>My Account | screenings4u Learning Center</title>
@@ -16,7 +16,7 @@
 <link href="assets/css/lms-rebuild-v1.css?v=20260915-1" rel="stylesheet"/>
 <link href="assets/css/pages/lms-account.css?v=20260915-avatar3" rel="stylesheet"/>
 </head>
-<body class="lms-account-page s4u-lms-redesign">
+<body class="lms-account-page s4u-lms-redesign" data-s4u-portal="training">
 <div class="lms-app">
 <div id="lms-sidebar-target"></div>
 <main class="lms-main">
@@ -233,6 +233,7 @@
 <script src="assets/js/supabase-config.js"></script>
 <script src="assets/js/core-auth.js"></script>
 <script src="assets/js/ui.js"></script>
+<script src="assets/js/session-security.js?v=20260925-lockdown"></script>
 <script src="assets/js/training-auth-guard.js"></script>
 <script src="assets/js/lms-sidebar.js"></script>
 <script src="assets/js/lms.js?v=20260830-2000"></script>

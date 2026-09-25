@@ -118,7 +118,7 @@
   'use strict';
 
   const BRAND = '#ff6b00';
-  const BRAND_LOGO = 'https://rgsrubdtljyxmnihwlah.supabase.co/storage/v1/object/public/branding/logo.png';
+  const BRAND_LOGO = 'https://elpbnytpciqnbexiaebp.supabase.co/storage/v1/object/public/branding/logo.png';
   const state = { resolve: null, confirmResolve: null, lastMessage: '', lastAt: 0 };
 
   function ensurePopup() {
@@ -292,7 +292,7 @@
       <div class="s4u-modal-backdrop" data-modal-close></div>
       <section class="s4u-modal-panel">
         <div class="s4u-modal-brand">
-          <img class="s4u-modal-brand-logo" src="https://rgsrubdtljyxmnihwlah.supabase.co/storage/v1/object/public/branding/logo.png" alt="screenings4u">
+          <img class="s4u-modal-brand-logo" src="https://elpbnytpciqnbexiaebp.supabase.co/storage/v1/object/public/branding/logo.png" alt="screenings4u">
         </div>
         <div class="s4u-modal-body">
           <div class="s4u-modal-icon" aria-hidden="true"></div>
@@ -444,7 +444,7 @@
       <div class="s4u-modal-backdrop" data-modal-close></div>
       <section class="s4u-modal-panel s4u-form-modal-panel">
         <div class="s4u-modal-brand">
-          <img class="s4u-modal-brand-logo" src="https://rgsrubdtljyxmnihwlah.supabase.co/storage/v1/object/public/branding/logo.png" alt="screenings4u">
+          <img class="s4u-modal-brand-logo" src="https://elpbnytpciqnbexiaebp.supabase.co/storage/v1/object/public/branding/logo.png" alt="screenings4u">
         </div>
         <div class="s4u-modal-body">
           <div class="s4u-modal-content">

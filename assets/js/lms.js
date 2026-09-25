@@ -72,7 +72,7 @@
       email: trainingState.user.email || ""
     };
 
-    if (authState.profile.is_active === false) {
+    if (String(authState.profile.status || "active").toLowerCase() !== "active") {
       try { await window.S4UAuth?.signOutSilently?.(); } catch (_) {}
       window.location.replace("training-login.html");
       throw new Error("This account is inactive.");

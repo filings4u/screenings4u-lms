@@ -1,441 +1,85 @@
-/* ============================================================
-   SCREENINGS4U — TRAINING SESSION SECURITY
-   Handles inactivity timeout and secure Training Portal logout.
-   ============================================================ */
-
-(() => {
+/**
+ * screenings4u — Universal Portal Session Security
+ * 10-minute inactivity timeout with branded one-minute warning.
+ * Activity is synchronized across tabs on the same portal origin.
+ * Training pages only count meaningful course-player interactions.
+ */
+(()=>{
   "use strict";
+  const IDLE_LIMIT=10*60*1000;
+  const WARNING=60*1000;
+  const THROTTLE=750;
+  const ACTIVITY_KEY="s4u-security-last-activity-v2";
+  const WARNING_ID="s4u-session-warning";
+  let logoutTimer=null, warningTimer=null, countdownTimer=null;
+  let lastActivity=0, started=false, signingOut=false;
 
-  const TRAINING_LOGIN_PAGE = "training-login.html";
-
-  // 10 minutes inactivity.
-  const SESSION_LIMIT = 600000;
-
-  // Show warning 60 seconds before logout.
-  const WARNING_TIME = 60000;
-
-  const activityEvents = [
-    "mousedown",
-    "keydown",
-    "touchstart",
-    "pointerdown",
-    "scroll"
-  ];
-
-  let logoutTimer = null;
-  let warningTimer = null;
-  let countdownTimer = null;
-
-  let warningVisible = false;
-  let signingOut = false;
-  let lastReset = 0;
-
-  /* ============================================================
-     PORTAL
-     ============================================================ */
-
-  function getPortal() {
-    return String(
-      document.body?.dataset?.s4uPortal || ""
-    )
-      .trim()
-      .toLowerCase();
+  const portal=()=>String(document.body?.dataset?.s4uPortal||document.documentElement?.dataset?.s4uPortal||inferPortal()).toLowerCase();
+  function inferPortal(){
+    const n=(location.pathname.split('/').pop()||'').toLowerCase();
+    if(n.startsWith('admin-')) return 'admin';
+    if(n.startsWith('customer-')) return 'customer';
+    if(n.startsWith('employer-')) return 'employer';
+    if(n.startsWith('employee-')) return 'employee';
+    if(n.includes('course')||n.includes('lesson')||n.includes('training')||location.hostname==='training.screenings4u.com') return 'training';
+    return '';
   }
-
-  function isTrainingPortal() {
-    return getPortal() === "training";
+  function storage(){try{return localStorage}catch{return sessionStorage}}
+  function readActivity(){const n=Number(storage().getItem(ACTIVITY_KEY)||0);return Number.isFinite(n)?n:0}
+  function writeActivity(v){try{storage().setItem(ACTIVITY_KEY,String(v))}catch{}}
+  function clearTimers(){clearTimeout(logoutTimer);clearTimeout(warningTimer);clearInterval(countdownTimer);logoutTimer=warningTimer=countdownTimer=null}
+  function removeWarning(){document.getElementById(WARNING_ID)?.remove()}
+  function loginPage(){
+    const p=portal();
+    return window.S4UAuth?.getLoginForPortal?.(p) || (p==='training'?'https://training.screenings4u.com/training-login.html':`${p||'customer'}-login.html`);
   }
-
-  /* ============================================================
-     LOGIN DESTINATION
-     ============================================================ */
-
-  function getLoginPage() {
-    if (
-      window.S4UAuth &&
-      typeof window.S4UAuth.getLoginForPortal === "function"
-    ) {
-      const loginPage =
-        window.S4UAuth.getLoginForPortal("training");
-
-      if (loginPage) {
-        return loginPage;
-      }
-    }
-
-    return TRAINING_LOGIN_PAGE;
+  async function signOut(){
+    if(signingOut) return; signingOut=true; clearTimers(); removeWarning();
+    const dest=loginPage();
+    try{
+      if(window.S4UAuth?.signOut){await window.S4UAuth.signOut({redirectTo:dest});return}
+      const c=window.screenings4uSupabase||window.supabaseClient;
+      if(c?.auth?.signOut) await c.auth.signOut();
+    }catch(e){console.error('[Session security] sign out failed',e)}
+    try{storage().removeItem(ACTIVITY_KEY)}catch{}
+    location.replace(dest);
   }
-
-  /* ============================================================
-     TIMER HELPERS
-     ============================================================ */
-
-  function clearTimers() {
-    if (logoutTimer) {
-      clearTimeout(logoutTimer);
-      logoutTimer = null;
-    }
-
-    if (warningTimer) {
-      clearTimeout(warningTimer);
-      warningTimer = null;
-    }
-
-    if (countdownTimer) {
-      clearInterval(countdownTimer);
-      countdownTimer = null;
-    }
+  function button(label,fn,primary){const b=document.createElement('button');b.type='button';b.textContent=label;b.style.cssText=`min-height:44px;padding:0 18px;border-radius:9px;border:1px solid ${primary?'#ff6b00':'#24467f'};background:${primary?'#ff6b00':'#fff'};color:${primary?'#fff':'#24467f'};font:800 14px Inter,Arial,sans-serif;cursor:pointer`;b.addEventListener('click',fn);return b}
+  function showWarning(){
+    if(signingOut||document.getElementById(WARNING_ID)) return;
+    let seconds=60;
+    const o=document.createElement('div');o.id=WARNING_ID;o.style.cssText='position:fixed;inset:0;z-index:2147483647;display:grid;place-items:center;padding:24px;background:rgba(16,47,85,.78);font-family:Inter,Arial,sans-serif';
+    const m=document.createElement('section');m.setAttribute('role','alertdialog');m.setAttribute('aria-modal','true');m.style.cssText='width:min(470px,100%);padding:30px;border-radius:16px;background:#fff;border-top:5px solid #ff6b00;box-shadow:0 24px 70px rgba(0,0,0,.28);text-align:center';
+    const brand=document.createElement('div');brand.textContent='SCREENINGS4U';brand.style.cssText='font-size:11px;letter-spacing:.14em;font-weight:900;color:#ff6b00;margin-bottom:10px';
+    const h=document.createElement('h2');h.textContent='Your session is about to end';h.style.cssText='margin:0 0 10px;color:#102f55;font-size:24px';
+    const p=document.createElement('p');p.textContent='For your security, you will be signed out after 10 minutes of inactivity.';p.style.cssText='margin:0 0 10px;color:#667892;line-height:1.55';
+    const c=document.createElement('p');c.style.cssText='margin:0 0 22px;color:#1d2d45';const strong=document.createElement('strong');strong.textContent='60';c.append('Signing out in ',strong,' seconds.');
+    const a=document.createElement('div');a.style.cssText='display:flex;justify-content:center;gap:10px;flex-wrap:wrap';a.append(button('Stay Logged In',()=>touch(true),true),button('Sign Out Now',signOut,false));
+    m.append(brand,h,p,c,a);o.append(m);document.body.append(o);m.querySelector('button')?.focus();
+    countdownTimer=setInterval(()=>{seconds-=1;strong.textContent=String(Math.max(0,seconds));if(seconds<=0)signOut()},1000);
   }
-
-  /* ============================================================
-     WARNING MODAL
-     ============================================================ */
-
-  function removeWarning() {
-    const existing =
-      document.getElementById("s4u-session-warning");
-
-    if (existing) {
-      existing.remove();
-    }
-
-    warningVisible = false;
+  function schedule(){
+    if(!started||signingOut) return; clearTimers(); removeWarning();
+    const elapsed=Math.max(0,Date.now()-lastActivity), remaining=Math.max(0,IDLE_LIMIT-elapsed);
+    if(!remaining){signOut();return}
+    const warnIn=Math.max(0,remaining-WARNING); if(!warnIn)showWarning(); else warningTimer=setTimeout(showWarning,warnIn);
+    logoutTimer=setTimeout(signOut,remaining);
   }
-
-  function showWarning() {
-    if (
-      warningVisible ||
-      signingOut ||
-      !isTrainingPortal()
-    ) {
-      return;
-    }
-
-    warningVisible = true;
-
-    let secondsRemaining = 60;
-
-    const overlay = document.createElement("div");
-
-    overlay.id = "s4u-session-warning";
-    overlay.className = "s4u-session-overlay";
-
-    overlay.innerHTML = `
-      <div
-        class="s4u-session-modal"
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="s4u-session-warning-title"
-      >
-        <h2 id="s4u-session-warning-title">
-          Are You Still There?
-        </h2>
-
-        <p>
-          For your security, you will be signed out due to inactivity.
-        </p>
-
-        <p>
-          Signing out in
-          <strong data-count>${secondsRemaining}</strong>
-          seconds.
-        </p>
-
-        <div class="s4u-session-actions">
-          <button
-            type="button"
-            data-stay
-          >
-            Stay Logged In
-          </button>
-
-          <button
-            type="button"
-            data-out
-          >
-            Sign Out Now
-          </button>
-        </div>
-      </div>
-    `;
-
-    document.body.appendChild(overlay);
-
-    const stayButton =
-      overlay.querySelector("[data-stay]");
-
-    const signOutButton =
-      overlay.querySelector("[data-out]");
-
-    if (stayButton) {
-      stayButton.addEventListener(
-        "click",
-        resetSessionTimer
-      );
-    }
-
-    if (signOutButton) {
-      signOutButton.addEventListener(
-        "click",
-        signOut
-      );
-    }
-
-    countdownTimer = window.setInterval(() => {
-      secondsRemaining -= 1;
-
-      const counter =
-        overlay.querySelector("[data-count]");
-
-      if (counter) {
-        counter.textContent = String(
-          Math.max(0, secondsRemaining)
-        );
-      }
-
-      if (secondsRemaining <= 0) {
-        clearInterval(countdownTimer);
-        countdownTimer = null;
-
-        signOut();
-      }
-    }, 1000);
+  function touch(force=false){if(!started||signingOut)return;const now=Date.now();if(!force&&now-lastActivity<THROTTLE)return;lastActivity=now;writeActivity(now);schedule()}
+  function isTrainingMeaningful(target){
+    if(portal()!=='training') return true;
+    const el=target?.closest?.('[data-s4u-course-player],[data-course-player],#course-player,.course-player,.lesson-player,.video-player,button,a,input,select,textarea,[role="button"]');
+    return !!el;
   }
-
-  /* ============================================================
-     SIGN OUT
-     ============================================================ */
-
-  async function signOut() {
-    if (signingOut) {
-      return;
-    }
-
-    signingOut = true;
-
-    clearTimers();
-    removeWarning();
-
-    const destination = getLoginPage();
-
-    try {
-      if (
-        window.S4UAuth &&
-        typeof window.S4UAuth.signOut === "function"
-      ) {
-        await window.S4UAuth.signOut({
-          redirectTo: destination
-        });
-
-        return;
-      }
-
-      /*
-       * Fallback only when the shared auth layer
-       * is unavailable.
-       */
-      const client =
-        typeof window.getScreenings4uSupabase === "function"
-          ? window.getScreenings4uSupabase()
-          : window.screenings4uSupabase ||
-            window.supabaseClient ||
-            null;
-
-      if (client?.auth) {
-        await client.auth.signOut();
-      }
-
-      window.location.replace(destination);
-    } catch (error) {
-      console.error(
-        "[Training Session Security] Sign out failed:",
-        error
-      );
-
-      /*
-       * Do NOT call sessionStorage.clear().
-       *
-       * Supabase uses sessionStorage for the Training
-       * authentication session. Clearing the entire storage
-       * can delete unrelated application state as well.
-       */
-
-      try {
-        const client =
-          typeof window.getScreenings4uSupabase === "function"
-            ? window.getScreenings4uSupabase()
-            : window.screenings4uSupabase ||
-              window.supabaseClient ||
-              null;
-
-        if (client?.auth) {
-          await client.auth.signOut();
-        }
-      } catch (secondaryError) {
-        console.error(
-          "[Training Session Security] Supabase fallback sign out failed:",
-          secondaryError
-        );
-      }
-
-      window.location.replace(destination);
-    }
+  function onActivity(e){if(isTrainingMeaningful(e.target))touch(false)}
+  function establishBaseline(state){
+    const stored=readActivity();
+    const signedInAt=Date.parse(state?.user?.last_sign_in_at||'')||0;
+    if(!stored||stored<signedInAt){lastActivity=Date.now();writeActivity(lastActivity)}else lastActivity=stored;
   }
-
-  /* ============================================================
-     RESET SESSION TIMER
-     ============================================================ */
-
-  function resetSessionTimer() {
-    if (
-      signingOut ||
-      !isTrainingPortal()
-    ) {
-      return;
-    }
-
-    const now = Date.now();
-
-    /*
-     * Prevent rapid mouse/scroll events from constantly
-     * recreating timers.
-     */
-    if (now - lastReset < 1000) {
-      return;
-    }
-
-    lastReset = now;
-
-    clearTimers();
-    removeWarning();
-
-    const warningDelay =
-      Math.max(
-        1000,
-        SESSION_LIMIT - WARNING_TIME
-      );
-
-    warningTimer = window.setTimeout(
-      showWarning,
-      warningDelay
-    );
-
-    logoutTimer = window.setTimeout(
-      signOut,
-      SESSION_LIMIT
-    );
-
-    try {
-      sessionStorage.setItem(
-        "s4u-training-last-activity",
-        String(now)
-      );
-    } catch (error) {
-      console.warn(
-        "[Training Session Security] Unable to save activity timestamp:",
-        error
-      );
-    }
-  }
-
-  /* ============================================================
-     HISTORY PROTECTION
-     ============================================================ */
-
-  function protectHistory() {
-    if (
-      document.body?.dataset?.s4uProtectHistory ===
-      "false"
-    ) {
-      return;
-    }
-
-    const currentUrl = window.location.href;
-
-    try {
-      window.history.replaceState(
-        {
-          s4uProtected: true
-        },
-        "",
-        currentUrl
-      );
-
-      window.history.pushState(
-        {
-          s4uProtected: true
-        },
-        "",
-        currentUrl
-      );
-
-      window.addEventListener(
-        "popstate",
-        () => {
-          window.history.pushState(
-            {
-              s4uProtected: true
-            },
-            "",
-            currentUrl
-          );
-        }
-      );
-    } catch (error) {
-      console.warn(
-        "[Training Session Security] History protection failed:",
-        error
-      );
-    }
-  }
-
-  /* ============================================================
-     START
-     ============================================================ */
-
-  function start() {
-    if (!isTrainingPortal()) {
-      return;
-    }
-
-    activityEvents.forEach((eventName) => {
-      document.addEventListener(
-        eventName,
-        resetSessionTimer,
-        {
-          passive: true
-        }
-      );
-    });
-
-    protectHistory();
-    resetSessionTimer();
-  }
-
-  /* ============================================================
-     INITIALIZE
-     ============================================================ */
-
-  if (document.readyState === "loading") {
-    document.addEventListener(
-      "DOMContentLoaded",
-      start,
-      {
-        once: true
-      }
-    );
-  } else {
-    start();
-  }
-
-  /* ============================================================
-     PUBLIC API
-     ============================================================ */
-
-  window.S4USessionSecurity =
-    Object.freeze({
-      start,
-      reset: resetSessionTimer,
-      signOut
-    });
+  async function preflight(state){establishBaseline(state);if(Date.now()-lastActivity>=IDLE_LIMIT){await signOut();return false}return true}
+  function start(ev){if(started||signingOut)return;started=true;establishBaseline(ev?.detail||null);['pointerdown','keydown','touchstart','input','change'].forEach(n=>document.addEventListener(n,onActivity,{passive:true}));if(portal()!=='training')document.addEventListener('scroll',onActivity,{passive:true});document.addEventListener('play',onActivity,true);document.addEventListener('seeked',onActivity,true);document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'){lastActivity=readActivity()||lastActivity;schedule()}});window.addEventListener('storage',e=>{if(e.key===ACTIVITY_KEY){lastActivity=Number(e.newValue||0)||lastActivity;schedule()}});schedule()}
+  window.addEventListener('s4u:authenticated',start);
+  window.addEventListener('s4u:training-ready',start);
+  window.S4USessionSecurity=Object.freeze({start,reset:()=>touch(true),touch:()=>touch(true),signOut,preflight,isExpired:()=>!!readActivity()&&Date.now()-readActivity()>=IDLE_LIMIT});
 })();

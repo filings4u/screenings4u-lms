@@ -57,7 +57,7 @@
       <div class="s4u-modal-backdrop" data-modal-close></div>
       <section class="s4u-modal-panel">
         <div class="s4u-modal-brand">
-          <img class="s4u-modal-brand-logo" src="https://rgsrubdtljyxmnihwlah.supabase.co/storage/v1/object/public/branding/logo.png" alt="screenings4u">
+          <img class="s4u-modal-brand-logo" src="https://elpbnytpciqnbexiaebp.supabase.co/storage/v1/object/public/branding/logo.png" alt="screenings4u">
         </div>
         <div class="s4u-modal-body">
           <div class="s4u-modal-icon" aria-hidden="true"></div>
@@ -209,7 +209,7 @@
       <div class="s4u-modal-backdrop" data-modal-close></div>
       <section class="s4u-modal-panel s4u-form-modal-panel">
         <div class="s4u-modal-brand">
-          <img class="s4u-modal-brand-logo" src="https://rgsrubdtljyxmnihwlah.supabase.co/storage/v1/object/public/branding/logo.png" alt="screenings4u">
+          <img class="s4u-modal-brand-logo" src="https://elpbnytpciqnbexiaebp.supabase.co/storage/v1/object/public/branding/logo.png" alt="screenings4u">
         </div>
         <div class="s4u-modal-body">
           <div class="s4u-modal-content">
@@ -1639,7 +1639,7 @@
       email: trainingState.user.email || ""
     };
 
-    if (authState.profile.is_active === false) {
+    if (String(authState.profile.status || "active").toLowerCase() !== "active") {
       try { await window.S4UAuth?.signOutSilently?.(); } catch (_) {}
       window.location.replace("training-login.html");
       throw new Error("This account is inactive.");
@@ -1943,7 +1943,7 @@ document.addEventListener("DOMContentLoaded",function(){init().catch(function(e)
 async function init(){
  if(!window.LMS||!window.LMS.ready) throw new Error("Shared LMS authentication is unavailable.");
  var a=await window.LMS.ready;s.db=a.client;s.user=a.user;
- var r=await s.db.from("user_profiles").select("id,first_name,last_name,display_name,email,phone,company_name,is_active").eq("id",s.user.id).single();
+ var r=await s.db.from("user_profiles").select("id,first_name,last_name,display_name,email,phone,status,metadata").eq("id",s.user.id).single();
  if(r.error)throw r.error;s.profile=r.data;
  try{var raw=localStorage.getItem("s4u_lms_preferences_"+s.user.id);if(raw)s.prefs=Object.assign(s.prefs,JSON.parse(raw)||{});}catch(e){}
  render();bind();
@@ -1952,7 +1952,7 @@ function render(){
  var n=s.profile.display_name||[s.profile.first_name,s.profile.last_name].filter(Boolean).join(" ")||s.user.email||"Learner";
  var e=s.user.email||s.profile.email||"",i=window.LMS.getInitials(n);
  text("[data-account-avatar]",i);text("[data-account-name]",n);text("[data-account-email]",e);text("[data-security-email]",e);
- val("firstName",s.profile.first_name||"");val("lastName",s.profile.last_name||"");val("email",e);val("phone",s.profile.phone||"");val("organization",s.profile.company_name||"");
+ val("firstName",s.profile.first_name||"");val("lastName",s.profile.last_name||"");val("email",e);val("phone",s.profile.phone||"");val("organization",s.profile.metadata?.company_name||"");
  check("prefCourseReminders",s.prefs.course_progress_reminders);check("prefCertificateNotifications",s.prefs.certificate_notifications);check("prefNewCourseUpdates",s.prefs.new_course_updates);
  window.LMS.setLearnerProfile({name:n,email:e,initials:i});
 }
@@ -1966,7 +1966,7 @@ async function save(ev){
  ev.preventDefault();var b=ev.currentTarget.querySelector('button[type="submit"]');if(b){b.disabled=true;b.textContent="Saving...";}
  try{
   var fn=get("firstName").trim(),ln=get("lastName").trim();
-  var r=await s.db.from("user_profiles").update({first_name:fn||null,last_name:ln||null,display_name:[fn,ln].filter(Boolean).join(" ")||null,phone:get("phone").trim()||null,company_name:get("organization").trim()||null,updated_at:new Date().toISOString()}).eq("id",s.user.id).select("id,first_name,last_name,display_name,email,phone,company_name,is_active").single();
+  var r=await s.db.from("user_profiles").update({first_name:fn||null,last_name:ln||null,display_name:[fn,ln].filter(Boolean).join(" ")||null,phone:get("phone").trim()||null,metadata:{...(s.profile.metadata||{}),company_name:get("organization").trim()||null},updated_at:new Date().toISOString()}).eq("id",s.user.id).select("id,first_name,last_name,display_name,email,phone,status,metadata").single();
   if(r.error)throw r.error;s.profile=r.data;render();msg("Account information saved.",false);
  }catch(e){msg(e.message||"Unable to save account information.",true);}
  finally{if(b){b.disabled=false;b.textContent="Save Changes";}}
@@ -1985,7 +1985,7 @@ function msg(v,err){var x=document.getElementById("accountMessage");if(x){x.text
   'use strict';
 
   const BRAND = '#ff6b00';
-  const BRAND_LOGO = 'https://rgsrubdtljyxmnihwlah.supabase.co/storage/v1/object/public/branding/logo.png';
+  const BRAND_LOGO = 'https://elpbnytpciqnbexiaebp.supabase.co/storage/v1/object/public/branding/logo.png';
   const state = { resolve: null, confirmResolve: null, lastMessage: '', lastAt: 0 };
 
   function ensurePopup() {

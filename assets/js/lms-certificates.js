@@ -57,7 +57,7 @@
       <div class="s4u-modal-backdrop" data-modal-close></div>
       <section class="s4u-modal-panel">
         <div class="s4u-modal-brand">
-          <img class="s4u-modal-brand-logo" src="https://rgsrubdtljyxmnihwlah.supabase.co/storage/v1/object/public/branding/logo.png" alt="screenings4u">
+          <img class="s4u-modal-brand-logo" src="https://elpbnytpciqnbexiaebp.supabase.co/storage/v1/object/public/branding/logo.png" alt="screenings4u">
         </div>
         <div class="s4u-modal-body">
           <div class="s4u-modal-icon" aria-hidden="true"></div>
@@ -209,7 +209,7 @@
       <div class="s4u-modal-backdrop" data-modal-close></div>
       <section class="s4u-modal-panel s4u-form-modal-panel">
         <div class="s4u-modal-brand">
-          <img class="s4u-modal-brand-logo" src="https://rgsrubdtljyxmnihwlah.supabase.co/storage/v1/object/public/branding/logo.png" alt="screenings4u">
+          <img class="s4u-modal-brand-logo" src="https://elpbnytpciqnbexiaebp.supabase.co/storage/v1/object/public/branding/logo.png" alt="screenings4u">
         </div>
         <div class="s4u-modal-body">
           <div class="s4u-modal-content">
@@ -1639,7 +1639,7 @@
       email: trainingState.user.email || ""
     };
 
-    if (authState.profile.is_active === false) {
+    if (String(authState.profile.status || "active").toLowerCase() !== "active") {
       try { await window.S4UAuth?.signOutSilently?.(); } catch (_) {}
       window.location.replace("training-login.html");
       throw new Error("This account is inactive.");
@@ -2000,7 +2000,7 @@ function show(id,scroll){
 }
 function certificate(c){
  var name=state.profile.display_name||[state.profile.first_name,state.profile.last_name].filter(Boolean).join(" ")||state.user.email||"Learner";
- return `<div class="real-certificate"><div class="real-certificate-content"><img src="https://rgsrubdtljyxmnihwlah.supabase.co/storage/v1/object/public/branding/logo.png" alt="Screenings4u" class="real-certificate-logo"><div class="real-certificate-kicker">Screenings4u Learning Center</div><div class="real-certificate-title">Certificate of Completion</div><div class="real-certificate-presented">This certificate is proudly presented to</div><div class="real-certificate-name">${esc(name)}</div><div class="real-certificate-rule"></div><div class="real-certificate-text">For successfully completing the required training and assessment requirements for</div><div class="real-certificate-course">${esc(c.course.title||"Training Course")}</div><div class="real-certificate-footer"><div class="certificate-signature"><div class="certificate-signature-line"></div><span>Authorized Representative</span></div><div class="certificate-seal">Verified<br>Completion</div><div class="certificate-signature certificate-date"><div class="certificate-signature-line"></div><span>${esc(date(c.issued_at))}</span></div></div></div></div>`;
+ return `<div class="real-certificate"><div class="real-certificate-content"><img src="https://elpbnytpciqnbexiaebp.supabase.co/storage/v1/object/public/branding/logo.png" alt="Screenings4u" class="real-certificate-logo"><div class="real-certificate-kicker">Screenings4u Learning Center</div><div class="real-certificate-title">Certificate of Completion</div><div class="real-certificate-presented">This certificate is proudly presented to</div><div class="real-certificate-name">${esc(name)}</div><div class="real-certificate-rule"></div><div class="real-certificate-text">For successfully completing the required training and assessment requirements for</div><div class="real-certificate-course">${esc(c.course.title||"Training Course")}</div><div class="real-certificate-footer"><div class="certificate-signature"><div class="certificate-signature-line"></div><span>Authorized Representative</span></div><div class="certificate-seal">Verified<br>Completion</div><div class="certificate-signature certificate-date"><div class="certificate-signature-line"></div><span>${esc(date(c.issued_at))}</span></div></div></div></div>`;
 }
 function printCert(id){show(id,false);setTimeout(()=>window.print(),50);}
 async function download(id){
@@ -2020,7 +2020,7 @@ function fail(e){console.error("[LMS Certificates]",e);var empty=document.getEle
   'use strict';
 
   const BRAND = '#ff6b00';
-  const BRAND_LOGO = 'https://rgsrubdtljyxmnihwlah.supabase.co/storage/v1/object/public/branding/logo.png';
+  const BRAND_LOGO = 'https://elpbnytpciqnbexiaebp.supabase.co/storage/v1/object/public/branding/logo.png';
   const state = { resolve: null, confirmResolve: null, lastMessage: '', lastAt: 0 };
 
   function ensurePopup() {

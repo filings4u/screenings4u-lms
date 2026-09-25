@@ -2,7 +2,7 @@
   'use strict';
 
   const BRAND = '#ff6b00';
-  const BRAND_LOGO = 'https://rgsrubdtljyxmnihwlah.supabase.co/storage/v1/object/public/branding/logo.png';
+  const BRAND_LOGO = 'https://elpbnytpciqnbexiaebp.supabase.co/storage/v1/object/public/branding/logo.png';
   const state = { resolve: null, confirmResolve: null, lastMessage: '', lastAt: 0 };
 
   function ensurePopup() {

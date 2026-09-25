@@ -2616,7 +2616,7 @@ async function validateBillingAddressWithUSPS(form) {
     }
 
     const response = await fetch(
-      "https://rgsrubdtljyxmnihwlah.supabase.co/functions/v1/validate-usps-address",
+      "https://elpbnytpciqnbexiaebp.supabase.co/functions/v1/validate-usps-address",
       {
         method: "POST",
         headers: {

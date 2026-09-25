@@ -1,6 +1,6 @@
 <!doctype html>
-<html lang="en">
-<head>
+<html lang="en" class="s4u-auth-pending">
+<head><style id="s4u-preauth-style">html.s4u-auth-pending body,html.s4u-onboarding-pending body{visibility:hidden!important}html.s4u-authenticated body{visibility:visible!important}</style>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="theme-color" content="#325aa3">
@@ -14,7 +14,7 @@
   <link rel="stylesheet" href="assets/css/lms-shell-v2.css?v=20260915-2">
   <link rel="stylesheet" href="assets/css/lms-shell-v3.css?v=20260915-2">
 </head>
-<body class="lms-onboarding-mode">
+<body class="lms-onboarding-mode" data-s4u-portal="training">
 <div class="onboard-brandbar" aria-label="screenings4u Learning Center">
   <img src="images/logo2.png" alt="screenings4u">
   <span class="divider" aria-hidden="true"></span>
@@ -96,7 +96,8 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="assets/js/supabase-config.js"></script>
 <script src="assets/js/core-auth.js"></script>
-<script src="assets/js/training-auth-guard.js?v=20260915-onboarding3"></script>
+<script src="assets/js/session-security.js?v=20260925-lockdown"></script>
+  <script src="assets/js/training-auth-guard.js?v=20260915-onboarding3"></script>
 <script src="assets/js/lms-sidebar.js"></script>
 <script src="assets/js/ui.js"></script>
 <script src="assets/js/lms-welcome.js?v=20260915-onboarding3"></script>

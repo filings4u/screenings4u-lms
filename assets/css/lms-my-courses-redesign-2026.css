@@ -960,6 +960,3 @@ body.lms-my-courses-page .lms-notification-dot {
   .my-course-card-actions { align-items: stretch; flex-direction: column; }
   .my-course-card-link { width: 100%; }
 }
-
-/* 2026-09-24 expiration state */
-.my-course-card-status.expired{background:#fff1e8;color:#9a4b12;border:1px solid #ffd8bd}.my-course-card-status.expired:before{background:#f47a20}.my-course-card-access{line-height:1.45}
