@@ -36,7 +36,7 @@
   }
 
   async function invoke(body) {
-    const { data, error } = await state.db.functions.invoke("customer-orders-actions", { body });
+    const { data, error } = await state.db.functions.invoke("training-orders-actions", { body });
     if (error) {
       let message = error.message || "Unable to load LMS purchases.";
       try {
@@ -98,7 +98,7 @@
 
   function isLmsItem(item, order) {
     if (!item) return false;
-    if (item.training_product_id || item.lms_product?.id || item.training_product?.id) return true;
+    if (item.training_product_id || item.lms_training_products?.id || item.lms_product?.id || item.training_product?.id) return true;
 
     const productType = String(item.services?.product_type || "").toLowerCase();
     if (productType === "training" || productType === "course") return true;
@@ -130,7 +130,7 @@
   }
 
   function productInfo(item) {
-    const product = item.lms_product || item.training_product || null;
+    const product = item.lms_training_products || item.lms_product || item.training_product || null;
     const metadata = item.metadata || {};
     const service = item.services || {};
     const name =
@@ -253,6 +253,7 @@
     const items = order.order_items || [];
     const courseCount = items.filter((item) => itemCategory(item) === "course").length;
     const otherCount = items.length - courseCount;
+    const hasGroup = items.some((item) => productInfo(item).kind === "group");
     const title = items.length === 1
       ? productInfo(items[0]).name
       : `${items.length} Learning Center item${items.length === 1 ? "" : "s"}`;

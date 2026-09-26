@@ -12,10 +12,9 @@ const COURSE_DETAILS={
 };
 const SUPPLIES_DETAILS={title:'Specimen Collector Training Supplies',price:75,summary:'The supplies DOT Specimen Collector Training students need to complete their five required mock collections.',items:['5 DOT Collection Kits','10 Federal Custody and Control Forms (CCFs)','Mock Collection Checklist - Digital Download','Mock Procedures - Digital Download','Collection Site Security - Digital Download','Memorandum for Record - Digital Download','1 Ball Point Pen','2 Pair of NON Latex Gloves']};
 const GROUP_DETAILS={
-'group_dot_collector_5_seats':{title:'DOT Collector Group Training — Team 5',price:1500,seats:5,accessDays:60,summary:'Five DOT Specimen Collector Training seats for one organization.',items:['5 learner seats','60-day access per learner','DOT Specimen Collector Training curriculum','5 required mock collections per learner','Training materials, guides and forms','Completion certificate pathway','Centralized group seat purchase']},
-'group_dot_collector_10_seats':{title:'DOT Collector Group Training — Team 10',price:2800,seats:10,accessDays:60,summary:'Ten DOT Specimen Collector Training seats with volume pricing for one organization.',items:['10 learner seats','60-day access per learner','DOT Specimen Collector Training curriculum','5 required mock collections per learner','Training materials, guides and forms','Completion certificate pathway','Centralized group seat purchase']},
-'group_dot_collector_25_seats':{title:'DOT Collector Group Training — Team 25',price:6500,seats:25,accessDays:60,summary:'Twenty-five DOT Specimen Collector Training seats for larger teams and organizations.',items:['25 learner seats','60-day access per learner','DOT Specimen Collector Training curriculum','5 required mock collections per learner','Training materials, guides and forms','Completion certificate pathway','Centralized group seat purchase']},
-'group_dot_collector_checkout_test_1_dollar':{title:'Group Training Checkout Test — $1',price:1,seats:1,accessDays:60,summary:'Live transaction test service for the Learning Center Stripe Elements checkout flow.',items:['Live $1 transaction test','Uses the same Stripe Elements checkout','Creates a normal Screenings4u order record','Not shown as a public pricing plan']}
+'dot_specimen_group_5':{title:'DOT Collector Group Training — Team 5',price:1500,seats:5,accessDays:60,summary:'Five DOT Specimen Collector Training seats for one organization.',items:['5 learner seats','60-day access per learner','DOT Specimen Collector Training curriculum','5 required mock collections per learner','Training materials, guides and forms','Completion certificate pathway','Centralized group seat purchase']},
+'dot_specimen_group_10':{title:'DOT Collector Group Training — Team 10',price:2800,seats:10,accessDays:60,summary:'Ten DOT Specimen Collector Training seats with volume pricing for one organization.',items:['10 learner seats','60-day access per learner','DOT Specimen Collector Training curriculum','5 required mock collections per learner','Training materials, guides and forms','Completion certificate pathway','Centralized group seat purchase']},
+'dot_specimen_group_25':{title:'DOT Collector Group Training — Team 25',price:6250,seats:25,accessDays:60,summary:'Twenty-five DOT Specimen Collector Training seats for larger teams and organizations.',items:['25 learner seats','60-day access per learner','DOT Specimen Collector Training curriculum','5 required mock collections per learner','Training materials, guides and forms','Completion certificate pathway','Centralized group seat purchase']},
 };
 function preloadDetails(){
  const list=$('courseIncludes');
@@ -50,18 +49,19 @@ async function prefillCustomer(auth){
  fillIfEmpty('phone',meta.phone||'');
  if(!auth.client)return;
  try{
-  const r=await auth.client.from('user_profiles').select('first_name,last_name,email,phone,address_line_1,address_line_2,city,state,postal_code').eq('id',user.id).maybeSingle();
+  const r=await auth.client.from('user_profiles').select('first_name,last_name,email,phone,metadata').eq('id',user.id).maybeSingle();
   if(r.error)throw r.error;
   const p=r.data||{};
   fillIfEmpty('firstName',p.first_name||'');
   fillIfEmpty('lastName',p.last_name||'');
   fillIfEmpty('email',p.email||user.email||'');
   fillIfEmpty('phone',p.phone||'');
-  fillIfEmpty('address',p.address_line_1||'');
-  fillIfEmpty('address2',p.address_line_2||'');
-  fillIfEmpty('city',p.city||'');
-  fillIfEmpty('state',p.state||'');
-  fillIfEmpty('zip',p.postal_code||'');
+  const a=p.metadata?.billing_address||{};
+  fillIfEmpty('address',a.line1||p.metadata?.address_line_1||'');
+  fillIfEmpty('address2',a.line2||p.metadata?.address_line_2||'');
+  fillIfEmpty('city',a.city||p.metadata?.city||'');
+  fillIfEmpty('state',a.state||p.metadata?.state||'');
+  fillIfEmpty('zip',a.postal_code||p.metadata?.postal_code||'');
  }catch(e){console.warn('Unable to prefill Learning Center checkout profile.',e);}
 }
 function firstMissingRequired(){
