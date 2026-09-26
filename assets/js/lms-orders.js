@@ -1,7 +1,7 @@
 (() => {
   "use strict";
 
-  const EDGE_FUNCTION = "training-orders-actions";
+  const EDGE_FUNCTION = "customer-orders-actions";
 
   const state = {
     db: null,
@@ -127,7 +127,7 @@
 
   function isLmsItem(item, order) {
     if (!item) return false;
-    if (item.training_product_id || item.lms_training_products?.id || item.lms_product?.id || item.training_product?.id) return true;
+    if (item.training_product_id || item.lms_product?.id || item.training_product?.id) return true;
 
     const productType = String(item.services?.product_type || "").toLowerCase();
     if (productType === "training" || productType === "course") return true;
@@ -157,7 +157,7 @@
   }
 
   function productInfo(item) {
-    const product = item?.lms_training_products || item?.lms_product || item?.training_product || null;
+    const product = item?.lms_product || item?.training_product || null;
     const metadata = item?.metadata || {};
     const service = item?.services || {};
 
@@ -309,7 +309,6 @@
     const items = order.order_items || [];
     const courseCount = items.filter((item) => itemCategory(item) === "course").length;
     const otherCount = items.length - courseCount;
-    const hasGroup = items.some((item) => productInfo(item).kind === "group");
 
     const title = items.length === 1
       ? productInfo(items[0]).name
@@ -351,7 +350,6 @@
 
             <div class="order-actions">
               ${courseCount ? '<a class="learning-button" href="lms-my-courses.html">My Learning</a>' : ""}
-              ${hasGroup ? '<a class="learning-button" href="lms-group-seats.html">Manage Group Seats</a>' : ""}
               ${receiptButton}
             </div>
           </aside>

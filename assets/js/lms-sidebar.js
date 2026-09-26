@@ -329,18 +329,6 @@
                 </a>
 
 
-                <!-- GROUP TRAINING SEATS -->
-
-                <a
-                  href="lms-group-seats.html"
-                  class="lms-nav-link"
-                  data-lms-page="lms-group-seats.html"
-                >
-                  <span class="lms-nav-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16v10H4z"></path><path d="M8 11h8M8 14h5"></path></svg></span>
-                  <span class="lms-nav-text">Group Seats</span>
-                </a>
-
-
                 <!-- DOCUMENTS -->
 
                 <a
@@ -1421,7 +1409,7 @@
     const titles = {
       "lms-dashboard.html":"Home", "lms-my-courses.html":"My Learning", "lms-courses.html":"Course Library",
       "lms-course-details.html":"Course Details", "lms-progress.html":"Progress", "lms-certificates.html":"Certificates",
-      "lms-documents.html":"Documents", "lms-orders.html":"Orders", "lms-group-seats.html":"Group Seats", "lms-live-training.html":"Live Training",
+      "lms-documents.html":"Documents", "lms-orders.html":"Orders", "lms-live-training.html":"Live Training",
       "lms-my-appointments.html":"My Appointments", "lms-schedule-appointment.html":"Schedule Appointment",
       "lms-customer-scheduling.html":"Scheduling", "lms-support.html":"Training Support", "lms-notifications.html":"Notifications",
       "lms-account.html":"Account", "lms-quiz.html":"Knowledge Check", "lms-assessment.html":"Assessment"

@@ -67,9 +67,9 @@ function initS4UFooter() {
               <span>(773) 245-7009</span>
             </a>
 
-            <a href="mailto:support@screenings4u.com">
+            <a href="${MAIN}/contact.html">
               <span class="footer-contact-icon" aria-hidden="true">✉</span>
-              <span>support@screenings4u.com</span>
+              <span>Contact screenings4u</span>
             </a>
           </div>
 
@@ -98,13 +98,11 @@ function initS4UFooter() {
             <a href="${TRAINING}/#curriculum">Curriculum</a>
             <a href="${TRAINING}/#included">What's Included</a>
             <a href="${TRAINING}/#faq">Training FAQ</a>
-            <a href="${MAIN}/dot-services.html">DOT Services</a>
           </div>
 
           <div class="footer-col">
             <h4>Support</h4>
             <a href="${TRAINING}/lms-support.html">Training Support</a>
-            <a href="mailto:support@screenings4u.com">Email Support</a>
             <a href="${MAIN}/contact.html">Contact screenings4u</a>
           </div>
 

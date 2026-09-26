@@ -49,19 +49,18 @@ async function prefillCustomer(auth){
  fillIfEmpty('phone',meta.phone||'');
  if(!auth.client)return;
  try{
-  const r=await auth.client.from('user_profiles').select('first_name,last_name,email,phone,metadata').eq('id',user.id).maybeSingle();
+  const r=await auth.client.from('user_profiles').select('first_name,last_name,email,phone,address_line_1,address_line_2,city,state,postal_code').eq('id',user.id).maybeSingle();
   if(r.error)throw r.error;
   const p=r.data||{};
   fillIfEmpty('firstName',p.first_name||'');
   fillIfEmpty('lastName',p.last_name||'');
   fillIfEmpty('email',p.email||user.email||'');
   fillIfEmpty('phone',p.phone||'');
-  const a=p.metadata?.billing_address||{};
-  fillIfEmpty('address',a.line1||p.metadata?.address_line_1||'');
-  fillIfEmpty('address2',a.line2||p.metadata?.address_line_2||'');
-  fillIfEmpty('city',a.city||p.metadata?.city||'');
-  fillIfEmpty('state',a.state||p.metadata?.state||'');
-  fillIfEmpty('zip',a.postal_code||p.metadata?.postal_code||'');
+  fillIfEmpty('address',p.address_line_1||'');
+  fillIfEmpty('address2',p.address_line_2||'');
+  fillIfEmpty('city',p.city||'');
+  fillIfEmpty('state',p.state||'');
+  fillIfEmpty('zip',p.postal_code||'');
  }catch(e){console.warn('Unable to prefill Learning Center checkout profile.',e);}
 }
 function firstMissingRequired(){
