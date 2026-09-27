@@ -185,8 +185,15 @@
         const result = await call({ action: "consent", ...values });
         markCompleted(result.consent);
 
-        setStatus("Onboarding complete. Your signed acknowledgment has been saved to Documents. Opening your Learning Center…");
-        setTimeout(() => location.replace(returnDestination()), 450);
+        setStatus("Onboarding complete. Your signed acknowledgment has been saved to Documents.");
+        if (window.S4UPopup?.success) {
+          await window.S4UPopup.success(
+            "Your signed Learning Center acknowledgment has been saved to Documents. Your course access is now unlocked.",
+            "Onboarding Complete",
+            { confirmText: "Continue" }
+          );
+        }
+        location.replace(returnDestination());
       } catch (error) {
         console.error("[Welcome] onboarding submit failed", error);
         setStatus(error?.message || "We could not complete onboarding. Please review the form and try again.", true);

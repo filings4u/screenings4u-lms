@@ -110,6 +110,21 @@
     box.textContent = message || "";
   }
 
+  function errorMessage(error, fallback) {
+    if (error instanceof Error && error.message) return error.message;
+    if (typeof error === "string") return error;
+    if (error && typeof error === "object") {
+      return error.message || error.error || error.details || fallback;
+    }
+    return fallback;
+  }
+
+  function blockingError(title, error, fallback) {
+    const message = errorMessage(error, fallback);
+    if (window.S4UPopup?.error) return window.S4UPopup.error(message, title);
+    if (window.S4UUI?.modal) return window.S4UUI.modal({ title, message, type: "error", confirmText: "Close" });
+  }
+
   function updateSummary() {
     const count = documents.length;
     if ($("documentsCount")) $("documentsCount").textContent = String(count);
@@ -222,12 +237,7 @@
       link.click();
       link.remove();
     } catch (error) {
-      window.S4UUI?.modal({
-        title: "Download Unavailable",
-        message: error.message || "Unable to download this document.",
-        type: "error",
-        confirmText: "Close"
-      });
+      blockingError("Download Unavailable", error, "Unable to download this document.");
     } finally {
       if (objectUrl) setTimeout(() => URL.revokeObjectURL(objectUrl), 1000);
       button.disabled = false;
@@ -353,12 +363,7 @@
     const enrollmentId = $("enrollment")?.value || "";
 
     if (!enrollmentId || !selectedFiles.length) {
-      window.S4UUI?.modal({
-        title: "Document Upload",
-        message: "Choose your course and at least one document.",
-        type: "error",
-        confirmText: "Review Upload"
-      });
+      blockingError("Document Upload", "Choose your course and at least one document.", "Choose your course and at least one document.");
       return;
     }
 
@@ -383,12 +388,7 @@
 
       await loadDocuments();
     } catch (error) {
-      window.S4UUI?.modal({
-        title: "Upload Failed",
-        message: error.message || "Unable to upload the document.",
-        type: "error",
-        confirmText: "Close"
-      });
+      blockingError("Upload Failed", error, "Unable to upload the document.");
     } finally {
       button.disabled = false;
       button.textContent = "Upload for Review";
@@ -411,13 +411,8 @@
       ]);
     } catch (error) {
       console.error("[LMS Documents]", error);
-      showPageMessage(error.message || "Unable to load your documents right now.");
-      window.S4UUI?.modal({
-        title: "Documents Unavailable",
-        message: error.message || "Unable to load your documents right now.",
-        type: "error",
-        confirmText: "Close"
-      });
+      showPageMessage(errorMessage(error, "Unable to load your documents right now."));
+      blockingError("Documents Unavailable", error, "Unable to load your documents right now.");
     }
   });
 })();

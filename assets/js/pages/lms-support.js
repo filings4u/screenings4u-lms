@@ -53,15 +53,12 @@
   }
 
   function showError(title, error) {
-    const message = error?.message || String(error || "Unable to complete this request.");
+    const message = error?.message || (typeof error === "string" ? error : "Unable to complete this request.");
     showMessage(message);
-    if (window.S4UUI?.modal) {
-      window.S4UUI.modal({
-        title,
-        message,
-        type: "error",
-        confirmText: "Close"
-      });
+    if (window.S4UPopup?.error) {
+      window.S4UPopup.error(message, title);
+    } else if (window.S4UUI?.modal) {
+      window.S4UUI.modal({ title, message, type: "error", confirmText: "Close" });
     }
   }
 
