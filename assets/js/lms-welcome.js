@@ -29,7 +29,13 @@
     const raw = await response.text();
     let data = {};
     try { data = raw ? JSON.parse(raw) : {}; } catch (_) {}
-    if (!response.ok) throw new Error(data.error || `Learning Center request failed (${response.status}).`);
+    if (!response.ok) {
+      const err = data?.error;
+      const message = typeof err === "string"
+        ? err
+        : (err?.message || data?.message || `Learning Center request failed (${response.status}).`);
+      throw new Error(message);
+    }
     return data;
   }
 
@@ -67,9 +73,12 @@
     node.classList.toggle("error", isError);
   }
 
-  async function showModal(options) {
-    if (window.S4UUI?.modal) return await window.S4UUI.modal(options);
-    alert(options.message || options.title || "Learning Center");
+  function setButtonLoading(button, loading, label = "Submit Onboarding") {
+    if (!button) return;
+    button.disabled = loading;
+    button.innerHTML = loading
+      ? '<span class="s4u-inline-spinner" aria-hidden="true"></span><span>Submitting…</span>'
+      : label;
   }
 
   function fillFromConsent(consent) {
@@ -158,50 +167,30 @@
       };
 
       if (!values.firstName || !values.lastName || !values.email) {
-        await showModal({
-          title: "Complete Your Information",
-          message: "First name, last name, and email are required.",
-          type: "error",
-          confirmText: "Review Form"
-        });
+        setStatus("First name, last name, and email are required.", true);
+        $("firstName")?.focus();
         return;
       }
 
       if (!values.acceptedTerms || !values.acceptedRefund || !values.acceptedDisclaimer || !values.acceptedMock) {
-        await showModal({
-          title: "Complete All Acknowledgments",
-          message: "Please review and accept all four Learning Center acknowledgments before submitting.",
-          type: "error",
-          confirmText: "Review Acknowledgments"
-        });
+        setStatus("Please review and accept all four Learning Center acknowledgments before submitting.", true);
         return;
       }
 
       try {
-        button.disabled = true;
-        button.textContent = "Submitting…";
+        setStatus("Saving your onboarding acknowledgment…");
+        setButtonLoading(button, true);
 
         // The Edge Function creates the signed PDF, document record, and notifications.
         const result = await call({ action: "consent", ...values });
         markCompleted(result.consent);
 
-        await showModal({
-          title: "Onboarding Complete",
-          message: "Your signed Learning Center acknowledgment has been saved to Documents. Your course access is now unlocked.",
-          type: "success",
-          confirmText: "Continue"
-        });
-
-        location.replace(returnDestination());
+        setStatus("Onboarding complete. Your signed acknowledgment has been saved to Documents. Opening your Learning Center…");
+        setTimeout(() => location.replace(returnDestination()), 450);
       } catch (error) {
-        await showModal({
-          title: "Unable to Complete Onboarding",
-          message: error?.message || "Please review the form and try again.",
-          type: "error",
-          confirmText: "Review Form"
-        });
-        button.disabled = false;
-        button.textContent = "Submit Onboarding";
+        console.error("[Welcome] onboarding submit failed", error);
+        setStatus(error?.message || "We could not complete onboarding. Please review the form and try again.", true);
+        setButtonLoading(button, false);
       }
     });
   }
