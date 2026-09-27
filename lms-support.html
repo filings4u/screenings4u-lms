@@ -17,7 +17,7 @@
   <link href="assets/css/lms-rebuild-v1.css?v=20260915-1" rel="stylesheet"/>
 
   <!-- Support page only -->
-  <link href="assets/css/pages/lms-support.css?v=20260915-support6" rel="stylesheet"/>
+  <link href="assets/css/pages/lms-support.css?v=20260927-attachments1" rel="stylesheet"/>
 </head>
 <body class="lms-support-page lms-reference-redesign s4u-lms-redesign" data-s4u-portal="training">
   <div class="lms-app">
@@ -187,7 +187,16 @@
 
                 <form class="support-reply" id="support-reply-form">
                   <label for="support-reply-body">Reply</label>
-                  <textarea id="support-reply-body" maxlength="5000" placeholder="Type your reply..." required rows="3"></textarea>
+                  <textarea id="support-reply-body" maxlength="5000" placeholder="Type your reply..." rows="3"></textarea>
+                  <div class="support-attachment-row">
+                    <input id="reply-attachments" class="support-file-input" type="file" multiple accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.webp,application/pdf,image/jpeg,image/png,image/webp,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document">
+                    <button class="support-attachment-button" id="reply-attachment-button" type="button" aria-label="Attach documents or images" title="Attach documents or images">
+                      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21.4 11.6 12 21a6 6 0 0 1-8.5-8.5l9.2-9.2a4 4 0 1 1 5.7 5.7l-9.2 9.2a2 2 0 0 1-2.8-2.8l8.5-8.5"></path></svg>
+                      Attach
+                    </button>
+                    <span class="support-attachment-help">PDF, Word, JPG, PNG or WebP · up to 25 MB each</span>
+                  </div>
+                  <div class="support-selected-files" id="reply-selected-files"></div>
                   <div class="support-reply-actions">
                     <small>Messages are shared securely with the screenings4u support team.</small>
                     <button class="support-primary" type="submit">Send Reply</button>
@@ -257,6 +266,16 @@
           <textarea id="ticket-body" maxlength="5000" required rows="6"></textarea>
         </label>
 
+        <div class="support-ticket-attachments">
+          <input id="ticket-attachments" class="support-file-input" type="file" multiple accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.webp,application/pdf,image/jpeg,image/png,image/webp,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document">
+          <button class="support-attachment-button" id="ticket-attachment-button" type="button" aria-label="Attach documents or images">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21.4 11.6 12 21a6 6 0 0 1-8.5-8.5l9.2-9.2a4 4 0 1 1 5.7 5.7l-9.2 9.2a2 2 0 0 1-2.8-2.8l8.5-8.5"></path></svg>
+            Attach documents or images
+          </button>
+          <span class="support-attachment-help">PDF, Word, JPG, PNG or WebP · up to 5 files · 25 MB each</span>
+          <div class="support-selected-files" id="ticket-selected-files"></div>
+        </div>
+
         <div class="support-modal-actions">
           <button class="support-secondary" data-close-modal="" type="button">Cancel</button>
           <button class="support-primary" type="submit">Submit Ticket</button>
@@ -303,9 +322,9 @@
 <script src="assets/js/training-auth-guard.js"></script>
   <script src="assets/js/lms-sidebar.js?v=20260915-support6"></script>
   <script src="assets/js/lms.js?v=20260830-2000"></script>
-  <script src="assets/js/branded-popups.js?v=20260927-training-support1"></script>
+  <script src="assets/js/branded-popups.js?v=20260911-1"></script>
 
   <!-- Support page functionality -->
-  <script src="assets/js/pages/lms-support.js?v=20260927-support1"></script>
+  <script src="assets/js/pages/lms-support.js?v=20260927-attachments1"></script>
 </body>
 </html>

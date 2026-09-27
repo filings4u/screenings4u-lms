@@ -8,6 +8,18 @@
   let conversations = [];
   let activeConversation = null;
   let activeTab = "all";
+  let ticketFiles = [];
+  let replyFiles = [];
+  const MAX_ATTACHMENTS = 5;
+  const MAX_ATTACHMENT_SIZE = 25 * 1024 * 1024;
+  const ALLOWED_ATTACHMENT_TYPES = new Set([
+    "application/pdf",
+    "image/png",
+    "image/jpeg",
+    "image/webp",
+    "application/msword",
+    "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+  ]);
 
   function escapeHtml(value) {
     return String(value ?? "").replace(/[&<>"']/g, (char) => ({
@@ -53,12 +65,15 @@
   }
 
   function showError(title, error) {
-    const message = error?.message || (typeof error === "string" ? error : "Unable to complete this request.");
+    const message = error?.message || String(error || "Unable to complete this request.");
     showMessage(message);
-    if (window.S4UPopup?.error) {
-      window.S4UPopup.error(message, title);
-    } else if (window.S4UUI?.modal) {
-      window.S4UUI.modal({ title, message, type: "error", confirmText: "Close" });
+    if (window.S4UUI?.modal) {
+      window.S4UUI.modal({
+        title,
+        message,
+        type: "error",
+        confirmText: "Close"
+      });
     }
   }
 
@@ -87,6 +102,75 @@
     }
 
     return data;
+  }
+
+  function validateFiles(files) {
+    const next = Array.from(files || []).slice(0, MAX_ATTACHMENTS);
+    if (Array.from(files || []).length > MAX_ATTACHMENTS) {
+      throw new Error(`You can attach up to ${MAX_ATTACHMENTS} files at a time.`);
+    }
+    next.forEach((file) => {
+      if (!ALLOWED_ATTACHMENT_TYPES.has(file.type)) {
+        throw new Error(`${file.name}: use PDF, Word, JPG, PNG, or WebP files.`);
+      }
+      if (!file.size || file.size > MAX_ATTACHMENT_SIZE) {
+        throw new Error(`${file.name}: each attachment must be 25 MB or smaller.`);
+      }
+    });
+    return next;
+  }
+
+  function formatBytes(bytes) {
+    const value = Number(bytes || 0);
+    if (value < 1024) return `${value} B`;
+    if (value < 1024 * 1024) return `${(value / 1024).toFixed(1)} KB`;
+    return `${(value / (1024 * 1024)).toFixed(1)} MB`;
+  }
+
+  function renderSelectedFiles(targetId, files) {
+    const target = $(targetId);
+    if (!target) return;
+    target.innerHTML = files.map((file) => `
+      <span class="support-file-chip">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><path d="M14 2v6h6"></path></svg>
+        <span>${escapeHtml(file.name)}</span>
+        <small>${escapeHtml(formatBytes(file.size))}</small>
+      </span>`).join("");
+  }
+
+  async function uploadAttachments(files) {
+    const uploaded = [];
+    if (!files.length) return uploaded;
+    const client = window.getScreenings4uSupabase?.() || window.screenings4uSupabase || window.supabaseClient;
+    if (!client?.storage) throw new Error("Attachment storage is unavailable.");
+
+    for (const file of files) {
+      const prepared = await call({
+        action: "prepare_attachment",
+        file: { name: file.name, mimeType: file.type, size: file.size }
+      });
+      const a = prepared.attachment;
+      if (!a?.path || !a?.token) throw new Error(`Unable to prepare ${file.name} for upload.`);
+      const { error } = await client.storage.from(a.bucket).uploadToSignedUrl(a.path, a.token, file, {
+        contentType: file.type,
+        upsert: false
+      });
+      if (error) throw new Error(`${file.name}: ${error.message || "upload failed"}`);
+      uploaded.push({ bucket: a.bucket, path: a.path, name: a.name, mime_type: a.mime_type, size: a.size });
+    }
+    return uploaded;
+  }
+
+  function attachmentHtml(attachments) {
+    if (!Array.isArray(attachments) || !attachments.length) return "";
+    return `<div class="support-message-attachments">${attachments.map((a) => {
+      const label = escapeHtml(a.name || "Attachment");
+      if (!a.url) return `<span class="support-message-attachment is-disabled">${label}</span>`;
+      return `<a class="support-message-attachment" href="${escapeHtml(a.url)}" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21.4 11.6 12 21a6 6 0 0 1-8.5-8.5l9.2-9.2a4 4 0 1 1 5.7 5.7l-9.2 9.2a2 2 0 0 1-2.8-2.8l8.5-8.5"></path></svg>
+        ${label}
+      </a>`;
+    }).join("")}</div>`;
   }
 
   function normalizeData(data) {
@@ -199,6 +283,7 @@
         <div class="support-message-row${customer ? " is-customer" : ""}">
           <div class="support-message-bubble">
             <p>${escapeHtml(message.body || "")}</p>
+            ${attachmentHtml(message.attachments || message.metadata?.attachments || [])}
             <div class="support-message-meta">
               <span>${escapeHtml(sender)}</span>
               <time>${escapeHtml(formatDate(message.created_at, true))}</time>
@@ -312,6 +397,33 @@
     });
 
     $("supportSearch")?.addEventListener("input", renderConversations);
+
+    $("ticket-attachment-button")?.addEventListener("click", () => $("ticket-attachments")?.click());
+    $("reply-attachment-button")?.addEventListener("click", () => $("reply-attachments")?.click());
+
+    $("ticket-attachments")?.addEventListener("change", (event) => {
+      try {
+        ticketFiles = validateFiles(event.target.files);
+        renderSelectedFiles("ticket-selected-files", ticketFiles);
+      } catch (error) {
+        event.target.value = "";
+        ticketFiles = [];
+        renderSelectedFiles("ticket-selected-files", ticketFiles);
+        showError("Attachments", error);
+      }
+    });
+
+    $("reply-attachments")?.addEventListener("change", (event) => {
+      try {
+        replyFiles = validateFiles(event.target.files);
+        renderSelectedFiles("reply-selected-files", replyFiles);
+      } catch (error) {
+        event.target.value = "";
+        replyFiles = [];
+        renderSelectedFiles("reply-selected-files", replyFiles);
+        showError("Attachments", error);
+      }
+    });
   }
 
   async function handleTicketSubmit(event) {
@@ -322,16 +434,20 @@
 
     try {
       if (button) { button.disabled = true; button.textContent = "Submitting…"; }
+      const attachments = await uploadAttachments(ticketFiles);
       const data = await call({
         action: "create_ticket",
         subject: $("ticket-subject")?.value.trim(),
         category: $("ticket-category")?.value || "training",
         priority: $("ticket-priority")?.value || "normal",
-        body: $("ticket-body")?.value.trim()
+        body: $("ticket-body")?.value.trim(),
+        attachments
       });
 
       closeModal("ticket-modal");
       form.reset();
+      ticketFiles = [];
+      renderSelectedFiles("ticket-selected-files", ticketFiles);
       await loadSupport(data.ticket?.id ? { kind: "ticket", id: data.ticket.id } : null);
     } catch (error) {
       showError("Support Ticket", error);
@@ -370,7 +486,7 @@
     if (!activeConversation) return;
 
     const body = $("support-reply-body")?.value.trim() || "";
-    if (!body) return;
+    if (!body && !replyFiles.length) return;
 
     const button = event.currentTarget.querySelector('button[type="submit"]');
     const original = button?.textContent || "Send Reply";
@@ -378,11 +494,15 @@
 
     try {
       if (button) { button.disabled = true; button.textContent = "Sending…"; }
+      const attachments = await uploadAttachments(replyFiles);
       await call(activeConversation.kind === "ticket"
-        ? { action: "reply_ticket", ticket_id: activeConversation.id, body }
-        : { action: "reply_chat", thread_id: activeConversation.id, body });
+        ? { action: "reply_ticket", ticket_id: activeConversation.id, body, attachments }
+        : { action: "reply_chat", thread_id: activeConversation.id, body, attachments });
 
       $("support-reply-body").value = "";
+      $("reply-attachments").value = "";
+      replyFiles = [];
+      renderSelectedFiles("reply-selected-files", replyFiles);
       await loadSupport(current);
     } catch (error) {
       showError("Send Reply", error);

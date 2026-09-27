@@ -444,3 +444,22 @@ body.lms-support-page .lms-main{background:var(--support-page)!important}
   .support-form-grid{grid-template-columns:1fr}
   .support-modal-card{padding:22px 17px}
 }
+
+
+/* Support attachments */
+.support-file-input{position:absolute!important;width:1px!important;height:1px!important;opacity:0!important;pointer-events:none!important}
+.support-attachment-row,.support-ticket-attachments{display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+.support-ticket-attachments{padding:2px 0 0}
+.support-attachment-button{display:inline-flex;align-items:center;gap:7px;min-height:36px;padding:0 11px;border:1px solid #cfdbea;border-radius:9px;background:#fff;color:#24467f;cursor:pointer;font:inherit;font-size:11px;font-weight:800}
+.support-attachment-button:hover{background:#f4f7fb;border-color:#9fb3ce}
+.support-attachment-button svg,.support-message-attachment svg,.support-file-chip svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:0 0 auto}
+.support-attachment-help{color:#7b8aa3;font-size:10px}
+.support-selected-files{display:flex;flex-wrap:wrap;gap:7px;margin-top:8px}
+.support-file-chip{display:inline-flex;align-items:center;gap:6px;max-width:100%;padding:6px 8px;border:1px solid #dce5ef;border-radius:8px;background:#f7f9fc;color:#344b70;font-size:10px}
+.support-file-chip span{max-width:240px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.support-file-chip small{color:#8895a8}
+.support-message-attachments{display:flex;flex-wrap:wrap;gap:7px;margin-top:9px}
+.support-message-attachment{display:inline-flex;align-items:center;gap:6px;max-width:100%;padding:7px 9px;border:1px solid #dce5ef;border-radius:8px;background:#f7f9fc;color:#24467f;font-size:10px;font-weight:800;text-decoration:none;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.support-message-row.is-customer .support-message-attachment{border-color:rgba(255,255,255,.3);background:rgba(255,255,255,.12);color:#fff}
+.support-message-attachment.is-disabled{opacity:.65}
+@media(max-width:600px){.support-attachment-row,.support-ticket-attachments{align-items:flex-start}.support-attachment-help{width:100%}.support-attachment-button{min-height:40px}}
