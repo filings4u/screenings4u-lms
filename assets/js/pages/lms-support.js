@@ -10,6 +10,8 @@
   let activeTab = "all";
   let ticketFiles = [];
   let replyFiles = [];
+  let realtimeChannel = null;
+  let realtimeTimer = null;
   const MAX_ATTACHMENTS = 5;
   const MAX_ATTACHMENT_SIZE = 25 * 1024 * 1024;
   const ALLOWED_ATTACHMENT_TYPES = new Set([
@@ -511,6 +513,25 @@
     }
   }
 
+  function queueRealtimeRefresh() {
+    clearTimeout(realtimeTimer);
+    realtimeTimer = setTimeout(() => {
+      const current = activeConversation ? { kind: activeConversation.kind, id: activeConversation.id } : null;
+      loadSupport(current).catch((error) => console.warn("[LMS support realtime]", error));
+    }, 220);
+  }
+
+  function setupRealtime() {
+    const client = window.getScreenings4uSupabase?.() || window.screenings4uSupabase || window.supabaseClient;
+    if (realtimeChannel || !client?.channel) return;
+    realtimeChannel = client.channel("training-support-live")
+      .on("postgres_changes", { event: "*", schema: "public", table: "support_tickets" }, queueRealtimeRefresh)
+      .on("postgres_changes", { event: "*", schema: "public", table: "support_ticket_messages" }, queueRealtimeRefresh)
+      .on("postgres_changes", { event: "*", schema: "public", table: "communication_threads" }, queueRealtimeRefresh)
+      .on("postgres_changes", { event: "*", schema: "public", table: "communication_messages" }, queueRealtimeRefresh)
+      .subscribe();
+  }
+
   async function init() {
     try {
       setupModals();
@@ -523,6 +544,7 @@
       if (!state?.session?.access_token) return;
       session = state.session;
       await loadSupport();
+      setupRealtime();
     } catch (error) {
       console.error("[LMS support]", error);
       showError("Training Support", error);
@@ -530,6 +552,8 @@
       if (target) target.innerHTML = `<div class="support-no-conversations">Support could not be loaded. Please try again.</div>`;
     }
   }
+
+  document.addEventListener("visibilitychange", () => { if (!document.hidden && session) queueRealtimeRefresh(); });
 
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", init, { once: true });
