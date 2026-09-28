@@ -143,11 +143,15 @@
       metadata.product_kind === "course" ||
       metadata.product_kind === "group" ||
       metadata.product_kind === "extension" ||
-      metadata.product_kind === "supplies"
+      metadata.product_kind === "supplies" ||
+      metadata.sales_channel === "lms" ||
+      String(metadata.checkout_origin || "").includes("training.screenings4u.com") ||
+      metadata.service_slug === "specimen_collector_training_supplies" ||
+      item.services?.slug === "specimen_collector_training_supplies"
     ) return true;
 
-    const serviceName = String(item.services?.name || metadata.name || "").toLowerCase();
-    return isTrainingOrder(order) && (!item.services || /training|course|extension|seat|supplies/.test(serviceName));
+    const serviceName = String(item.services?.name || metadata.name || metadata.service_name || "").toLowerCase();
+    return (isTrainingOrder(order) || /training|course|extension|seat|supplies/.test(serviceName)) && (!item.services || /training|course|extension|seat|supplies/.test(serviceName));
   }
 
   function normalizeOrder(order) {
@@ -322,6 +326,13 @@
     const receiptButton = order.id
       ? `<button type="button" class="receipt-button" data-receipt="${esc(order.id)}">View Receipt</button>`
       : "";
+    const fulfillmentStatus = String(order.fulfillment_status || "pending").toLowerCase();
+    const shipped = fulfillmentStatus === "completed" && !!order.tracking_number;
+    const shipmentPanel = shipped
+      ? `<div class="order-shipment is-shipped"><span class="order-shipment-kicker">Shipped</span><strong>Your training kit is on the way.</strong><div class="order-shipment-row"><span>Tracking number</span><b>${esc(order.tracking_number)}</b></div>${order.fulfilled_at ? `<small>Shipped ${esc(formatDate(order.fulfilled_at))}</small>` : ""}</div>`
+      : fulfillmentStatus === "processing"
+        ? `<div class="order-shipment"><span class="order-shipment-kicker">Preparing shipment</span><strong>We are getting your order ready to ship.</strong></div>`
+        : "";
 
     return `
       <article class="order-card">
@@ -348,6 +359,7 @@
               <div class="order-total"><span>Training total</span><strong>${money(orderLmsTotal(order), order.currency)}</strong></div>
             </div>
 
+            ${shipmentPanel}
             <div class="order-actions">
               ${courseCount ? '<a class="learning-button" href="lms-my-courses.html">My Learning</a>' : ""}
               ${receiptButton}

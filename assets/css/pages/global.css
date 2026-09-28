@@ -293,8 +293,8 @@ body .topbar span,body .topbar a{color:#fff}
   .training-site-header .site-logo,
   .training-site-header .training-logo,
   .training-site-header .brand img {
-    width: 142px !important;
-    max-width: 42vw !important;
+    width: 168px !important;
+    max-width: 46vw !important;
     height: auto !important;
   }
   .training-mobile-toggle {
@@ -637,8 +637,8 @@ body .topbar span,body .topbar a{color:#fff}
   .training-site-header .site-logo,
   .training-site-header .training-logo,
   .training-site-header .brand img {
-    width: 132px !important;
-    max-width: 34vw !important;
+    width: 154px !important;
+    max-width: 40vw !important;
   }
 
   .training-site-header .training-mobile-actions {
