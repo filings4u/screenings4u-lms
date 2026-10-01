@@ -90,9 +90,7 @@
                 class="lms-brand-logo"
               />
 
-              <div class="lms-brand-copy">
-             
-              </div>
+
             </a>
           </div>
 

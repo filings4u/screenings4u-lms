@@ -1,0 +1,9 @@
+/* screenings4u LMS brand lockup */
+.lms-sidebar-brand{min-height:104px!important;padding:20px 18px!important;display:flex!important;align-items:center!important}
+.lms-sidebar .lms-brand{width:100%!important;display:flex!important;align-items:center!important;justify-content:flex-start!important;padding:0!important;gap:0!important}
+.lms-sidebar .lms-brand-logo{display:block!important;width:190px!important;max-width:100%!important;height:auto!important;max-height:58px!important;object-fit:contain!important;object-position:left center!important;filter:none!important}
+.lms-sidebar .lms-brand-copy,.lms-sidebar .lms-brand-subtitle{display:none!important}
+@media(max-width:860px){
+  .lms-sidebar-brand{min-height:88px!important;padding:16px 18px!important}
+  .lms-sidebar .lms-brand-logo{width:176px!important;max-height:52px!important}
+}
