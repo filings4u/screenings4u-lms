@@ -91,9 +91,7 @@
               />
 
               <div class="lms-brand-copy">
-                <span class="lms-brand-subtitle">
-                  Learning Center
-                </span>
+            
               </div>
             </a>
           </div>
