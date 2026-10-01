@@ -39,70 +39,8 @@
     user: null,
     profile: null,
     roles: [],
-    primaryRole: null,
-    trainingContext: null
+    primaryRole: null
   };
-
-
-  const TRAINING_CONTEXT_CACHE_PREFIX = "s4u-training-fast-context-v2:";
-  const TRAINING_CONTEXT_TTL = 5 * 60 * 1000;
-
-  function trainingContextCacheKey(userId) {
-    return TRAINING_CONTEXT_CACHE_PREFIX + String(userId || "");
-  }
-
-  function readTrainingContext(userId) {
-    if (!userId) return null;
-    try {
-      const raw = sessionStorage.getItem(trainingContextCacheKey(userId));
-      if (!raw) return null;
-      const parsed = JSON.parse(raw);
-      if (!parsed?.savedAt || Date.now() - parsed.savedAt > TRAINING_CONTEXT_TTL) return null;
-      return parsed.context || null;
-    } catch (_) {
-      return null;
-    }
-  }
-
-  function writeTrainingContext(userId, context) {
-    if (!userId || !context) return;
-    try {
-      sessionStorage.setItem(trainingContextCacheKey(userId), JSON.stringify({ savedAt: Date.now(), context }));
-    } catch (_) {}
-  }
-
-  function clearTrainingContext(userId) {
-    try {
-      if (userId) sessionStorage.removeItem(trainingContextCacheKey(userId));
-    } catch (_) {}
-  }
-
-  async function getTrainingContext(userId, { force = false } = {}) {
-    if (!userId) return null;
-    if (!force) {
-      const cached = readTrainingContext(userId);
-      if (cached) return cached;
-    }
-    const client = getClient();
-    const { data, error } = await client.rpc("training_portal_fast_context");
-    if (error) throw error;
-    const context = data || null;
-    if (context) writeTrainingContext(userId, context);
-    return context;
-  }
-
-  async function refreshTrainingContext() {
-    const session = await getSession();
-    const userId = session?.user?.id;
-    if (!userId) return null;
-    clearTrainingContext(userId);
-    const context = await getTrainingContext(userId, { force: true });
-    if (state.user?.id === userId) {
-      state.trainingContext = context;
-      state.profile = context?.profile || state.profile || null;
-    }
-    return context;
-  }
 
 
   /* ============================================================
@@ -437,8 +375,7 @@
         user: null,
         profile: null,
         roles: [],
-        primaryRole: null,
-        trainingContext: null
+        primaryRole: null
       };
 
       return {
@@ -457,16 +394,9 @@
       session.user;
 
 
-    // One direct RPC returns profile + Training access + onboarding state.
-    // This removes the former profile REST call + access RPC + onboarding
-    // Edge Function sequence from every protected page.
-    let trainingContext = null;
-    try {
-      trainingContext = await getTrainingContext(user.id, { force: false });
-    } catch (error) {
-      console.warn("[S4UAuth] Fast Training context unavailable; using profile fallback.", error);
-    }
-    const profile = trainingContext?.profile || await getProfile(user.id);
+    // Training authorization is handled by can_access_training_portal().
+    // Do not fetch role assignments on every LMS page navigation.
+    const profile = await getProfile(user.id);
     const roles = [];
 
 
@@ -483,9 +413,7 @@
       roles,
 
       primaryRole:
-        getPrimaryRole(roles),
-
-      trainingContext
+        getPrimaryRole(roles)
 
     };
 
@@ -511,22 +439,13 @@
     if (!requestedRole) return false;
 
     if (requestedRole === "training") {
-      const id = userId || state.user?.id || (await getSession())?.user?.id;
-      if (!id) return false;
-      try {
-        const context = state.user?.id === id && state.trainingContext
-          ? state.trainingContext
-          : await getTrainingContext(id, { force: false });
-        if (context) {
-          if (state.user?.id === id) state.trainingContext = context;
-          return context.can_access === true;
-        }
-      } catch (error) {
-        console.warn("[S4UAuth] Fast Training access check failed; using compatibility RPC.", error);
-      }
       const client = getClient();
       const { data, error } = await client.rpc("can_access_training_portal");
-      if (error) throw error;
+      if (error) {
+        console.error("[S4UAuth] Training access check failed:", error);
+        throw error;
+      }
+
       return data === true;
     }
 
@@ -707,7 +626,7 @@
        initialize() performs the single session lookup.
        ---------------------------------------------------------- */
 
-    const authState = await initialize({ force: false });
+    const authState = await initialize({ force: true });
 
     if (!authState?.session?.user) {
       window.location.replace(buildLoginRedirect(resolvedLoginPage));
@@ -1001,9 +920,6 @@
     /* User */
 
     getProfile,
-    getTrainingContext,
-    refreshTrainingContext,
-    clearTrainingContext,
 
 
     /* Roles */

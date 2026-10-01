@@ -119,20 +119,37 @@
       setStatus("We could not verify a completed onboarding record, so course access remains locked until this form is completed.");
     }
 
-    const fast = authState.trainingContext || null;
-    if (fast && consentIsComplete({ consent: fast.consent, hasDocument: fast.has_document === true })) {
-      location.replace(returnDestination());
-      return;
-    }
-    if (fast?.consent && fast.has_document !== true) {
-      setStatus("Your acknowledgments were saved, but the signed document still needs to be finalized. Submit the form once more to finish onboarding.");
+    try {
+      const state = await call({ action: "status" });
+      if (consentIsComplete(state)) {
+        // Completed learners should bypass Welcome entirely.
+        location.replace(returnDestination());
+        return;
+      }
+      if (state.consent && !state.hasDocument) {
+        setStatus("Your acknowledgments were saved, but the signed document still needs to be finalized. Submit the form once more to finish onboarding.");
+      }
+    } catch (error) {
+      console.warn("[Welcome] status check failed", error);
     }
 
-    const profile = fast?.profile || authState.profile || null;
-    if ($("firstName") && !$("firstName").value) $("firstName").value = profile?.first_name || "";
-    if ($("lastName") && !$("lastName").value) $("lastName").value = profile?.last_name || "";
-    if ($("email") && !$("email").value) $("email").value = profile?.email || session.user.email || "";
-    if ($("phone") && !$("phone").value) $("phone").value = profile?.phone || "";
+    try {
+      const db = window.getScreenings4uSupabase?.();
+      if (db) {
+        const { data: profile } = await db
+          .from("user_profiles")
+          .select("first_name,last_name,email,phone")
+          .eq("id", session.user.id)
+          .maybeSingle();
+
+        if ($("firstName") && !$("firstName").value) $("firstName").value = profile?.first_name || "";
+        if ($("lastName") && !$("lastName").value) $("lastName").value = profile?.last_name || "";
+        if ($("email") && !$("email").value) $("email").value = profile?.email || session.user.email || "";
+        if ($("phone") && !$("phone").value) $("phone").value = profile?.phone || "";
+      }
+    } catch (error) {
+      console.warn("[Welcome] profile load failed", error);
+    }
 
     const button = $("acceptBtn");
     if (!button) return;
@@ -166,9 +183,6 @@
 
         // The Edge Function creates the signed PDF, document record, and notifications.
         const result = await call({ action: "consent", ...values });
-        if (window.S4UAuth?.refreshTrainingContext) {
-          try { await window.S4UAuth.refreshTrainingContext(); } catch (_) {}
-        }
         markCompleted(result.consent);
 
         setStatus("Onboarding complete. Your signed acknowledgment has been saved to Documents.");

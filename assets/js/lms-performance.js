@@ -16,10 +16,5 @@
   document.addEventListener('pointerover',e=>{const a=e.target.closest?.('a[href]');if(a)prefetch(a.href)},{capture:true,passive:true});
   document.addEventListener('focusin',e=>{const a=e.target.closest?.('a[href]');if(a)prefetch(a.href)},true);
   document.addEventListener('touchstart',e=>{const a=e.target.closest?.('a[href]');if(a)prefetch(a.href)},{capture:true,passive:true});
-  addEventListener('load',()=>{
-    if('serviceWorker' in navigator)navigator.serviceWorker.register('./lms-sw.js?v=20261001-1',{scope:'./'}).catch(()=>{});
-    const likely=['lms-dashboard.html','lms-my-courses.html','lms-courses.html','lms-progress.html','lms-certificates.html','lms-schedule-appointment.html'];
-    const warm=()=>likely.forEach(prefetch);
-    if('requestIdleCallback' in window)requestIdleCallback(warm,{timeout:1500});else setTimeout(warm,800);
-  },{once:true});
+  addEventListener('load',()=>{if('serviceWorker' in navigator)navigator.serviceWorker.register('./lms-sw.js?v=20261001-nav1',{scope:'./'}).catch(()=>{});},{once:true});
 })();

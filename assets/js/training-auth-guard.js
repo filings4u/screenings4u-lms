@@ -20,7 +20,7 @@
     style.textContent = `
       html.s4u-auth-pending body,
       html.s4u-onboarding-pending body {
-        visibility: visible !important;
+        visibility: hidden !important;
       }
       html.s4u-authenticated body {
         visibility: visible !important;
@@ -73,22 +73,6 @@
     const session = state?.session;
     if (!userId) throw new Error("Training user is unavailable.");
     if (!session?.access_token) throw new Error("Training session is unavailable.");
-
-    const fast = state?.trainingContext || null;
-    if (fast) {
-      const fastState = { consent: fast.consent || null, hasDocument: fast.has_document === true };
-      if (consentIsComplete(fastState)) {
-        if (isWelcomePage) {
-          location.replace(welcomeReturnDestination());
-          return false;
-        }
-        document.documentElement.classList.remove("s4u-onboarding-pending");
-        return true;
-      }
-      if (isWelcomePage) return true;
-      location.replace(buildWelcomeTarget(currentReturnTarget()).href);
-      return false;
-    }
 
     if (!isWelcomePage) {
       document.documentElement.classList.add("s4u-onboarding-pending");

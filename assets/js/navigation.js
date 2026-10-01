@@ -1,6 +1,6 @@
 /* ============================================================
    SCREENINGS4U LEARNING CENTER
-   DYNAMIC LMS SIDEBAR
+   CANONICAL LMS NAVIGATION
    Mimics the Customer Portal sidebar shell behavior while
    preserving Learning Center navigation and LMS class names.
    ============================================================ */
@@ -90,11 +90,7 @@
                 class="lms-brand-logo"
               />
 
-              <div class="lms-brand-copy">
-                <span class="lms-brand-subtitle">
-                  Learning Center
-                </span>
-              </div>
+
             </a>
           </div>
 
