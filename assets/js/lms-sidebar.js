@@ -91,7 +91,7 @@
               />
 
               <div class="lms-brand-copy">
-            
+             
               </div>
             </a>
           </div>
