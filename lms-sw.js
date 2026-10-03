@@ -1,4 +1,4 @@
-const CACHE='s4u-lms-static-v20261001-nav1';
+const CACHE='s4u-lms-static-v20261003-1';
 const CORE=[
  './images/fav.png','./images/logo.png','./images/logo2.png',
  './assets/css/lms.css','./assets/css/lms-refinement.css','./assets/css/lms-ui-modals.css','./assets/css/lms-logo-branding.css',
@@ -16,6 +16,16 @@ self.addEventListener('fetch',e=>{
    return;
  }
  if(/\.(?:js|css|png|jpg|jpeg|webp|svg|woff2?)$/i.test(u.pathname)){
-   e.respondWith(caches.match(req).then(cached=>cached||fetch(req).then(r=>{if(r&&r.ok)caches.open(CACHE).then(c=>c.put(req,r.clone()));return r})));
+   e.respondWith(caches.match(req).then(async cached=>{
+     if(cached)return cached;
+     const r=await fetch(req);
+     if(r&&r.ok){
+       // Clone before the original response can be consumed by the page.
+       const copy=r.clone();
+       const cache=await caches.open(CACHE);
+       await cache.put(req,copy);
+     }
+     return r;
+   }));
  }
 });
